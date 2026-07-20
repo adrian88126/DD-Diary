@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ vtuber.name_main }} - 粉絲製作非官方個人歌唱存檔展示庫</title>
+    
+    <!-- Open Graph / 社群預覽卡片 (Line, Discord, Facebook, X) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="🎵 {{ vtuber.name_main }} 歌唱存檔與直播時間軸專頁">
+    <meta property="og:description" content="{{ vtuber.description or (vtuber.name_main + ' 的個人歌唱作品、常駐拿手歌、點歌歌單與歌回直播時間軸存檔展示。') }}">
+    <meta property="og:image" content="{{ vtuber.schedule_image_url or vtuber.avatar_url or (static_prefix + 'favicon.ico') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🎵 {{ vtuber.name_main }} 歌唱存檔與直播時間軸專頁">
+    <meta name="twitter:description" content="{{ vtuber.description or (vtuber.name_main + ' 的個人歌唱作品、常駐拿手歌、點歌歌單與歌回直播時間軸存檔展示。') }}">
+    <meta name="twitter:image" content="{{ vtuber.schedule_image_url or vtuber.avatar_url or (static_prefix + 'favicon.ico') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Theme & Share Profile Styling -->
+    <link rel="stylesheet" href="{{ static_prefix }}index.css">
+    <link rel="stylesheet" href="{{ static_prefix }}share.css">
+    
+    <style>
+        :root {
+            {% if vtuber.theme_color %}
+            --vtuber-active-theme: {{ vtuber.theme_color }};
+            {% else %}
+            --vtuber-active-theme: #8b5cf6;
+            {% endif %}
+        }
+    </style>
+    <!-- SheetJS (XLSX) library -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body class="custom-vtuber-theme {% if vtuber.id == 1 %}panda-theme{% endif %}">
+
+    <div class="share-container">
+        <!-- 頂部 Logo 條 -->
+        <header class="share-header-bar">
+            <div class="share-logo">
+                <i class="fa-solid fa-compact-disc fa-spin"></i> {{ vtuber.name_main }} 之非官方個人時間軸存檔展示網頁
+            </div>
+            <div class="public-badge">
+                <i class="fa-solid fa-globe"></i> 非官方存檔
+            </div>
+        </header>
+
+        <!-- 左右分流布局 -->
+        <main class="split-layout">
+            <!-- 左側：主播檔案與內嵌播放器 -->
+            <div class="sticky-sidebar">
+                <!-- 1. 主播 Hero 卡片 -->
+                <div class="content-card" style="margin-bottom: 0; padding: 0; overflow: hidden; border-radius:16px;">
+                    <!-- Banner 橫幅 -->
+                    <div style="height: 120px; background: {% if vtuber.banner_url and vtuber.banner_url.strip() %}url('{{ vtuber.banner_url }}'){% else %}{% if vtuber.id == 1 %}linear-gradient(135deg, #010201 0%, #0c1c0f 50%, #010201 100%){% else %}linear-gradient(45deg, #1e1b4b, #311042){% endif %}{% endif %} center/cover no-repeat; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative;">
+                        {% if vtuber.id == 1 %}
+                        <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(3, 8, 4, 0.95) 0%, rgba(8, 20, 10, 0.9) 70%, rgba(3, 8, 4, 0.95) 100%), url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Cpath d='M180,100 C185,70 190,40 185,10' fill='none' stroke='%2300e676' stroke-width='1.5' opacity='0.25'/%3E%3Cpath d='M185,40 Q195,35 200,20 Q190,30 185,40 Z' fill='%2300e676' opacity='0.2'/%3E%3Cpath d='M185,40 Q175,32 170,18 Q180,30 185,40 Z' fill='%2300e676' opacity='0.2'/%3E%3C/svg%3E&quot;) right center/contain no-repeat; mix-blend-mode: color-dodge;"></div>
+                        <div style="position: absolute; bottom: 8px; right: 12px; font-size: 16px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); opacity: 0.85; z-index: 3;">🎋🐼🎋</div>
+                        {% endif %}
+                    </div>
+                    <!-- 頭像與文字資料 -->
+                    <div style="padding: 20px; position: relative; margin-top: -50px; text-align: center;">
+                        <!-- 大頭照 -->
+                        <div class="{% if vtuber.id == 1 %}panda-avatar-wrapper{% endif %}" style="margin: 0 auto; display: inline-block;">
+                            {% if vtuber.avatar_url %}
+                            <img src="{{ vtuber.avatar_url }}" alt="{{ vtuber.name_main }}" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid {% if vtuber.id == 1 %}#000000{% else %}#09070f{% endif %}; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; z-index: 2;">
+                            {% else %}
+                            <div style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid {% if vtuber.id == 1 %}#000000{% else %}#09070f{% endif %}; background: var(--vtuber-active-theme); color: #fff; font-size: 32px; font-weight:800; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; z-index: 2;">{{ vtuber.name_main[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 熊貓標籤 -->
+                        {% if vtuber.id == 1 %}
+                        <div>
+                            <span class="panda-badge"><i class="fa-solid fa-paw"></i> 熊貓大王 🎋</span>
+                        </div>
+                        {% endif %}
+                        
+                        <h2 style="font-size: 20px; font-weight: 800; color: var(--text-bright); margin-top: 4px; margin-bottom: 4px;">{{ vtuber.name_main }}</h2>
+                        <div class="sub-names" style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px;">
+                            {{ vtuber.name_ja }} {% if vtuber.name_zh %}| {{ vtuber.name_zh }}{% endif %}
+                        </div>
+                        
+                        <!-- 社群按鈕 -->
+                        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;" id="social-links-container">
+                            <!-- JS 動態寫入 -->
+                        </div>
+                        
+                        <p style="font-size: 13px; line-height: 1.6; color: #94a3b8; text-align: left; margin: 0; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">
+                            {{ vtuber.description or '暫無個人簡介介紹。' }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. 音樂播放器卡片 -->
+                <div class="player-card-wrapper">
+                    <div class="player-card">
+                        <button id="floating-toggle-btn" class="floating-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="最小化 / 展開播放器">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="iframe-wrapper">
+                            <!-- YouTube IFrame API 會在這裡產生影片 -->
+                            <div id="youtube-player" style="position: absolute; top:0; left:0; width:100%; height:100%;">
+                                <div style="color: #64748b; display: flex; flex-direction: column; align-items: center; justify-content: center; height:100%; gap: 10px; font-size: 13px;">
+                                    <i class="fa-solid fa-play" style="font-size: 24px; color: var(--vtuber-active-theme);"></i>
+                                    <span>選擇歌單中的歌曲開始播放</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="player-info-bar">
+                            <div class="player-song-title" id="current-song-title">尚未開始播放</div>
+                            <div class="player-singer-name" id="current-singer-name">
+                                <i class="fa-solid fa-user"></i> -
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if vtuber.schedule_image_url and vtuber.schedule_image_url.strip() %}
+                <!-- 3. 📅 本週行程週表展示卡片 -->
+                <div class="content-card" style="margin-bottom: 0; padding: 16px; position: relative; border-radius:16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:13px; font-weight:800; color:var(--text-bright);"><i class="fa-regular fa-calendar-days" style="color:var(--vtuber-active-theme);"></i> 本週行程週表</span>
+                        <button class="playlist-tab-btn" onclick="openLightbox('{{ vtuber.schedule_image_url }}', '{{ vtuber.name_main }} - 本週行程週表')" style="padding: 4px 10px; font-size: 11px;">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i> 放大週表
+                        </button>
+                    </div>
+                    <div style="position:relative; width:100%; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); cursor:pointer;" onclick="openLightbox('{{ vtuber.schedule_image_url }}', '{{ vtuber.name_main }} - 本週行程週表')">
+                        <img src="{{ vtuber.schedule_image_url }}" alt="本週週表" style="width:100%; height:auto; display:block; object-fit:cover; transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- 右側：歌單、直播、歷史紀錄分頁 -->
+            <div class="content-card" style="margin-bottom: 0;">
+                <!-- 頂部分頁按鈕與搜尋框 -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 20px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
+                    <div class="playlist-tabs" style="margin-bottom: 0; border-bottom: 0; padding-bottom: 0; display: flex; flex-wrap: wrap; gap: 4px;">
+                        <button class="playlist-tab-btn active" id="tab-btn-bio">主播與活動</button>
+                        <button class="playlist-tab-btn" id="tab-btn-requestable" onclick="switchTab('requestable')">總歌單</button>
+                        <button class="playlist-tab-btn" id="tab-btn-singing" onclick="switchTab('singing')">歌回直播</button>
+                        <button class="playlist-tab-btn" id="tab-btn-live" onclick="switchTab('live')">日常與其他直播</button>
+                        <button class="playlist-tab-btn" id="tab-btn-history" onclick="switchTab('history')">歷史歌回單曲</button>
+                        <button class="playlist-tab-btn" id="tab-btn-mv" onclick="switchTab('mv')">MV 影片清單</button>
+                    </div>
+                    <div class="playlist-controls-container" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                        <div class="search-input-wrapper" style="position: relative; display: inline-flex; align-items: center;">
+                            <input type="text" id="share-search-input" placeholder="🔍 搜尋歌名、原唱、直播名稱..." style="padding: 8px 30px 8px 16px; font-size:12.5px; width: 220px; border-radius: 20px; border:1px solid var(--border-color); background: var(--input-bg); color: var(--text-bright); margin-bottom: 0; outline: none;">
+                            <button id="clear-search-btn" onclick="clearSearchInput()" title="清空搜尋內容" style="position: absolute; right: 10px; background: none; border: none; color: #94a3b8; font-size: 13px; cursor: pointer; display: none; padding: 2px 4px; border-radius: 50%; line-height: 1; transition: color 0.2s;">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </button>
+                        </div>
+                        <button id="export-excel-btn" onclick="exportToExcel()" title="將此主播所有歌唱紀錄匯出成 Excel" style="padding: 8px 16px; font-size:12.5px; border-radius:20px; border:1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color:var(--text-bright); cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-weight:600; transition:all 0.2s;">
+                            <i class="fa-solid fa-file-excel" style="color: #217346;"></i> 匯出 Excel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 分頁 1: 主播介紹與活動 -->
+                <div class="tab-pane active" id="pane-bio">
+                    <div class="stats-grid" style="margin-top: 10px; margin-bottom: 24px;">
+                        <div style="background: rgba(139, 92, 246, 0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px;">
+                            <h4 style="color: var(--vtuber-active-theme); font-size:13.5px; font-weight:800; margin-top:0; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-trophy"></i> 最常唱歌曲排行 (TOP 5)
+                            </h4>
+                            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px;" id="top-songs-list">
+                                <!-- JS 動態載入 -->
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px;">
+                            <h4 style="color: var(--text-bright); font-size:13.5px; font-weight:800; margin-top:0; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-microphone"></i> 最常唱原唱歌手 (TOP 5)
+                            </h4>
+                            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px;" id="top-artists-list">
+                                <!-- JS 動態載入 -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 2欄並排容器：左側成就時間軸 / 右側歌回月曆 -->
+                    <div class="bio-two-columns-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top: 20px;">
+                        <!-- 左側：成就與大事記時間軸 -->
+                        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); padding: 18px 20px; border-radius: 16px;">
+                            <h3 style="margin-top:0; margin-bottom:12px; font-weight:800; font-size:14px; color:var(--text-bright); display:flex; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-timeline" style="color:var(--vtuber-active-theme);"></i> 成就與大事記時間軸
+                            </h3>
+                            <div class="vertical-timeline" style="max-height: 380px; overflow-y:auto; padding-top: 6px;" id="timeline-activities-container">
+                                <!-- JS 動態載入 -->
+                            </div>
+                        </div>
+
+                        <!-- 右側：歌回月曆卡片 -->
+                        <div class="calendar-container-card" id="singing-calendar-container" style="margin-top:0; width:100%; max-width:100%;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分頁 2: 總歌單 -->
+                <div class="tab-pane" id="pane-requestable" style="max-height: 750px; overflow-y:auto;">
+                    <table class="premium-table" style="font-size:12.5px;">
+                        <thead>
+                            <tr>
+                                <th>主要歌名</th>
+                                <th>原著歌手</th>
+                                <th class="hide-on-mobile">屬性</th>
+                                <th class="hide-on-mobile">所屬歌單</th>
+                                <th style="text-align:center; width:80px;">歷史</th>
+                            </tr>
+                        </thead>
+                        <tbody id="repertoire-tbody">
+                            <!-- JS 動態載入 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分頁: 歌回直播 -->
+                <div class="tab-pane" id="pane-singing" style="max-height: 750px; overflow-y:auto;">
+                    <table class="premium-table" style="font-size:12.5px;">
+                        <thead>
+                            <tr>
+                                <th>縮圖</th>
+                                <th>影片標題</th>
+                                <th class="hide-on-mobile">類型</th>
+                                <th>日期</th>
+                                <th class="hide-on-mobile">時間軸狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="singing-tbody">
+                            <!-- JS 動態載入 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分頁 3: 直播紀錄 -->
+                <div class="tab-pane" id="pane-live" style="max-height: 750px; overflow-y:auto;">
+                    <table class="premium-table" style="font-size:12.5px;">
+                        <thead>
+                            <tr>
+                                <th>縮圖</th>
+                                <th>影片標題</th>
+                                <th class="hide-on-mobile">類型</th>
+                                <th>日期</th>
+                                <th class="hide-on-mobile">時間軸狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="live-tbody">
+                            <!-- JS 動態載入 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分頁 4: 歷史歌回單曲 -->
+                <div class="tab-pane" id="pane-history" style="max-height: 750px; overflow-y:auto;">
+                    <table class="premium-table" style="font-size:12.5px;">
+                        <thead>
+                            <tr>
+                                <th>歌名</th>
+                                <th>原唱</th>
+                                <th class="hide-on-mobile">出自直播影片</th>
+                                <th>演唱日期</th>
+                                <th>時間點</th>
+                                <th class="hide-on-mobile">備註</th>
+                                <th style="text-align:center; width:80px;">播放</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-tbody">
+                            <!-- JS 動態載入 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分頁 5: MV 影片清單 -->
+                <div class="tab-pane" id="pane-mv" style="max-height: 750px; overflow-y:auto;">
+                    <table class="premium-table" style="font-size:12.5px;">
+                        <thead>
+                            <tr>
+                                <th>歌名</th>
+                                <th>原唱</th>
+                                <th class="hide-on-mobile">MV 影片標題</th>
+                                <th>屬性</th>
+                                <th style="text-align:center; width:80px;">播放</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mv-tbody">
+                            <!-- JS 動態載入 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        <footer style="grid-column: 1 / -1; margin-top: 30px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; font-size: 12px; color: #64748b;">
+            <p style="margin: 0;">本網頁為【粉絲自主建立】之非官方個人歌唱存檔展示網頁，僅供同好交流與宣傳推廣</p>
+            <p style="margin: 6px 0 0 0; color: var(--neon-gold); font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Co-Developed with Google Gemini AI (Antigravity)
+            </p>
+        </footer>
+    </div>
+
+    <!-- YouTube IFrame Player API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <!-- 注入傳送 JSON 數據並加載外部 ES 模組 -->
+    <script>
+        window.vtuberData = {{ vtuber_json | safe }};
+        window.videosData = {{ videos_json | safe }};
+        window.activitiesData = {{ activities_json | safe }};
+        window.recordsData = {{ records_json | safe }};
+    </script>
+    <script src="{{ static_prefix }}js/share.js"></script>
+
+    <!-- 🖼️ 高清圖片燈箱 Modal (支持週表與直播封面放大) -->
+    <div id="image-lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-close-btn" onclick="closeLightbox()">&times;</button>
+            <div class="lightbox-img-wrapper">
+                <img id="lightbox-img" src="" alt="Enlarged Image" onclick="toggleLightboxZoom(event)">
+            </div>
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+</body>
+</html>

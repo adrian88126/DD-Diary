@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTuber 歌唱資料庫系統 - VTuber Song Database</title>
+    <!-- 載入 Google Fonts & FontAwesome 圖標 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入自訂 CSS -->
+    <link rel="stylesheet" href="/static/index.css?v=2.6">
+</head>
+<body>
+
+    <!-- 網頁背景動態光暈效果 -->
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <div class="app-container">
+        <!-- 1. 左側玻璃導覽列 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-music neon-text"></i>
+                <span class="logo-text">VT-SONG <span class="sub">DB</span></span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-line"></i> 儀表板大廳
+                </a>
+                <a href="#" class="nav-item" data-view="catalog">
+                    <i class="fa-solid fa-database"></i> 資料總庫目錄
+                </a>
+                <a href="#" class="nav-item" data-view="admin">
+                    <i class="fa-solid fa-sliders"></i> 後台管理
+                </a>
+            </nav>
+
+            <div class="vtubers-section">
+                <div class="section-title">VTuber 主播</div>
+                <div class="vtuber-list" id="sidebar-vtuber-list">
+                    <!-- 動態載入 VTuber 列表 -->
+                    <div class="loading-spinner-small"></div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer" style="padding: 15px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 11px; text-align: center;">
+                <p style="margin: 0; color: #64748b;">Version 3.8 (Catalog Manager)</p>
+                <p style="margin: 4px 0 0 0; color: var(--neon-gold); font-weight: 700; display: flex; align-items: center; gap: 4px; justify-content: center;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Co-Developed
+                </p>
+                <p style="margin: 2px 0 0 0; color: #475569; font-size: 10px;">Powered by Google Gemini</p>
+            </div>
+        </aside>
+
+        <!-- 2. 右側主要內容區 -->
+        <main class="main-content">
+            <!-- 頂部狀態列 -->
+            <header class="top-bar">
+                <div class="current-view-title" id="page-title">儀表板大廳</div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button id="admin-mode-toggle" class="btn btn-secondary" style="font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:6px; border-radius: 8px; margin: 0;">
+                        <i class="fa-solid fa-key"></i> <span>管理登入</span>
+                    </button>
+                    <button id="theme-toggle-btn" class="theme-toggle-btn" title="切換深色/淺色主題" style="margin-left: 4px;">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <div class="user-status">
+                        <span class="status-indicator"></span>
+                        <span class="status-text">資料庫已連線 (SQLite)</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="scroll-content">
+                <!-- ==================== VIEW 1: DASHBOARD ==================== -->
+                <section id="view-dashboard" class="content-view active">
+                    <!-- 統計資訊小卡 -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon purple-glow"><i class="fa-solid fa-users"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-vtubers">0</span>
+                                <span class="stat-label">收錄 VTuber</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon blue-glow"><i class="fa-solid fa-music"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-songs">0</span>
+                                <span class="stat-label">歌曲總量</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon pink-glow"><i class="fa-solid fa-microphone"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-records">0</span>
+                                <span class="stat-label">歷史演唱總次數</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon gold-glow"><i class="fa-solid fa-video"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-videos">0</span>
+                                <span class="stat-label">收錄影片/直播</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 雙欄版面：左側最新演唱紀錄 / 右側公告成就時間軸 -->
+                    <div class="dashboard-grid">
+                        <!-- 左：最新歌單紀錄 -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-compact-disc spin neon-text-blue"></i> 最新 Live</h3>
+                                <span class="badge badge-purple">Live Feed</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="recent-records-list" id="dashboard-recent-records">
+                                    <!-- 動態載入 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右：活動公告里程碑時間軸 -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-trophy neon-text-gold"></i> 成就里程碑 & 公告</h3>
+                                <div class="timeline-filters">
+                                    <select id="timeline-type-filter" class="form-select-sm">
+                                        <option value="">全部類型</option>
+                                        <option value="milestone">重要里程碑</option>
+                                        <option value="announcement">官方公告</option>
+                                        <option value="x_post">X 貼文</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="vertical-timeline" id="dashboard-timeline">
+                                    <!-- 動態載入 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== VIEW 2: VTUBER PROFILE ==================== -->
+                <section id="view-vtuber-profile" class="content-view">
+                    <div id="vtuber-profile-detail">
+                        <!-- 動態載入 VTuber 詳細頁 -->
+                </section>
+
+                <!-- ==================== VIEW 4: DATABASE CATALOG (資料總庫) ==================== -->
+                <section id="view-catalog" class="content-view">
+                    <div class="content-card" style="padding: 24px;">
+                        <div class="card-header" style="border-bottom:0; display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; flex-wrap: wrap; gap: 15px;">
+                            <div class="playlist-tabs" style="margin-bottom:0; display:inline-flex; flex-wrap: wrap; gap: 4px;">
+                                <button class="playlist-tab-btn active" id="catalog-tab-btn-songs" style="padding:8px 16px; font-size:12px;"><i class="fa-solid fa-music"></i> 歌曲總庫</button>
+                                <button class="playlist-tab-btn" id="catalog-tab-btn-artists" style="padding:8px 16px; font-size:12px;"><i class="fa-solid fa-users"></i> 原唱歌手庫</button>
+                                <button class="playlist-tab-btn" id="catalog-tab-btn-videos" style="padding:8px 16px; font-size:12px;"><i class="fa-solid fa-video"></i> 已登記影音庫</button>
+                                <button class="playlist-tab-btn" id="catalog-tab-btn-records" style="padding:8px 16px; font-size:12px;"><i class="fa-solid fa-microphone"></i> 歷史演唱紀錄庫</button>
+                                <button class="playlist-tab-btn" id="catalog-tab-btn-activities" style="padding:8px 16px; font-size:12px;"><i class="fa-solid fa-trophy"></i> 活動與里程碑庫</button>
+                            </div>
+                            <div class="search-box-glow" style="display: flex; gap: 8px; align-items: center;">
+                                <input type="text" id="catalog-search-input" placeholder="🔍 輸入關鍵字..." style="padding: 8px 16px; font-size:12px; width: 200px; border-radius: 20px; border:1px solid var(--border-color); background: rgba(0,0,0,0.3); color: var(--text-bright); margin: 0;">
+                                <button type="button" class="btn btn-purple" id="btn-catalog-search-submit" style="padding: 8px 14px; font-size: 12px; border-radius: 20px; margin: 0; white-space: nowrap; height: 33px; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fa-solid fa-magnifying-glass"></i> 搜尋
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- 歌曲總表 Pane -->
+                            <div class="tab-pane active" id="catalog-pane-songs" style="max-height: 480px; overflow-y:auto;">
+                                <div class="table-container">
+                                    <table class="premium-table" style="font-size:12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>主要歌名</th>
+                                                <th>原唱歌手</th>
+                                                <th class="admin-only" style="text-align:center; width:120px;">管理操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="catalog-songs-tbody">
+                                            <!-- 動態載入 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 歌手總表 Pane -->
+                            <div class="tab-pane" id="catalog-pane-artists" style="max-height: 480px; overflow-y:auto;">
+                                <div class="table-container">
+                                    <table class="premium-table" style="font-size:12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>原唱歌手名稱</th>
+                                                <th>羅馬拼音 / 多語系</th>
+                                                <th class="admin-only" style="text-align:center; width:120px;">管理操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="catalog-artists-tbody">
+                                            <!-- 動態載入 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 已登記影音庫 Pane -->
+                            <div class="tab-pane" id="catalog-pane-videos" style="max-height: 480px; overflow-y:auto;">
+                                <div class="filter-bar" style="display:flex; gap:12px; margin-bottom:12px; flex-wrap: wrap; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                                    <div class="form-group" style="margin-bottom:0; flex:1; min-width: 150px;">
+                                        <select id="catalog-video-filter-type" style="padding: 6px 12px; font-size:12px; width:100%; border-radius: 6px; border:1px solid var(--border-color); background: var(--input-bg); color: var(--text-bright);">
+                                            <option value="">-- 依影音類型篩選 --</option>
+                                            <option value="stream_singing">歌回直播</option>
+                                            <option value="stream_other">日常直播</option>
+                                            <option value="cover_mv">翻唱 MV</option>
+                                            <option value="original_mv">原創 MV</option>
+                                            <option value="other">其他影片</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0; flex:1; min-width: 150px;">
+                                        <select id="catalog-video-filter-vtuber" style="padding: 6px 12px; font-size:12px; width:100%; border-radius: 6px; border:1px solid var(--border-color); background: var(--input-bg); color: var(--text-bright);">
+                                            <option value="">-- 依所屬主播篩選 --</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0; flex:1; min-width: 150px;">
+                                        <select id="catalog-video-filter-timeline" style="padding: 6px 12px; font-size:12px; width:100%; border-radius: 6px; border:1px solid var(--border-color); background: var(--input-bg); color: var(--text-bright);">
+                                            <option value="">-- 依有無時間軸篩選 --</option>
+                                            <option value="yes">已建立時間軸</option>
+                                            <option value="no">未建立時間軸</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="table-container">
+                                    <table class="premium-table" style="font-size:12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>影片標題 (網址)</th>
+                                                <th>類型</th>
+                                                <th>發布日期</th>
+                                                <th>所屬主播</th>
+                                                <th class="admin-only" style="text-align:center; width:120px;">管理操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="catalog-videos-tbody">
+                                            <!-- 動態載入 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 歷史演唱紀錄庫 Pane -->
+                            <div class="tab-pane" id="catalog-pane-records" style="max-height: 480px; overflow-y:auto;">
+                                <div class="table-container">
+                                    <table class="premium-table" style="font-size:12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>歌名 (原唱)</th>
+                                                <th>演唱主播 (合唱)</th>
+                                                <th>影片與時間點</th>
+                                                <th>備註</th>
+                                                <th class="admin-only" style="text-align:center; width:120px;">管理操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="catalog-records-tbody">
+                                            <!-- 動態載入 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 活動與里程碑庫 Pane -->
+                            <div class="tab-pane" id="catalog-pane-activities" style="max-height: 480px; overflow-y:auto;">
+                                <div class="table-container">
+                                    <table class="premium-table" style="font-size:12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>公告與成就標題</th>
+                                                <th>類型</th>
+                                                <th>日期</th>
+                                                <th>關聯主播</th>
+                                                <th>外部連結</th>
+                                                <th class="admin-only" style="text-align:center; width:120px;">管理操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="catalog-activities-tbody">
+                                            <!-- 動態載入 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== VIEW 3: ADMIN PANEL (專業後台控制台) ==================== -->
+                <section id="view-admin" class="content-view">
+                    <div class="admin-panel-container">
+                        <!-- 1. 後台垂直控制面板 -->
+                        <aside class="admin-sidebar">
+                            <div class="admin-menu-title"><i class="fa-solid fa-gears neon-text-blue"></i> 後台功能</div>
+                            <div class="admin-nav-menu">
+                                <button class="admin-nav-item active" data-pane="admin-pane-lobby">
+                                    <i class="fa-solid fa-gauge-high"></i> 儀表大廳 & 診斷
+                                </button>
+                                <button class="admin-nav-item" data-pane="admin-pane-vtuber">
+                                    <i class="fa-solid fa-user-gear"></i> 主播基本資料
+                                </button>
+                                <button class="admin-nav-item" data-pane="admin-pane-video">
+                                    <i class="fa-solid fa-video"></i> YouTube 影音登錄
+                                </button>
+                                <button class="admin-nav-item" data-pane="admin-pane-catalog">
+                                    <i class="fa-solid fa-music"></i> 歌曲與原唱歌手
+                                </button>
+                                <button class="admin-nav-item" data-pane="admin-pane-record">
+                                    <i class="fa-solid fa-microphone"></i> 登錄時間軸歌單
+                                </button>
+                                <button class="admin-nav-item" data-pane="admin-pane-activity">
+                                    <i class="fa-solid fa-trophy"></i> 里程碑與公告
+                                </button>
+
+                                <button class="admin-nav-item" data-pane="admin-pane-links">
+
+                                    <i class="fa-solid fa-link"></i> 相關連結管理
+
+                                </button>
+                                <button class="admin-nav-item" data-pane="admin-pane-bulk">
+                                    <i class="fa-solid fa-file-import"></i> 批次數據匯入
+                                </button>
+                            </div>
+                        </aside>
+
+                        <!-- 2. 後台核心編輯區 -->
+                        <main class="admin-content-area">
+                            <!-- A. 後台儀表大廳與診斷 -->
+                            <div class="admin-tab-pane active" id="admin-pane-lobby">
+                                <div class="content-card" style="margin-bottom: 24px;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-solid fa-chart-pie neon-text-blue"></i> 後台維護大廳</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 0;">
+                                            歡迎來到資料庫後台維護中心！您可以在左側選擇想要登錄的資料類型。下方列出了系統診斷出的不完整資料，點選可進行快速修正或指派。
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="catalog-grid-layout" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                                    <!-- 原唱未指派的歌曲 -->
+                                    <div class="content-card" style="margin-bottom: 0;">
+                                        <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                                            <h4 style="font-size:13px; font-weight:700; color:var(--neon-pink); display:flex; align-items:center; gap:6px; margin: 0;">
+                                                <i class="fa-solid fa-circle-question"></i> 原唱未指派 (未知) 的歌曲
+                                            </h4>
+                                        </div>
+                                        <div class="card-body" style="padding-top:12px;">
+                                            <div id="unknown-artists-list" style="font-size:12px; max-height: 280px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
+                                                <!-- 動態載入 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 重複歌曲診斷 -->
+                                    <div class="content-card" style="margin-bottom: 0;">
+                                        <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                                            <h4 style="font-size:13px; font-weight:700; color:var(--neon-purple); display:flex; align-items:center; gap:6px; margin: 0;">
+                                                <i class="fa-solid fa-clone"></i> 同名/疑似重複錄入歌曲
+                                            </h4>
+                                        </div>
+                                        <div class="card-body" style="padding-top:12px;">
+                                            <div id="duplicate-songs-list" style="font-size:12px; max-height: 280px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
+                                                <!-- 動態載入 -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 重複歌手診斷 -->
+                                    <div class="content-card" style="margin-bottom: 0;">
+                                        <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                                            <h4 style="font-size:13px; font-weight:700; color:var(--neon-blue); display:flex; align-items:center; gap:6px; margin: 0;">
+                                                <i class="fa-solid fa-users"></i> 同名/疑似重複錄入歌手
+                                            </h4>
+                                        </div>
+                                        <div class="card-body" style="padding-top:12px;">
+                                            <div id="duplicate-artists-list" style="font-size:12px; max-height: 280px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
+                                                <!-- 動態載入 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- B. 主播基本資料管理 -->
+                            <div class="admin-tab-pane" id="admin-pane-vtuber">
+                                <!-- 自動抓取 YouTube 頻道基本資訊 -->
+                                <div class="content-card" style="margin-bottom: 24px; max-width: 800px;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-brands fa-youtube neon-text-purple"></i> 自動抓取 YouTube 頻道資訊</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label for="vtuber-fetch-url">頻道網址 / @Handle / 頻道 ID</label>
+                                            <div style="display:flex; gap:10px;">
+                                                <input type="text" id="vtuber-fetch-url" placeholder="例如：https://www.youtube.com/@Seri_Reverie" style="flex:1; margin:0;">
+                                                <button type="button" class="btn btn-primary" id="btn-vtuber-fetch-info" style="padding: 10px 18px; margin:0; font-weight:700;"><i class="fa-solid fa-wand-magic-sparkles"></i> 抓取並自動填入</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 登錄/編輯 VTuber 表單 -->
+                                <div class="content-card" style="margin-bottom: 24px; max-width: 800px;">
+                                    <div class="card-header">
+                                        <h3 id="form-vtuber-title-header"><i class="fa-solid fa-user-plus neon-text-purple"></i> 登錄 / 編輯 VTuber 主播</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form-create-vtuber">
+                                            <input type="hidden" id="edit-vtuber-id">
+                                            <div class="form-group">
+                                                <label for="vtuber-name-main">主顯示名稱 <span class="required">*</span></label>
+                                                <input type="text" id="vtuber-name-main" required placeholder="例如：滔滔饕餮">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="vtuber-name-ja">日文名稱</label>
+                                                    <input type="text" id="vtuber-name-ja" placeholder="（選填，例如：taotao）">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="vtuber-name-zh">中文譯名</label>
+                                                    <input type="text" id="vtuber-name-zh" placeholder="例如：滔滔">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="vtuber-avatar-url">主播頭像連結 (URL)</label>
+                                                <input type="text" id="vtuber-avatar-url" placeholder="例如：https://example.com/avatar.jpg">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="vtuber-theme-color">主題代表色 (HEX，例如 #ff007f)</label>
+                                                <input type="text" id="vtuber-theme-color" placeholder="例如：#ff007f">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="vtuber-banner-url">個人橫幅背景 (Banner URL)</label>
+                                                <input type="url" id="vtuber-banner-url" placeholder="例如：https://example.com/banner.jpg">
+                                             </div>
+                                             <div class="form-group">
+                                                 <label for="vtuber-schedule-image-url">本週週表圖片 (可輸入 Video ID 如 y3Vyg3nOsFA 或完整網址)</label>
+                                                 <input type="text" id="vtuber-schedule-image-url" placeholder="例如：y3Vyg3nOsFA 或網址">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="vtuber-name-romaji">羅馬拼音搜尋欄位</label>
+                                                <input type="text" id="vtuber-name-romaji" placeholder="例如：taotao taotie">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="vtuber-youtube">YouTube 頻道 ID</label>
+                                                <input type="text" id="vtuber-youtube" placeholder="UC5CwaMx1GE3haFdeuz0t1Mw">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="vtuber-desc">個人描述簡介</label>
+                                                <textarea id="vtuber-desc" rows="3" placeholder="主播個人簡介介紹..."></textarea>
+                                            </div>
+                                            <div style="display:flex; gap:10px;">
+                                                <button type="submit" class="btn btn-primary" id="btn-vtuber-submit" style="flex:1;"><i class="fa-solid fa-plus"></i> 登錄 VTuber</button>
+                                                <button type="button" class="btn btn-secondary" id="btn-vtuber-cancel-edit" style="display:none; padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消編輯</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- 已登錄 VTuber 列表 (CRUD 管理) -->
+                                <div class="content-card" style="margin-bottom: 0; max-width: 800px;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-solid fa-users neon-text-purple"></i> 已收錄 VTuber 列表</h3>
+                                    </div>
+                                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                                        <table class="premium-table" style="font-size:12.5px;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 60px; text-align: center;">頭像</th>
+                                                    <th>常用名稱</th>
+                                                    <th>YouTube 頻道 ID</th>
+                                                    <th style="text-align:center; width:150px;">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="admin-vtubers-tbody">
+                                                <!-- 動態載入 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- C. YouTube 影音管理 -->
+                            <div class="admin-tab-pane" id="admin-pane-video">
+                                <!-- 一鍵爬取同步 YouTube 影音 -->
+                                <div class="content-card" style="margin-bottom: 24px; max-width: 800px;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-brands fa-youtube neon-text-purple"></i> YouTube 頻道自動同步爬蟲</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form-sync-crawler">
+                                            <div class="form-group">
+                                                <label for="sync-vtuber-id">目標主播 <span class="required">*</span></label>
+                                                <select id="sync-vtuber-id" required>
+                                                    <option value="all">-- 同步所有收錄主播 --</option>
+                                                    <!-- 動態填入主播 -->
+                                                </select>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="sync-type">爬取分頁</label>
+                                                    <select id="sync-type">
+                                                        <option value="streams">僅直播 / 歌回 (Streams)</option>
+                                                        <option value="videos">僅一般影片 (Videos)</option>
+                                                        <option value="all">兩者皆爬 (Streams + Videos)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="sync-limit-mode">爬取範圍</label>
+                                                    <select id="sync-limit-mode">
+                                                        <option value="latest">最新 X 筆資料</option>
+                                                        <option value="all">全部歷史紀錄</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="sync-limit-value-group">
+                                                <label for="sync-limit-value">爬取筆數 (X)</label>
+                                                <input type="number" id="sync-limit-value" value="30" min="1" max="1000">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-block" id="btn-sync-crawler-submit">
+                                                <i class="fa-solid fa-cloud-arrow-down"></i> 開始一鍵爬取同步
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="content-card" style="margin-bottom: 0; max-width: 800px;">
+                                    <div class="card-header">
+                                        <h3 id="form-video-title-header"><i class="fa-solid fa-circle-play neon-text-blue"></i> 新增 YouTube 直播 / MV 影音</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form-create-video">
+                                            <div class="form-group">
+                                                <label for="video-vtuber-id">關聯發布的主播 (VTuber) <span class="required">*</span></label>
+                                                <select id="video-vtuber-id" required>
+                                                    <option value="">-- 請選擇主播 --</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label for="video-id">YouTube 影片 ID 或 完整網址 <span class="required">*</span> <span id="yt-fetch-indicator" style="font-size: 11px; margin-left: 8px; font-weight: 700;"></span></label>
+                                                <input type="text" id="video-id" required placeholder="可以直接貼上 YouTube 網址或 11 位元影片 ID">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="video-title">影片/直播標題 <span class="required">*</span></label>
+                                                <input type="text" id="video-title" required placeholder="例如：【3D LIVE】STELLAR into the GALAXY">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="video-published">發布 / 直播日期 <span class="required">*</span></label>
+                                                    <input type="date" id="video-published" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="video-type">影音類型 <span class="required">*</span></label>
+                                                    <select id="video-type" required>
+                                                        <option value="stream_singing">歌回直播 (stream_singing)</option>
+                                                        <option value="stream_other">其他日常直播 (stream_other)</option>
+                                                        <option value="cover_mv">單獨翻唱 MV (cover_mv)</option>
+                                                        <option value="original_mv">單獨原創 MV (original_mv)</option>
+                                                        <option value="other">其他影片 (other)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="video-thumb">封面圖網址 (留空則自動生成 YouTube 預設封面)</label>
+                                                <input type="url" id="video-thumb" placeholder="https://example.com/cover.jpg">
+                                            </div>
+                                            
+                                            <!-- 快速關聯單首歌曲 -->
+                                            <div class="form-group" style="margin-top: 15px; border: 1px dashed rgba(16,185,129,0.3); padding: 16px; border-radius: 12px; background: rgba(16,185,129,0.02);">
+                                                <label style="font-weight:700; color:var(--neon-green); display:flex; align-items:center; gap:6px;">
+                                                    <i class="fa-solid fa-paperclip"></i> 快速關聯單首歌曲 (選填，若此影音為翻唱/原創 MV 歌曲，建議填寫)
+                                                </label>
+                                                <span class="help-text" style="margin-bottom: 8px; display:block;">在此填寫會自動在送出影音時，秒速為您在 0 秒處綁定這首歌曲，無須再去登錄時間軸！</span>
+                                                <div class="searchable-select-container">
+                                                    <input type="text" id="video-song-search" placeholder="打字模糊搜尋歌曲庫..." autocomplete="off">
+                                                    <input type="hidden" id="video-song-id">
+                                                    <div class="autocomplete-dropdown" id="video-song-dropdown"></div>
+                                                </div>
+                                                <div class="form-row" style="margin-top: 10px; margin-bottom: 0;">
+                                                    <div class="form-group">
+                                                        <label style="font-size:11px;">時間起點 (秒數)</label>
+                                                        <input type="number" id="video-song-time" value="0" min="0" style="font-size:12px; padding: 6px 12px;">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label style="font-size:11px;">關聯備註 (如：翻唱 MV)</label>
+                                                        <input type="text" id="video-song-note" placeholder="例如：MV" style="font-size:12px; padding: 6px 12px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="display:flex; gap:10px; margin-top: 24px;">
+                                                <button type="submit" class="btn btn-secondary btn-block" id="btn-video-submit" style="flex:1;"><i class="fa-solid fa-plus"></i> 上傳影音存檔</button>
+                                                <button type="button" class="btn btn-secondary" id="btn-video-cancel-edit" style="display:none; padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消編輯</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- D. 歌曲與原唱歌手 -->
+                            <div class="admin-tab-pane" id="admin-pane-catalog">
+                                <div class="catalog-grid-layout" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                                    <!-- 登錄/編輯歌曲 -->
+                                    <div class="content-card" style="margin-bottom: 0;">
+                                        <div class="card-header">
+                                            <h3 id="form-song-title-header"><i class="fa-solid fa-file-music neon-text-blue"></i> 登錄原創歌曲</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="form-create-song">
+                                                <input type="hidden" id="edit-song-id">
+                                                <div class="form-group">
+                                                    <label for="song-title-main">歌曲原名/主要名稱 <span class="required">*</span></label>
+                                                    <input type="text" id="song-title-main" required placeholder="例如：Stellar Stellar">
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group">
+                                                        <label for="song-title-ja">日文原名</label>
+                                                        <input type="text" id="song-title-ja" placeholder="Stellar Stellar">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="song-title-zh">中文譯名</label>
+                                                        <input type="text" id="song-title-zh" placeholder="例如：中文歌名譯名">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="song-title-romaji">羅馬拼音搜尋欄位</label>
+                                                    <input type="text" id="song-title-romaji" placeholder="stellar stellar">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>關聯原唱歌手 (打字搜尋歌手) <span class="required">*</span></label>
+                                                    <span class="help-text" style="margin-bottom: 6px; display:block;">找不到歌手？請先在右側「登錄原唱歌手」後再搜尋！</span>
+                                                    <div class="searchable-select-container">
+                                                        <input type="text" id="song-artists-search" placeholder="打字關鍵字搜尋原唱歌手..." autocomplete="off">
+                                                        <div class="autocomplete-dropdown" id="song-artists-dropdown"></div>
+                                                    </div>
+                                                    <div class="selected-tags-container" id="song-selected-artists-tags" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                                                        <!-- 已選歌手標籤 -->
+                                                    </div>
+                                                </div>
+                                                
+                                                <div style="display:flex; gap:10px; margin-top: 24px;">
+                                                    <button type="submit" class="btn btn-gold btn-block" id="btn-song-submit" style="flex:1;"><i class="fa-solid fa-plus"></i> 登錄歌曲</button>
+                                                    <button type="button" class="btn btn-secondary" id="btn-song-cancel-edit" style="display:none; padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消編輯</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- 登錄原唱歌手 -->
+                                    <div class="content-card" style="margin-bottom: 0;">
+                                        <div class="card-header">
+                                            <h3 id="form-artist-title-header"><i class="fa-solid fa-users neon-text-gold"></i> 登錄原唱歌手</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="form-create-artist">
+                                                <input type="hidden" id="edit-artist-id">
+                                                <div class="form-group">
+                                                    <label for="artist-name-main">主要歌手名稱 <span class="required">*</span></label>
+                                                    <input type="text" id="artist-name-main" required placeholder="例如：滔滔饕餮">
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group">
+                                                        <label for="artist-name-ja">日文原名</label>
+                                                        <input type="text" id="artist-name-ja" placeholder="（選填，例如：taotao）">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="artist-name-zh">中文譯名</label>
+                                                        <input type="text" id="artist-name-zh" placeholder="例如：滔滔">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="artist-name-romaji">羅馬拼音搜尋</label>
+                                                    <input type="text" id="artist-name-romaji" placeholder="例如：taotao taotie">
+                                                </div>
+                                                <div style="display:flex; gap:10px; margin-top: 36px;">
+                                                    <button type="submit" class="btn btn-blue btn-block" id="btn-artist-submit" style="flex:1;"><i class="fa-solid fa-plus"></i> 登錄歌手</button>
+                                                    <button type="button" class="btn btn-secondary" id="btn-artist-cancel-edit" style="display:none; padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消編輯</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- E. 登錄時間軸歌單 -->
+                            <div class="admin-tab-pane" id="admin-pane-record">
+                                <div class="content-card" style="margin-bottom: 0; max-width: 900px;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-solid fa-microphone neon-text-gold"></i> 批次登錄演唱時間軸 (支援時間制填寫)</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form-create-record">
+                                            <!-- 影片選擇器 (全體共用) -->
+                                            <div class="form-group">
+                                                <label>收錄影片/直播 <span class="required">*</span></label>
+                                                <div class="searchable-select-container">
+                                                    <input type="text" id="record-video-search" placeholder="輸入關鍵字模糊搜尋影片或直播檔..." autocomplete="off">
+                                                    <input type="hidden" id="record-video-id" required>
+                                                    <div class="autocomplete-dropdown" id="record-video-dropdown"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 智慧時間軸文字解析貼上區 -->
+                                            <div class="form-group" style="margin-top: 20px; background: rgba(139, 92, 246, 0.03); border: 1px dashed rgba(139, 92, 246, 0.25); padding: 16px; border-radius: 12px;">
+                                                <label style="font-weight:700; color:var(--neon-purple); display:flex; align-items:center; gap:6px;">
+                                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 智慧時間軸文字解析貼上區 (選填，支援 YouTube 說明欄格式)
+                                                </label>
+                                                <span class="help-text" style="margin-bottom: 8px; display:block;">可直接貼上包含「時間點 歌名」的文字塊，例如：<br>8:44 開場<br>27:41 歸去來兮<br>1:00:55 天若有情</span>
+                                                <textarea id="setlist-parse-textarea" rows="5" placeholder="在此貼上複製的時間軸文字..." style="font-family: monospace; font-size:12.5px; margin-bottom: 10px; background: var(--input-bg); color: var(--text-bright); border-color: var(--border-color);"></textarea>
+                                                <button type="button" class="btn btn-secondary" id="btn-parse-setlist" style="padding: 6px 14px; font-size:11.5px; font-weight:700; color:var(--neon-purple); border-color:rgba(139, 92, 246, 0.35);">
+                                                    <i class="fa-solid fa-wand-magic"></i> 解析並自動填入下方曲目列
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- 曲目動態列表容器 -->
+                                            <div class="form-group" style="margin-top: 24px;">
+                                                <label style="font-size: 14px; font-weight:700; color:var(--neon-blue);">曲目與時間軸列表</label>
+                                                <div id="setlist-rows-container" style="margin-top: 10px;">
+                                                    <!-- 由 JS 動態產生列 -->
+                                                </div>
+                                                <button type="button" class="btn btn-secondary" id="btn-add-setlist-row" style="margin-top: 8px; padding: 6px 14px; font-size:12px; font-weight:700;">
+                                                    <i class="fa-solid fa-plus"></i> ➕ 新增一首歌曲列
+                                                </button>
+                                            </div>
+                                            
+                                            <button type="submit" class="btn btn-gold btn-block" style="margin-top: 24px;"><i class="fa-solid fa-cloud-arrow-up"></i> 提交登錄整場直播歌單</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- F. 公告與里程碑 -->
+                            <div class="admin-tab-pane" id="admin-pane-activity">
+                                <div class="content-card" style="margin-bottom: 0; max-width: 800px;">
+                                    <div class="card-header">
+                                        <h3 id="form-activity-title-header"><i class="fa-solid fa-trophy neon-text-gold"></i> 發布主播成就里程碑 / 公告</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form-create-activity">
+                                            <input type="hidden" id="edit-activity-id">
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="activity-title">標題 <span class="required">*</span></label>
+                                                    <input type="text" id="activity-title" required placeholder="例如：YouTube 訂閱數突破 100 萬！">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="activity-vtuber-id">關聯 VTuber 主播 (若為官方全域公告可留空)</label>
+                                                    <select id="activity-vtuber-id">
+                                                        <option value="">-- 全域公告 --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="activity-date">事件日期 <span class="required">*</span></label>
+                                                    <input type="date" id="activity-date" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="activity-type-field">公告類型 <span class="required">*</span></label>
+                                                    <select id="activity-type-field" required>
+                                                        <option value="milestone">重要里程碑成就 (milestone)</option>
+                                                        <option value="announcement">官方公告 (announcement)</option>
+                                                        <option value="x_post">X (Twitter) 貼文公告 (x_post)</option>
+                                                        <option value="other">其他活動 (other)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="activity-link">連結網址 (X 貼文、新聞或影片連結)</label>
+                                                <input type="url" id="activity-link" placeholder="https://x.com/...">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="activity-desc">詳細描述內容</label>
+                                                <textarea id="activity-desc" rows="3" placeholder="事件簡短描述..."></textarea>
+                                            </div>
+                                            <div style="display:flex; gap:10px;">
+                                                <button type="submit" class="btn btn-primary btn-block" id="btn-activity-submit" style="flex:1;"><i class="fa-solid fa-bullhorn"></i> 發布活動公告</button>
+                                                <button type="button" class="btn btn-secondary" id="btn-activity-cancel-edit" style="display:none; padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消編輯</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- X. 連結管理 (自訂頁面) -->
+                            <div class="admin-tab-pane" id="admin-pane-links">
+                                <div class="content-card" style="max-width: 900px; margin-bottom: 24px;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-solid fa-link neon-text-purple"></i> 相關網站與社群連結管理</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group" style="margin-bottom: 24px;">
+                                            <label for="admin-links-vtuber-select">選擇要編輯的主播</label>
+                                            <select id="admin-links-vtuber-select" style="max-width: 400px; padding: 10px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(0,0,0,0.2); color: var(--text-bright);">
+                                                <option value="">-- 請選擇主播 --</option>
+                                            </select>
+                                        </div>
+
+                                        <div id="admin-links-editor-area" style="display: none;">
+                                            <h4 style="margin-bottom: 12px; color: var(--neon-purple); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; font-size: 15px;">當前已登錄的連結列表</h4>
+                                            <div id="admin-links-current-list" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
+                                                <!-- JS 動態插入 -->
+                                            </div>
+
+                                            <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 24px;">
+                                                <!-- 左半：單筆手動新增 -->
+                                                <div style="flex: 1; min-width: 300px; border-right: 1px solid rgba(255,255,255,0.05); padding-right: 20px;">
+                                                    <h4 style="margin-bottom: 16px; color: var(--neon-blue); font-size: 14px;"><i class="fa-solid fa-circle-plus"></i> 新增單筆連結</h4>
+                                                    <div class="form-group">
+                                                        <label>選擇平台</label>
+                                                        <select id="admin-links-platform-select" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(0,0,0,0.2); color: var(--text-bright);">
+                                                            <option value="YouTube">YouTube</option>
+                                                            <option value="Twitter">Twitter/X</option>
+                                                            <option value="Twitch">Twitch</option>
+                                                            <option value="Bilibili">Bilibili</option>
+                                                            <option value="Facebook">Facebook</option>
+                                                            <option value="Instagram">Instagram</option>
+                                                            <option value="other">其他/自訂</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group" id="admin-links-platform-custom-group" style="display: none;">
+                                                        <label>自訂平台名稱</label>
+                                                        <input type="text" id="admin-links-platform-custom" placeholder="例如：個人官網">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>網址 (URL)</label>
+                                                        <input type="url" id="admin-links-url" placeholder="https://..." style="margin-bottom: 12px;">
+                                                    </div>
+                                                    <button type="button" class="btn btn-secondary" id="btn-admin-links-add-single" style="width: 100%;"><i class="fa-solid fa-plus"></i> 新增至暫存列表</button>
+                                                </div>
+
+                                                <!-- 右半：多排自動解析 -->
+                                                <div style="flex: 1; min-width: 300px;">
+                                                    <h4 style="margin-bottom: 16px; color: var(--neon-purple); font-size: 14px;"><i class="fa-solid fa-wand-magic-sparkles"></i> 多排貼上自動解析</h4>
+                                                    <div class="form-group">
+                                                        <label>貼上多行連結 (格式：平台,網址 或 直接貼上網址)</label>
+                                                        <textarea id="admin-links-bulk-textarea" rows="6" placeholder="例如：&#10;Twitter,https://x.com/username&#10;https://youtube.com/@channel&#10;Twitch,https://twitch.tv/username" style="font-family: monospace; font-size: 12px; width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(0,0,0,0.2); color: var(--text-bright);"></textarea>
+                                                    </div>
+                                                    <button type="button" class="btn btn-secondary" id="btn-admin-links-parse-bulk" style="width: 100%;"><i class="fa-solid fa-bolt"></i> 解析並加入暫存列表</button>
+                                                </div>
+                                            </div>
+
+                                            <div style="margin-top: 36px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; display: flex; justify-content: flex-end;">
+                                                <button type="button" class="btn btn-primary" id="btn-admin-links-save" style="padding: 10px 24px;"><i class="fa-solid fa-floppy-disk"></i> 儲存主播的所有連結</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- G. 批次數據匯入 -->
+                            <div class="admin-tab-pane" id="admin-pane-bulk">
+                                <!-- 批量匯入歌唱紀錄 -->
+                                <div class="content-card" style="margin-bottom: 24px; max-width: 800px;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-solid fa-file-import neon-text-blue"></i> 批量匯入歌唱歷史紀錄</h3>
+                                        <div class="template-downloads">
+                                            <a href="/static/template.csv" download class="btn btn-secondary" style="padding: 4px 10px; font-size:11px; font-weight: 600;"><i class="fa-solid fa-file-csv"></i> 下載 CSV 範本</a>
+                                            <a href="/static/template.json" download class="btn btn-purple" style="padding: 4px 10px; font-size:11px; font-weight: 600;"><i class="fa-solid fa-file-code"></i> 下載 JSON 範本</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="bulk-format">選擇匯入格式：</label>
+                                            <select id="bulk-format" style="width: auto; display: inline-block; margin-bottom: 12px;">
+                                                <option value="csv">CSV 格式 (歌名, 影片ID, 秒數, 演唱者(分號隔開), 備註, 歌曲類型)</option>
+                                                <option value="json">JSON 格式 (完全自動建立關聯)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bulk-records-file">選擇 CSV / TXT 檔案直接載入資料：</label>
+                                            <input type="file" id="bulk-records-file" accept=".csv,.txt" style="padding: 8px 12px; font-size:12.5px; margin-bottom: 8px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bulk-data-textarea">貼上資料內容 (後端將自動解析未建檔的歌手、影片與歌曲)：</label>
+                                            <textarea id="bulk-data-textarea" rows="6" placeholder="CSV範例 (以逗號分隔，演唱者用分號分隔)：&#10;王的早朝#11,-7rgHds6Qyk,0,滔滔饕餮,日常直播,other" style="font-family: monospace;"></textarea>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary btn-block" id="btn-submit-bulk">
+                                            <i class="fa-solid fa-upload"></i> 開始批次匯入並解析關聯
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 批量匯入主播個人歌單 -->
+                                <div class="content-card" style="max-width: 800px; margin-bottom: 0;">
+                                    <div class="card-header">
+                                        <h3><i class="fa-solid fa-list-check neon-text-purple"></i> 批量匯入主播個人歌單 (點歌歌單 / 常駐歌單)</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="bulk-playlist-vtuber-id">選擇目標 VTuber 主播 <span class="required">*</span></label>
+                                            <select id="bulk-playlist-vtuber-id" required>
+                                                <option value="">-- 請選擇主播 --</option>
+                                            </select>
+                                        </div>
+                                                                                <div class="form-group">
+                                            <label for="bulk-playlist-type">選擇歌單類型：</label>
+                                            <select id="bulk-playlist-type" style="width: auto; display: inline-block; margin-bottom: 12px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--card-border); background: rgba(0,0,0,0.2); color: var(--text-bright);">
+                                                <option value="requestable">點歌歌單 (Requestable)</option>
+                                                <option value="signature">常駐拿手歌 (Signature/Specialty)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bulk-playlist-file">選擇 CSV / TXT 檔案直接載入資料：</label>
+                                            <input type="file" id="bulk-playlist-file" accept=".csv,.txt" style="padding: 8px 12px; font-size:12.5px; margin-bottom: 8px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bulk-playlist-textarea">輸入歌單清單 (一行一首歌名，或 歌名[Tab/雙空格]歌手，歌曲與歌手不存在會自動建立)：</label>
+                                            <textarea id="bulk-playlist-textarea" rows="8" placeholder="例如：&#10;Stellar Stellar&#10;不在一起就不會分開	洪佩瑜&#10;這條小魚在乎	洪佩瑜" style="font-family: monospace;"></textarea>
+                                        </div>
+                                        <button type="button" class="btn btn-purple btn-block" id="btn-submit-bulk-playlist">
+                                            <i class="fa-solid fa-circle-nodes"></i> 開始批次導入主播個人歌單
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. YouTube 播放器燈箱 (Modal Overlay) -->
+    <div class="modal-overlay" id="yt-player-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-song-title">歌曲播放中</h3>
+                <button class="modal-close-btn" id="btn-close-player-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="video-container">
+                    <div id="player-iframe-placeholder"></div>
+                </div>
+                <div class="modal-song-info">
+                    <p id="modal-song-singer"></p>
+                    <p id="modal-video-title" class="sub-text"></p>
+                    
+                    <!-- 帶時間軸的 YouTube 直接跳轉按鈕 -->
+                    <div style="margin-top: 14px; text-align: center;">
+                        <a id="modal-yt-direct-link" href="#" target="_blank" class="btn btn-purple" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; font-size:12.5px; font-weight:700; text-decoration: none;">
+                            <i class="fa-brands fa-youtube"></i> 🔗 直接前往 YouTube 觀看 (精確時間點)
+                        </a>
+                        <p class="sub-text" style="font-size:11px; margin-top:8px; opacity:0.7;">
+                            💡 提示：若影片因版權或頻道主設定限制「禁止外連嵌入播放」，請點選上方按鈕直接開新分頁觀看。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 編輯歷史演唱紀錄燈箱 (Edit Record Modal) -->
+    <div class="modal-overlay" id="edit-record-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-file-signature neon-text-purple"></i> 📝 編輯歷史演唱紀錄 (ID: <span id="edit-rec-display-id">-</span>)</h3>
+                <button class="modal-close-btn" id="btn-close-edit-record-modal" onclick="closeEditRecordModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit-record">
+                    <input type="hidden" id="edit-rec-id">
+                    
+                    <div class="form-group">
+                        <label>選擇演唱歌曲 <span class="required">*</span></label>
+                        <div style="display: flex; gap: 8px;">
+                            <div class="searchable-select-container" style="flex: 1;">
+                                <input type="text" id="edit-rec-song-search" placeholder="🔍 輸入關鍵字搜尋並選取歌曲..." required autocomplete="off">
+                                <input type="hidden" id="edit-rec-song-id" required>
+                                <div class="autocomplete-dropdown" id="edit-rec-song-dropdown"></div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="btn-edit-rec-song" style="padding: 0 14px; font-size: 12px; border-radius: 12px;" title="編輯選中的歌曲資訊" disabled>
+                                <i class="fa-solid fa-pen-to-square"></i> 編輯歌曲
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>關聯直播影片/MV ID <span class="required">*</span></label>
+                        <div class="searchable-select-container">
+                            <input type="text" id="edit-rec-video-search" placeholder="🔍 輸入關鍵字搜尋影音，或直接貼上 YT ID..." required autocomplete="off">
+                            <input type="hidden" id="edit-rec-video-id" required>
+                            <div class="autocomplete-dropdown" id="edit-rec-video-dropdown"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-rec-timestamp">演唱時間點 (總秒數) <span class="required">*</span></label>
+                        <input type="number" id="edit-rec-timestamp" placeholder="例如：3600 (代表 01:00:00)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-rec-note">備註 (例如：Feat. 合作合唱資訊)</label>
+                        <input type="text" id="edit-rec-note" placeholder="可填寫合唱者、樂器伴奏等額外備註">
+                    </div>
+
+                    <div class="form-group">
+                        <label style="margin-bottom: 8px; display: block; color: var(--text-bright); font-weight: 600;">演唱主播 (可搜尋並新增多位合唱者) <span class="required">*</span></label>
+                        <div class="searchable-select-container">
+                            <input type="text" id="edit-rec-singers-search" placeholder="🔍 輸入關鍵字搜尋並選取主播..." autocomplete="off">
+                            <div class="autocomplete-dropdown" id="edit-rec-singers-dropdown"></div>
+                        </div>
+                        <div class="selected-artists-tags" id="edit-rec-selected-singers-tags" style="margin-top: 8px;"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-purple btn-block" style="flex: 1; margin: 0;"><i class="fa-solid fa-floppy-disk"></i> 儲存修改</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit-record" onclick="closeEditRecordModal()" style="padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. 編輯歌曲燈箱 (Edit Song Modal) -->
+    <div class="modal-overlay" id="edit-song-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-music neon-text-blue"></i> 📝 編輯歌曲資訊 (ID: <span id="edit-song-display-id">-</span>)</h3>
+                <button class="modal-close-btn" id="btn-close-edit-song-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit-song-modal">
+                    <input type="hidden" id="edit-song-id-modal">
+                    
+                    <div class="form-group">
+                        <label for="edit-song-title-main">主要歌名 (主顯示名稱) <span class="required">*</span></label>
+                        <input type="text" id="edit-song-title-main" required placeholder="例如：Stellar Stellar">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-song-title-ja">日文歌名 (日語原名)</label>
+                        <input type="text" id="edit-song-title-ja" placeholder="例如：Stellar Stellar">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-song-title-zh">中文譯名 (華語對照)</label>
+                        <input type="text" id="edit-song-title-zh" placeholder="例如：星之星">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-song-title-romaji">羅馬拼音 (搜尋引導用)</label>
+                        <input type="text" id="edit-song-title-romaji" placeholder="例如：stellar stellar">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-song-type">歌曲類型 <span class="required">*</span></label>
+                        <select id="edit-song-type" required>
+                            <option value="cover">Cover (翻唱歌曲)</option>
+                            <option value="original">Original (原創歌曲)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="margin-bottom: 8px; display: block; color: var(--text-bright); font-weight: 600;">原唱歌手 / 創作者 (可搜尋並新增多位) <span class="required">*</span></label>
+                        <div class="searchable-select-container">
+                            <input type="text" id="edit-song-artists-search" placeholder="🔍 輸入關鍵字搜尋並選取原著歌手..." autocomplete="off">
+                            <div class="autocomplete-dropdown" id="edit-song-artists-dropdown"></div>
+                        </div>
+                        <div class="selected-artists-tags" id="edit-song-selected-artists-tags" style="margin-top: 8px;"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-purple btn-block" style="flex: 1; margin: 0;"><i class="fa-solid fa-floppy-disk"></i> 儲存修改</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit-song-modal" style="padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. 編輯原唱歌手燈箱 (Edit Artist Modal) -->
+    <div class="modal-overlay" id="edit-artist-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-pen neon-text-purple"></i> 📝 編輯原唱歌手 (ID: <span id="edit-artist-display-id">-</span>)</h3>
+                <button class="modal-close-btn" id="btn-close-edit-artist-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit-artist-modal">
+                    <input type="hidden" id="edit-artist-id-modal">
+                    
+                    <div class="form-group">
+                        <label for="edit-artist-name-main">歌手名字 (主要顯示名稱) <span class="required">*</span></label>
+                        <input type="text" id="edit-artist-name-main" required placeholder="例如：滔滔饕餮">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-artist-name-ja">日文原名</label>
+                        <input type="text" id="edit-artist-name-ja" placeholder="例如：taotao">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-artist-name-zh">中文譯名</label>
+                        <input type="text" id="edit-artist-name-zh" placeholder="例如：滔滔">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-artist-name-romaji">羅馬拼音 (搜尋引導用)</label>
+                        <input type="text" id="edit-artist-name-romaji" placeholder="例如：taotao taotie">
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-purple btn-block" style="flex: 1; margin: 0;"><i class="fa-solid fa-floppy-disk"></i> 儲存修改</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit-artist-modal" style="padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. 編輯 VTuber 主播燈箱 (Edit VTuber Modal) -->
+    <div class="modal-overlay" id="edit-vtuber-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-pen neon-text-blue"></i> 📝 編輯 VTuber 主播 (ID: <span id="edit-vtuber-display-id">-</span>)</h3>
+                <button class="modal-close-btn" id="btn-close-edit-vtuber-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit-vtuber-modal">
+                    <input type="hidden" id="edit-vtuber-id-modal">
+                    
+                    <div class="form-group">
+                        <label for="edit-vtuber-name-main">主播名字 (主要顯示名稱) <span class="required">*</span></label>
+                        <input type="text" id="edit-vtuber-name-main" required placeholder="例如：滔滔饕餮">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-vtuber-name-ja">日文譯名</label>
+                        <input type="text" id="edit-vtuber-name-ja" placeholder="例如：トウトウタウテ">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-vtuber-name-zh">中文譯名</label>
+                        <input type="text" id="edit-vtuber-name-zh" placeholder="例如：滔滔饕餮">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-vtuber-name-romaji">羅馬拼音 (搜尋引導用)</label>
+                        <input type="text" id="edit-vtuber-name-romaji" placeholder="例如：taotao taotie">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-vtuber-youtube">YouTube 頻道 ID (24 碼字元)</label>
+                        <input type="text" id="edit-vtuber-youtube" placeholder="例如：UCxxx...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-vtuber-avatar-url">主播頭像圖片網址 (Avatar URL)</label>
+                        <input type="url" id="edit-vtuber-avatar-url" placeholder="圖片的網址，如 https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-vtuber-theme-color">主題代表色 (HEX 顏色代碼，例如 #ff007f)</label>
+                        <input type="text" id="edit-vtuber-theme-color" placeholder="例如：#ff007f 或 #3b82f6">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-vtuber-banner-url">個人背景橫幅圖片網址 (Banner URL)</label>
+                        <input type="url" id="edit-vtuber-banner-url" placeholder="背景橫幅大圖網址，如 https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-vtuber-schedule-image-url">本週週表圖片 (可輸入 Video ID 如 y3Vyg3nOsFA 或完整網址)</label>
+                        <input type="text" id="edit-vtuber-schedule-image-url" placeholder="例如：y3Vyg3nOsFA 或網址">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="edit-vtuber-desc">個人簡介與備註說明</label>
+                        <textarea id="edit-vtuber-desc" rows="3" placeholder="主播的社群連結、喜好、或備註說明..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-purple btn-block" style="flex: 1; margin: 0;"><i class="fa-solid fa-floppy-disk"></i> 儲存修改</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit-vtuber-modal" style="padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. 編輯影音資訊燈箱 (Edit Video Modal) -->
+    <div class="modal-overlay" id="edit-video-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-play neon-text-purple"></i> 📝 編輯影音存檔 (YT ID: <span id="edit-video-display-id">-</span>)</h3>
+                <button class="modal-close-btn" id="btn-close-edit-video-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit-video-modal">
+                    <input type="hidden" id="edit-video-id-modal">
+                    
+                    <div class="form-group">
+                        <label for="edit-video-vtuber-id">所屬 VTuber 主播 <span class="required">*</span></label>
+                        <select id="edit-video-vtuber-id" required>
+                            <option value="">-- 請選擇主播 --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-video-title">影音標題 (直播/影片名稱) <span class="required">*</span></label>
+                        <input type="text" id="edit-video-title" required placeholder="例如：【歌回】慶祝一萬訂閱的耐久歌回！">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-video-type">影音類型 <span class="required">*</span></label>
+                        <select id="edit-video-type" required>
+                            <option value="stream_singing">Stream Singing (歌回直播)</option>
+                            <option value="cover_mv">Cover MV (翻唱 MV)</option>
+                            <option value="original_mv">Original MV (原創曲 MV)</option>
+                            <option value="short">YouTube Shorts (短片)</option>
+                            <option value="other">Other (其他直播存檔)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-video-published">發布日期 (YYYY-MM-DD)</label>
+                        <input type="date" id="edit-video-published">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-video-thumb">影片縮圖網址 (預設會從 YouTube ID 自動解析)</label>
+                        <input type="url" id="edit-video-thumb" placeholder="自訂縮圖網址，如 https://...">
+                    </div>
+
+                    <div class="form-group" style="background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.18); padding: 14px; border-radius: 12px; margin-top: 16px;">
+                        <label style="color: var(--neon-purple); font-weight: 700; margin-bottom: 6px; display: block;">🎵 快速關聯演唱歌曲 (MV / 歌回單曲)</label>
+                        <div class="searchable-select-container">
+                            <input type="text" id="edit-video-song-search" placeholder="🔍 輸入關鍵字搜尋並選取演唱歌曲..." autocomplete="off">
+                            <input type="hidden" id="edit-video-song-id">
+                            <div class="autocomplete-dropdown" id="edit-video-song-dropdown"></div>
+                        </div>
+                        <span style="font-size: 11px; color: #94a3b8; display: block; margin-top: 6px;">
+                            💡 說明：MV 類別需綁定歌曲關聯，方可在個人頁面「MV 影片清單」中正常播放與顯示。
+                        </span>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-purple btn-block" style="flex: 1; margin: 0;"><i class="fa-solid fa-floppy-disk"></i> 儲存修改</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit-video-modal" onclick="closeEditVideoModal()" style="padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. 編輯活動公告與里程碑燈箱 (Edit Activity Modal) -->
+    <div class="modal-overlay" id="edit-activity-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-trophy neon-text-blue"></i> 📝 編輯活動公告 / 里程碑 (ID: <span id="edit-activity-display-id">-</span>)</h3>
+                <button class="modal-close-btn" id="btn-close-edit-activity-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit-activity-modal">
+                    <input type="hidden" id="edit-activity-id-modal">
+                    
+                    <div class="form-group">
+                        <label for="edit-activity-title">公告/里程碑標題 <span class="required">*</span></label>
+                        <input type="text" id="edit-activity-title" required placeholder="例如：慶祝 YouTube 頻道突破 10,000 訂閱！">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-activity-vtuber-id">關聯的主播 (不選則為全域活動/公告)</label>
+                        <select id="edit-activity-vtuber-id">
+                            <option value="">-- 全域公告 --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-activity-type">公告類型 <span class="required">*</span></label>
+                        <select id="edit-activity-type" required>
+                            <option value="milestone">Milestone (里程碑成就)</option>
+                            <option value="announcement">Announcement (官方重要公告)</option>
+                            <option value="x_post">X (Twitter) Post (推特貼文)</option>
+                            <option value="other">Other (其他社群消息)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-activity-date">活動發生日期 (YYYY-MM-DD) <span class="required">*</span></label>
+                        <input type="date" id="edit-activity-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-activity-link">外部連結網址 (X貼文或新聞連結)</label>
+                        <input type="url" id="edit-activity-link" placeholder="例如：https://x.com/...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-activity-desc">詳細敘述說明</label>
+                        <textarea id="edit-activity-desc" rows="3" placeholder="輸入此里程碑或公告的詳細文字說明..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-purple btn-block" style="flex: 1; margin: 0;"><i class="fa-solid fa-floppy-disk"></i> 儲存修改</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit-activity-modal" style="padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. 後台管理員登入燈箱 (Admin Login Modal) -->
+    <div class="modal-overlay" id="admin-login-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-width: 400px; padding: 24px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-lock neon-text-purple"></i> 後台身分驗證</h3>
+                <button class="modal-close-btn" id="btn-close-admin-login-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="sub-text" style="margin-bottom: 16px; font-size:12.5px; line-height: 1.5;">💡 提示：預設密碼為 <b>admin123</b>，請輸入密碼以啟用所有編輯與刪除權限。</p>
+                <form id="form-admin-login">
+                    <div class="form-group">
+                        <label for="admin-password">管理密碼 <span class="required">*</span></label>
+                        <input type="password" id="admin-password" placeholder="請輸入管理密碼..." required style="letter-spacing: 4px; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-bright); border-radius: 8px; width: 100%;">
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-purple btn-block" style="flex: 1; margin: 0;"><i class="fa-solid fa-shield-halved"></i> 驗證登入</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-admin-login" style="padding: 10px 14px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. 彙整歌單彈出視窗 (Curate Setlist Modal) -->
+    <div class="modal-overlay" id="curate-setlist-modal">
+        <div class="modal-container" style="background: rgba(20, 20, 25, 0.98); border: 1px solid rgba(139, 92, 246, 0.2); max-width: 900px; max-height: 90vh; overflow-y: auto; width: 90%;">
+            <div class="modal-header">
+                <h3 style="color: var(--neon-gold); font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; margin: 0;">
+                    <i class="fa-solid fa-microphone-lines"></i> 彙整直播時間軸歌單
+                </h3>
+                <button class="modal-close-btn" id="btn-close-curate-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-curate-modal">
+                    <!-- 影片資訊展示 -->
+                    <div class="form-group">
+                        <label>彙整影片/直播</label>
+                        <input type="text" id="curate-video-title-display" readonly style="background: rgba(255,255,255,0.03); color: var(--text-bright); border: 1px solid var(--border-color); font-weight: bold; width: 100%; border-radius: 8px; padding: 10px 14px; box-sizing: border-box;">
+                        <input type="hidden" id="curate-video-id" required>
+                    </div>
+
+                    <!-- 智慧時間軸解析區 -->
+                    <div class="form-group" style="margin-top: 15px; background: rgba(139, 92, 246, 0.03); border: 1px dashed rgba(139, 92, 246, 0.25); padding: 14px; border-radius: 10px;">
+                        <label style="font-weight:700; color:var(--neon-purple); display:flex; align-items:center; gap:6px; margin-bottom: 6px;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> 智慧時間軸解析區 (貼上 YouTube 說明欄格式)
+                        </label>
+                        <textarea id="curate-parse-textarea" rows="4" placeholder="例如：&#10;8:44 開場&#10;27:41 歸去來兮&#10;1:00:55 天若有情" style="font-family: monospace; font-size:12.5px; margin-bottom: 8px; background: var(--input-bg); color: var(--text-bright); border-color: var(--border-color); width: 100%; box-sizing: border-box; border-radius: 6px; padding: 8px;"></textarea>
+                        <button type="button" class="btn btn-secondary" id="btn-curate-parse" style="padding: 6px 14px; font-size:11.5px; font-weight:700; color:var(--neon-purple); border-color:rgba(139, 92, 246, 0.35);">
+                            <i class="fa-solid fa-wand-magic"></i> 解析並填入下方曲目列
+                        </button>
+                    </div>
+
+                    <!-- 曲目動態列表 -->
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label style="font-size: 14px; font-weight:700; color:var(--neon-blue); display: block; margin-bottom: 8px;">曲目與時間軸列表</label>
+                        <div id="curate-rows-container" style="max-height: 300px; overflow-y: auto; padding-right: 4px;">
+                            <!-- JS 動態產生列 -->
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="btn-curate-add-row" style="margin-top: 8px; padding: 6px 14px; font-size:12px; font-weight:700;">
+                            <i class="fa-solid fa-plus"></i> 新增一首歌曲列
+                        </button>
+                    </div>
+
+                    <div style="display:flex; gap:12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-gold btn-block" style="flex: 1; padding: 10px; margin: 0;"><i class="fa-solid fa-cloud-arrow-up"></i> 提交登錄整場直播歌單</button>
+                        <button type="button" class="btn btn-secondary" id="btn-curate-cancel" style="padding: 10px 16px;"><i class="fa-solid fa-xmark"></i> 取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 通知浮空訊息 (Toast Notification) -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 載入前端模組化腳本 -->
+    <script type="module" src="/static/js/main.js?v=3.3"></script>
+</body>
+</html>

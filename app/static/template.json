@@ -1,0 +1,18 @@
+[
+  {
+    "song_title": "Stellar Stellar",
+    "video_id": "dQw4w9WgXcQ",
+    "timestamp_seconds": 0,
+    "singers": ["星街すいせい"],
+    "note": "THE FIRST TAKE",
+    "song_type": "original"
+  },
+  {
+    "song_title": "アイドル",
+    "video_id": "eA3tPksZ5G4",
+    "timestamp_seconds": 2800,
+    "singers": ["星街すいせい", "さくらみこ"],
+    "note": "3D Live 合唱",
+    "song_type": "cover"
+  }
+]

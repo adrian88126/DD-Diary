@@ -1,0 +1,19 @@
+# Python & Environment
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# AI Agent Cache & Rules
+.gemini/
+.agents/
+
+# Scratch & Temporary Files (防止測試腳本與暫存檔上傳至 Git)
+scratch/
+scratch_*
+*.bak
+*.tmp
+*.log
+
+# Legacy Database
+vtsong.db

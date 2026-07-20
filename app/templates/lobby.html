@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTuber 歌唱播放大廳</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #09070f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --text-bright: #f8fafc;
+            --text-muted: #94a3b8;
+            --neon-purple: #a78bfa;
+            --neon-gold: #fbbf24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 30%, #1e152a 0%, #09070f 70%);
+            color: #cbd5e1;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .lobby-container {
+            max-width: 1000px;
+            width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f8fafc 30%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .vtuber-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .vtuber-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 35px 30px;
+            width: 320px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .vtuber-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+            z-index: 1;
+        }
+
+        .vtuber-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--vtuber-theme, var(--neon-purple));
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(167, 139, 250, 0.15);
+        }
+
+        .avatar-container {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 3px solid var(--card-border);
+            background: #1e1b4b;
+            color: #fff;
+            font-size: 36px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .vtuber-card:hover .avatar-container {
+            transform: scale(1.05);
+            border-color: var(--vtuber-theme, var(--neon-purple));
+            box-shadow: 0 8px 25px var(--vtuber-theme-shadow, rgba(167, 139, 250, 0.3));
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .vtuber-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin: 0 0 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        .vtuber-card:hover .vtuber-name {
+            color: var(--vtuber-theme, var(--neon-purple));
+        }
+
+        .vtuber-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0 0 28px 0;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 4.8em;
+        }
+
+        .enter-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 28px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            color: var(--text-bright);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .vtuber-card:hover .enter-btn {
+            background: var(--vtuber-theme, var(--neon-purple));
+            border-color: transparent;
+            color: #09070f;
+            box-shadow: 0 4px 15px var(--vtuber-theme-shadow, rgba(167, 139, 250, 0.3));
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 30px;
+            font-size: 0.8rem;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .ai-badge {
+            color: var(--neon-gold);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        /* ===== RWD 手機版優化樣式 ===== */
+        @media (max-width: 768px) {
+            .lobby-container {
+                padding: 24px 12px !important;
+            }
+            h1 {
+                font-size: 2.1rem !important;
+                letter-spacing: -0.5px !important;
+            }
+            .subtitle {
+                font-size: 0.95rem !important;
+                margin-bottom: 30px !important;
+            }
+            .vtuber-grid {
+                gap: 16px !important;
+            }
+            .vtuber-card {
+                width: 100% !important;
+                max-width: 340px !important;
+                padding: 24px 20px !important;
+                border-radius: 20px !important;
+            }
+            .avatar-container {
+                width: 90px !important;
+                height: 90px !important;
+            }
+            .vtuber-name {
+                font-size: 1.3rem !important;
+            }
+            .vtuber-desc {
+                margin-bottom: 20px !important;
+                height: auto !important;
+                -webkit-line-clamp: 2 !important;
+            }
+            .enter-btn {
+                padding: 10px 20px !important;
+                font-size: 0.85rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lobby-container">
+        <h1>🎵 VTuber Song Playlist Lobby</h1>
+        <p class="subtitle">歡迎來到非官方歌唱資料庫與時間軸播放大廳（粉絲製作推廣）。請點選您喜愛的主播，進入其專屬的歌唱專頁與歷史時間軸。</p>
+        
+        <div class="vtuber-grid">
+            {% for vt in vtubers %}
+            <a href="share/{{ vt.name_romaji.replace(' ', '_') if vt.name_romaji else vt.id }}/" class="vtuber-card" style="--vtuber-theme: {{ vt.theme_color or '#a78bfa' }}; --vtuber-theme-shadow: {{ vt.theme_color or '#a78bfa' }}4d;">
+                <div class="avatar-container" style="{% if not vt.avatar_url %}background: {{ vt.theme_color or '#1e1b4b' }};{% endif %}">
+                    {% if vt.avatar_url %}
+                    <img src="{{ vt.avatar_url }}" alt="{{ vt.name_main }}" class="avatar-img">
+                    {% else %}
+                    {{ vt.name_main[0] }}
+                    {% endif %}
+                </div>
+                <div class="vtuber-name">{{ vt.name_main }}</div>
+                <p class="vtuber-desc">{{ vt.description or '暫無個人簡介介紹。' }}</p>
+                <div class="enter-btn">
+                    進入專屬歌單 <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <footer>
+        <p style="margin: 0;">本網頁為【粉絲自主建立】之非官方歌唱存檔大廳門戶網站，僅供同好交流與宣傳推廣</p>
+        <p class="ai-badge">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Co-Developed with Google Gemini AI (Antigravity)
+        </p>
+    </footer>
+</body>
+</html>
