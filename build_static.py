@@ -32,6 +32,14 @@ def main():
     static_dir = os.path.abspath("app/static")
     templates_dir = os.path.abspath("app/templates")
     
+    def remove_readonly(func, path, _):
+        import stat
+        try:
+            os.chmod(path, stat.S_IWRITE)
+            func(path)
+        except Exception:
+            pass
+
     # 1. 重建 docs/ 資料夾
     if os.path.exists(docs_dir):
         print(f"🗑️ 清空現有 docs 資料夾內容: {docs_dir}")
@@ -39,11 +47,13 @@ def main():
             path = os.path.join(docs_dir, item)
             try:
                 if os.path.isdir(path):
-                    shutil.rmtree(path)
+                    shutil.rmtree(path, onerror=remove_readonly)
                 else:
+                    import stat
+                    os.chmod(path, stat.S_IWRITE)
                     os.remove(path)
-            except Exception as e:
-                print(f"⚠️ 忽略刪除錯誤 {item}: {e}")
+            except Exception:
+                pass
     else:
         print(f"📁 建立 docs 資料夾...")
         os.makedirs(docs_dir, exist_ok=True)
