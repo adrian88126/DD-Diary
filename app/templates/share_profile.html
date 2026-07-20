@@ -15,6 +15,13 @@
     <meta name="twitter:description" content="{{ vtuber.description or (vtuber.name_main + ' 的個人歌唱作品、常駐拿手歌、點歌歌單與歌回直播時間軸存檔展示。') }}">
     <meta name="twitter:image" content="{{ vtuber.schedule_image_url or vtuber.avatar_url or (static_prefix + 'favicon.ico') }}">
 
+    <!-- 🚀 高速 CDN 預先連線 (DNS Prefetch & Preconnect) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://img.youtube.com">
+    <link rel="dns-prefetch" href="https://www.youtube.com">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -32,8 +39,6 @@
             {% endif %}
         }
     </style>
-    <!-- SheetJS (XLSX) library -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body class="custom-vtuber-theme {% if vtuber.id == 1 %}panda-theme{% endif %}">
 
@@ -66,7 +71,7 @@
                         <!-- 大頭照 -->
                         <div class="{% if vtuber.id == 1 %}panda-avatar-wrapper{% endif %}" style="margin: 0 auto; display: inline-block;">
                             {% if vtuber.avatar_url %}
-                            <img src="{{ vtuber.avatar_url }}" alt="{{ vtuber.name_main }}" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid {% if vtuber.id == 1 %}#000000{% else %}#09070f{% endif %}; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; z-index: 2;">
+                            <img src="{{ vtuber.avatar_url }}" alt="{{ vtuber.name_main }}" loading="lazy" decoding="async" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid {% if vtuber.id == 1 %}#000000{% else %}#09070f{% endif %}; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; z-index: 2;">
                             {% else %}
                             <div style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid {% if vtuber.id == 1 %}#000000{% else %}#09070f{% endif %}; background: var(--vtuber-active-theme); color: #fff; font-size: 32px; font-weight:800; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; z-index: 2;">{{ vtuber.name_main[0] }}</div>
                             {% endif %}

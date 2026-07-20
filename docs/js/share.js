@@ -348,10 +348,22 @@ function clearSearchInput() {
 // 匯出 Excel 功能
 function exportToExcel() {
     if (typeof XLSX === 'undefined') {
-        alert('Excel 匯出元件尚未載入完成，請稍後再試！');
+        showToast('正在非同步載入 Excel 匯出元件...');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+        script.onload = () => {
+            doExportToExcel();
+        };
+        script.onerror = () => {
+            alert('Excel 匯出元件載入失敗，請檢查網路連線！');
+        };
+        document.head.appendChild(script);
         return;
     }
-    
+    doExportToExcel();
+}
+
+function doExportToExcel() {
     const wb = XLSX.utils.book_new();
     
     // 1. 基本資料 Sheet
@@ -670,7 +682,7 @@ async function initSharePage() {
                 <tr>
                     <td>
                         <div class="record-thumb-container" style="width: 80px; height: 45px; margin: 0;" onclick="playRecord('${v.video_id}', 0, '${v.title.replace(/'/g, "\\'")}', '${vt.name_main.replace(/'/g, "\\'")}')">
-                            <img src="${thumbnail}" alt="thumbnail">
+                            <img src="${thumbnail}" alt="thumbnail" loading="lazy" decoding="async">
                             <div class="record-play-overlay"><i class="fa-solid fa-play"></i></div>
                         </div>
                     </td>
