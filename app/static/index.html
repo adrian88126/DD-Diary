@@ -350,10 +350,13 @@
                                 <div class="catalog-grid-layout" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
                                     <!-- 原唱未指派的歌曲 -->
                                     <div class="content-card" style="margin-bottom: 0;">
-                                        <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                                        <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
                                             <h4 style="font-size:13px; font-weight:700; color:var(--neon-pink); display:flex; align-items:center; gap:6px; margin: 0;">
                                                 <i class="fa-solid fa-circle-question"></i> 原唱未指派 (未知) 的歌曲
                                             </h4>
+                                            <button onclick="exportUnassignedSongs()" class="btn btn-sm" style="padding: 3px 10px; font-size: 11.5px; background: rgba(33, 115, 70, 0.2); border: 1px solid rgba(0, 255, 136, 0.4); color: #00ff88; border-radius: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-weight: 700; transition: all 0.2s;" title="將所有原唱未指派的歌曲導出為 Excel">
+                                                <i class="fa-solid fa-file-excel"></i> 一鍵導出 Excel
+                                            </button>
                                         </div>
                                         <div class="card-body" style="padding-top:12px;">
                                             <div id="unknown-artists-list" style="font-size:12px; max-height: 280px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">

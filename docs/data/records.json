@@ -1,5 +1,5037 @@
 [
   {
+    "song_id": 893,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 5604,
+    "note": null,
+    "id": 1132,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "深海のリトルクライ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "深海のリトルクライ",
+      "song_type": "cover",
+      "id": 893,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "sasakure.UK",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 422,
+          "created_at": "2026-07-21T07:14:54"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 900,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 4948,
+    "note": null,
+    "id": 1131,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "ギラギラ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ギラギラ",
+      "song_type": "cover",
+      "id": 900,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "Ado",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 418,
+          "created_at": "2026-07-21T07:09:05"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 904,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 4439,
+    "note": null,
+    "id": 1130,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "No Logic",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "no logic",
+      "song_type": "cover",
+      "id": 904,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "巡音ルカ",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 414,
+          "created_at": "2026-07-21T07:08:24"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 903,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 4103,
+    "note": null,
+    "id": 1129,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "エゴママ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "エゴママ",
+      "song_type": "cover",
+      "id": 903,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "marina",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 415,
+          "created_at": "2026-07-21T07:08:34"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 902,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 2785,
+    "note": null,
+    "id": 1128,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "安平之光",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "安平之光",
+      "song_type": "cover",
+      "id": 902,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "海豚刑警",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 416,
+          "created_at": "2026-07-21T07:08:41"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 901,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 2302,
+    "note": null,
+    "id": 1127,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "ラブカ？",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ラブカ？",
+      "song_type": "cover",
+      "id": 901,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "flower",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 417,
+          "created_at": "2026-07-21T07:08:49"
+        },
+        {
+          "name_main": "Ado",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 418,
+          "created_at": "2026-07-21T07:09:05"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 900,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 1990,
+    "note": null,
+    "id": 1126,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "ギラギラ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ギラギラ",
+      "song_type": "cover",
+      "id": 900,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "Ado",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 418,
+          "created_at": "2026-07-21T07:09:05"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 899,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 1569,
+    "note": null,
+    "id": 1125,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "おまじない",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "おまじない",
+      "song_type": "cover",
+      "id": 899,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "YOASOBI",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 209,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 898,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 1118,
+    "note": null,
+    "id": 1124,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "アポリア",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "アポリア",
+      "song_type": "cover",
+      "id": 898,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "ヨルシカ",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 203,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 897,
+    "video_id": "0TDb-AZAOxw",
+    "timestamp_seconds": 869,
+    "note": null,
+    "id": 1123,
+    "created_at": "2026-07-21T06:52:19",
+    "song": {
+      "title_main": "奶水",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "奶水",
+      "song_type": "cover",
+      "id": 897,
+      "created_at": "2026-07-21T06:52:19",
+      "updated_at": "2026-07-21T06:52:19",
+      "artists": [
+        {
+          "name_main": "Mili",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 419,
+          "created_at": "2026-07-21T07:12:12"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "0TDb-AZAOxw",
+      "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 884,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 10549,
+    "note": null,
+    "id": 1122,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "かいしんのいちげき！",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "かいしんのいちげき！",
+      "song_type": "cover",
+      "id": 884,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": []
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 896,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 10088,
+    "note": null,
+    "id": 1121,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "Loveit？",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "loveit？",
+      "song_type": "cover",
+      "id": 896,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "初音未來",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 420,
+          "created_at": "2026-07-21T07:12:25"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 895,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 9309,
+    "note": null,
+    "id": 1120,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "ファンサ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ファンサ",
+      "song_type": "cover",
+      "id": 895,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "mona",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 421,
+          "created_at": "2026-07-21T07:13:44"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 894,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 8264,
+    "note": null,
+    "id": 1119,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "フクロウ ~フクロウが知らせる客が来たと〜",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "フクロウ ~フクロウが知らせる客が来たと〜",
+      "song_type": "cover",
+      "id": 894,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "KOKIA",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 315,
+          "created_at": "2026-07-14T04:00:00"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 893,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 7612,
+    "note": null,
+    "id": 1118,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "深海のリトルクライ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "深海のリトルクライ",
+      "song_type": "cover",
+      "id": 893,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "sasakure.UK",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 422,
+          "created_at": "2026-07-21T07:14:54"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 725,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 6492,
+    "note": null,
+    "id": 1117,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "ただ君に晴れ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 725,
+      "created_at": "2026-07-14T04:00:00",
+      "updated_at": "2026-07-14T04:00:00",
+      "artists": [
+        {
+          "name_main": "ヨルシカ",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 203,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 892,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 5908,
+    "note": null,
+    "id": 1116,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "背景、夏に溺れる",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "背景、夏に溺れる",
+      "song_type": "cover",
+      "id": 892,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "初音ミク",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 177,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 891,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 5467,
+    "note": null,
+    "id": 1115,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "からくりピエロ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "からくりピエロ",
+      "song_type": "cover",
+      "id": 891,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "初音未來",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 420,
+          "created_at": "2026-07-21T07:12:25"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 726,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 4649,
+    "note": null,
+    "id": 1114,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "たばこ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 726,
+      "created_at": "2026-07-14T04:00:00",
+      "updated_at": "2026-07-14T04:00:00",
+      "artists": [
+        {
+          "name_main": "コレサワ",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 309,
+          "created_at": "2026-07-14T04:00:00"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 772,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 4572,
+    "note": "（一點點）",
+    "id": 1113,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "たぶん",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 772,
+      "created_at": "2026-07-14T04:00:32",
+      "updated_at": "2026-07-14T04:00:32",
+      "artists": [
+        {
+          "name_main": "YOASOBI",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 209,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 890,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 3856,
+    "note": null,
+    "id": 1112,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "ハロ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ハロ",
+      "song_type": "cover",
+      "id": 890,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "初音未來",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 420,
+          "created_at": "2026-07-21T07:12:25"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 841,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 3302,
+    "note": null,
+    "id": 1111,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "少女レイ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "少女レイ",
+      "song_type": "cover",
+      "id": 841,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 504,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 2722,
+    "note": null,
+    "id": 1110,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "言って",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 504,
+      "created_at": "2026-07-14T03:59:56",
+      "updated_at": "2026-07-14T03:59:56",
+      "artists": [
+        {
+          "name_main": "ヨルシカ",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 203,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 889,
+    "video_id": "FbUZ28qphS4",
+    "timestamp_seconds": 2201,
+    "note": null,
+    "id": 1109,
+    "created_at": "2026-07-21T06:50:42",
+    "song": {
+      "title_main": "flos",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "flos",
+      "song_type": "cover",
+      "id": 889,
+      "created_at": "2026-07-21T06:50:42",
+      "updated_at": "2026-07-21T06:50:42",
+      "artists": [
+        {
+          "name_main": "初音未來",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 420,
+          "created_at": "2026-07-21T07:12:25"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "FbUZ28qphS4",
+      "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 888,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 9737,
+    "note": null,
+    "id": 1108,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "sleeping in the kitchen",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "sleeping in the kitchen",
+      "song_type": "cover",
+      "id": 888,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": [
+        {
+          "name_main": "Madilyn Mei",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 423,
+          "created_at": "2026-07-21T07:18:28"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 887,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 9398,
+    "note": null,
+    "id": 1107,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "partner in crime",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "partner in crime",
+      "song_type": "cover",
+      "id": 887,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": []
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 886,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 8999,
+    "note": null,
+    "id": 1106,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "JANE DOE",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "janedoe",
+      "song_type": "cover",
+      "id": 886,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T07:19:36",
+      "artists": [
+        {
+          "name_main": "米津玄師",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 180,
+          "created_at": "2026-07-14T03:59:56"
+        },
+        {
+          "name_main": "宇多田光",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 424,
+          "created_at": "2026-07-21T07:19:32"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 885,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 7247,
+    "note": null,
+    "id": 1105,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "飛去長灘島 aka 馬上買機票",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "飛去長灘島 aka 馬上買機票",
+      "song_type": "cover",
+      "id": 885,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": [
+        {
+          "name_main": "芒果醬",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 52,
+          "created_at": "2026-07-09T01:34:22"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 884,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 6591,
+    "note": null,
+    "id": 1104,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "かいしんのいちげき！",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "かいしんのいちげき！",
+      "song_type": "cover",
+      "id": 884,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": []
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 852,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 5200,
+    "note": null,
+    "id": 1103,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "From The Start",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "from the start",
+      "song_type": "cover",
+      "id": 852,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 883,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 3952,
+    "note": null,
+    "id": 1102,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "戀愛裁判",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "戀愛裁判",
+      "song_type": "cover",
+      "id": 883,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": []
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 882,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 3566,
+    "note": null,
+    "id": 1101,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "夢喰い白黒バク",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "夢喰い白黒バク",
+      "song_type": "cover",
+      "id": 882,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": []
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 881,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 2125,
+    "note": null,
+    "id": 1100,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "RAP環節",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "rap環節",
+      "song_type": "cover",
+      "id": 881,
+      "created_at": "2026-07-21T06:48:05",
+      "updated_at": "2026-07-21T06:48:05",
+      "artists": []
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 522,
+    "video_id": "DyIG7Di2A9k",
+    "timestamp_seconds": 1807,
+    "note": null,
+    "id": 1099,
+    "created_at": "2026-07-21T06:48:05",
+    "song": {
+      "title_main": "怪獣の花唄",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 522,
+      "created_at": "2026-07-14T03:59:57",
+      "updated_at": "2026-07-14T03:59:57",
+      "artists": [
+        {
+          "name_main": "Vaundy",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 212,
+          "created_at": "2026-07-14T03:59:57"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "DyIG7Di2A9k",
+      "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 880,
+    "video_id": "x4ow2EUj1WU",
+    "timestamp_seconds": 6098,
+    "note": null,
+    "id": 1098,
+    "created_at": "2026-07-21T06:45:38",
+    "song": {
+      "title_main": "愛♡スクリ～ム！",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "愛♡スクリ～ム！",
+      "song_type": "cover",
+      "id": 880,
+      "created_at": "2026-07-21T06:45:38",
+      "updated_at": "2026-07-21T06:45:38",
+      "artists": []
+    },
+    "video": {
+      "video_id": "x4ow2EUj1WU",
+      "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 879,
+    "video_id": "x4ow2EUj1WU",
+    "timestamp_seconds": 5757,
+    "note": null,
+    "id": 1097,
+    "created_at": "2026-07-21T06:45:38",
+    "song": {
+      "title_main": "ドーナツホール",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ドーナツホール",
+      "song_type": "cover",
+      "id": 879,
+      "created_at": "2026-07-21T06:45:38",
+      "updated_at": "2026-07-21T06:45:38",
+      "artists": []
+    },
+    "video": {
+      "video_id": "x4ow2EUj1WU",
+      "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 878,
+    "video_id": "x4ow2EUj1WU",
+    "timestamp_seconds": 5304,
+    "note": null,
+    "id": 1096,
+    "created_at": "2026-07-21T06:45:38",
+    "song": {
+      "title_main": "弱虫モンブラン",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "弱虫モンブラン",
+      "song_type": "cover",
+      "id": 878,
+      "created_at": "2026-07-21T06:45:38",
+      "updated_at": "2026-07-21T06:45:38",
+      "artists": []
+    },
+    "video": {
+      "video_id": "x4ow2EUj1WU",
+      "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 877,
+    "video_id": "x4ow2EUj1WU",
+    "timestamp_seconds": 4955,
+    "note": null,
+    "id": 1095,
+    "created_at": "2026-07-21T06:45:38",
+    "song": {
+      "title_main": "sweets parade",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "sweets parade",
+      "song_type": "cover",
+      "id": 877,
+      "created_at": "2026-07-21T06:45:38",
+      "updated_at": "2026-07-21T06:45:38",
+      "artists": []
+    },
+    "video": {
+      "video_id": "x4ow2EUj1WU",
+      "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 876,
+    "video_id": "x4ow2EUj1WU",
+    "timestamp_seconds": 4483,
+    "note": null,
+    "id": 1094,
+    "created_at": "2026-07-21T06:45:38",
+    "song": {
+      "title_main": "スイートマジック",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "スイートマジック",
+      "song_type": "cover",
+      "id": 876,
+      "created_at": "2026-07-21T06:45:38",
+      "updated_at": "2026-07-21T06:45:38",
+      "artists": []
+    },
+    "video": {
+      "video_id": "x4ow2EUj1WU",
+      "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 875,
+    "video_id": "x4ow2EUj1WU",
+    "timestamp_seconds": 4148,
+    "note": null,
+    "id": 1093,
+    "created_at": "2026-07-21T06:45:38",
+    "song": {
+      "title_main": "ブラウニー",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ブラウニー",
+      "song_type": "cover",
+      "id": 875,
+      "created_at": "2026-07-21T06:45:38",
+      "updated_at": "2026-07-21T06:45:38",
+      "artists": []
+    },
+    "video": {
+      "video_id": "x4ow2EUj1WU",
+      "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 874,
+    "video_id": "x4ow2EUj1WU",
+    "timestamp_seconds": 3854,
+    "note": null,
+    "id": 1092,
+    "created_at": "2026-07-21T06:45:38",
+    "song": {
+      "title_main": "unidentified flavourful object",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "unidentified flavourful object",
+      "song_type": "cover",
+      "id": 874,
+      "created_at": "2026-07-21T06:45:38",
+      "updated_at": "2026-07-21T06:45:38",
+      "artists": []
+    },
+    "video": {
+      "video_id": "x4ow2EUj1WU",
+      "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 873,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 5329,
+    "note": null,
+    "id": 1091,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "ラブカ?",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ラブカ?",
+      "song_type": "cover",
+      "id": 873,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 872,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 4899,
+    "note": null,
+    "id": 1090,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "mosi mosi?",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "mosi mosi?",
+      "song_type": "cover",
+      "id": 872,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 871,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 4610,
+    "note": null,
+    "id": 1089,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "さようなら、花泥棒さん",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "さようなら、花泥棒さん",
+      "song_type": "cover",
+      "id": 871,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 870,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 4029,
+    "note": null,
+    "id": 1088,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "しかばねの踊り",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "しかばねの踊り",
+      "song_type": "cover",
+      "id": 870,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 869,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 3664,
+    "note": null,
+    "id": 1087,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "サイノウサンプラー",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "サイノウサンプラー",
+      "song_type": "cover",
+      "id": 869,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 868,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 3419,
+    "note": null,
+    "id": 1086,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "Loveit?",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "loveit?",
+      "song_type": "cover",
+      "id": 868,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 868,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 3366,
+    "note": "(唱錯重唱",
+    "id": 1085,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "Loveit?",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "loveit?",
+      "song_type": "cover",
+      "id": 868,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 867,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 3036,
+    "note": null,
+    "id": 1084,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "君はできない子",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "君はできない子",
+      "song_type": "cover",
+      "id": 867,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 866,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 2638,
+    "note": null,
+    "id": 1083,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "ずうっといっしょ！",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ずうっといっしょ！",
+      "song_type": "cover",
+      "id": 866,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 865,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 2279,
+    "note": null,
+    "id": 1082,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "The Masochism Tango",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "the masochism tango",
+      "song_type": "cover",
+      "id": 865,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 864,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 2038,
+    "note": null,
+    "id": 1081,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "愛貓",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "愛貓",
+      "song_type": "cover",
+      "id": 864,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 863,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 1713,
+    "note": null,
+    "id": 1080,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "Meant to Be Yours",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "meant to be yours",
+      "song_type": "cover",
+      "id": 863,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 862,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 1348,
+    "note": null,
+    "id": 1079,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "もうそう♡えくすぷれす",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "もうそう♡えくすぷれす",
+      "song_type": "cover",
+      "id": 862,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 861,
+    "video_id": "l51topb3Jto",
+    "timestamp_seconds": 1020,
+    "note": null,
+    "id": 1078,
+    "created_at": "2026-07-21T06:42:24",
+    "song": {
+      "title_main": "モニタリング",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "モニタリング",
+      "song_type": "cover",
+      "id": 861,
+      "created_at": "2026-07-21T06:42:24",
+      "updated_at": "2026-07-21T06:42:24",
+      "artists": []
+    },
+    "video": {
+      "video_id": "l51topb3Jto",
+      "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-21",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 860,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 9445,
+    "note": null,
+    "id": 1077,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "蜜月アンドゥトロワ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "蜜月アンドゥトロワ",
+      "song_type": "cover",
+      "id": 860,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 859,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 9111,
+    "note": null,
+    "id": 1076,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "Never Gonna Give You Up",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "never gonna give you up",
+      "song_type": "cover",
+      "id": 859,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 858,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 8905,
+    "note": null,
+    "id": 1075,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "Taunt",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "taunt",
+      "song_type": "cover",
+      "id": 858,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 857,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 8773,
+    "note": null,
+    "id": 1074,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "One Day",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "one day",
+      "song_type": "cover",
+      "id": 857,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 856,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 8556,
+    "note": null,
+    "id": 1073,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "Buttercup",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "buttercup",
+      "song_type": "cover",
+      "id": 856,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 855,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 8155,
+    "note": null,
+    "id": 1072,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "玉珍",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "玉珍",
+      "song_type": "cover",
+      "id": 855,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 854,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 7850,
+    "note": null,
+    "id": 1071,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "太聰明",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "太聰明",
+      "song_type": "cover",
+      "id": 854,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 853,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 7539,
+    "note": "祿菈唄爾 ",
+    "id": 1070,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "祿菈自創曲",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "祿菈自創曲",
+      "song_type": "cover",
+      "id": 853,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 852,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 7135,
+    "note": null,
+    "id": 1069,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "From The Start",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "from the start",
+      "song_type": "cover",
+      "id": 852,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 851,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 6879,
+    "note": null,
+    "id": 1068,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "fly me to the moon",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "fly me to the moon",
+      "song_type": "cover",
+      "id": 851,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 850,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 5918,
+    "note": null,
+    "id": 1067,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "Moon River",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "moon river",
+      "song_type": "cover",
+      "id": 850,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 849,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 5718,
+    "note": null,
+    "id": 1066,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "Rises the Moon",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "rises the moon",
+      "song_type": "cover",
+      "id": 849,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 848,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 5078,
+    "note": null,
+    "id": 1065,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "崴孟三百天禮物",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "崴孟三百天禮物",
+      "song_type": "cover",
+      "id": 848,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 847,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 4731,
+    "note": null,
+    "id": 1064,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "君に世界",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "君に世界",
+      "song_type": "cover",
+      "id": 847,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 846,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 4163,
+    "note": null,
+    "id": 1063,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "Daisy Daydream",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "daisy daydream",
+      "song_type": "cover",
+      "id": 846,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 845,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 3797,
+    "note": null,
+    "id": 1062,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "マルゲリータ ャ アイナ、ジィエンド",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "マルゲリータ ャ アイナ、ジィエンド",
+      "song_type": "cover",
+      "id": 845,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 844,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 3168,
+    "note": null,
+    "id": 1061,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "シュガーソングとビターステップ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "シュガーソングとビターステップ",
+      "song_type": "cover",
+      "id": 844,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 725,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 2615,
+    "note": null,
+    "id": 1060,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "ただ君に晴れ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 725,
+      "created_at": "2026-07-14T04:00:00",
+      "updated_at": "2026-07-14T04:00:00",
+      "artists": [
+        {
+          "name_main": "ヨルシカ",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 203,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 610,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 2090,
+    "note": null,
+    "id": 1059,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "晴る",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 610,
+      "created_at": "2026-07-14T03:59:58",
+      "updated_at": "2026-07-14T03:59:58",
+      "artists": [
+        {
+          "name_main": "ヨルシカ",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 203,
+          "created_at": "2026-07-14T03:59:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 843,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 1419,
+    "note": null,
+    "id": 1058,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "コトバのうた",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "コトバのうた",
+      "song_type": "cover",
+      "id": 843,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 842,
+    "video_id": "fqVAl2yOCk4",
+    "timestamp_seconds": 1280,
+    "note": null,
+    "id": 1057,
+    "created_at": "2026-07-21T06:41:28",
+    "song": {
+      "title_main": "とんとんまーえ！",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "とんとんまーえ！",
+      "song_type": "cover",
+      "id": 842,
+      "created_at": "2026-07-21T06:41:28",
+      "updated_at": "2026-07-21T06:41:28",
+      "artists": []
+    },
+    "video": {
+      "video_id": "fqVAl2yOCk4",
+      "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-06-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 841,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 9778,
+    "note": null,
+    "id": 1056,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "少女レイ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "少女レイ",
+      "song_type": "cover",
+      "id": 841,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 840,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 9491,
+    "note": null,
+    "id": 1055,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "ラグトレイン",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ラグトレイン",
+      "song_type": "cover",
+      "id": 840,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 840,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 9460,
+    "note": " (X",
+    "id": 1054,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "ラグトレイン",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ラグトレイン",
+      "song_type": "cover",
+      "id": 840,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 839,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 9146,
+    "note": null,
+    "id": 1053,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "恋愛裁判",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "恋愛裁判",
+      "song_type": "cover",
+      "id": 839,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 838,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 8971,
+    "note": null,
+    "id": 1052,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "千本櫻",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "千本櫻",
+      "song_type": "cover",
+      "id": 838,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 837,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 8781,
+    "note": null,
+    "id": 1051,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "Tell Your World",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "tell your world",
+      "song_type": "cover",
+      "id": 837,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 836,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 8335,
+    "note": null,
+    "id": 1050,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "悪ノ娘",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "悪ノ娘",
+      "song_type": "cover",
+      "id": 836,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 835,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 7290,
+    "note": null,
+    "id": 1049,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "深海少女",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "深海少女",
+      "song_type": "cover",
+      "id": 835,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 834,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 6951,
+    "note": null,
+    "id": 1048,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "lllトゥルティンアンテナlll",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "lllトゥルティンアンテナlll",
+      "song_type": "cover",
+      "id": 834,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 833,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 6585,
+    "note": null,
+    "id": 1047,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "マトリョシカ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "マトリョシカ",
+      "song_type": "cover",
+      "id": 833,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 635,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 6354,
+    "note": null,
+    "id": 1046,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "罪と罰",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 635,
+      "created_at": "2026-07-14T03:59:58",
+      "updated_at": "2026-07-14T03:59:58",
+      "artists": [
+        {
+          "name_main": "椎名林檎",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 262,
+          "created_at": "2026-07-14T03:59:58"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 635,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 6014,
+    "note": "(笑的很開心",
+    "id": 1045,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "罪と罰",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 635,
+      "created_at": "2026-07-14T03:59:58",
+      "updated_at": "2026-07-14T03:59:58",
+      "artists": [
+        {
+          "name_main": "椎名林檎",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 262,
+          "created_at": "2026-07-14T03:59:58"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 832,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 5709,
+    "note": null,
+    "id": 1044,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "ECHO",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "echo",
+      "song_type": "cover",
+      "id": 832,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 831,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 5543,
+    "note": null,
+    "id": 1043,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "人マニア",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "人マニア",
+      "song_type": "cover",
+      "id": 831,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 830,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 5207,
+    "note": null,
+    "id": 1042,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "鎖の少女",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "鎖の少女",
+      "song_type": "cover",
+      "id": 830,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 829,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 4942,
+    "note": null,
+    "id": 1041,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "ポーカーフェイス",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ポーカーフェイス",
+      "song_type": "cover",
+      "id": 829,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 828,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 4505,
+    "note": null,
+    "id": 1040,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "秘蜜〜黒の誓い〜",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "秘蜜〜黒の誓い〜",
+      "song_type": "cover",
+      "id": 828,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 827,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 3676,
+    "note": null,
+    "id": 1039,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "六兆年と一夜物語",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "六兆年と一夜物語",
+      "song_type": "cover",
+      "id": 827,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 826,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 3382,
+    "note": null,
+    "id": 1038,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "ELECT",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "elect",
+      "song_type": "cover",
+      "id": 826,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 340,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 3150,
+    "note": null,
+    "id": 1037,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "KING",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "king",
+      "song_type": "cover",
+      "id": 340,
+      "created_at": "2026-07-13T09:45:20",
+      "updated_at": "2026-07-13T09:45:20",
+      "artists": [
+        {
+          "name_main": "Kanaria",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 295,
+          "created_at": "2026-07-14T03:59:59"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 825,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 2770,
+    "note": null,
+    "id": 1036,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "ワールドイズマイン",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "ワールドイズマイン",
+      "song_type": "cover",
+      "id": 825,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 824,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 2435,
+    "note": null,
+    "id": 1035,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "こっち向いてBaby",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "こっち向いてbaby",
+      "song_type": "cover",
+      "id": 824,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 823,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 2133,
+    "note": null,
+    "id": 1034,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "えれくとりっく・えんじぇぅ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "えれくとりっく・えんじぇぅ",
+      "song_type": "cover",
+      "id": 823,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 822,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 1895,
+    "note": null,
+    "id": 1033,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "みんなみくみくにしてあげる♪",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "みんなみくみくにしてあげる♪",
+      "song_type": "cover",
+      "id": 822,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 821,
+    "video_id": "p9eexpplYSs",
+    "timestamp_seconds": 1494,
+    "note": null,
+    "id": 1032,
+    "created_at": "2026-07-21T06:36:51",
+    "song": {
+      "title_main": "＊ハロー、プラネット。",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "＊ハロー、プラネット。",
+      "song_type": "cover",
+      "id": 821,
+      "created_at": "2026-07-21T06:36:51",
+      "updated_at": "2026-07-21T06:36:51",
+      "artists": []
+    },
+    "video": {
+      "video_id": "p9eexpplYSs",
+      "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-08",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 820,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 8010,
+    "note": null,
+    "id": 1031,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "コネクト",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "コネクト",
+      "song_type": "cover",
+      "id": 820,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 819,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 7753,
+    "note": null,
+    "id": 1030,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "プラチナ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "プラチナ",
+      "song_type": "cover",
+      "id": 819,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 819,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 7744,
+    "note": "(x",
+    "id": 1029,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "プラチナ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "プラチナ",
+      "song_type": "cover",
+      "id": 819,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 818,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 7213,
+    "note": null,
+    "id": 1028,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "夕景イエスタデイ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "夕景イエスタデイ",
+      "song_type": "cover",
+      "id": 818,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 744,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 6840,
+    "note": null,
+    "id": 1027,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "Bunny Girl",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 744,
+      "created_at": "2026-07-14T04:00:00",
+      "updated_at": "2026-07-14T04:00:00",
+      "artists": [
+        {
+          "name_main": "AKASAKI",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 321,
+          "created_at": "2026-07-14T04:00:00"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 817,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 6547,
+    "note": null,
+    "id": 1026,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "1925",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "1925",
+      "song_type": "cover",
+      "id": 817,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 816,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 6250,
+    "note": null,
+    "id": 1025,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "東京レトロ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "東京レトロ",
+      "song_type": "cover",
+      "id": 816,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 816,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 6206,
+    "note": "(X",
+    "id": 1024,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "東京レトロ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "東京レトロ",
+      "song_type": "cover",
+      "id": 816,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 815,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 5594,
+    "note": "(好像是被消音了",
+    "id": 1023,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "打上花火",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "打上花火",
+      "song_type": "cover",
+      "id": 815,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 814,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 5524,
+    "note": null,
+    "id": 1022,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "Fire◎Flower",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "fire◎flower",
+      "song_type": "cover",
+      "id": 814,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 749,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 4968,
+    "note": null,
+    "id": 1021,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "寄り酔い",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 749,
+      "created_at": "2026-07-14T04:00:00",
+      "updated_at": "2026-07-14T04:00:00",
+      "artists": [
+        {
+          "name_main": "和ぬか",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 325,
+          "created_at": "2026-07-14T04:00:00"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 813,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 4743,
+    "note": null,
+    "id": 1020,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "酔いどれ知らず",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "酔いどれ知らず",
+      "song_type": "cover",
+      "id": 813,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 812,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 4032,
+    "note": null,
+    "id": 1019,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "Bad Apple",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "bad apple",
+      "song_type": "cover",
+      "id": 812,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 811,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 3658,
+    "note": null,
+    "id": 1018,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "on the rocks",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "on the rocks",
+      "song_type": "cover",
+      "id": 811,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 810,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 3047,
+    "note": null,
+    "id": 1017,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "mangent",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "mangent",
+      "song_type": "cover",
+      "id": 810,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 809,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 2408,
+    "note": null,
+    "id": 1016,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "1/6 Out of the gravity",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "1/6 out of the gravity",
+      "song_type": "cover",
+      "id": 809,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 807,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 1850,
+    "note": null,
+    "id": 1014,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "敗北の少年",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "敗北の少年",
+      "song_type": "cover",
+      "id": 807,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 807,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 1817,
+    "note": "(X",
+    "id": 1013,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "敗北の少年",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "敗北の少年",
+      "song_type": "cover",
+      "id": 807,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 806,
+    "video_id": "J0WhebFaDgM",
+    "timestamp_seconds": 1098,
+    "note": null,
+    "id": 1012,
+    "created_at": "2026-07-21T06:35:18",
+    "song": {
+      "title_main": "雲と幽霊",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "雲と幽霊",
+      "song_type": "cover",
+      "id": 806,
+      "created_at": "2026-07-21T06:35:18",
+      "updated_at": "2026-07-21T06:35:18",
+      "artists": []
+    },
+    "video": {
+      "video_id": "J0WhebFaDgM",
+      "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-15",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 805,
+    "video_id": "j7dp7LaMh_w",
+    "timestamp_seconds": 0,
+    "note": null,
+    "id": 1011,
+    "created_at": "2026-07-21T06:32:15",
+    "song": {
+      "title_main": "String Theocracy",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "string theocracy",
+      "song_type": "cover",
+      "id": 805,
+      "created_at": "2026-07-21T06:32:15",
+      "updated_at": "2026-07-21T06:32:15",
+      "artists": []
+    },
+    "video": {
+      "video_id": "j7dp7LaMh_w",
+      "title": "String Theocracy ✧ covered by LLB 祿菈唄爾",
+      "published_at": "2026-04-22",
+      "video_type": "cover_mv",
+      "thumbnail_url": "https://img.youtube.com/vi/j7dp7LaMh_w/mqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-07-21T06:27:56"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
     "song_id": 321,
     "video_id": "5_VDwjHuIIM",
     "timestamp_seconds": 0,

@@ -880,6 +880,69 @@ window.curateSetlist = function(videoId, videoTitle) {
     showToast(`已為您自動帶入直播影音《${videoTitle}》與預設歌手！`);
 };
 
+// 一鍵導出原唱未指派 (未知) 的歌曲為 Excel
+export async function exportUnassignedSongs() {
+    let unknownSongs = [];
+    
+    // 優先從 API 或 Cache 獲取未指派原唱的歌曲
+    try {
+        const res = await fetch(`${API_BASE}/diagnostics/unknown_songs`);
+        if (res.ok) {
+            unknownSongs = await res.json();
+        } else {
+            unknownSongs = (state.cacheSongs || []).filter(s => 
+                !s.artists || s.artists.length === 0 || s.artists.some(a => a.name_main === '未知')
+            );
+        }
+    } catch (e) {
+        unknownSongs = (state.cacheSongs || []).filter(s => 
+            !s.artists || s.artists.length === 0 || s.artists.some(a => a.name_main === '未知')
+        );
+    }
+
+    if (!unknownSongs || unknownSongs.length === 0) {
+        showToast('目前所有歌曲均已指派原唱，沒有未指派的歌曲！', 'success');
+        return;
+    }
+
+    // 若 SheetJS (XLSX) 尚未載入則非同步載入
+    if (typeof XLSX === 'undefined') {
+        showToast('正在非同步載入 Excel 導出模組...', 'warning');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+        script.onload = () => {
+            doExportUnassignedSongs(unknownSongs);
+        };
+        script.onerror = () => {
+            showToast('Excel 導出模組載入失敗，請檢查網路連線！', 'error');
+        };
+        document.head.appendChild(script);
+    } else {
+        doExportUnassignedSongs(unknownSongs);
+    }
+}
+
+function doExportUnassignedSongs(unknownSongs) {
+    const wb = XLSX.utils.book_new();
+    const header = ["歌曲 ID", "主要歌名", "羅馬字 / 別名", "目前歌手紀錄", "建立時間"];
+    const rows = unknownSongs.map(song => {
+        const artistsStr = song.artists ? song.artists.map(a => a.name_main).join(', ') : '未知';
+        return [
+            song.id,
+            song.title_main,
+            song.title_romaji || '-',
+            artistsStr,
+            song.created_at || '-'
+        ];
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet([header, ...rows]);
+    XLSX.utils.book_append_sheet(wb, ws, "未指派原唱歌曲");
+    const dateStr = new Date().toISOString().substring(0, 10);
+    XLSX.writeFile(wb, `原唱未指派歌曲清單_${dateStr}.xlsx`);
+    showToast(`🎉 成功導出 ${unknownSongs.length} 筆原唱未指派的歌曲資料！`, 'success');
+}
+
 // 缺漏數據診斷大廳與重複比對
 export async function runSongNameDiagnostics() {
     const unknownList = document.getElementById('unknown-artists-list');

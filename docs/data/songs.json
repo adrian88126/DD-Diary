@@ -1,5 +1,1281 @@
 [
   {
+    "title_main": "No Logic",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "no logic",
+    "song_type": "cover",
+    "id": 904,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "巡音ルカ",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 414,
+        "created_at": "2026-07-21T07:08:24"
+      }
+    ]
+  },
+  {
+    "title_main": "エゴママ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "エゴママ",
+    "song_type": "cover",
+    "id": 903,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "marina",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 415,
+        "created_at": "2026-07-21T07:08:34"
+      }
+    ]
+  },
+  {
+    "title_main": "安平之光",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "安平之光",
+    "song_type": "cover",
+    "id": 902,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "海豚刑警",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 416,
+        "created_at": "2026-07-21T07:08:41"
+      }
+    ]
+  },
+  {
+    "title_main": "ラブカ？",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ラブカ？",
+    "song_type": "cover",
+    "id": 901,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "flower",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 417,
+        "created_at": "2026-07-21T07:08:49"
+      },
+      {
+        "name_main": "Ado",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 418,
+        "created_at": "2026-07-21T07:09:05"
+      }
+    ]
+  },
+  {
+    "title_main": "ギラギラ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ギラギラ",
+    "song_type": "cover",
+    "id": 900,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "Ado",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 418,
+        "created_at": "2026-07-21T07:09:05"
+      }
+    ]
+  },
+  {
+    "title_main": "おまじない",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "おまじない",
+    "song_type": "cover",
+    "id": 899,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "YOASOBI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 209,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
+  },
+  {
+    "title_main": "アポリア",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "アポリア",
+    "song_type": "cover",
+    "id": 898,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "ヨルシカ",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 203,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
+  },
+  {
+    "title_main": "奶水",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "奶水",
+    "song_type": "cover",
+    "id": 897,
+    "created_at": "2026-07-21T06:52:19",
+    "updated_at": "2026-07-21T06:52:19",
+    "artists": [
+      {
+        "name_main": "Mili",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 419,
+        "created_at": "2026-07-21T07:12:12"
+      }
+    ]
+  },
+  {
+    "title_main": "Loveit？",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "loveit？",
+    "song_type": "cover",
+    "id": 896,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 420,
+        "created_at": "2026-07-21T07:12:25"
+      }
+    ]
+  },
+  {
+    "title_main": "ファンサ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ファンサ",
+    "song_type": "cover",
+    "id": 895,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "mona",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 421,
+        "created_at": "2026-07-21T07:13:44"
+      }
+    ]
+  },
+  {
+    "title_main": "フクロウ ~フクロウが知らせる客が来たと〜",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "フクロウ ~フクロウが知らせる客が来たと〜",
+    "song_type": "cover",
+    "id": 894,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "KOKIA",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 315,
+        "created_at": "2026-07-14T04:00:00"
+      }
+    ]
+  },
+  {
+    "title_main": "深海のリトルクライ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "深海のリトルクライ",
+    "song_type": "cover",
+    "id": 893,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "sasakure.UK",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 422,
+        "created_at": "2026-07-21T07:14:54"
+      }
+    ]
+  },
+  {
+    "title_main": "背景、夏に溺れる",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "背景、夏に溺れる",
+    "song_type": "cover",
+    "id": 892,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "初音ミク",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
+  },
+  {
+    "title_main": "からくりピエロ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "からくりピエロ",
+    "song_type": "cover",
+    "id": 891,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 420,
+        "created_at": "2026-07-21T07:12:25"
+      }
+    ]
+  },
+  {
+    "title_main": "ハロ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ハロ",
+    "song_type": "cover",
+    "id": 890,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 420,
+        "created_at": "2026-07-21T07:12:25"
+      }
+    ]
+  },
+  {
+    "title_main": "flos",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "flos",
+    "song_type": "cover",
+    "id": 889,
+    "created_at": "2026-07-21T06:50:42",
+    "updated_at": "2026-07-21T06:50:42",
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 420,
+        "created_at": "2026-07-21T07:12:25"
+      }
+    ]
+  },
+  {
+    "title_main": "sleeping in the kitchen",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "sleeping in the kitchen",
+    "song_type": "cover",
+    "id": 888,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T06:48:05",
+    "artists": [
+      {
+        "name_main": "Madilyn Mei",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 423,
+        "created_at": "2026-07-21T07:18:28"
+      }
+    ]
+  },
+  {
+    "title_main": "partner in crime",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "partner in crime",
+    "song_type": "cover",
+    "id": 887,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T06:48:05",
+    "artists": []
+  },
+  {
+    "title_main": "JANE DOE",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "janedoe",
+    "song_type": "cover",
+    "id": 886,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T07:19:36",
+    "artists": [
+      {
+        "name_main": "米津玄師",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 180,
+        "created_at": "2026-07-14T03:59:56"
+      },
+      {
+        "name_main": "宇多田光",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 424,
+        "created_at": "2026-07-21T07:19:32"
+      }
+    ]
+  },
+  {
+    "title_main": "飛去長灘島 aka 馬上買機票",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "飛去長灘島 aka 馬上買機票",
+    "song_type": "cover",
+    "id": 885,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T06:48:05",
+    "artists": [
+      {
+        "name_main": "芒果醬",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 52,
+        "created_at": "2026-07-09T01:34:22"
+      }
+    ]
+  },
+  {
+    "title_main": "かいしんのいちげき！",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "かいしんのいちげき！",
+    "song_type": "cover",
+    "id": 884,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T06:48:05",
+    "artists": []
+  },
+  {
+    "title_main": "戀愛裁判",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "戀愛裁判",
+    "song_type": "cover",
+    "id": 883,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T06:48:05",
+    "artists": []
+  },
+  {
+    "title_main": "夢喰い白黒バク",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "夢喰い白黒バク",
+    "song_type": "cover",
+    "id": 882,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T06:48:05",
+    "artists": []
+  },
+  {
+    "title_main": "RAP環節",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "rap環節",
+    "song_type": "cover",
+    "id": 881,
+    "created_at": "2026-07-21T06:48:05",
+    "updated_at": "2026-07-21T06:48:05",
+    "artists": []
+  },
+  {
+    "title_main": "愛♡スクリ～ム！",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "愛♡スクリ～ム！",
+    "song_type": "cover",
+    "id": 880,
+    "created_at": "2026-07-21T06:45:38",
+    "updated_at": "2026-07-21T06:45:38",
+    "artists": []
+  },
+  {
+    "title_main": "ドーナツホール",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ドーナツホール",
+    "song_type": "cover",
+    "id": 879,
+    "created_at": "2026-07-21T06:45:38",
+    "updated_at": "2026-07-21T06:45:38",
+    "artists": []
+  },
+  {
+    "title_main": "弱虫モンブラン",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "弱虫モンブラン",
+    "song_type": "cover",
+    "id": 878,
+    "created_at": "2026-07-21T06:45:38",
+    "updated_at": "2026-07-21T06:45:38",
+    "artists": []
+  },
+  {
+    "title_main": "sweets parade",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "sweets parade",
+    "song_type": "cover",
+    "id": 877,
+    "created_at": "2026-07-21T06:45:38",
+    "updated_at": "2026-07-21T06:45:38",
+    "artists": []
+  },
+  {
+    "title_main": "スイートマジック",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "スイートマジック",
+    "song_type": "cover",
+    "id": 876,
+    "created_at": "2026-07-21T06:45:38",
+    "updated_at": "2026-07-21T06:45:38",
+    "artists": []
+  },
+  {
+    "title_main": "ブラウニー",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ブラウニー",
+    "song_type": "cover",
+    "id": 875,
+    "created_at": "2026-07-21T06:45:38",
+    "updated_at": "2026-07-21T06:45:38",
+    "artists": []
+  },
+  {
+    "title_main": "unidentified flavourful object",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "unidentified flavourful object",
+    "song_type": "cover",
+    "id": 874,
+    "created_at": "2026-07-21T06:45:38",
+    "updated_at": "2026-07-21T06:45:38",
+    "artists": []
+  },
+  {
+    "title_main": "ラブカ?",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ラブカ?",
+    "song_type": "cover",
+    "id": 873,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "mosi mosi?",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "mosi mosi?",
+    "song_type": "cover",
+    "id": 872,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "さようなら、花泥棒さん",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "さようなら、花泥棒さん",
+    "song_type": "cover",
+    "id": 871,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "しかばねの踊り",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "しかばねの踊り",
+    "song_type": "cover",
+    "id": 870,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "サイノウサンプラー",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "サイノウサンプラー",
+    "song_type": "cover",
+    "id": 869,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "Loveit?",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "loveit?",
+    "song_type": "cover",
+    "id": 868,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "君はできない子",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "君はできない子",
+    "song_type": "cover",
+    "id": 867,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "ずうっといっしょ！",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ずうっといっしょ！",
+    "song_type": "cover",
+    "id": 866,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "The Masochism Tango",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "the masochism tango",
+    "song_type": "cover",
+    "id": 865,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "愛貓",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "愛貓",
+    "song_type": "cover",
+    "id": 864,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "Meant to Be Yours",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "meant to be yours",
+    "song_type": "cover",
+    "id": 863,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "もうそう♡えくすぷれす",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "もうそう♡えくすぷれす",
+    "song_type": "cover",
+    "id": 862,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "モニタリング",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "モニタリング",
+    "song_type": "cover",
+    "id": 861,
+    "created_at": "2026-07-21T06:42:24",
+    "updated_at": "2026-07-21T06:42:24",
+    "artists": []
+  },
+  {
+    "title_main": "蜜月アンドゥトロワ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "蜜月アンドゥトロワ",
+    "song_type": "cover",
+    "id": 860,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "Never Gonna Give You Up",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "never gonna give you up",
+    "song_type": "cover",
+    "id": 859,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "Taunt",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "taunt",
+    "song_type": "cover",
+    "id": 858,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "One Day",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "one day",
+    "song_type": "cover",
+    "id": 857,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "Buttercup",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "buttercup",
+    "song_type": "cover",
+    "id": 856,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "玉珍",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "玉珍",
+    "song_type": "cover",
+    "id": 855,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "太聰明",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "太聰明",
+    "song_type": "cover",
+    "id": 854,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "祿菈自創曲",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "祿菈自創曲",
+    "song_type": "cover",
+    "id": 853,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "From The Start",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "from the start",
+    "song_type": "cover",
+    "id": 852,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "fly me to the moon",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "fly me to the moon",
+    "song_type": "cover",
+    "id": 851,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "Moon River",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "moon river",
+    "song_type": "cover",
+    "id": 850,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "Rises the Moon",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "rises the moon",
+    "song_type": "cover",
+    "id": 849,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "崴孟三百天禮物",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "崴孟三百天禮物",
+    "song_type": "cover",
+    "id": 848,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "君に世界",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "君に世界",
+    "song_type": "cover",
+    "id": 847,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "Daisy Daydream",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "daisy daydream",
+    "song_type": "cover",
+    "id": 846,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "マルゲリータ ャ アイナ、ジィエンド",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "マルゲリータ ャ アイナ、ジィエンド",
+    "song_type": "cover",
+    "id": 845,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "シュガーソングとビターステップ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "シュガーソングとビターステップ",
+    "song_type": "cover",
+    "id": 844,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "コトバのうた",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "コトバのうた",
+    "song_type": "cover",
+    "id": 843,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "とんとんまーえ！",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "とんとんまーえ！",
+    "song_type": "cover",
+    "id": 842,
+    "created_at": "2026-07-21T06:41:28",
+    "updated_at": "2026-07-21T06:41:28",
+    "artists": []
+  },
+  {
+    "title_main": "少女レイ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "少女レイ",
+    "song_type": "cover",
+    "id": 841,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "ラグトレイン",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ラグトレイン",
+    "song_type": "cover",
+    "id": 840,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "恋愛裁判",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "恋愛裁判",
+    "song_type": "cover",
+    "id": 839,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "千本櫻",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "千本櫻",
+    "song_type": "cover",
+    "id": 838,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "Tell Your World",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "tell your world",
+    "song_type": "cover",
+    "id": 837,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "悪ノ娘",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "悪ノ娘",
+    "song_type": "cover",
+    "id": 836,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "深海少女",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "深海少女",
+    "song_type": "cover",
+    "id": 835,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "lllトゥルティンアンテナlll",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "lllトゥルティンアンテナlll",
+    "song_type": "cover",
+    "id": 834,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "マトリョシカ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "マトリョシカ",
+    "song_type": "cover",
+    "id": 833,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "ECHO",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "echo",
+    "song_type": "cover",
+    "id": 832,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "人マニア",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "人マニア",
+    "song_type": "cover",
+    "id": 831,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "鎖の少女",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "鎖の少女",
+    "song_type": "cover",
+    "id": 830,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "ポーカーフェイス",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ポーカーフェイス",
+    "song_type": "cover",
+    "id": 829,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "秘蜜〜黒の誓い〜",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "秘蜜〜黒の誓い〜",
+    "song_type": "cover",
+    "id": 828,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "六兆年と一夜物語",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "六兆年と一夜物語",
+    "song_type": "cover",
+    "id": 827,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "ELECT",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "elect",
+    "song_type": "cover",
+    "id": 826,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "ワールドイズマイン",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "ワールドイズマイン",
+    "song_type": "cover",
+    "id": 825,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "こっち向いてBaby",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "こっち向いてbaby",
+    "song_type": "cover",
+    "id": 824,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "えれくとりっく・えんじぇぅ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "えれくとりっく・えんじぇぅ",
+    "song_type": "cover",
+    "id": 823,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "みんなみくみくにしてあげる♪",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "みんなみくみくにしてあげる♪",
+    "song_type": "cover",
+    "id": 822,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "＊ハロー、プラネット。",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "＊ハロー、プラネット。",
+    "song_type": "cover",
+    "id": 821,
+    "created_at": "2026-07-21T06:36:51",
+    "updated_at": "2026-07-21T06:36:51",
+    "artists": []
+  },
+  {
+    "title_main": "コネクト",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "コネクト",
+    "song_type": "cover",
+    "id": 820,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "プラチナ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "プラチナ",
+    "song_type": "cover",
+    "id": 819,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "夕景イエスタデイ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "夕景イエスタデイ",
+    "song_type": "cover",
+    "id": 818,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "1925",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "1925",
+    "song_type": "cover",
+    "id": 817,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "東京レトロ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "東京レトロ",
+    "song_type": "cover",
+    "id": 816,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "打上花火",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "打上花火",
+    "song_type": "cover",
+    "id": 815,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "Fire◎Flower",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "fire◎flower",
+    "song_type": "cover",
+    "id": 814,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "酔いどれ知らず",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "酔いどれ知らず",
+    "song_type": "cover",
+    "id": 813,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "Bad Apple",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "bad apple",
+    "song_type": "cover",
+    "id": 812,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "on the rocks",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "on the rocks",
+    "song_type": "cover",
+    "id": 811,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "mangent",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "mangent",
+    "song_type": "cover",
+    "id": 810,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "1/6 Out of the gravity",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "1/6 out of the gravity",
+    "song_type": "cover",
+    "id": 809,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "敗北の少年",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "敗北の少年",
+    "song_type": "cover",
+    "id": 807,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "雲と幽霊",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "雲と幽霊",
+    "song_type": "cover",
+    "id": 806,
+    "created_at": "2026-07-21T06:35:18",
+    "updated_at": "2026-07-21T06:35:18",
+    "artists": []
+  },
+  {
+    "title_main": "String Theocracy",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "string theocracy",
+    "song_type": "cover",
+    "id": 805,
+    "created_at": "2026-07-21T06:32:15",
+    "updated_at": "2026-07-21T06:32:15",
+    "artists": []
+  },
+  {
     "title_main": "清明上河圖",
     "title_ja": null,
     "title_zh": null,

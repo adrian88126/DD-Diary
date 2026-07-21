@@ -18,7 +18,8 @@ import {
     navigateToAdminPane,
     addSetlistRow,
     populateAdminDropdowns,
-    setupCurateModalListeners
+    setupCurateModalListeners,
+    exportUnassignedSongs
 } from './admin.js';
 import { playRecord, closePlayerOverlay, showToast } from './ui.js';
 
@@ -27,6 +28,7 @@ window.playRecord = playRecord;
 window.closePlayerOverlay = closePlayerOverlay;
 window.searchSongHistory = searchSongHistory;
 window.loadVtuberProfile = loadVtuberProfile;
+window.exportUnassignedSongs = exportUnassignedSongs;
 
 // 初始化應用
 document.addEventListener('DOMContentLoaded', async () => {

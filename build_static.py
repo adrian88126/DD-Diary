@@ -61,15 +61,13 @@ def main():
     # 2. 複製 app/static 內容到 docs/
     print("📂 複製靜態檔案資源...")
     for item in os.listdir(static_dir):
-        if item.endswith(".bak"):
+        if item.endswith(".bak") or item == "index.html":
             continue
         s = os.path.join(static_dir, item)
         d = os.path.join(docs_dir, item)
         if os.path.isdir(s):
             shutil.copytree(s, d, dirs_exist_ok=True, ignore=shutil.ignore_patterns("*.bak"))
         else:
-            if item == "index.html":
-                d = os.path.join(docs_dir, "catalog.html")
             shutil.copy2(s, d)
             
     # 3. 建立 docs/data/ 與 docs/share/ 資料夾
@@ -207,7 +205,12 @@ def main():
         # 6. 預先渲染 (Pre-render) 門戶首頁大廳 (Lobby) docs/index.html
         print("🖥️ 正在預先渲染網站首頁大廳 (Lobby)...")
         lobby_template = env.get_template("lobby.html")
-        lobby_html = lobby_template.render(vtubers=vtubers)
+        lobby_html = lobby_template.render(
+            vtubers=vtubers,
+            total_songs=len(songs),
+            total_records=len(records),
+            total_videos=len(videos)
+        )
         with open(os.path.join(docs_dir, "index.html"), "w", encoding="utf-8") as f:
             f.write(lobby_html)
         print("✅ 門戶大廳首頁渲染完成！")
