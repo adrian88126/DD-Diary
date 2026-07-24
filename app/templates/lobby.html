@@ -203,12 +203,34 @@
             transform: translateY(-1px);
         }
 
-        /* 雙欄格線系統 (70% 歌單大廳 / 30% 全主播週表牆) */
+        .view-toggle-btn {
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 24px;
+            border: 1px solid rgba(167, 139, 250, 0.4);
+            background: rgba(167, 139, 250, 0.08);
+            color: var(--neon-purple);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .view-toggle-btn:hover {
+            background: var(--neon-purple);
+            color: #09070f;
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* 雙欄格線系統 - 改為滿寬並由 JS 切換顯示 */
         .lobby-split-layout {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 32px;
-            align-items: start;
+            display: block;
+            width: 100%;
         }
 
         /* 左側主播卡片網格 */
@@ -216,6 +238,10 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
             gap: 24px;
+        }
+
+        .lobby-split-layout.show-schedule .vtuber-grid {
+            display: none;
         }
 
         .vtuber-card {
@@ -354,17 +380,21 @@
 
         /* 右側：全主播週表牆 (All-VTubers Schedule Gallery Sidebar) */
         .schedule-sidebar {
-            position: sticky;
-            top: 24px;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(16px);
-            display: flex;
+            display: none; /* 預設隱藏 */
             flex-direction: column;
             gap: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .lobby-split-layout.show-schedule .schedule-sidebar {
+            display: flex;
         }
 
         .sidebar-title-bar {
@@ -414,12 +444,9 @@
         }
 
         .schedule-list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            max-height: 720px;
-            overflow-y: auto;
-            padding-right: 4px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 20px;
         }
 
         .schedule-item-card {
@@ -673,10 +700,14 @@
                     <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </div>
+            <!-- 切換檢視按鈕 -->
+            <button id="view-toggle-btn" class="view-toggle-btn" onclick="toggleLobbyView()" title="切換顯示主播卡片或週表行程">
+                <i class="fa-regular fa-calendar-days"></i> <span>觀看週表行程</span>
+            </button>
         </div>
 
         <!-- 雙欄布局 (左: 主播卡片網格 / 右: 全主播週表牆) -->
-        <main class="lobby-split-layout">
+        <main class="lobby-split-layout" id="lobby-layout">
             <!-- 左側：主播卡片網格 -->
             <section class="vtuber-grid" id="vtuber-grid-container">
                 {% for vt in vtubers %}
@@ -807,6 +838,26 @@
         ];
 
         let currentGalleryIndex = 0;
+
+        // 視圖切換功能 (交換顯示主播列表或週表行程)
+        function toggleLobbyView() {
+            const layout = document.getElementById('lobby-layout');
+            const btn = document.getElementById('view-toggle-btn');
+            if (!layout || !btn) return;
+            
+            const isScheduleMode = layout.classList.toggle('show-schedule');
+            if (isScheduleMode) {
+                btn.innerHTML = '<i class="fa-solid fa-users"></i> <span>觀看主播列表</span>';
+                btn.style.borderColor = 'rgba(52, 211, 153, 0.4)';
+                btn.style.background = 'rgba(52, 211, 153, 0.08)';
+                btn.style.color = 'var(--neon-green)';
+            } else {
+                btn.innerHTML = '<i class="fa-regular fa-calendar-days"></i> <span>觀看週表行程</span>';
+                btn.style.borderColor = 'rgba(167, 139, 250, 0.4)';
+                btn.style.background = 'rgba(167, 139, 250, 0.08)';
+                btn.style.color = 'var(--neon-purple)';
+            }
+        }
 
         // 搜尋過濾功能
         function onLobbySearchInput() {

@@ -254,15 +254,6 @@ export function setupAutocompleteSelects() {
         setupDropdownFilterVideo(recordVideoSearch, recordVideoId, recordVideoDropdown);
     }
 
-    const assocSongSearch = document.getElementById('assoc-song-search');
-    const assocSongId = document.getElementById('assoc-song-id');
-    const assocSongDropdown = document.getElementById('assoc-song-dropdown');
-    if (assocSongSearch && assocSongDropdown) {
-        setupDropdownFilterNormal(assocSongSearch, assocSongDropdown, () => state.cacheSongs, (item) => item.title_main, (selectedItem) => {
-            assocSongSearch.value = selectedItem.title_main;
-            assocSongId.value = selectedItem.id;
-        });
-    }
 
     const videoSongSearch = document.getElementById('video-song-search');
     const videoSongId = document.getElementById('video-song-id');
@@ -964,21 +955,58 @@ export async function runSongNameDiagnostics() {
         const duplicates = await duplicatesRes.json();
         const duplicateArtists = await duplicateArtistsRes.json();
         
+        const selectedArtistsMap = {};
+        const updateTagsUI = (songId) => {
+            const tagsDiv = document.getElementById(`diag-art-tags-${songId}`);
+            const confirmBtn = document.getElementById(`diag-art-confirm-${songId}`);
+            if (!tagsDiv) return;
+            tagsDiv.innerHTML = '';
+            const currentList = selectedArtistsMap[songId] || [];
+            
+            currentList.forEach((art, index) => {
+                const tag = document.createElement('span');
+                tag.style.cssText = 'display:inline-flex; align-items:center; gap:4px; font-size:10.5px; padding:2px 8px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#e2e8f0; font-weight:600; margin-bottom:2px;';
+                tag.innerHTML = `
+                    ${art.name_main}
+                    <span style="cursor:pointer; color:#ef4444; font-weight:700; margin-left:2px; font-size:12px; line-height:1;" onclick="window.removeDiagArtist(${songId}, ${index})">&times;</span>
+                `;
+                tagsDiv.appendChild(tag);
+            });
+            
+            if (confirmBtn) {
+                confirmBtn.style.display = currentList.length > 0 ? 'inline-flex' : 'none';
+            }
+        };
+
+        window.removeDiagArtist = (songId, index) => {
+            if (selectedArtistsMap[songId]) {
+                selectedArtistsMap[songId].splice(index, 1);
+                updateTagsUI(songId);
+            }
+        };
+
         if (unknownList) {
             unknownList.innerHTML = '';
             if (unknownSongs.length === 0) {
                 unknownList.innerHTML = '<div style="color:var(--neon-green); font-weight:700; padding:10px;"><i class="fa-solid fa-circle-check"></i> 完美診斷！所有歌曲均已指派原唱。</div>';
             } else {
                 unknownSongs.forEach(song => {
+                    selectedArtistsMap[song.id] = [];
                     const row = document.createElement('div');
                     row.className = 'diagnose-row';
-                    row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; gap:10px; background:rgba(255,255,255,0.02); padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); margin-bottom:6px;';
+                    row.style.cssText = 'display:flex; flex-direction:column; gap:6px; background:rgba(255,255,255,0.02); padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); margin-bottom:6px;';
                     row.innerHTML = `
-                        <div style="font-weight:700; color:var(--text-bright); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
-                            ${song.title_main} <span class="badge" style="font-size:10px; opacity:0.6;">ID: ${song.id}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                            <div style="font-weight:700; color:var(--text-bright); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
+                                ${song.title_main} <span class="badge" style="font-size:10px; opacity:0.6;">ID: ${song.id}</span>
+                            </div>
+                            <button class="btn btn-sm" id="diag-art-confirm-${song.id}" style="padding: 3px 8px; font-size: 11px; background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 4px; display: none; cursor:pointer; font-weight:700;">
+                                <i class="fa-solid fa-check"></i> 確認
+                            </button>
                         </div>
-                        <div class="searchable-select-container" style="width: 200px; position:relative; flex-shrink:0;">
-                            <input type="text" class="form-input-sm" id="diag-art-search-${song.id}" placeholder="🔍 搜尋歌手一鍵綁定..." style="font-size:11px; padding:4px 8px; width:100%; border-radius:6px;">
+                        <div id="diag-art-tags-${song.id}" style="display:flex; flex-wrap:wrap; gap:4px;"></div>
+                        <div class="searchable-select-container" style="position:relative; width:100%;">
+                            <input type="text" class="form-input-sm" id="diag-art-search-${song.id}" placeholder="🔍 搜尋/新增歌手並加入..." style="font-size:11px; padding:4px 8px; width:100%; border-radius:6px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:#fff;">
                             <div class="autocomplete-dropdown" id="diag-art-drop-${song.id}"></div>
                         </div>
                     `;
@@ -987,9 +1015,25 @@ export async function runSongNameDiagnostics() {
                     setTimeout(() => {
                         const input = document.getElementById(`diag-art-search-${song.id}`);
                         const dropdown = document.getElementById(`diag-art-drop-${song.id}`);
+                        const confirmBtn = document.getElementById(`diag-art-confirm-${song.id}`);
+                        
                         if (input && dropdown) {
-                            setupDropdownFilterArtist(input, dropdown, () => state.cacheArtists, async (selectedArtist) => {
+                            setupDropdownFilterArtist(input, dropdown, () => state.cacheArtists, (selectedArtist) => {
+                                if (!selectedArtistsMap[song.id].some(a => a.id === selectedArtist.id)) {
+                                    selectedArtistsMap[song.id].push(selectedArtist);
+                                }
+                                input.value = '';
+                                updateTagsUI(song.id);
+                            });
+                        }
+                        
+                        if (confirmBtn) {
+                            confirmBtn.onclick = async () => {
+                                const ids = selectedArtistsMap[song.id].map(a => a.id);
+                                if (ids.length === 0) return;
                                 try {
+                                    confirmBtn.disabled = true;
+                                    confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
                                     const response = await fetch(`${API_BASE}/songs/${song.id}`, {
                                         method: 'PUT',
                                         headers: { 'Content-Type': 'application/json' },
@@ -999,21 +1043,25 @@ export async function runSongNameDiagnostics() {
                                             title_zh: song.title_zh,
                                             title_romaji: song.title_romaji,
                                             song_type: song.song_type,
-                                            artist_ids: [selectedArtist.id]
+                                            artist_ids: ids
                                         })
                                     });
                                     if (response.ok) {
-                                        showToast(`歌曲《${song.title_main}》已成功關聯原唱「${selectedArtist.name_main}」！`);
+                                        showToast(`歌曲《${song.title_main}》已成功關聯原唱！`);
                                         await fetchAllData();
                                         runSongNameDiagnostics();
                                         renderCatalog();
                                     } else {
                                         showToast('綁定失敗', 'error');
+                                        confirmBtn.disabled = false;
+                                        confirmBtn.innerHTML = '<i class="fa-solid fa-check"></i> 確認';
                                     }
                                 } catch (e) {
                                     showToast('連線失敗', 'error');
+                                    confirmBtn.disabled = false;
+                                    confirmBtn.innerHTML = '<i class="fa-solid fa-check"></i> 確認';
                                 }
-                            });
+                            };
                         }
                     }, 10);
                 });
@@ -2579,15 +2627,7 @@ export function populateAdminDropdowns() {
             actVtSelect.innerHTML += `<option value="${vt.id}">${vt.name_main}</option>`;
         });
     }
-    
-    // 3. 批次數據匯入 -> 選擇主播
-    const batchVtSelect = document.getElementById('batch-vtuber-id');
-    if (batchVtSelect) {
-        batchVtSelect.innerHTML = '<option value="">-- 請選擇主播 --</option>';
-        vtubers.forEach(vt => {
-            batchVtSelect.innerHTML += `<option value="${vt.id}">${vt.name_main}</option>`;
-        });
-    }
+
     
     // 4. YouTube 頻道自動同步爬蟲 -> 選擇主播
     const syncVtSelect = document.getElementById('sync-vtuber-id');

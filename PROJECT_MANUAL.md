@@ -16,7 +16,8 @@
 6. [後端 API 接口清單](#6-後端-api-接口清單)
 7. [核心元件與工具函式](#7-核心元件與工具函式)
 8. [靜態網站打包流程](#8-靜態網站打包流程)
-9. [待整理與疑慮區域（孤兒檔案）](#9-待整理與疑慮區域孤兒檔案)
+9. [自動化測試與健康診斷套件](#9-自動化測試與健康診斷套件)
+10. [待整理與疑慮區域（清理與修補紀錄）](#10-待整理與疑慮區域清理與修補紀錄)
 
 ---
 
@@ -506,7 +507,38 @@ index.html
    - **別名路徑 (Alias Paths)**：寫入 390 位元組的輕量級 HTML Redirect 檔（例如 `docs/share/1/index.html` 轉址至 Primary Slug），減少 95% 以上重複檔案體積。
 6. **渲染 Lobby** 首頁至 `docs/index.html`
 
-## 9. 待整理與疑慮區域（清理與修補紀錄）
+## 9. 自動化測試與健康診斷套件
+
+為了解決程式碼修改後容易造成後台網頁、API 或資料庫關聯損壞的問題，專案新增了完整的測試系統（位於 `tests/` 目錄，可由根目錄的 `run_tests.py` 一鍵呼叫）。
+
+### 測試維度
+
+1. **資料庫與數據關聯檢測 (`tests/test_database.py`)**：
+   - 檢查 `vtuber_songs.db` 的連線與基本資料表。
+   - 檢測孤兒演唱紀錄（`SingingRecord` 是否指向不存在的歌曲/影片）。
+   - 校驗 YouTube `video_id` 格式是否為 11 字元，以及頭像、週表 URL 是否合法。
+2. **後端 API 整合測試 (`tests/test_api.py`)**：
+   - 在 `8005` 埠口（不干擾運行中的 8000 埠口）拉起臨時 FastAPI 伺服器進行測試。
+   - 檢驗所有主要查詢路由（`GET /vtubers`, `GET /songs`, `GET /videos`, `GET /records`）的響應。
+   - 測試完整的 `POST`（新增測試主播）➔ `GET`（驗證寫入）➔ `DELETE`（復原環境並刪除）生命週期。
+3. **後台網頁 DOM 與 JS 選取器完整性檢測 (`tests/test_frontend_integrity.py`)**：
+   - 解析後台 `index.html` 以及 JS 內動態渲染模板中的 ID 定義。
+   - 抓取 `admin.js`, `portal.js`, `main.js` 內所有 `getElementById('ID')` 與 `querySelector('#ID')` 所使用的 ID。
+   - 自動進行交叉比對，若 JS 引用了任何不存在於 HTML 中的 ID，會立即精確報錯，防止前端因抓不到元素而崩潰。
+4. **靜態打包產物與快取驗證 (`tests/test_static.py`)**：
+   - 測試執行 `build_static.py` 編譯流程是否出錯。
+   - 檢驗 `docs/index.html` 存在與快取 JSON（`docs/data/*.json`）格式及完整性。
+
+### 一鍵測試指令
+在專案根目錄下直接執行：
+```powershell
+python run_tests.py
+```
+若全部測試通過，會以綠色字體印出測試成功報告；若有任何失敗項目，將會列出詳細錯誤清單與所在程式碼。
+
+---
+
+## 10. 待整理與疑慮區域（清理與修補紀錄）
 
 ### 🟢 已完成清理的孤兒檔案與補丁 (Cleaned Files & Patches)
 

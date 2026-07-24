@@ -224,6 +224,20 @@ function renderSingingCalendar() {
         }
     });
 
+    // 額外讀取所有 stream_singing (歌回) 影片，若當天完全沒有歌唱紀錄，亦顯示在日曆上 (數值標記為 0)
+    if (window.videosData && window.videosData.length > 0) {
+        window.videosData.forEach(vid => {
+            if (vid.video_type === 'stream_singing' && vid.published_at) {
+                const dateStr = vid.published_at.substring(0, 10);
+                const y = parseInt(dateStr.substring(0, 4));
+                if (y) availableYears.add(y);
+                if (dateMap[dateStr] === undefined) {
+                    dateMap[dateStr] = 0;
+                }
+            }
+        });
+    }
+
     const dates = Object.keys(dateMap).sort();
     const yearList = Array.from(availableYears).sort((a, b) => b - a);
     if (yearList.length === 0) yearList.push(new Date().getFullYear());
@@ -283,13 +297,20 @@ function renderSingingCalendar() {
         const mStr = month < 10 ? '0' + month : month;
         const dStr = day < 10 ? '0' + day : day;
         const fullDateStr = `${year}-${mStr}-${dStr}`;
-        const count = dateMap[fullDateStr] || 0;
+        const count = dateMap[fullDateStr];
 
         if (count > 0) {
             html += `
                 <div class="calendar-day-cell has-singing" onclick="filterByCalendarDate('${fullDateStr}')" title="${fullDateStr} 開唱 ${count} 首歌曲 (點擊過濾)">
                     <span>${day}</span>
                     <div class="calendar-singing-dot"></div>
+                </div>
+            `;
+        } else if (count === 0) {
+            html += `
+                <div class="calendar-day-cell has-singing" onclick="filterByCalendarDate('${fullDateStr}')" title="${fullDateStr} 歌回直播 (目前尚未登錄曲目，點擊查看)">
+                    <span>${day}</span>
+                    <div class="calendar-singing-dot" style="background: var(--neon-gold); box-shadow: 0 0 8px var(--neon-gold); opacity: 0.85;"></div>
                 </div>
             `;
         } else {
@@ -320,13 +341,22 @@ function onCalendarYearMonthChange() {
 }
 
 function filterByCalendarDate(dateStr) {
-    switchTab('history');
+    const hasSongs = records.some(rec => rec.video && rec.video.published_at && rec.video.published_at.substring(0, 10) === dateStr);
+    if (hasSongs) {
+        switchTab('history');
+    } else {
+        switchTab('singing');
+    }
     const searchInput = document.getElementById('share-search-input');
     if (searchInput) {
         searchInput.value = dateStr;
         const event = new Event('input');
         searchInput.dispatchEvent(event);
-        showToast(`已過濾 ${dateStr} 開唱歌曲 (${document.querySelectorAll('#history-tbody tr:not([style*="display: none"])').length} 首)`);
+        if (hasSongs) {
+            showToast(`已過濾 ${dateStr} 開唱單曲`);
+        } else {
+            showToast(`已過濾 ${dateStr} 歌回直播`);
+        }
     }
 }
 

@@ -276,6 +276,14 @@ def parse_relative_date(text: str) -> Optional[date]:
             return date(int(m_exact.group(1)), int(m_exact.group(2)), int(m_exact.group(3)))
         except ValueError:
             pass
+
+    # 精準中文日期格式: YYYY年M月D日
+    m_zh = re.search(r'(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日', text)
+    if m_zh:
+        try:
+            return date(int(m_zh.group(1)), int(m_zh.group(2)), int(m_zh.group(3)))
+        except ValueError:
+            pass
             
     today = date.today()
     
@@ -307,6 +315,67 @@ def parse_relative_date(text: str) -> Optional[date]:
     if 'minute' in text or '分鐘' in text or 'second' in text or '秒' in text or '剛剛' in text:
         return today
         
+    return None
+
+def is_date_approximate(text: str) -> bool:
+    if not text:
+        return False
+    text = text.lower()
+    # 如果含有精準日期（包含斜線、連字號、或年月日），就不是估算日期
+    if re.search(r'\d{4}[/-]\d{1,2}[/-]\d{1,2}', text) or re.search(r'\d{4}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日', text):
+        return False
+    # 如果含有相對時間的關鍵字，則是估算日期
+    relative_keywords = ['day', '天', 'hour', '小時', 'week', '週', '星期', 'month', '月', 'year', '年', 'yesterday', '昨天', '前天', 'minute', '分鐘', 'second', '秒', '剛剛', 'ago', '前']
+    for kw in relative_keywords:
+        if kw in text:
+            return True
+    return False
+
+def fetch_exact_youtube_date_helper(video_id: str) -> Optional[date]:
+    import json
+    watch_url = f"https://www.youtube.com/watch?v={video_id}"
+    try:
+        req = urllib.request.Request(
+            watch_url, 
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept-Language': 'zh-TW,zh;q=0.9,en;q=0.8'
+            }
+        )
+        with urllib.request.urlopen(req, timeout=4.0) as response:
+            html = response.read().decode('utf-8', errors='ignore')
+            
+            # 1. 嘗試由 watch 頁面的 ytInitialData 提取最精準的「直播開始日期」 (排除排程創建時間偏差)
+            data_match = re.search(r'ytInitialData\s*=\s*(\{.*?\});', html)
+            if not data_match:
+                data_match = re.search(r'window\["ytInitialData"\]\s*=\s*(\{.*?\});', html)
+                
+            if data_match:
+                try:
+                    data = json.loads(data_match.group(1))
+                    contents = data.get("contents", {}).get("twoColumnWatchNextResults", {}).get(
+                        "results", {}
+                    ).get("results", {}).get("contents", [])
+                    if contents:
+                        primary_info = contents[0].get("videoPrimaryInfoRenderer", {})
+                        date_text = primary_info.get("dateText", {}).get("simpleText", "")
+                        if date_text:
+                            # 移除「串流直播日期：」等前綴
+                            clean_date = re.sub(r'^(串流直播日期：|發布日期：|直播時間：|直播日期：)\s*', '', date_text).strip()
+                            parsed_date = parse_relative_date(clean_date)
+                            if parsed_date:
+                                return parsed_date
+                except Exception:
+                    pass
+            
+            # 2. 備份降級解析：由 HTML Meta 標籤提取
+            m = re.search(r'<meta[^>]*itemprop="datePublished"[^>]*content="(\d{4}-\d{2}-\d{2})', html)
+            if not m:
+                m = re.search(r'<meta[^>]*itemprop="uploadDate"[^>]*content="(\d{4}-\d{2}-\d{2})', html)
+            if m:
+                return datetime.strptime(m.group(1), "%Y-%m-%d").date()
+    except Exception:
+        pass
     return None
 
 def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: Optional[int] = None) -> list:
@@ -380,6 +449,7 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
                     
                     # 遍歷所有 metadata 欄位，尋找可以成功解析日期的文字
                     pub_date = None
+                    is_approx = False
                     metadata_rows = lvm.get('metadata', {}).get('lockupMetadataViewModel', {}).get('metadata', {}).get('contentMetadataViewModel', {}).get('metadataRows', [])
                     if metadata_rows:
                         for row in metadata_rows:
@@ -390,6 +460,7 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
                                     parsed = parse_relative_date(txt)
                                     if parsed:
                                         pub_date = parsed
+                                        is_approx = is_date_approximate(txt)
                                         break
                             if pub_date:
                                 break
@@ -398,7 +469,8 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
                         "video_id": vid,
                         "title": title,
                         "thumbnail_url": thumb_url,
-                        "published_at": pub_date
+                        "published_at": pub_date,
+                        "is_approximate": is_approx
                     })
             
             for k in ["videoRenderer", "gridVideoRenderer"]:
@@ -414,13 +486,17 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
                                 title = runs[0].get("text", "")
                         thumb_url = f"https://img.youtube.com/vi/{vid}/mqdefault.jpg"
                         pub_date = None
+                        is_approx = False
                         if "publishedTimeText" in vr:
-                            pub_date = parse_relative_date(vr["publishedTimeText"].get("simpleText", ""))
+                            txt = vr["publishedTimeText"].get("simpleText", "")
+                            pub_date = parse_relative_date(txt)
+                            is_approx = is_date_approximate(txt)
                         videos.append({
                             "video_id": vid,
                             "title": title,
                             "thumbnail_url": thumb_url,
-                            "published_at": pub_date
+                            "published_at": pub_date,
+                            "is_approximate": is_approx
                         })
                         
             if "continuationItemRenderer" in d:
@@ -534,10 +610,21 @@ def sync_vtuber_youtube(
                 pub_date = None
                 if published_el is not None and published_el.text:
                     try:
-                        date_part = published_el.text.split('T')[0]
-                        pub_date = datetime.strptime(date_part, "%Y-%m-%d").date()
-                    except:
-                        pass
+                        # 處理 ISO 8601 時間字串，轉換為台灣時間 (UTC+8) 防止少一天
+                        iso_str = published_el.text.replace('Z', '+00:00')
+                        dt = datetime.fromisoformat(iso_str)
+                        
+                        from datetime import timezone
+                        tz_tw = timezone(timedelta(hours=8))
+                        dt_tw = dt.astimezone(tz_tw)
+                        pub_date = dt_tw.date()
+                    except Exception:
+                        try:
+                            # 備用降級解析
+                            date_part = published_el.text.split('T')[0]
+                            pub_date = datetime.strptime(date_part, "%Y-%m-%d").date()
+                        except:
+                            pass
                 rss_videos.append({
                     "video_id": vid,
                     "title": title,
@@ -563,17 +650,20 @@ def sync_vtuber_youtube(
             "video_id": v["video_id"],
             "title": v["title"],
             "thumbnail_url": v["thumbnail_url"],
-            "published_at": v["published_at"]
+            "published_at": v["published_at"],
+            "is_approximate": v.get("is_approximate", False)
         }
         
     for v in rss_videos:
         vid = v["video_id"]
         if vid in all_videos_map:
             all_videos_map[vid]["published_at"] = v["published_at"]
+            all_videos_map[vid]["is_approximate"] = False
             if v["thumbnail_url"]:
                 all_videos_map[vid]["thumbnail_url"] = v["thumbnail_url"]
         else:
             if limit is None or len(all_videos_map) < limit:
+                v["is_approximate"] = False
                 all_videos_map[vid] = v
             
     # 4. 批次寫入資料庫
@@ -582,7 +672,13 @@ def sync_vtuber_youtube(
         title = v_info["title"]
         thumb_url = v_info["thumbnail_url"]
         pub_date = v_info["published_at"]
+        is_approx = v_info.get("is_approximate", False)
         
+        # 一律優先發起 watch page 抓取精準日期，以保證與 YouTube 網頁上看到的直播日期 100% 一致 (避免 RSS 時區偏差與排程偏差)
+        exact_date = fetch_exact_youtube_date_helper(vid)
+        if exact_date:
+            pub_date = exact_date
+                
         db_video = db.scalars(select(DBVideo).where(DBVideo.video_id == vid)).first()
         if not db_video:
             lower_title = title.lower()
@@ -604,9 +700,10 @@ def sync_vtuber_youtube(
         else:
             if db_video.vtuber_id is None:
                 db_video.vtuber_id = vtuber_id
-            if not db_video.thumbnail_url and thumb_url:
+            if thumb_url:
                 db_video.thumbnail_url = thumb_url
-            if not db_video.published_at and pub_date:
+            if pub_date:
+                # 每次同步時，若取得更新日期則覆蓋以修正時區偏差
                 db_video.published_at = pub_date
             db.flush()
             

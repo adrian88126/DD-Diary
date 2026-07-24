@@ -20,11 +20,51 @@
     "created_at": "2026-07-21T06:27:56"
   },
   {
+    "video_id": "lO8dUSN6zVs",
+    "title": "〚官方精華〛大聲一點才不怕啊！！🥢💚｜滔滔饕餮 #小剪滔 #最餓滔天 #vtuber",
+    "published_at": "2026-07-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://i1.ytimg.com/vi/lO8dUSN6zVs/hqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-24T08:39:50"
+  },
+  {
+    "video_id": "TmVLOtR6Xy4",
+    "title": "〚滔歌一曲〛多來一點銀臨的歌🎶🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-07-21",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://i1.ytimg.com/vi/TmVLOtR6Xy4/hqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-24T08:38:30"
+  },
+  {
     "video_id": "wK5qZttkN5o",
     "title": "【祝眠夜讀】北歐神話選集！布倫希爾德與齊格飛的故事 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-21",
+    "published_at": "2026-07-20",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/wK5qZttkN5o/mqdefault.jpg",
+    "thumbnail_url": "https://i4.ytimg.com/vi/wK5qZttkN5o/hqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "yLwEGaFWPak",
+    "title": "【歌回】午後的太陽雨，漫步於暖愁的夏色。 ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-07-20",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://i2.ytimg.com/vi/yLwEGaFWPak/hqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": true,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "yOQOjy4IdSc",
+    "title": "【解謎】Imprinted DEMO &  The Roottrees are Dead ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-07-19",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://i2.ytimg.com/vi/yOQOjy4IdSc/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
@@ -32,39 +72,29 @@
   {
     "video_id": "luqREVZbUNw",
     "title": "【雜談】每周都想好好聊天！  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-20",
+    "published_at": "2026-07-18",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/luqREVZbUNw/mqdefault.jpg",
+    "thumbnail_url": "https://i1.ytimg.com/vi/luqREVZbUNw/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "yOQOjy4IdSc",
-    "title": "【解謎】Imprinted DEMO &  The Roottrees are Dead ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-20",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/yOQOjy4IdSc/mqdefault.jpg",
+    "video_id": "d48gfZOonpo",
+    "title": "なんでもにうむ - MILGRAM -ミルグラム-  ✧ LLB 祿菈唄爾 short cover",
+    "published_at": "2026-07-17",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://i1.ytimg.com/vi/d48gfZOonpo/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "nb0-SUeKsRg",
-    "title": "【圖奇遊戲紀錄】 BOMBANANA!! 哪來的猴子家庭  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-16",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/nb0-SUeKsRg/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
+    "created_at": "2026-07-24T08:07:59"
   },
   {
     "video_id": "whMgqciA5a4",
     "title": "〚遊戲聯動〛叫大聲一點啦！ft.拉斐利婭、佐霏、希沫洛佩｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-07-16",
+    "published_at": "2026-07-15",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/whMgqciA5a4/mqdefault.jpg",
+    "thumbnail_url": "https://i4.ytimg.com/vi/whMgqciA5a4/hqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
     "created_at": "2026-07-16T03:44:39"
@@ -72,29 +102,29 @@
   {
     "video_id": "J0WhebFaDgM",
     "title": "【歌回...？】 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-15",
+    "published_at": "2026-07-14",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/J0WhebFaDgM/mqdefault.jpg",
+    "thumbnail_url": "https://i3.ytimg.com/vi/J0WhebFaDgM/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": true,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "2YH8JSQJhb0",
-    "title": "【祝眠夜讀】北歐神話選集！北歐諸神黃昏 ₊⛪︎ 祿菈唄爾 LLB",
+    "video_id": "nb0-SUeKsRg",
+    "title": "【圖奇遊戲紀錄】 BOMBANANA!! 哪來的猴子家庭  ₊⛪︎ 祿菈唄爾 LLB",
     "published_at": "2026-07-14",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/2YH8JSQJhb0/mqdefault.jpg",
+    "thumbnail_url": "https://i3.ytimg.com/vi/nb0-SUeKsRg/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "h_93oszQPXI",
-    "title": "【雜談】鬼轉去圖奇玩遊戲前，來聊聊天吧！  ₊⛪︎ 祿菈唄爾 LLB",
+    "video_id": "2YH8JSQJhb0",
+    "title": "【祝眠夜讀】北歐神話選集！北歐諸神黃昏 ₊⛪︎ 祿菈唄爾 LLB",
     "published_at": "2026-07-13",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/h_93oszQPXI/mqdefault.jpg",
+    "thumbnail_url": "https://i3.ytimg.com/vi/2YH8JSQJhb0/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
@@ -102,9 +132,9 @@
   {
     "video_id": "brsoyfWUopo",
     "title": "【圖奇遊戲紀錄】 The Stanley Parable  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-13",
+    "published_at": "2026-07-12",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/brsoyfWUopo/mqdefault.jpg",
+    "thumbnail_url": "https://i3.ytimg.com/vi/brsoyfWUopo/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
@@ -130,6 +160,16 @@
     "created_at": "2026-07-13T04:58:19"
   },
   {
+    "video_id": "h_93oszQPXI",
+    "title": "【雜談】鬼轉去圖奇玩遊戲前，來聊聊天吧！  ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-07-11",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://i1.ytimg.com/vi/h_93oszQPXI/hqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
     "video_id": "HLcDivFzHd4",
     "title": "〚半周年特別企劃〛哇嗚！這是什麼好看又可愛的驚喜哇！🥢💚｜滔滔饕餮Taotao",
     "published_at": "2026-07-11",
@@ -140,14 +180,24 @@
     "created_at": "2026-07-13T04:58:19"
   },
   {
-    "video_id": "JchStQtl3DA",
-    "title": "【2kg愛玉PK賽】我的胃有勝算嗎！？ft. 搜拉飄、緋尾澄介  ₊⛪︎ 祿菈唄爾 LLB",
+    "video_id": "NN6v1Pt2W7E",
+    "title": "〚滔然入夢(會限)〛今天是你和我的故事喔❤️🥢💚｜滔滔饕餮Taotao",
     "published_at": "2026-07-10",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/JchStQtl3DA/mqdefault.jpg",
-    "vtuber_id": 8,
+    "thumbnail_url": "https://img.youtube.com/vi/NN6v1Pt2W7E/mqdefault.jpg",
+    "vtuber_id": 1,
     "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "xxX3gcdhoXo",
+    "title": "〚深夜女子酒雜〛美女有酒、還有故事❤️ft.心Cocor0、拉斐利婭、茶帽瑪緹、芙森芙蕾亞｜滔滔饕餮Taotao",
+    "published_at": "2026-07-10",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://i1.ytimg.com/vi/xxX3gcdhoXo/hqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
   },
   {
     "video_id": "lTChvCalbok",
@@ -160,61 +210,41 @@
     "created_at": "2026-07-13T04:58:19"
   },
   {
-    "video_id": "qB-g7wohLiM",
-    "title": "【Puni the Florist】我要開花店～  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-09",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/qB-g7wohLiM/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
     "video_id": "FCdnmxrbyDE",
     "title": "【圖奇遊戲紀錄】 Meccha Chameleon!! 我混入了一群美少女之間！？  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-09",
+    "published_at": "2026-07-08",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/FCdnmxrbyDE/mqdefault.jpg",
+    "thumbnail_url": "https://i3.ytimg.com/vi/FCdnmxrbyDE/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "xxX3gcdhoXo",
-    "title": "〚深夜女子酒雜〛美女有酒、還有故事❤️ft.心Cocor0、拉斐利婭、茶帽瑪緹、芙森芙蕾亞｜滔滔饕餮Taotao",
-    "published_at": "2026-07-09",
+    "video_id": "JchStQtl3DA",
+    "title": "【2kg愛玉PK賽】我的胃有勝算嗎！？ft. 搜拉飄、緋尾澄介  ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-07-08",
     "video_type": "stream_other",
-    "thumbnail_url": "https://i1.ytimg.com/vi/xxX3gcdhoXo/hqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://i3.ytimg.com/vi/JchStQtl3DA/hqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
     "video_id": "p9eexpplYSs",
     "title": "【歌回】電電又懷舊的ボカロ曲集 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-08",
+    "published_at": "2026-07-07",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/p9eexpplYSs/mqdefault.jpg",
+    "thumbnail_url": "https://i1.ytimg.com/vi/p9eexpplYSs/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": true,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "ZxzsWc7_RDI",
-    "title": "【歌回】初次彈唱回 ⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-07-07",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/ZxzsWc7_RDI/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "DU5vje4AnmI",
-    "title": "【觀眾同樂會】收益化通過大感謝！想跟大家玩！  ₊⛪︎ 祿菈唄爾 LLB",
+    "video_id": "qB-g7wohLiM",
+    "title": "【Puni the Florist】我要開花店～  ₊⛪︎ 祿菈唄爾 LLB",
     "published_at": "2026-07-07",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/DU5vje4AnmI/mqdefault.jpg",
+    "thumbnail_url": "https://i2.ytimg.com/vi/qB-g7wohLiM/hqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
@@ -230,14 +260,14 @@
     "created_at": "2026-07-09T01:33:46"
   },
   {
-    "video_id": "NN6v1Pt2W7E",
-    "title": "〚滔然入夢(會限)〛今天是你和我的故事喔❤️🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-07-05",
+    "video_id": "DU5vje4AnmI",
+    "title": "【觀眾同樂會】收益化通過大感謝！想跟大家玩！  ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-07-04",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/NN6v1Pt2W7E/mqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://i1.ytimg.com/vi/DU5vje4AnmI/hqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
     "video_id": "M6VhwtxWXeo",
@@ -250,6 +280,16 @@
     "created_at": "2026-07-09T01:33:46"
   },
   {
+    "video_id": "97L3Ep0OMbE",
+    "title": "〚會限💚一起看電影〛爆米花就位🍿一起來看《超時空輝耀姬！》🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-07-03",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/97L3Ep0OMbE/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
     "video_id": "NmygSNsVrUc",
     "title": "〚官方精華〛幫我說話啊媽咪！！🥢💚｜滔滔饕餮 #小剪滔 #最餓滔天 #vtuber",
     "published_at": "2026-07-02",
@@ -260,21 +300,11 @@
     "created_at": "2026-07-09T01:33:46"
   },
   {
-    "video_id": "fqVAl2yOCk4",
-    "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+    "video_id": "ZxzsWc7_RDI",
+    "title": "【歌回】初次彈唱回 ⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
     "published_at": "2026-06-30",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": true,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "M1jNpuNAzPI",
-    "title": "【歌雜】玩羔羊前雜談，還有些本周要雪恥的歌！  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-30",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/M1jNpuNAzPI/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/ZxzsWc7_RDI/mqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
@@ -290,16 +320,6 @@
     "created_at": "2026-07-09T01:33:46"
   },
   {
-    "video_id": "97L3Ep0OMbE",
-    "title": "〚會限💚一起看電影〛爆米花就位🍿一起來看《超時空輝耀姬！》🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-06-29",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/97L3Ep0OMbE/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
     "video_id": "Mrixvz-p9sg",
     "title": "〚王的早朝#15〛開朝！！今天來看看棉花糖的靈異故事叭！！！｜滔滔饕餮Taotao🥢💚",
     "published_at": "2026-06-28",
@@ -310,6 +330,16 @@
     "created_at": "2026-07-09T01:33:46"
   },
   {
+    "video_id": "M1jNpuNAzPI",
+    "title": "【歌雜】玩羔羊前雜談，還有些本周要雪恥的歌！  ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-26",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/M1jNpuNAzPI/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
     "video_id": "wtoSqf4hQMQ",
     "title": "〚滔歌一曲〛一生長、車馬慢、僅一人、三字書🥢💚｜滔滔饕餮Taotao",
     "published_at": "2026-06-25",
@@ -317,6 +347,126 @@
     "thumbnail_url": "https://i4.ytimg.com/vi/wtoSqf4hQMQ/hqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": true,
+    "created_at": "2026-07-09T01:33:46"
+  },
+  {
+    "video_id": "MXC30Whz9Vs",
+    "title": "〚滔歌一曲〛炸一下！蹦蹦蹦！🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-06-24",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/MXC30Whz9Vs/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "-7rgHds6Qyk",
+    "title": "〚王的早朝#11〛開——朝——！陪你們上班上課！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/-7rgHds6Qyk/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "sRjaoJ8VtDY",
+    "title": "〚滔掛研究所#1〛心誠則靈！一個的月的新開始！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/sRjaoJ8VtDY/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "0lOwJprrArk",
+    "title": "〚滔歌一曲〛唱想唱的歌！🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-06-24",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/0lOwJprrArk/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "12ghf6lyNZM",
+    "title": "〚滔歌一曲〛如果溫柔一點點...唱溫柔的歌🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-06-24",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/12ghf6lyNZM/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "Myg6HkxBOu0",
+    "title": "〚滔然入夢(會限)〛今天就讓AI幫我們一起創造故事吧！🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/Myg6HkxBOu0/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "_cG2mm56V9I",
+    "title": "〚滔滔不絕〛不好意思，小毛病是不是病？｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/_cG2mm56V9I/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-09T01:33:46"
+  },
+  {
+    "video_id": "5h419hQegCg",
+    "title": "〚王的早朝#13〛早起的饕餮有早餐吃！！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/5h419hQegCg/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-09T01:33:46"
+  },
+  {
+    "video_id": "6c0m7nE9UoA",
+    "title": "〚滔歌一曲〛舌頭破兩個洞，也堅持唱歌🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-06-24",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/6c0m7nE9UoA/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-09T01:33:46"
+  },
+  {
+    "video_id": "qsXV5thJW8M",
+    "title": "〚滔筆畫畫〛開畫！快來定制你的貢丸吧！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/qsXV5thJW8M/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-09T01:33:46"
+  },
+  {
+    "video_id": "J0dGNDyoefM",
+    "title": "〚線下活動〛哥布林小火鍋🧌駐唱活動...來山洞一起吃滔堡叭🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/J0dGNDyoefM/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-09T01:33:46"
+  },
+  {
+    "video_id": "XM7OKq15US0",
+    "title": "〚王的早朝#14〛早起的饕餮有早餐吃！！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-06-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/XM7OKq15US0/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
     "created_at": "2026-07-09T01:33:46"
   },
   {
@@ -340,9 +490,19 @@
     "created_at": "2026-07-09T01:33:46"
   },
   {
+    "video_id": "fqVAl2yOCk4",
+    "title": "【歌回】走吧！郊遊曲集‧｡🌻⋆｡‧˚ ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-23",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/fqVAl2yOCk4/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": true,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
     "video_id": "afKYD_YEdq8",
     "title": "【祝眠夜讀】上週書選的下半…… ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-23",
+    "published_at": "2026-06-22",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/afKYD_YEdq8/mqdefault.jpg",
     "vtuber_id": 8,
@@ -350,151 +510,11 @@
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "fT2yV9eYS_M",
-    "title": "【初配信】和我點亮不眠夜的燭光吧  ‧₊˚🕯️✧ LLB 祿菈唄爾",
-    "published_at": "2026-06-21",
+    "video_id": "yjAN_vxfLPg",
+    "title": "【雜談】這是我的第一場雜談直播！？  ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-19",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/fT2yV9eYS_M/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "oofGgKNu56w",
-    "title": "【突發雜談】已經想大家了🥺在連動集合前小聊一下吧！",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/oofGgKNu56w/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "0TDb-AZAOxw",
-    "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": true,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "zVCjAnQ9flo",
-    "title": "【初配信後日談】粉絲名出爐啦！好多想聊的＆QnA ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/zVCjAnQ9flo/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "Lmg6XDV6Fh4",
-    "title": "【祝眠夜讀】今天輕輕說話，讀詩與晚安故事 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/Lmg6XDV6Fh4/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "FbUZ28qphS4",
-    "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": true,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "uG2snjJ4D6A",
-    "title": "【伴工隨鐘】一起番茄鐘吧！ ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/uG2snjJ4D6A/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "DyIG7Di2A9k",
-    "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": true,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "YlvdGa7CsB8",
-    "title": "【秉燭聆心】向電子教堂的寄聲箱投以心聲，則必有迴響 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/YlvdGa7CsB8/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "RPKvh23N30A",
-    "title": "【祝眠夜讀】此刻除了感動靈魂的事物之外，還能說些什麼呢？輕聲閱讀紀伯倫的《先知》 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/RPKvh23N30A/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "tVIWYeEjWLA",
-    "title": "【歌回】用「愛」曲集為周二充電中 ♡ ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/tVIWYeEjWLA/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "BScCKCm0SXU",
-    "title": "【伴工隨鐘】努力的你值得一座花園 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/BScCKCm0SXU/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "Eb2Qklnd6fs",
-    "title": "【限時活動】直播限定 ☆ 親製唄狗!! ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/Eb2Qklnd6fs/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "x4ow2EUj1WU",
-    "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": true,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "_4IrxhHgrY4",
-    "title": "【祝眠夜讀】實在太好奇啦……輕輕閱讀黃山料的《好好生活，慢慢相遇》 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/_4IrxhHgrY4/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/yjAN_vxfLPg/mqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
@@ -502,7 +522,7 @@
   {
     "video_id": "l51topb3Jto",
     "title": "【歌回】你的背後如果涼涼的… ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
+    "published_at": "2026-06-16",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/l51topb3Jto/mqdefault.jpg",
     "vtuber_id": 8,
@@ -512,52 +532,12 @@
   {
     "video_id": "C7Ph0jeAyc8",
     "title": "【伴工隨鐘】可能是不開鐘的工作檯，繼續畫唄狗訂單 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
+    "published_at": "2026-06-16",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/C7Ph0jeAyc8/mqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "yjAN_vxfLPg",
-    "title": "【雜談】這是我的第一場雜談直播！？  ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/yjAN_vxfLPg/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
-  },
-  {
-    "video_id": "XM7OKq15US0",
-    "title": "〚王的早朝#14〛早起的饕餮有早餐吃！！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-21",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://i1.ytimg.com/vi/XM7OKq15US0/hqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-09T01:33:46"
-  },
-  {
-    "video_id": "J0dGNDyoefM",
-    "title": "〚線下活動〛哥布林小火鍋🧌駐唱活動...來山洞一起吃滔堡叭🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-06-19",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://i3.ytimg.com/vi/J0dGNDyoefM/hqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-09T01:33:46"
-  },
-  {
-    "video_id": "qsXV5thJW8M",
-    "title": "〚滔筆畫畫〛開畫！快來定制你的貢丸吧！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-17",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://i2.ytimg.com/vi/qsXV5thJW8M/hqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-09T01:33:46"
   },
   {
     "video_id": "ZkyiuE8u4sQ",
@@ -570,199 +550,139 @@
     "created_at": "2026-07-09T01:33:46"
   },
   {
-    "video_id": "6c0m7nE9UoA",
-    "title": "〚滔歌一曲〛舌頭破兩個洞，也堅持唱歌🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-06-16",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://i3.ytimg.com/vi/6c0m7nE9UoA/hqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-09T01:33:46"
-  },
-  {
-    "video_id": "Myg6HkxBOu0",
-    "title": "〚滔然入夢(會限)〛今天就讓AI幫我們一起創造故事吧！🥢💚｜滔滔饕餮Taotao",
+    "video_id": "_4IrxhHgrY4",
+    "title": "【祝眠夜讀】實在太好奇啦……輕輕閱讀黃山料的《好好生活，慢慢相遇》 ₊⛪︎ 祿菈唄爾 LLB",
     "published_at": "2026-06-15",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/Myg6HkxBOu0/mqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://img.youtube.com/vi/_4IrxhHgrY4/mqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "5h419hQegCg",
-    "title": "〚王的早朝#13〛早起的饕餮有早餐吃！！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-14",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://i2.ytimg.com/vi/5h419hQegCg/hqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-09T01:33:46"
-  },
-  {
-    "video_id": "LZPvPeuKLuA",
-    "title": "〚滔筆畫畫〛首次開畫！快來定制你的貢丸吧！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/LZPvPeuKLuA/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "HHRWzqUubKU",
-    "title": "〚王的早朝#11〛開——朝——!一起吃早餐叭!｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/HHRWzqUubKU/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "T5mMuSeNCho",
-    "title": "〚滔歌一曲〛唱點喜歡的那些古風歌叭🥢💚｜滔滔饕餮Taotao",
+    "video_id": "x4ow2EUj1WU",
+    "title": "【歌雜】八點遊戲連動前唱歌聊聊！唄狗店後日甜點歌單...  ₊⛪︎ 祿菈唄爾 LLB",
     "published_at": "2026-06-13",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/T5mMuSeNCho/mqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://img.youtube.com/vi/x4ow2EUj1WU/mqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": true,
-    "created_at": "2026-07-13T04:58:19"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "66TP1sJe89I",
-    "title": "〚520特別企劃〛客人！要不要來一份蛋包飯！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/66TP1sJe89I/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "DmHdVRp_pcI",
-    "title": "〚滔然入夢(會限)〛與你有緣，不妨坐下聽聽...🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-06-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/DmHdVRp_pcI/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "MXC30Whz9Vs",
-    "title": "〚滔歌一曲〛炸一下！蹦蹦蹦！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-06-13",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/MXC30Whz9Vs/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "-7rgHds6Qyk",
-    "title": "〚王的早朝#11〛開——朝——！陪你們上班上課！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/-7rgHds6Qyk/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "sRjaoJ8VtDY",
-    "title": "〚滔掛研究所#1〛心誠則靈！一個的月的新開始！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-06-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/sRjaoJ8VtDY/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "0lOwJprrArk",
-    "title": "〚滔歌一曲〛唱想唱的歌！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-06-13",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/0lOwJprrArk/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "12ghf6lyNZM",
-    "title": "〚滔歌一曲〛如果溫柔一點點...唱溫柔的歌🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-06-13",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/12ghf6lyNZM/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-13T04:58:19"
-  },
-  {
-    "video_id": "_cG2mm56V9I",
-    "title": "〚滔滔不絕〛不好意思，小毛病是不是病？｜滔滔饕餮Taotao🥢💚",
+    "video_id": "Eb2Qklnd6fs",
+    "title": "【限時活動】直播限定 ☆ 親製唄狗!! ₊⛪︎ 祿菈唄爾 LLB",
     "published_at": "2026-06-12",
     "video_type": "stream_other",
-    "thumbnail_url": "https://i4.ytimg.com/vi/_cG2mm56V9I/hqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-09T01:33:46"
-  },
-  {
-    "video_id": "Q3-3ZuWtT3c",
-    "title": "【出道預告】請敲響廢棄教堂之門 ⛪️ LLB 祿菈唄爾",
-    "published_at": "2026-05-22",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/Q3-3ZuWtT3c/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/Eb2Qklnd6fs/mqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "3UaxiudNs-0",
-    "title": "lulu. ✧ covered by LLB 祿菈唄爾",
-    "published_at": "2026-05-22",
-    "video_type": "other",
-    "thumbnail_url": "https://img.youtube.com/vi/3UaxiudNs-0/mqdefault.jpg",
+    "video_id": "tVIWYeEjWLA",
+    "title": "【歌回】用「愛」曲集為周二充電中 ♡ ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-09",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/tVIWYeEjWLA/mqdefault.jpg",
     "vtuber_id": 8,
     "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "AmmUsaIcrhY",
-    "title": "〚滔歌一曲〛甜蜜蜜的歌回，甜甜的我🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/AmmUsaIcrhY/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "5Z2rJHyhUiU",
-    "title": "〚PICOPARK〛遊戲聯動！美女讓我舔一口~ ft.好多美女🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
+    "video_id": "BScCKCm0SXU",
+    "title": "【伴工隨鐘】努力的你值得一座花園 ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-09",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/5Z2rJHyhUiU/mqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://img.youtube.com/vi/BScCKCm0SXU/mqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "oA7LKIGthBI",
-    "title": "〚滔歌一曲〛古風歌回，今天有點不一樣...🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
+    "video_id": "RPKvh23N30A",
+    "title": "【祝眠夜讀】此刻除了感動靈魂的事物之外，還能說些什麼呢？輕聲閱讀紀伯倫的《先知》 ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-08",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/RPKvh23N30A/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "YlvdGa7CsB8",
+    "title": "【秉燭聆心】向電子教堂的寄聲箱投以心聲，則必有迴響 ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-05",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/YlvdGa7CsB8/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "DyIG7Di2A9k",
+    "title": "【歌雜】少年曲集 ☆ 今日份元氣IN！ ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-04",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/oA7LKIGthBI/mqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://img.youtube.com/vi/DyIG7Di2A9k/mqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": true,
-    "created_at": "2026-07-13T06:38:23"
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "FbUZ28qphS4",
+    "title": "【歌回】以琴與歌聲洗滌周二的疲憊吧 ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-02",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/FbUZ28qphS4/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": true,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "uG2snjJ4D6A",
+    "title": "【伴工隨鐘】一起番茄鐘吧！ ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-02",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/uG2snjJ4D6A/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "Lmg6XDV6Fh4",
+    "title": "【祝眠夜讀】今天輕輕說話，讀詩與晚安故事 ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-06-01",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/Lmg6XDV6Fh4/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "zVCjAnQ9flo",
+    "title": "【初配信後日談】粉絲名出爐啦！好多想聊的＆QnA ₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-05-30",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/zVCjAnQ9flo/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
+    "created_at": "2026-07-21T06:27:56"
+  },
+  {
+    "video_id": "0TDb-AZAOxw",
+    "title": "【初歌回】還有許多想用歌聲傳達的事，可以唱給您聽嗎？₊⛪︎ 祿菈唄爾 LLB",
+    "published_at": "2026-05-27",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/0TDb-AZAOxw/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": true,
+    "created_at": "2026-07-21T06:27:56"
   },
   {
     "video_id": "LPRZmyVAOBM",
     "title": "〚滔然入夢(會限)〛好睏哦...那 一起聽故事叭🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/LPRZmyVAOBM/mqdefault.jpg",
     "vtuber_id": 1,
@@ -772,7 +692,7 @@
   {
     "video_id": "e8oiPSiTNbU",
     "title": "〚王的早朝#9〛開朝！做夢吧你！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/e8oiPSiTNbU/mqdefault.jpg",
     "vtuber_id": 1,
@@ -782,7 +702,7 @@
   {
     "video_id": "aatZ8feApwY",
     "title": "〚滔歌一曲〛轉盤歌回之滔歌運轉第二集！這個東西還能有二噢...🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/aatZ8feApwY/mqdefault.jpg",
     "vtuber_id": 1,
@@ -792,7 +712,7 @@
   {
     "video_id": "Ub_J-DWHPPQ",
     "title": "〚遊戲同樂場〛瓦！！一起練槍！！貢丸大軍一起強大！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/Ub_J-DWHPPQ/mqdefault.jpg",
     "vtuber_id": 1,
@@ -802,7 +722,7 @@
   {
     "video_id": "mkYcnVQVdlA",
     "title": "〚王的早朝#10〛開——朝——!!關於那些黑暗料理??｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/mkYcnVQVdlA/mqdefault.jpg",
     "vtuber_id": 1,
@@ -812,7 +732,7 @@
   {
     "video_id": "Lh1J73gj0bg",
     "title": "【🌸春日序曲🌸】拈一縷春風淺淺作序...｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/Lh1J73gj0bg/mqdefault.jpg",
     "vtuber_id": 1,
@@ -822,7 +742,7 @@
   {
     "video_id": "XPiuBljnnhg",
     "title": "〚滔歌一曲〛🌷花花世界迷人眼耶🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/XPiuBljnnhg/mqdefault.jpg",
     "vtuber_id": 1,
@@ -832,7 +752,7 @@
   {
     "video_id": "0wXyXO5Sg9Y",
     "title": "〚會限|雜談〛聊天！最近做了什麼呢！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/0wXyXO5Sg9Y/mqdefault.jpg",
     "vtuber_id": 1,
@@ -842,7 +762,7 @@
   {
     "video_id": "LqP4WSRh89g",
     "title": "【#白露の夢織り歌リレー 】如果我說愛你，會獲得一個擁抱的話｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/LqP4WSRh89g/mqdefault.jpg",
     "vtuber_id": 1,
@@ -852,7 +772,7 @@
   {
     "video_id": "6GZD2PZmgPg",
     "title": "〚滔然入夢(會限)〛我有故事，你有...可樂嗎？🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-05-14",
+    "published_at": "2026-05-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/6GZD2PZmgPg/mqdefault.jpg",
     "vtuber_id": 1,
@@ -860,99 +780,99 @@
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "j7dp7LaMh_w",
-    "title": "String Theocracy ✧ covered by LLB 祿菈唄爾",
-    "published_at": "2026-04-22",
-    "video_type": "cover_mv",
-    "thumbnail_url": "https://img.youtube.com/vi/j7dp7LaMh_w/mqdefault.jpg",
-    "vtuber_id": 8,
+    "video_id": "LZPvPeuKLuA",
+    "title": "〚滔筆畫畫〛首次開畫！快來定制你的貢丸吧！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-05-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/LZPvPeuKLuA/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "HHRWzqUubKU",
+    "title": "〚王的早朝#11〛開——朝——!一起吃早餐叭!｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-05-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/HHRWzqUubKU/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "T5mMuSeNCho",
+    "title": "〚滔歌一曲〛唱點喜歡的那些古風歌叭🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-05-25",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/T5mMuSeNCho/mqdefault.jpg",
+    "vtuber_id": 1,
     "has_timeline": true,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "66TP1sJe89I",
+    "title": "〚520特別企劃〛客人！要不要來一份蛋包飯！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-05-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/66TP1sJe89I/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "DmHdVRp_pcI",
+    "title": "〚滔然入夢(會限)〛與你有緣，不妨坐下聽聽...🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-05-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/DmHdVRp_pcI/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T04:58:19"
+  },
+  {
+    "video_id": "oofGgKNu56w",
+    "title": "【突發雜談】已經想大家了🥺在連動集合前小聊一下吧！",
+    "published_at": "2026-05-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/oofGgKNu56w/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": false,
     "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "C6TeQdxBVjU",
-    "title": "〚遊戲〛集合啦！貢丸們！REPO！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "video_id": "fT2yV9eYS_M",
+    "title": "【初配信】和我點亮不眠夜的燭光吧  ‧₊˚🕯️✧ LLB 祿菈唄爾",
+    "published_at": "2026-05-23",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/C6TeQdxBVjU/mqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://img.youtube.com/vi/fT2yV9eYS_M/mqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "JtM-cRDxs3Y",
-    "title": "〚情人節酒雜〛酒與巧克力？本王都要！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/JtM-cRDxs3Y/mqdefault.jpg",
-    "vtuber_id": 1,
+    "video_id": "3UaxiudNs-0",
+    "title": "lulu. ✧ covered by LLB 祿菈唄爾",
+    "published_at": "2026-05-10",
+    "video_type": "other",
+    "thumbnail_url": "https://img.youtube.com/vi/3UaxiudNs-0/mqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "VEEj0P8sPRI",
-    "title": "〚王的早朝#5〛喝酒誤早朝...說好來練歌...🍺｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-04-14",
+    "video_id": "Q3-3ZuWtT3c",
+    "title": "【出道預告】請敲響廢棄教堂之門 ⛪️ LLB 祿菈唄爾",
+    "published_at": "2026-05-01",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/VEEj0P8sPRI/mqdefault.jpg",
-    "vtuber_id": 1,
+    "thumbnail_url": "https://img.youtube.com/vi/Q3-3ZuWtT3c/mqdefault.jpg",
+    "vtuber_id": 8,
     "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "OsfLyvESb28",
-    "title": "〚拍素材〛咔嚓咔嚓！幫本王拍出完美的形象照叭📷｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-04-14",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/OsfLyvESb28/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "CFzi3EOMSJw",
-    "title": "〚滔歌一曲〛那些關於電視劇電影的歌...你看過這些劇嗎？🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/CFzi3EOMSJw/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "Z8aB69ITG70",
-    "title": "〚災難公關+〛驚！美女們口出狂言，竟然說出... ft.好多美女🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/Z8aB69ITG70/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "l9v2NQpQDRs",
-    "title": "〚王的早朝#6〛早安...今天好脆！看看你們的脆！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-04-14",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/l9v2NQpQDRs/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "FvyGpMyOxXY",
-    "title": "〚滔然入夢(會限)〛今天...你也要來聽姐姐說故事嗎？🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/FvyGpMyOxXY/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
+    "created_at": "2026-07-21T06:27:56"
   },
   {
     "video_id": "5_KlKo-7rf8",
     "title": "〚滔滔不絕〛本王討厭什麼樣男生行為呢？#二選一 🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/5_KlKo-7rf8/mqdefault.jpg",
     "vtuber_id": 1,
@@ -962,7 +882,7 @@
   {
     "video_id": "5Hq1I_fBkD4",
     "title": "〚滔歌一曲〛古風的王！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/5Hq1I_fBkD4/mqdefault.jpg",
     "vtuber_id": 1,
@@ -972,7 +892,7 @@
   {
     "video_id": "FDir_S8QwtE",
     "title": "〚遊戲同樂場〛來吧！看看誰是最不會公關的貢丸！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/FDir_S8QwtE/mqdefault.jpg",
     "vtuber_id": 1,
@@ -982,7 +902,7 @@
   {
     "video_id": "UW6Crvt7l_0",
     "title": "〚滔歌一曲〛想給你聽，和你有關的歌🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/UW6Crvt7l_0/mqdefault.jpg",
     "vtuber_id": 1,
@@ -992,7 +912,7 @@
   {
     "video_id": "DHJguRmPBnQ",
     "title": "〚滔然入夢(會限)〛姐姐滔今天會把聶小倩的故事說給你聽...🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/DHJguRmPBnQ/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1002,7 +922,7 @@
   {
     "video_id": "lK9dtlqQjcA",
     "title": "〚兒童節企劃〛呀呼！出現啦，幼稚園的小霸王！任性的下午或做什麼呢？🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/lK9dtlqQjcA/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1012,7 +932,7 @@
   {
     "video_id": "Dzd_Ln-_KLY",
     "title": "〚王的早朝#7〛早安...今天來現場稽查各貢丸的小寵！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/Dzd_Ln-_KLY/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1022,7 +942,7 @@
   {
     "video_id": "14DTp5swdME",
     "title": "〚滔歌一曲〛下雨了，那些季節與天氣的歌🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/14DTp5swdME/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1032,7 +952,7 @@
   {
     "video_id": "NXd_-WK9FFk",
     "title": "〚滔然入夢(特別福利)〛今天哪裡不太一樣呢...🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/NXd_-WK9FFk/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1042,7 +962,7 @@
   {
     "video_id": "kmz2gO5GnwA",
     "title": "〚遊戲同樂場〛來吧！看看誰是最不會公關的貢丸！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/kmz2gO5GnwA/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1052,7 +972,7 @@
   {
     "video_id": "YlqgROiOEB0",
     "title": "〚王的早朝#8〛特別版大王出現辣，三個月的滔大王！！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-04-14",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/YlqgROiOEB0/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1060,89 +980,59 @@
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "zK4CFI0OvsY",
-    "title": "〚初配信精華〛初次見面就讓觀眾破大防？好壞一滔！｜滔滔饕餮 TaotaoTaotie",
-    "published_at": "2026-03-15",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/zK4CFI0OvsY/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:50:31"
-  },
-  {
-    "video_id": "j3ciBQDeg5M",
-    "title": "〚滔滔不絕〛新年要到啦🧨要如何面對新年那些奇奇怪怪七七八八的問題呢？｜滔滔饕餮Taotao🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-03-15",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/j3ciBQDeg5M/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "ahZAAgIcYEk",
-    "title": "【2026尋找命定之聲】本王准許你跟我共度這個情人節💖｜情人節歌回接力 #9｜滔滔饕餮🥢💚 #2026尋找命定之聲 #VTuber #歌回接力 #情人節企劃",
-    "published_at": "2026-03-15",
+    "video_id": "AmmUsaIcrhY",
+    "title": "〚滔歌一曲〛甜蜜蜜的歌回，甜甜的我🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-04-25",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/ahZAAgIcYEk/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/AmmUsaIcrhY/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": true,
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "x6ItAwONFa8",
-    "title": "〚會限|突發〛嚕啦啦，一起來準備明天的新年小活動叭！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-03-15",
+    "video_id": "5Z2rJHyhUiU",
+    "title": "〚PICOPARK〛遊戲聯動！美女讓我舔一口~ ft.好多美女🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-04-25",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/x6ItAwONFa8/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/5Z2rJHyhUiU/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "Qldak7Q8P44",
-    "title": "〚新年拍立得〛奇跡滔滔新年穿新衣，來向你拜年啦✨｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-03-15",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/Qldak7Q8P44/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "C6ZFFghwp-g",
-    "title": "〚歌回❝滔歌一曲❞〛新年就是要唱古風歌鴨~🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-03-15",
+    "video_id": "oA7LKIGthBI",
+    "title": "〚滔歌一曲〛古風歌回，今天有點不一樣...🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-04-25",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/C6ZFFghwp-g/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/oA7LKIGthBI/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": true,
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "pQ7SgxO5Syc",
-    "title": "〚突發｜新年拍立得#2〛突，突的就是拍立得✨｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-03-15",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/pQ7SgxO5Syc/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
+    "video_id": "j7dp7LaMh_w",
+    "title": "String Theocracy ✧ covered by LLB 祿菈唄爾",
+    "published_at": "2026-04-01",
+    "video_type": "cover_mv",
+    "thumbnail_url": "https://img.youtube.com/vi/j7dp7LaMh_w/mqdefault.jpg",
+    "vtuber_id": 8,
+    "has_timeline": true,
+    "created_at": "2026-07-21T06:27:56"
   },
   {
-    "video_id": "Wk3NiKe_TuE",
-    "title": "〚新年拍立得#3〛開工大吉！繼續來寫拍立得叭！✨｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-03-15",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/Wk3NiKe_TuE/mqdefault.jpg",
+    "video_id": "7phbUlQl0E4",
+    "title": "〚Cover〛KING｜滔滔饕餮 TaotaoTaotie",
+    "published_at": "2026-03-26",
+    "video_type": "cover_mv",
+    "thumbnail_url": "https://img.youtube.com/vi/7phbUlQl0E4/mqdefault.jpg",
     "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
+    "has_timeline": true,
+    "created_at": "2026-07-14T08:54:43"
   },
   {
     "video_id": "uq-NrQFphcQ",
     "title": "〚滔歌一曲〛霸氣的王唱霸氣的歌叭🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/uq-NrQFphcQ/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1152,7 +1042,7 @@
   {
     "video_id": "Z0TPNklid60",
     "title": "〚新年拍立得#4〛怎麼還有這麼多張餒！！✨｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/Z0TPNklid60/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1162,7 +1052,7 @@
   {
     "video_id": "HhlYUSUPpME",
     "title": "〚滔務繁忙〛對，你！就是你！陪本王一起工作！✨｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/HhlYUSUPpME/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1172,7 +1062,7 @@
   {
     "video_id": "loHFisdpAZg",
     "title": "〚滔歌一曲〛元宵節！吃湯圓！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/loHFisdpAZg/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1182,7 +1072,7 @@
   {
     "video_id": "pF-J8qRyiQ0",
     "title": "〚滔然入夢(會限)〛姐姐滔能讓你一夜好眠🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/pF-J8qRyiQ0/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1192,7 +1082,7 @@
   {
     "video_id": "ICzlYfZ6EpE",
     "title": "〚王的早朝#4〛開朝！久違早朝！吃點棉花糖！｜滔滔饕餮Taotao🥢💚",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/ICzlYfZ6EpE/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1202,7 +1092,7 @@
   {
     "video_id": "4u2L5CC2WOo",
     "title": "〚滔歌一曲〛跟本王一起去KTV，你要點什麼歌！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/4u2L5CC2WOo/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1212,7 +1102,7 @@
   {
     "video_id": "pDRVE6HdT1I",
     "title": "〚遊戲〛就是要吵吵鬧鬧！！！動物園！！開張！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-03-15",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/pDRVE6HdT1I/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1220,99 +1110,99 @@
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "7phbUlQl0E4",
-    "title": "〚Cover〛KING｜滔滔饕餮 TaotaoTaotie",
-    "published_at": "2026-03-07",
-    "video_type": "cover_mv",
-    "thumbnail_url": "https://img.youtube.com/vi/7phbUlQl0E4/hqdefault.jpg",
+    "video_id": "C6TeQdxBVjU",
+    "title": "〚遊戲〛集合啦！貢丸們！REPO！🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-03-26",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/C6TeQdxBVjU/mqdefault.jpg",
     "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-14T08:54:43"
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "A1-p60KALhM",
-    "title": "〚初次歌回〛本王要唱想唱的歌給你們聽！｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "video_id": "JtM-cRDxs3Y",
+    "title": "〚情人節酒雜〛酒與巧克力？本王都要！🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-03-26",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/JtM-cRDxs3Y/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "VEEj0P8sPRI",
+    "title": "〚王的早朝#5〛喝酒誤早朝...說好來練歌...🍺｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-03-26",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/VEEj0P8sPRI/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "OsfLyvESb28",
+    "title": "〚拍素材〛咔嚓咔嚓！幫本王拍出完美的形象照叭📷｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-03-26",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/OsfLyvESb28/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "CFzi3EOMSJw",
+    "title": "〚滔歌一曲〛那些關於電視劇電影的歌...你看過這些劇嗎？🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-03-26",
     "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/A1-p60KALhM/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/CFzi3EOMSJw/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": true,
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "igXwlPdeooA",
-    "title": "〚雜談❝滔滔不絕❞〛開打吧！食物宗教戰爭！｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "video_id": "Z8aB69ITG70",
+    "title": "〚災難公關+〛驚！美女們口出狂言，竟然說出... ft.好多美女🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/igXwlPdeooA/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/Z8aB69ITG70/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "hJEEuIFBAX4",
-    "title": "〚遊戲〛本王同意了！！同意呢！｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "video_id": "l9v2NQpQDRs",
+    "title": "〚王的早朝#6〛早安...今天好脆！看看你們的脆！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/hJEEuIFBAX4/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/l9v2NQpQDRs/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "7vmRujFFVao",
-    "title": "〚雜談❝滔滔不絕❞〛粉絲名！決定日！你們會成為本王的...｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "video_id": "FvyGpMyOxXY",
+    "title": "〚滔然入夢(會限)〛今天...你也要來聽姐姐說故事嗎？🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-03-26",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/7vmRujFFVao/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/FvyGpMyOxXY/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "yneji8g4LvU",
-    "title": "〚雜談❝滔滔不絕❞〛來一口棉花糖！Q&A提問時間！｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "video_id": "zK4CFI0OvsY",
+    "title": "〚初配信精華〛初次見面就讓觀眾破大防？好壞一滔！｜滔滔饕餮 TaotaoTaotie",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/yneji8g4LvU/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/zK4CFI0OvsY/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "ZL-7fdI57lc",
-    "title": "〚雜談❝學以致滔❞〛挑戰！國文學測！這點難度怎麼可能難得倒本王？🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/ZL-7fdI57lc/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "PdfqceMWsfw",
-    "title": "〚古風歌回❝滔歌一曲❞〛來唱一些古風歌叭！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/PdfqceMWsfw/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": true,
-    "created_at": "2026-07-13T06:38:23"
-  },
-  {
-    "video_id": "wzJGHe5V5rk",
-    "title": "〚遊戲〛再次！本王同意了！！同意呢！｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
-    "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/wzJGHe5V5rk/mqdefault.jpg",
-    "vtuber_id": 1,
-    "has_timeline": false,
-    "created_at": "2026-07-13T06:38:23"
+    "created_at": "2026-07-13T06:50:31"
   },
   {
     "video_id": "1wfp81kyjbo",
     "title": "〚遊戲〛神獸朋友首次 聯動！一起來成為A..本王是說打倒壞人！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/1wfp81kyjbo/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1322,7 +1212,7 @@
   {
     "video_id": "eg1tmetIouQ",
     "title": "〚雜談❝王的早朝❞〛本王的朝會時間！來吧！我們談談！｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/eg1tmetIouQ/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1332,7 +1222,7 @@
   {
     "video_id": "0iqHiOv9dTQ",
     "title": "〚特別歌回❝滔歌運轉❞〛來吧，今天由你們決定本王怎麼唱！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/0iqHiOv9dTQ/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1342,7 +1232,7 @@
   {
     "video_id": "qaF1G10Z49g",
     "title": "〚雜談❝滔滔不絕❞〛MBTI！本大王的人格測試！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/qaF1G10Z49g/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1352,7 +1242,7 @@
   {
     "video_id": "2ZxWB-yl0eE",
     "title": "〚繪圖❝滔心滔繪❞〛來畫貢丸形象叭！！！快點！一起想！！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/2ZxWB-yl0eE/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1362,7 +1252,7 @@
   {
     "video_id": "8-MgXHuMeMs",
     "title": "〚王的早朝〛全新的本王！見到本王還不跪下！！！｜滔滔饕餮Taotao🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/8-MgXHuMeMs/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1372,7 +1262,7 @@
   {
     "video_id": "SmglWLi96w8",
     "title": "〚歌回❝滔歌一曲❞〛甜甜歌回！來個甜蜜蜜的夜晚！！！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/SmglWLi96w8/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1382,7 +1272,7 @@
   {
     "video_id": "Vwahbp3MUyA",
     "title": "〚遊戲〛FF46場前須知！然後，跟新朋友一起燒廚房！🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/Vwahbp3MUyA/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1392,7 +1282,7 @@
   {
     "video_id": "ExD9NPnyWdc",
     "title": "〚收益化慶祝〛發生了意外...等待會員等級審查中🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/ExD9NPnyWdc/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1402,7 +1292,7 @@
   {
     "video_id": "7d_0-T722hA",
     "title": "〚收益化慶祝〛首次台詞回...終於要面對了嗎？🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/7d_0-T722hA/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1412,7 +1302,7 @@
   {
     "video_id": "Abh5xVYJLFg",
     "title": "〚王的早朝〛開朝啦！貢丸們集合！｜滔滔饕餮Taotao🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/Abh5xVYJLFg/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1422,7 +1312,7 @@
   {
     "video_id": "S0UOC41SnMY",
     "title": "〚歌回❝滔歌一曲❞〛今天唱什麼呢？🥢💚｜滔滔饕餮Taotao",
-    "published_at": "2026-02-13",
+    "published_at": "2026-02-24",
     "video_type": "stream_singing",
     "thumbnail_url": "https://img.youtube.com/vi/S0UOC41SnMY/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1430,19 +1320,79 @@
     "created_at": "2026-07-13T06:38:23"
   },
   {
-    "video_id": "BW2ZTNqt8VU",
-    "title": "〚前導故事〛以饗為名，與你相遇｜滔滔饕餮 TaotaoTaotie",
-    "published_at": "2026-01-14",
+    "video_id": "j3ciBQDeg5M",
+    "title": "〚滔滔不絕〛新年要到啦🧨要如何面對新年那些奇奇怪怪七七八八的問題呢？｜滔滔饕餮Taotao🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-02-24",
     "video_type": "stream_other",
-    "thumbnail_url": "https://img.youtube.com/vi/BW2ZTNqt8VU/mqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/j3ciBQDeg5M/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
-    "created_at": "2026-07-13T06:50:31"
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "ahZAAgIcYEk",
+    "title": "【2026尋找命定之聲】本王准許你跟我共度這個情人節💖｜情人節歌回接力 #9｜滔滔饕餮🥢💚 #2026尋找命定之聲 #VTuber #歌回接力 #情人節企劃",
+    "published_at": "2026-02-24",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/ahZAAgIcYEk/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "x6ItAwONFa8",
+    "title": "〚會限|突發〛嚕啦啦，一起來準備明天的新年小活動叭！｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-02-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/x6ItAwONFa8/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "Qldak7Q8P44",
+    "title": "〚新年拍立得〛奇跡滔滔新年穿新衣，來向你拜年啦✨｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-02-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/Qldak7Q8P44/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "C6ZFFghwp-g",
+    "title": "〚歌回❝滔歌一曲❞〛新年就是要唱古風歌鴨~🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-02-24",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/C6ZFFghwp-g/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "pQ7SgxO5Syc",
+    "title": "〚突發｜新年拍立得#2〛突，突的就是拍立得✨｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-02-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/pQ7SgxO5Syc/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "Wk3NiKe_TuE",
+    "title": "〚新年拍立得#3〛開工大吉！繼續來寫拍立得叭！✨｜滔滔饕餮Taotao🥢💚",
+    "published_at": "2026-02-24",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/Wk3NiKe_TuE/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
   },
   {
     "video_id": "814jdOjN-xo",
     "title": "〚初配信〛準備好臣服於本王了嗎？｜滔滔饕餮Taotao",
-    "published_at": "2026-01-14",
+    "published_at": "2026-01-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/814jdOjN-xo/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1452,7 +1402,7 @@
   {
     "video_id": "3KnJi696xQI",
     "title": "〚初配信後日談〛來聽本王跟你們說一些小秘密叭！｜滔滔饕餮Taotao",
-    "published_at": "2026-01-14",
+    "published_at": "2026-01-25",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/3KnJi696xQI/mqdefault.jpg",
     "vtuber_id": 1,
@@ -1460,11 +1410,91 @@
     "created_at": "2026-07-13T06:38:23"
   },
   {
+    "video_id": "A1-p60KALhM",
+    "title": "〚初次歌回〛本王要唱想唱的歌給你們聽！｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/A1-p60KALhM/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "igXwlPdeooA",
+    "title": "〚雜談❝滔滔不絕❞〛開打吧！食物宗教戰爭！｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/igXwlPdeooA/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "hJEEuIFBAX4",
+    "title": "〚遊戲〛本王同意了！！同意呢！｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/hJEEuIFBAX4/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "7vmRujFFVao",
+    "title": "〚雜談❝滔滔不絕❞〛粉絲名！決定日！你們會成為本王的...｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/7vmRujFFVao/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "yneji8g4LvU",
+    "title": "〚雜談❝滔滔不絕❞〛來一口棉花糖！Q&A提問時間！｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/yneji8g4LvU/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "ZL-7fdI57lc",
+    "title": "〚雜談❝學以致滔❞〛挑戰！國文學測！這點難度怎麼可能難得倒本王？🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/ZL-7fdI57lc/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "PdfqceMWsfw",
+    "title": "〚古風歌回❝滔歌一曲❞〛來唱一些古風歌叭！🥢💚｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_singing",
+    "thumbnail_url": "https://img.youtube.com/vi/PdfqceMWsfw/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": true,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
+    "video_id": "wzJGHe5V5rk",
+    "title": "〚遊戲〛再次！本王同意了！！同意呢！｜滔滔饕餮Taotao",
+    "published_at": "2026-01-25",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/wzJGHe5V5rk/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:38:23"
+  },
+  {
     "video_id": "5_VDwjHuIIM",
     "title": "〚原創曲〛貪餮之王｜滔滔饕餮 TaotaoTaotie【Official Music Video】",
-    "published_at": "2025-12-30",
+    "published_at": "2026-01-25",
     "video_type": "original_mv",
-    "thumbnail_url": "https://img.youtube.com/vi/5_VDwjHuIIM/hqdefault.jpg",
+    "thumbnail_url": "https://img.youtube.com/vi/5_VDwjHuIIM/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": true,
     "created_at": "2026-07-09T02:57:48"
@@ -1472,9 +1502,19 @@
   {
     "video_id": "WnL9miUYVBk",
     "title": "〚Official PV｜初亮相〛飢渴甦醒之時，饕餮已循味而來... ｜滔滔饕餮 TaotaoTaotie",
-    "published_at": "2025-12-15",
+    "published_at": "2025-12-26",
     "video_type": "stream_other",
     "thumbnail_url": "https://img.youtube.com/vi/WnL9miUYVBk/mqdefault.jpg",
+    "vtuber_id": 1,
+    "has_timeline": false,
+    "created_at": "2026-07-13T06:50:31"
+  },
+  {
+    "video_id": "BW2ZTNqt8VU",
+    "title": "〚前導故事〛以饗為名，與你相遇｜滔滔饕餮 TaotaoTaotie",
+    "published_at": "2025-12-26",
+    "video_type": "stream_other",
+    "thumbnail_url": "https://img.youtube.com/vi/BW2ZTNqt8VU/mqdefault.jpg",
     "vtuber_id": 1,
     "has_timeline": false,
     "created_at": "2026-07-13T06:50:31"
@@ -2198,16 +2238,6 @@
     "vtuber_id": 7,
     "has_timeline": true,
     "created_at": "2026-07-14T03:59:28"
-  },
-  {
-    "video_id": "yLwEGaFWPak",
-    "title": "【歌回】午後的太陽雨，漫步於暖愁的夏色。 ₊⛪︎ 祿菈唄爾 LLB",
-    "published_at": null,
-    "video_type": "stream_singing",
-    "thumbnail_url": "https://img.youtube.com/vi/yLwEGaFWPak/mqdefault.jpg",
-    "vtuber_id": 8,
-    "has_timeline": false,
-    "created_at": "2026-07-21T06:27:56"
   },
   {
     "video_id": "E17UPEbEK-v",
