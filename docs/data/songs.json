@@ -8,7 +8,16 @@
     "id": 923,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Vaundy",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 212,
+        "created_at": "2026-07-14T03:59:57"
+      }
+    ]
   },
   {
     "title_main": "Lemon",
@@ -19,7 +28,16 @@
     "id": 922,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "米津玄師",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 180,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "IRIS OUT",
@@ -30,7 +48,16 @@
     "id": 921,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "米津玄師",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 180,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "さよーならまたいつか！",
@@ -41,7 +68,16 @@
     "id": 920,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "米津玄師",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 180,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "感電",
@@ -52,7 +88,16 @@
     "id": 919,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "米津玄師",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 180,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "SORRY",
@@ -63,7 +108,16 @@
     "id": 918,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Justin Bieber",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 425,
+        "created_at": "2026-07-24T09:00:26"
+      }
+    ]
   },
   {
     "title_main": "なまえのないうた",
@@ -74,7 +128,16 @@
     "id": 917,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "鏡音連",
+        "name_ja": "鏡音レン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 426,
+        "created_at": "2026-07-24T09:00:45"
+      }
+    ]
   },
   {
     "title_main": "未來線",
@@ -85,7 +148,16 @@
     "id": 916,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "lulu",
@@ -96,7 +168,16 @@
     "id": 915,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Mrs. GREEN APPLE",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 427,
+        "created_at": "2026-07-24T09:01:30"
+      }
+    ]
   },
   {
     "title_main": "オレンジ",
@@ -107,7 +188,16 @@
     "id": 914,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "カトレア",
@@ -118,18 +208,16 @@
     "id": 913,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
-  },
-  {
-    "title_main": "RAP說話",
-    "title_ja": null,
-    "title_zh": null,
-    "title_romaji": "rap說話",
-    "song_type": "cover",
-    "id": 912,
-    "created_at": "2026-07-24T08:46:35",
-    "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "始発とカフカ",
@@ -140,7 +228,16 @@
     "id": 911,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "メリュー",
@@ -151,7 +248,16 @@
     "id": 910,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "glow",
@@ -162,7 +268,16 @@
     "id": 909,
     "created_at": "2026-07-24T08:46:35",
     "updated_at": "2026-07-24T08:46:35",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "你奔向春野",
@@ -173,7 +288,16 @@
     "id": 908,
     "created_at": "2026-07-24T08:45:54",
     "updated_at": "2026-07-24T08:45:54",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "銀臨",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 45,
+        "created_at": "2026-07-09T01:34:22"
+      }
+    ]
   },
   {
     "title_main": "滄海飛塵",
@@ -184,7 +308,16 @@
     "id": 907,
     "created_at": "2026-07-24T08:45:54",
     "updated_at": "2026-07-24T08:45:54",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "銀臨",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 45,
+        "created_at": "2026-07-09T01:34:22"
+      }
+    ]
   },
   {
     "title_main": "瀘沽尋夢",
@@ -195,7 +328,16 @@
     "id": 906,
     "created_at": "2026-07-24T08:45:54",
     "updated_at": "2026-07-24T08:45:54",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "銀臨",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 45,
+        "created_at": "2026-07-09T01:34:22"
+      }
+    ]
   },
   {
     "title_main": "是風動",
@@ -206,7 +348,24 @@
     "id": 905,
     "created_at": "2026-07-24T08:45:54",
     "updated_at": "2026-07-24T08:45:54",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "銀臨",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 45,
+        "created_at": "2026-07-09T01:34:22"
+      },
+      {
+        "name_main": "河圖",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 86,
+        "created_at": "2026-07-09T01:34:23"
+      }
+    ]
   },
   {
     "title_main": "No Logic",
@@ -388,11 +547,11 @@
     "artists": [
       {
         "name_main": "初音未來",
-        "name_ja": null,
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
-        "id": 420,
-        "created_at": "2026-07-21T07:12:25"
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
       }
     ]
   },
@@ -467,8 +626,8 @@
     "updated_at": "2026-07-21T06:50:42",
     "artists": [
       {
-        "name_main": "初音ミク",
-        "name_ja": null,
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
         "id": 177,
@@ -488,11 +647,11 @@
     "artists": [
       {
         "name_main": "初音未來",
-        "name_ja": null,
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
-        "id": 420,
-        "created_at": "2026-07-21T07:12:25"
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
       }
     ]
   },
@@ -508,11 +667,11 @@
     "artists": [
       {
         "name_main": "初音未來",
-        "name_ja": null,
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
-        "id": 420,
-        "created_at": "2026-07-21T07:12:25"
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
       }
     ]
   },
@@ -528,11 +687,11 @@
     "artists": [
       {
         "name_main": "初音未來",
-        "name_ja": null,
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
-        "id": 420,
-        "created_at": "2026-07-21T07:12:25"
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
       }
     ]
   },
@@ -565,7 +724,16 @@
     "id": 887,
     "created_at": "2026-07-21T06:48:05",
     "updated_at": "2026-07-21T06:48:05",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Elio Mei",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 428,
+        "created_at": "2026-07-24T09:07:27"
+      }
+    ]
   },
   {
     "title_main": "JANE DOE",
@@ -624,7 +792,16 @@
     "id": 884,
     "created_at": "2026-07-21T06:48:05",
     "updated_at": "2026-07-21T06:48:05",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "天月-あまつき-",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 429,
+        "created_at": "2026-07-24T09:07:44"
+      }
+    ]
   },
   {
     "title_main": "戀愛裁判",
@@ -635,7 +812,16 @@
     "id": 883,
     "created_at": "2026-07-21T06:48:05",
     "updated_at": "2026-07-21T06:48:05",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "夢喰い白黒バク",
@@ -646,18 +832,16 @@
     "id": 882,
     "created_at": "2026-07-21T06:48:05",
     "updated_at": "2026-07-21T06:48:05",
-    "artists": []
-  },
-  {
-    "title_main": "RAP環節",
-    "title_ja": null,
-    "title_zh": null,
-    "title_romaji": "rap環節",
-    "song_type": "cover",
-    "id": 881,
-    "created_at": "2026-07-21T06:48:05",
-    "updated_at": "2026-07-21T06:48:05",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "鏡音連",
+        "name_ja": "鏡音レン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 426,
+        "created_at": "2026-07-24T09:00:45"
+      }
+    ]
   },
   {
     "title_main": "愛♡スクリ～ム！",
@@ -668,7 +852,16 @@
     "id": 880,
     "created_at": "2026-07-21T06:45:38",
     "updated_at": "2026-07-21T06:45:38",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "AiScReam",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 430,
+        "created_at": "2026-07-24T09:11:49"
+      }
+    ]
   },
   {
     "title_main": "ドーナツホール",
@@ -679,7 +872,16 @@
     "id": 879,
     "created_at": "2026-07-21T06:45:38",
     "updated_at": "2026-07-21T06:45:38",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "弱虫モンブラン",
@@ -690,7 +892,16 @@
     "id": 878,
     "created_at": "2026-07-21T06:45:38",
     "updated_at": "2026-07-21T06:45:38",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "sweets parade",
@@ -701,7 +912,16 @@
     "id": 877,
     "created_at": "2026-07-21T06:45:38",
     "updated_at": "2026-07-21T06:45:38",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "花澤香菜",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 230,
+        "created_at": "2026-07-14T03:59:57"
+      }
+    ]
   },
   {
     "title_main": "スイートマジック",
@@ -712,7 +932,16 @@
     "id": 876,
     "created_at": "2026-07-21T06:45:38",
     "updated_at": "2026-07-21T06:45:38",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "ろん",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 432,
+        "created_at": "2026-07-24T09:12:51"
+      }
+    ]
   },
   {
     "title_main": "ブラウニー",
@@ -723,7 +952,16 @@
     "id": 875,
     "created_at": "2026-07-21T06:45:38",
     "updated_at": "2026-07-21T06:45:38",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "和ぬか",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 325,
+        "created_at": "2026-07-14T04:00:00"
+      }
+    ]
   },
   {
     "title_main": "unidentified flavourful object",
@@ -734,7 +972,16 @@
     "id": 874,
     "created_at": "2026-07-21T06:45:38",
     "updated_at": "2026-07-21T06:45:38",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Mili",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 419,
+        "created_at": "2026-07-21T07:12:12"
+      }
+    ]
   },
   {
     "title_main": "ラブカ?",
@@ -745,7 +992,16 @@
     "id": 873,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "flower",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 417,
+        "created_at": "2026-07-21T07:08:49"
+      }
+    ]
   },
   {
     "title_main": "mosi mosi?",
@@ -756,7 +1012,16 @@
     "id": 872,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Sasane",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 433,
+        "created_at": "2026-07-24T09:25:16"
+      }
+    ]
   },
   {
     "title_main": "さようなら、花泥棒さん",
@@ -767,7 +1032,16 @@
     "id": 871,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "しかばねの踊り",
@@ -778,7 +1052,16 @@
     "id": 870,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "サイノウサンプラー",
@@ -789,7 +1072,16 @@
     "id": 869,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "Loveit?",
@@ -800,7 +1092,16 @@
     "id": 868,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "LOLUET",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 298,
+        "created_at": "2026-07-14T03:59:59"
+      }
+    ]
   },
   {
     "title_main": "君はできない子",
@@ -811,7 +1112,16 @@
     "id": 867,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "ずうっといっしょ！",
@@ -822,7 +1132,16 @@
     "id": 866,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "キタニタツヤ",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 220,
+        "created_at": "2026-07-14T03:59:57"
+      }
+    ]
   },
   {
     "title_main": "The Masochism Tango",
@@ -833,7 +1152,16 @@
     "id": 865,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Tom Lehrer",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 434,
+        "created_at": "2026-07-24T09:27:20"
+      }
+    ]
   },
   {
     "title_main": "愛貓",
@@ -844,7 +1172,16 @@
     "id": 864,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "LOLUET",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 298,
+        "created_at": "2026-07-14T03:59:59"
+      }
+    ]
   },
   {
     "title_main": "Meant to Be Yours",
@@ -855,7 +1192,16 @@
     "id": 863,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Ryan McCartan",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 435,
+        "created_at": "2026-07-24T09:28:16"
+      }
+    ]
   },
   {
     "title_main": "もうそう♡えくすぷれす",
@@ -866,7 +1212,16 @@
     "id": 862,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "花澤香菜",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 230,
+        "created_at": "2026-07-14T03:59:57"
+      }
+    ]
   },
   {
     "title_main": "モニタリング",
@@ -877,7 +1232,16 @@
     "id": 861,
     "created_at": "2026-07-21T06:42:24",
     "updated_at": "2026-07-21T06:42:24",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "蜜月アンドゥトロワ",
@@ -888,7 +1252,16 @@
     "id": 860,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "鏡音鈴",
+        "name_ja": "鏡音リン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 436,
+        "created_at": "2026-07-24T09:29:02"
+      }
+    ]
   },
   {
     "title_main": "Never Gonna Give You Up",
@@ -899,7 +1272,16 @@
     "id": 859,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Rick Astley",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 437,
+        "created_at": "2026-07-24T09:29:13"
+      }
+    ]
   },
   {
     "title_main": "Taunt",
@@ -910,7 +1292,16 @@
     "id": 858,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Lovejoy",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 438,
+        "created_at": "2026-07-24T09:29:44"
+      }
+    ]
   },
   {
     "title_main": "One Day",
@@ -921,7 +1312,16 @@
     "id": 857,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Lovejoy",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 438,
+        "created_at": "2026-07-24T09:29:44"
+      }
+    ]
   },
   {
     "title_main": "Buttercup",
@@ -932,7 +1332,16 @@
     "id": 856,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Jack Stauber",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 439,
+        "created_at": "2026-07-24T09:30:34"
+      }
+    ]
   },
   {
     "title_main": "玉珍",
@@ -943,7 +1352,16 @@
     "id": 855,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "福祿壽",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 122,
+        "created_at": "2026-07-09T01:34:24"
+      }
+    ]
   },
   {
     "title_main": "太聰明",
@@ -954,7 +1372,16 @@
     "id": 854,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "陳綺貞",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 99,
+        "created_at": "2026-07-09T01:34:24"
+      }
+    ]
   },
   {
     "title_main": "祿菈自創曲",
@@ -965,7 +1392,16 @@
     "id": 853,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "祿菈唄爾",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 440,
+        "created_at": "2026-07-24T09:31:54"
+      }
+    ]
   },
   {
     "title_main": "From The Start",
@@ -976,7 +1412,16 @@
     "id": 852,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Laufey",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 441,
+        "created_at": "2026-07-24T09:32:44"
+      }
+    ]
   },
   {
     "title_main": "fly me to the moon",
@@ -987,7 +1432,16 @@
     "id": 851,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "巴特·霍華德",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 442,
+        "created_at": "2026-07-24T09:34:47"
+      }
+    ]
   },
   {
     "title_main": "Moon River",
@@ -998,7 +1452,16 @@
     "id": 850,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Andy Williams",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 443,
+        "created_at": "2026-07-24T09:35:53"
+      }
+    ]
   },
   {
     "title_main": "Rises the Moon",
@@ -1009,7 +1472,16 @@
     "id": 849,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Liana Flores",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 444,
+        "created_at": "2026-07-24T09:36:06"
+      }
+    ]
   },
   {
     "title_main": "崴孟三百天禮物",
@@ -1020,7 +1492,16 @@
     "id": 848,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "崴崴孟孟",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 445,
+        "created_at": "2026-07-24T09:36:15"
+      }
+    ]
   },
   {
     "title_main": "君に世界",
@@ -1031,7 +1512,24 @@
     "id": 847,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "VOCALOID",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 446,
+        "created_at": "2026-07-24T09:36:31"
+      },
+      {
+        "name_main": "Eve",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 447,
+        "created_at": "2026-07-24T09:37:07"
+      }
+    ]
   },
   {
     "title_main": "Daisy Daydream",
@@ -1042,7 +1540,16 @@
     "id": 846,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "tang",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 448,
+        "created_at": "2026-07-24T09:38:30"
+      }
+    ]
   },
   {
     "title_main": "マルゲリータ ャ アイナ、ジィエンド",
@@ -1053,7 +1560,24 @@
     "id": 845,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "米津玄師",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 180,
+        "created_at": "2026-07-14T03:59:56"
+      },
+      {
+        "name_main": "アイナ・ジ・エンド",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 449,
+        "created_at": "2026-07-24T09:39:03"
+      }
+    ]
   },
   {
     "title_main": "シュガーソングとビターステップ",
@@ -1064,7 +1588,16 @@
     "id": 844,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "UNISON SQUARE GARDEN",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 450,
+        "created_at": "2026-07-24T09:39:23"
+      }
+    ]
   },
   {
     "title_main": "コトバのうた",
@@ -1075,7 +1608,24 @@
     "id": 843,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      },
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "とんとんまーえ！",
@@ -1086,7 +1636,24 @@
     "id": 842,
     "created_at": "2026-07-21T06:41:28",
     "updated_at": "2026-07-21T06:41:28",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      },
+      {
+        "name_main": "鏡音連",
+        "name_ja": "鏡音レン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 426,
+        "created_at": "2026-07-24T09:00:45"
+      }
+    ]
   },
   {
     "title_main": "少女レイ",
@@ -1097,7 +1664,16 @@
     "id": 841,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "ラグトレイン",
@@ -1108,7 +1684,16 @@
     "id": 840,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "歌愛ユキ",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 308,
+        "created_at": "2026-07-14T04:00:00"
+      }
+    ]
   },
   {
     "title_main": "恋愛裁判",
@@ -1119,7 +1704,16 @@
     "id": 839,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "千本櫻",
@@ -1130,7 +1724,16 @@
     "id": 838,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "Tell Your World",
@@ -1141,7 +1744,16 @@
     "id": 837,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "悪ノ娘",
@@ -1152,7 +1764,16 @@
     "id": 836,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "鏡音鈴",
+        "name_ja": "鏡音リン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 436,
+        "created_at": "2026-07-24T09:29:02"
+      }
+    ]
   },
   {
     "title_main": "深海少女",
@@ -1163,7 +1784,16 @@
     "id": 835,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "lllトゥルティンアンテナlll",
@@ -1174,7 +1804,16 @@
     "id": 834,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "鏡音連",
+        "name_ja": "鏡音レン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 426,
+        "created_at": "2026-07-24T09:00:45"
+      }
+    ]
   },
   {
     "title_main": "マトリョシカ",
@@ -1185,7 +1824,24 @@
     "id": 833,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      },
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "ECHO",
@@ -1196,7 +1852,16 @@
     "id": 832,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "人マニア",
@@ -1207,7 +1872,16 @@
     "id": 831,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "重音テト",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 451,
+        "created_at": "2026-07-24T09:42:57"
+      }
+    ]
   },
   {
     "title_main": "鎖の少女",
@@ -1218,7 +1892,16 @@
     "id": 830,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "ポーカーフェイス",
@@ -1229,7 +1912,16 @@
     "id": 829,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "秘蜜〜黒の誓い〜",
@@ -1240,7 +1932,24 @@
     "id": 828,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "鏡音連",
+        "name_ja": "鏡音レン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 426,
+        "created_at": "2026-07-24T09:00:45"
+      },
+      {
+        "name_main": "鏡音鈴",
+        "name_ja": "鏡音リン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 436,
+        "created_at": "2026-07-24T09:29:02"
+      }
+    ]
   },
   {
     "title_main": "六兆年と一夜物語",
@@ -1251,7 +1960,16 @@
     "id": 827,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "IA",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 452,
+        "created_at": "2026-07-24T09:44:19"
+      }
+    ]
   },
   {
     "title_main": "ELECT",
@@ -1262,7 +1980,16 @@
     "id": 826,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Lily",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 453,
+        "created_at": "2026-07-24T09:44:28"
+      }
+    ]
   },
   {
     "title_main": "ワールドイズマイン",
@@ -1273,7 +2000,16 @@
     "id": 825,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "こっち向いてBaby",
@@ -1284,7 +2020,16 @@
     "id": 824,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "えれくとりっく・えんじぇぅ",
@@ -1295,7 +2040,16 @@
     "id": 823,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "みんなみくみくにしてあげる♪",
@@ -1306,7 +2060,16 @@
     "id": 822,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "＊ハロー、プラネット。",
@@ -1317,7 +2080,16 @@
     "id": 821,
     "created_at": "2026-07-21T06:36:51",
     "updated_at": "2026-07-21T06:36:51",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "コネクト",
@@ -1328,7 +2100,16 @@
     "id": 820,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "ClariS（クラリス）",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 454,
+        "created_at": "2026-07-24T09:45:50"
+      }
+    ]
   },
   {
     "title_main": "プラチナ",
@@ -1339,7 +2120,16 @@
     "id": 819,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "坂本真綾",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 455,
+        "created_at": "2026-07-24T09:46:05"
+      }
+    ]
   },
   {
     "title_main": "夕景イエスタデイ",
@@ -1350,7 +2140,16 @@
     "id": 818,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "IA",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 452,
+        "created_at": "2026-07-24T09:44:19"
+      }
+    ]
   },
   {
     "title_main": "1925",
@@ -1361,7 +2160,16 @@
     "id": 817,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "東京レトロ",
@@ -1372,7 +2180,16 @@
     "id": 816,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "打上花火",
@@ -1383,7 +2200,24 @@
     "id": 815,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "米津玄師",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 180,
+        "created_at": "2026-07-14T03:59:56"
+      },
+      {
+        "name_main": "DAOKO",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 456,
+        "created_at": "2026-07-24T09:46:51"
+      }
+    ]
   },
   {
     "title_main": "Fire◎Flower",
@@ -1394,7 +2228,16 @@
     "id": 814,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "鏡音連",
+        "name_ja": "鏡音レン",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 426,
+        "created_at": "2026-07-24T09:00:45"
+      }
+    ]
   },
   {
     "title_main": "酔いどれ知らず",
@@ -1405,7 +2248,16 @@
     "id": 813,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "Bad Apple",
@@ -1416,7 +2268,16 @@
     "id": 812,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "nomico",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 457,
+        "created_at": "2026-07-24T09:47:32"
+      }
+    ]
   },
   {
     "title_main": "on the rocks",
@@ -1427,18 +2288,52 @@
     "id": 811,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "MEIKO",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 458,
+        "created_at": "2026-07-24T09:48:12"
+      },
+      {
+        "name_main": "KAITO",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 459,
+        "created_at": "2026-07-24T09:48:15"
+      }
+    ]
   },
   {
-    "title_main": "mangent",
+    "title_main": "magnet",
     "title_ja": null,
     "title_zh": null,
     "title_romaji": "mangent",
     "song_type": "cover",
     "id": 810,
     "created_at": "2026-07-21T06:35:18",
-    "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "updated_at": "2026-07-24T09:48:46",
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      },
+      {
+        "name_main": "巡音ルカ",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 414,
+        "created_at": "2026-07-21T07:08:24"
+      }
+    ]
   },
   {
     "title_main": "1/6 Out of the gravity",
@@ -1449,7 +2344,16 @@
     "id": 809,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 177,
+        "created_at": "2026-07-14T03:59:56"
+      }
+    ]
   },
   {
     "title_main": "敗北の少年",
@@ -1460,7 +2364,16 @@
     "id": 807,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "GUMI",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 431,
+        "created_at": "2026-07-24T09:12:06"
+      }
+    ]
   },
   {
     "title_main": "雲と幽霊",
@@ -1471,7 +2384,16 @@
     "id": 806,
     "created_at": "2026-07-21T06:35:18",
     "updated_at": "2026-07-21T06:35:18",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "suis",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 460,
+        "created_at": "2026-07-24T09:50:02"
+      }
+    ]
   },
   {
     "title_main": "String Theocracy",
@@ -1482,7 +2404,16 @@
     "id": 805,
     "created_at": "2026-07-21T06:32:15",
     "updated_at": "2026-07-21T06:32:15",
-    "artists": []
+    "artists": [
+      {
+        "name_main": "Mili",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 419,
+        "created_at": "2026-07-21T07:12:12"
+      }
+    ]
   },
   {
     "title_main": "清明上河圖",
@@ -6387,8 +7318,8 @@
     "updated_at": "2026-07-14T03:59:57",
     "artists": [
       {
-        "name_main": "初音ミク",
-        "name_ja": null,
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
         "id": 177,
@@ -6947,8 +7878,8 @@
     "updated_at": "2026-07-14T03:59:56",
     "artists": [
       {
-        "name_main": "初音ミク",
-        "name_ja": null,
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
         "id": 177,
@@ -7887,8 +8818,8 @@
     "updated_at": "2026-07-14T03:59:56",
     "artists": [
       {
-        "name_main": "初音ミク",
-        "name_ja": null,
+        "name_main": "初音未來",
+        "name_ja": "初音ミク",
         "name_zh": null,
         "name_romaji": null,
         "id": 177,
