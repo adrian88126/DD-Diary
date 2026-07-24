@@ -112,21 +112,6 @@
                         </div>
                     </div>
                 </div>
-
-                
-                <!-- 3. 📅 本週行程週表展示卡片 -->
-                <div class="content-card" style="margin-bottom: 0; padding: 16px; position: relative; border-radius:16px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <span style="font-size:13px; font-weight:800; color:var(--text-bright);"><i class="fa-regular fa-calendar-days" style="color:var(--vtuber-active-theme);"></i> 本週行程週表</span>
-                        <button class="playlist-tab-btn" onclick="openLightbox('https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg', '星璃Seri - 本週行程週表')" style="padding: 4px 10px; font-size: 11px;">
-                            <i class="fa-solid fa-magnifying-glass-plus"></i> 放大週表
-                        </button>
-                    </div>
-                    <div style="position:relative; width:100%; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); cursor:pointer;" onclick="openLightbox('https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg', '星璃Seri - 本週行程週表')">
-                        <img src="https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg" alt="本週週表" style="width:100%; height:auto; display:block; object-fit:cover; transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-                    </div>
-                </div>
-                
             </div>
 
             <!-- 右側：歌單、直播、歷史紀錄分頁 -->
@@ -156,6 +141,21 @@
 
                 <!-- 分頁 1: 主播介紹與活動 -->
                 <div class="tab-pane active" id="pane-bio">
+                    
+                    <!-- 📅 本週行程週表展示區 -->
+                    <div style="background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255,255,255,0.05); padding: 18px 20px; border-radius: 16px; margin-bottom: 24px; position: relative;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <span style="font-size:14px; font-weight:800; color:var(--text-bright);"><i class="fa-regular fa-calendar-days" style="color:var(--vtuber-active-theme);"></i> 本週行程週表</span>
+                            <button class="playlist-tab-btn" onclick="openLightbox('https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg', '星璃Seri - 本週行程週表')" style="padding: 4px 12px; font-size: 11px;">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> 放大週表
+                            </button>
+                        </div>
+                        <div style="position:relative; width:100%; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); cursor:pointer;" onclick="openLightbox('https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg', '星璃Seri - 本週行程週表')">
+                            <img src="https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg" alt="本週週表" style="width:100%; max-height: 400px; object-fit: contain; display:block; transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                        </div>
+                    </div>
+                    
+
                     <div class="stats-grid" style="margin-top: 10px; margin-bottom: 24px;">
                         <div style="background: rgba(139, 92, 246, 0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px;">
                             <h4 style="color: var(--vtuber-active-theme); font-size:13.5px; font-weight:800; margin-top:0; margin-bottom:12px; display:flex; align-items:center; gap:6px;">

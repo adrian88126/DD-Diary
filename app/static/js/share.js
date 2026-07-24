@@ -44,42 +44,46 @@ function playRecord(videoId, seconds, songTitle, singerName, shouldAutoplay = tr
         if (playerCard) playerCard.scrollIntoView({ behavior: 'smooth' });
     }
 
-    if (ytPlayer && activeVideoId === videoId) {
-        // 如果是同一支影片，直接跳轉秒數並播放
-        ytPlayer.seekTo(seconds, true);
+    if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+        // 如果播放器已建立且 API 可用，直接載入/切換影片 (防重複載入導致 postMessage 逾時報錯)
+        activeVideoId = videoId;
         if (shouldAutoplay) {
-            ytPlayer.playVideo();
+            ytPlayer.loadVideoById({
+                videoId: videoId,
+                startSeconds: seconds
+            });
+        } else {
+            ytPlayer.cueVideoById({
+                videoId: videoId,
+                startSeconds: seconds
+            });
         }
     } else {
-        // 如果是新影片或播放器未初始化
+        // 如果是播放器未初始化或不可用，則全新建立
         activeVideoId = videoId;
         const playerContainer = document.getElementById('youtube-player');
         if (playerContainer) {
             playerContainer.innerHTML = '<div id="yt-player-iframe"></div>';
             
-                const pVars = {
-                    'autoplay': shouldAutoplay ? 1 : 0,
-                    'playsinline': 1,
-                    'start': seconds,
-                    'enablejsapi': 1,
-                    'widget_referrer': window.location.href
-                };
-                if (window.location.protocol.startsWith('http')) {
-                    pVars['origin'] = window.location.origin;
-                }
-                ytPlayer = new YT.Player('yt-player-iframe', {
-                    height: '100%',
-                    width: '100%',
-                    videoId: videoId,
-                    playerVars: pVars,
-                    events: {
-                        'onReady': function(event) {
-                            if (shouldAutoplay) {
-                                event.target.playVideo();
-                            }
+            const pVars = {
+                'autoplay': shouldAutoplay ? 1 : 0,
+                'playsinline': 1,
+                'start': seconds,
+                'enablejsapi': 1
+            };
+            ytPlayer = new YT.Player('yt-player-iframe', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: pVars,
+                events: {
+                    'onReady': function(event) {
+                        if (shouldAutoplay) {
+                            event.target.playVideo();
                         }
                     }
-                });
+                }
+            });
         }
     }
 }
