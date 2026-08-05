@@ -1,5 +1,185 @@
 [
   {
+    "title_main": "How bad can i be",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "how bad can i be",
+    "song_type": "cover",
+    "id": 932,
+    "created_at": "2026-08-05T08:04:29",
+    "updated_at": "2026-08-05T08:04:29",
+    "artists": [
+      {
+        "name_main": "dr. seuss' the lorax",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 462,
+        "created_at": "2026-08-05T08:04:42"
+      }
+    ]
+  },
+  {
+    "title_main": "lonely king",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "lonely king",
+    "song_type": "cover",
+    "id": 931,
+    "created_at": "2026-08-05T08:04:29",
+    "updated_at": "2026-08-05T08:04:29",
+    "artists": [
+      {
+        "name_main": "CG5",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 463,
+        "created_at": "2026-08-05T08:04:47"
+      }
+    ]
+  },
+  {
+    "title_main": "Losin' streak",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "losin' streak",
+    "song_type": "cover",
+    "id": 930,
+    "created_at": "2026-08-05T08:04:29",
+    "updated_at": "2026-08-05T08:04:29",
+    "artists": [
+      {
+        "name_main": "hazbin hotel",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 464,
+        "created_at": "2026-08-05T08:04:56"
+      }
+    ]
+  },
+  {
+    "title_main": "casino royale",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "casino royale",
+    "song_type": "cover",
+    "id": 929,
+    "created_at": "2026-08-05T08:04:29",
+    "updated_at": "2026-08-05T08:04:29",
+    "artists": [
+      {
+        "name_main": "Derivakat",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 465,
+        "created_at": "2026-08-05T08:05:04"
+      }
+    ]
+  },
+  {
+    "title_main": "真夜中のドア~stay with me",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "真夜中のドア~stay with me",
+    "song_type": "cover",
+    "id": 928,
+    "created_at": "2026-08-05T08:04:29",
+    "updated_at": "2026-08-05T08:04:29",
+    "artists": [
+      {
+        "name_main": "松原美紀",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 330,
+        "created_at": "2026-07-14T04:00:00"
+      }
+    ]
+  },
+  {
+    "title_main": "オー・ラマ・ハヴェンナ　おお、愛するハヴェンナよ",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "オー・ラマ・ハヴェンナ　おお、愛するハヴェンナよ",
+    "song_type": "cover",
+    "id": 927,
+    "created_at": "2026-08-05T08:04:29",
+    "updated_at": "2026-08-05T08:04:29",
+    "artists": [
+      {
+        "name_main": "JACKJEANNE",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 466,
+        "created_at": "2026-08-05T08:05:27"
+      }
+    ]
+  },
+  {
+    "title_main": "我想擺爛",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "我想擺爛",
+    "song_type": "cover",
+    "id": 926,
+    "created_at": "2026-08-05T07:42:01",
+    "updated_at": "2026-08-05T07:42:01",
+    "artists": [
+      {
+        "name_main": "賀子玲",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 461,
+        "created_at": "2026-08-05T07:42:18"
+      }
+    ]
+  },
+  {
+    "title_main": "白月光與硃砂痣",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "白月光與硃砂痣",
+    "song_type": "cover",
+    "id": 925,
+    "created_at": "2026-08-05T07:36:40",
+    "updated_at": "2026-08-05T07:36:40",
+    "artists": [
+      {
+        "name_main": "大籽",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 167,
+        "created_at": "2026-07-14T03:59:55"
+      }
+    ]
+  },
+  {
+    "title_main": "喜歡你",
+    "title_ja": null,
+    "title_zh": null,
+    "title_romaji": "喜歡妳",
+    "song_type": "cover",
+    "id": 924,
+    "created_at": "2026-08-05T07:36:40",
+    "updated_at": "2026-08-05T07:46:38",
+    "artists": [
+      {
+        "name_main": "陳潔儀",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": null,
+        "id": 100,
+        "created_at": "2026-07-09T01:34:24"
+      }
+    ]
+  },
+  {
     "title_main": "怪獸の花",
     "title_ja": null,
     "title_zh": null,

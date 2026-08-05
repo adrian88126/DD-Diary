@@ -1,5 +1,973 @@
 [
   {
+    "song_id": 932,
+    "video_id": "i1GkcObsCMk",
+    "timestamp_seconds": 6859,
+    "note": null,
+    "id": 1181,
+    "created_at": "2026-08-05T08:04:29",
+    "song": {
+      "title_main": "How bad can i be",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "how bad can i be",
+      "song_type": "cover",
+      "id": 932,
+      "created_at": "2026-08-05T08:04:29",
+      "updated_at": "2026-08-05T08:04:29",
+      "artists": [
+        {
+          "name_main": "dr. seuss' the lorax",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 462,
+          "created_at": "2026-08-05T08:04:42"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "i1GkcObsCMk",
+      "title": "【歌回】🃏to🃏...要來一場賭狗的挑戰嗎！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/i1GkcObsCMk/hqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:34:13"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 931,
+    "video_id": "i1GkcObsCMk",
+    "timestamp_seconds": 5622,
+    "note": null,
+    "id": 1180,
+    "created_at": "2026-08-05T08:04:29",
+    "song": {
+      "title_main": "lonely king",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "lonely king",
+      "song_type": "cover",
+      "id": 931,
+      "created_at": "2026-08-05T08:04:29",
+      "updated_at": "2026-08-05T08:04:29",
+      "artists": [
+        {
+          "name_main": "CG5",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 463,
+          "created_at": "2026-08-05T08:04:47"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "i1GkcObsCMk",
+      "title": "【歌回】🃏to🃏...要來一場賭狗的挑戰嗎！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/i1GkcObsCMk/hqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:34:13"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 930,
+    "video_id": "i1GkcObsCMk",
+    "timestamp_seconds": 4756,
+    "note": null,
+    "id": 1179,
+    "created_at": "2026-08-05T08:04:29",
+    "song": {
+      "title_main": "Losin' streak",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "losin' streak",
+      "song_type": "cover",
+      "id": 930,
+      "created_at": "2026-08-05T08:04:29",
+      "updated_at": "2026-08-05T08:04:29",
+      "artists": [
+        {
+          "name_main": "hazbin hotel",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 464,
+          "created_at": "2026-08-05T08:04:56"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "i1GkcObsCMk",
+      "title": "【歌回】🃏to🃏...要來一場賭狗的挑戰嗎！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/i1GkcObsCMk/hqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:34:13"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 929,
+    "video_id": "i1GkcObsCMk",
+    "timestamp_seconds": 4494,
+    "note": null,
+    "id": 1178,
+    "created_at": "2026-08-05T08:04:29",
+    "song": {
+      "title_main": "casino royale",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "casino royale",
+      "song_type": "cover",
+      "id": 929,
+      "created_at": "2026-08-05T08:04:29",
+      "updated_at": "2026-08-05T08:04:29",
+      "artists": [
+        {
+          "name_main": "Derivakat",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 465,
+          "created_at": "2026-08-05T08:05:04"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "i1GkcObsCMk",
+      "title": "【歌回】🃏to🃏...要來一場賭狗的挑戰嗎！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/i1GkcObsCMk/hqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:34:13"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 928,
+    "video_id": "i1GkcObsCMk",
+    "timestamp_seconds": 3234,
+    "note": null,
+    "id": 1177,
+    "created_at": "2026-08-05T08:04:29",
+    "song": {
+      "title_main": "真夜中のドア~stay with me",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "真夜中のドア~stay with me",
+      "song_type": "cover",
+      "id": 928,
+      "created_at": "2026-08-05T08:04:29",
+      "updated_at": "2026-08-05T08:04:29",
+      "artists": [
+        {
+          "name_main": "松原美紀",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 330,
+          "created_at": "2026-07-14T04:00:00"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "i1GkcObsCMk",
+      "title": "【歌回】🃏to🃏...要來一場賭狗的挑戰嗎！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/i1GkcObsCMk/hqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:34:13"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 927,
+    "video_id": "i1GkcObsCMk",
+    "timestamp_seconds": 1640,
+    "note": null,
+    "id": 1176,
+    "created_at": "2026-08-05T08:04:29",
+    "song": {
+      "title_main": "オー・ラマ・ハヴェンナ　おお、愛するハヴェンナよ",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "オー・ラマ・ハヴェンナ　おお、愛するハヴェンナよ",
+      "song_type": "cover",
+      "id": 927,
+      "created_at": "2026-08-05T08:04:29",
+      "updated_at": "2026-08-05T08:04:29",
+      "artists": [
+        {
+          "name_main": "JACKJEANNE",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 466,
+          "created_at": "2026-08-05T08:05:27"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "i1GkcObsCMk",
+      "title": "【歌回】🃏to🃏...要來一場賭狗的挑戰嗎！ ₊⛪︎ 祿菈唄爾 LLB",
+      "published_at": "2026-07-30",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/i1GkcObsCMk/hqdefault.jpg",
+      "vtuber_id": 8,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:34:13"
+    },
+    "singers": [
+      {
+        "id": 8,
+        "name_main": "祿菈唄爾 LLB ch.",
+        "name_ja": null,
+        "name_zh": null,
+        "name_romaji": "llb ch",
+        "youtube_channel_id": "UCn1yfWxwtlWyXV4aqrkYGqw"
+      }
+    ]
+  },
+  {
+    "song_id": 926,
+    "video_id": "xbzjE_249hw",
+    "timestamp_seconds": 0,
+    "note": null,
+    "id": 1175,
+    "created_at": "2026-08-05T07:42:01",
+    "song": {
+      "title_main": "我想擺爛",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "我想擺爛",
+      "song_type": "cover",
+      "id": 926,
+      "created_at": "2026-08-05T07:42:01",
+      "updated_at": "2026-08-05T07:42:01",
+      "artists": [
+        {
+          "name_main": "賀子玲",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 461,
+          "created_at": "2026-08-05T07:42:18"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "xbzjE_249hw",
+      "title": "〚Cover〛我想擺爛｜滔滔饕餮 TaotaoTaotie",
+      "published_at": "2026-07-31",
+      "video_type": "cover_mv",
+      "thumbnail_url": "https://i1.ytimg.com/vi/xbzjE_249hw/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:37:15"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 679,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 6278,
+    "note": null,
+    "id": 1174,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "寶貝",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 679,
+      "created_at": "2026-07-14T03:59:59",
+      "updated_at": "2026-07-14T03:59:59",
+      "artists": [
+        {
+          "name_main": "張懸",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 282,
+          "created_at": "2026-07-14T03:59:59"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 332,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 5864,
+    "note": null,
+    "id": 1173,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "大魚",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "大魚",
+      "song_type": "cover",
+      "id": 332,
+      "created_at": "2026-07-13T09:42:55",
+      "updated_at": "2026-07-13T09:42:55",
+      "artists": [
+        {
+          "name_main": "周深",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 142,
+          "created_at": "2026-07-14T03:59:55"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 372,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 5597,
+    "note": null,
+    "id": 1172,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "映雪",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "映雪",
+      "song_type": "cover",
+      "id": 372,
+      "created_at": "2026-07-14T03:29:04",
+      "updated_at": "2026-07-14T03:29:04",
+      "artists": [
+        {
+          "name_main": "詩瑠",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 367,
+          "created_at": "2026-07-14T07:10:03"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 128,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 5092,
+    "note": null,
+    "id": 1171,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "冬眠",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 128,
+      "created_at": "2026-07-09T01:34:21",
+      "updated_at": "2026-07-09T01:34:21",
+      "artists": [
+        {
+          "name_main": "司南",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 31,
+          "created_at": "2026-07-09T01:34:21"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 42,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 4675,
+    "note": null,
+    "id": 1170,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "紅色高跟鞋",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 42,
+      "created_at": "2026-07-09T01:34:20",
+      "updated_at": "2026-07-09T01:34:20",
+      "artists": [
+        {
+          "name_main": "蔡健雅",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 13,
+          "created_at": "2026-07-09T01:34:20"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 123,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 3903,
+    "note": null,
+    "id": 1169,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "人質",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 123,
+      "created_at": "2026-07-09T01:34:21",
+      "updated_at": "2026-07-09T01:34:21",
+      "artists": [
+        {
+          "name_main": "張惠妹",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 30,
+          "created_at": "2026-07-09T01:34:21"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 139,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 3500,
+    "note": null,
+    "id": 1168,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "純白",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 139,
+      "created_at": "2026-07-09T01:34:21",
+      "updated_at": "2026-07-09T01:34:21",
+      "artists": [
+        {
+          "name_main": "雙笙",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 34,
+          "created_at": "2026-07-09T01:34:21"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 925,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 3254,
+    "note": null,
+    "id": 1167,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "白月光與硃砂痣",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "白月光與硃砂痣",
+      "song_type": "cover",
+      "id": 925,
+      "created_at": "2026-08-05T07:36:40",
+      "updated_at": "2026-08-05T07:36:40",
+      "artists": [
+        {
+          "name_main": "大籽",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 167,
+          "created_at": "2026-07-14T03:59:55"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 246,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 2920,
+    "note": null,
+    "id": 1166,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "從前說",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 246,
+      "created_at": "2026-07-09T01:34:23",
+      "updated_at": "2026-07-09T01:34:23",
+      "artists": [
+        {
+          "name_main": "小阿七",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 70,
+          "created_at": "2026-07-09T01:34:23"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 176,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 2461,
+    "note": null,
+    "id": 1165,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "可不可以",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 176,
+      "created_at": "2026-07-09T01:34:22",
+      "updated_at": "2026-07-09T01:34:22",
+      "artists": [
+        {
+          "name_main": "銀臨",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 45,
+          "created_at": "2026-07-09T01:34:22"
+        },
+        {
+          "name_main": "劉偉鋒",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 162,
+          "created_at": "2026-07-14T03:59:55"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 924,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 2046,
+    "note": null,
+    "id": 1164,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "喜歡你",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "喜歡妳",
+      "song_type": "cover",
+      "id": 924,
+      "created_at": "2026-08-05T07:36:40",
+      "updated_at": "2026-08-05T07:46:38",
+      "artists": [
+        {
+          "name_main": "陳潔儀",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 100,
+          "created_at": "2026-07-09T01:34:24"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 384,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 1740,
+    "note": null,
+    "id": 1163,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "九張機",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": "九張機",
+      "song_type": "cover",
+      "id": 384,
+      "created_at": "2026-07-14T03:31:44",
+      "updated_at": "2026-07-14T03:31:44",
+      "artists": [
+        {
+          "name_main": "葉炫清",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 355,
+          "created_at": "2026-07-14T06:58:12"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
+    "song_id": 11,
+    "video_id": "YRz5dsavWjk",
+    "timestamp_seconds": 1035,
+    "note": null,
+    "id": 1162,
+    "created_at": "2026-08-05T07:36:40",
+    "song": {
+      "title_main": "我懷念的",
+      "title_ja": null,
+      "title_zh": null,
+      "title_romaji": null,
+      "song_type": "cover",
+      "id": 11,
+      "created_at": "2026-07-09T01:34:19",
+      "updated_at": "2026-07-09T01:34:19",
+      "artists": [
+        {
+          "name_main": "孫燕姿",
+          "name_ja": null,
+          "name_zh": null,
+          "name_romaji": null,
+          "id": 7,
+          "created_at": "2026-07-09T01:34:19"
+        }
+      ]
+    },
+    "video": {
+      "video_id": "YRz5dsavWjk",
+      "title": "〚滔歌一曲〛唱一些哄睡的歌💤🥢💚｜滔滔饕餮Taotao",
+      "published_at": "2026-07-29",
+      "video_type": "stream_singing",
+      "thumbnail_url": "https://i2.ytimg.com/vi/YRz5dsavWjk/hqdefault.jpg",
+      "vtuber_id": 1,
+      "has_timeline": true,
+      "created_at": "2026-08-05T07:33:52"
+    },
+    "singers": [
+      {
+        "id": 1,
+        "name_main": "滔滔饕餮 TaotaoTaotie Ch.",
+        "name_ja": "滔滔饕餮",
+        "name_zh": "滔滔饕餮",
+        "name_romaji": "taotaotaotie ch",
+        "youtube_channel_id": "UC1yoRL7QUKx5HF3ZgGJ8tUA"
+      }
+    ]
+  },
+  {
     "song_id": 923,
     "video_id": "yLwEGaFWPak",
     "timestamp_seconds": 7683,
@@ -7245,7 +8213,7 @@
     "video": {
       "video_id": "5_VDwjHuIIM",
       "title": "〚原創曲〛貪餮之王｜滔滔饕餮 TaotaoTaotie【Official Music Video】",
-      "published_at": "2026-01-25",
+      "published_at": "2025-12-30",
       "video_type": "original_mv",
       "thumbnail_url": "https://img.youtube.com/vi/5_VDwjHuIIM/mqdefault.jpg",
       "vtuber_id": 1,
@@ -7293,7 +8261,7 @@
     "video": {
       "video_id": "7phbUlQl0E4",
       "title": "〚Cover〛KING｜滔滔饕餮 TaotaoTaotie",
-      "published_at": "2026-03-26",
+      "published_at": "2026-03-07",
       "video_type": "cover_mv",
       "thumbnail_url": "https://img.youtube.com/vi/7phbUlQl0E4/mqdefault.jpg",
       "vtuber_id": 1,
