@@ -20,6 +20,20 @@ from app.schemas.artist import ArtistCreate
 
 router = APIRouter()
 
+def _upgrade_thumb_quality(url: str) -> str:
+    """將 YouTube 縮圖 URL 升級為最高畫質 maxresdefault (1280x720)"""
+    if not url:
+        return url
+    import re
+    # 替換 default/mqdefault/hqdefault/sddefault → maxresdefault
+    upgraded = re.sub(
+        r'/(default|mqdefault|hqdefault|sddefault)\.jpg',
+        '/maxresdefault.jpg',
+        url
+    )
+    return upgraded
+
+
 @router.get("/", response_model=List[VTuber])
 def read_vtubers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return get_vtubers(db, skip=skip, limit=limit)
@@ -739,7 +753,7 @@ def sync_vtuber_youtube(
 
     # 5. 若本次同步偵測到週表影片，自動更新主播的 schedule_image_url
     if latest_schedule_thumb:
-        db_vtuber.schedule_image_url = latest_schedule_thumb
+        db_vtuber.schedule_image_url = _upgrade_thumb_quality(latest_schedule_thumb)
 
     db.commit()
 
@@ -798,7 +812,7 @@ def sync_vtuber_schedule(vtuber_id: int, db: Session = Depends(get_db)):
     # 更新主播週表圖
     schedule_updated = False
     if latest_thumb:
-        db_vtuber.schedule_image_url = latest_thumb
+        db_vtuber.schedule_image_url = _upgrade_thumb_quality(latest_thumb)
         schedule_updated = True
 
     db.commit()
