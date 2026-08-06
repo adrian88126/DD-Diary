@@ -60,14 +60,42 @@ export function loadAdminVtubers() {
             <td>${avatarHtml}</td>
             <td>${namesHtml}</td>
             <td>${channelLink}</td>
-            <td style="text-align:center;">
+            <td style="text-align:center; white-space:nowrap;">
                 <button class="btn btn-secondary" style="padding:4px 8px; font-size:11px; margin-right:4px;" onclick="window.editVtuber(${vt.id})"><i class="fa-solid fa-pen-to-square"></i> 編輯</button>
+                <button class="btn btn-secondary" style="padding:4px 8px; font-size:11px; margin-right:4px; color:var(--neon-gold); border-color:rgba(251,191,36,0.3);" onclick="window.syncScheduleImage(${vt.id}, '${vt.name_main.replace(/'/g, "\\'")}', this)"><i class="fa-solid fa-calendar-days"></i> 更新週表</button>
                 <button class="btn btn-secondary" style="padding:4px 8px; font-size:11px; color:var(--neon-pink); border-color:rgba(255,0,127,0.15);" onclick="window.deleteVtuberRecord(${vt.id}, '${vt.name_main.replace(/'/g, "\\'")}')"><i class="fa-solid fa-trash-can"></i> 刪除</button>
             </td>
         `;
         tbody.appendChild(tr);
     });
 }
+
+window.syncScheduleImage = async function(vtuberId, vtName, btn) {
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    try {
+        const res = await fetch(`${API_BASE}/vtubers/${vtuberId}/sync_schedule`, { method: 'POST' });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            if (data.schedule_image_updated) {
+                showToast(`🗓️ [${vtName}] 週表圖已更新！共找到 ${data.schedule_videos_found} 部週表影片。`);
+            } else {
+                showToast(`[${vtName}] 資料庫中尚無週表影片，schedule_image_url 未變更。`, 'error');
+            }
+            await fetchAllData();
+            loadAdminVtubers();
+        } else {
+            showToast(`更新週表失敗: ${data.detail || JSON.stringify(data)}`, 'error');
+        }
+    } catch (err) {
+        showToast('連線失敗', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+    }
+};
+
 
 export function navigateToAdminPane(paneId) {
     // 隱藏所有後台 Pane

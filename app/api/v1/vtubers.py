@@ -667,26 +667,45 @@ def sync_vtuber_youtube(
                 all_videos_map[vid] = v
             
     # 4. 批次寫入資料庫
+    from datetime import date as date_type
+    today = date_type.today()
+    SCHEDULE_KEYWORDS = ["週表", "周表", "schedule", "予定", "今週", "来週"]
+    # 追蹤本次同步中最新的週表縮圖（日期最大的那一筆）
+    latest_schedule_thumb = None
+    latest_schedule_date = None
+
     synced_entries = []
     for vid, v_info in all_videos_map.items():
         title = v_info["title"]
         thumb_url = v_info["thumbnail_url"]
         pub_date = v_info["published_at"]
         is_approx = v_info.get("is_approximate", False)
-        
+
         # 一律優先發起 watch page 抓取精準日期，以保證與 YouTube 網頁上看到的直播日期 100% 一致 (避免 RSS 時區偏差與排程偏差)
         exact_date = fetch_exact_youtube_date_helper(vid)
         if exact_date:
             pub_date = exact_date
-                
+
+        # --- 週表待機室辨識邏輯 ---
+        lower_title = title.lower()
+        is_schedule = False
+        # 條件一：標題含週表關鍵字（優先、最可靠）
+        if any(k in title for k in SCHEDULE_KEYWORDS):
+            is_schedule = True
+        # 條件二：排程日期超過半年後（待機室常見手法）
+        elif pub_date and (pub_date - today).days > 180:
+            is_schedule = True
+
         db_video = db.scalars(select(DBVideo).where(DBVideo.video_id == vid)).first()
         if not db_video:
-            lower_title = title.lower()
-            if any(k in lower_title for k in ["歌", "live", "mv", "cover", "original", "singing", "翻唱", "原創"]):
+            # 週表優先判斷，其次才分歌回/日常
+            if is_schedule:
+                v_type = "schedule"
+            elif any(k in lower_title for k in ["歌", "live", "mv", "cover", "original", "singing", "翻唱", "原創"]):
                 v_type = "stream_singing"
             else:
                 v_type = "stream_other"
-                
+
             db_video = DBVideo(
                 video_id=vid,
                 title=title,
@@ -698,6 +717,9 @@ def sync_vtuber_youtube(
             db.add(db_video)
             db.flush()
         else:
+            # 已存在的影片：若符合週表條件，更新其類型
+            if is_schedule and db_video.video_type != "schedule":
+                db_video.video_type = "schedule"
             if db_video.vtuber_id is None:
                 db_video.vtuber_id = vtuber_id
             if thumb_url:
@@ -706,13 +728,85 @@ def sync_vtuber_youtube(
                 # 每次同步時，若取得更新日期則覆蓋以修正時區偏差
                 db_video.published_at = pub_date
             db.flush()
-            
+
+        # 追蹤最新的週表縮圖（取日期最大的那筆更新主播週表圖）
+        if is_schedule and thumb_url:
+            if latest_schedule_date is None or (pub_date and pub_date > latest_schedule_date):
+                latest_schedule_thumb = thumb_url
+                latest_schedule_date = pub_date
+
         synced_entries.append(db_video)
-        
+
+    # 5. 若本次同步偵測到週表影片，自動更新主播的 schedule_image_url
+    if latest_schedule_thumb:
+        db_vtuber.schedule_image_url = latest_schedule_thumb
+
     db.commit()
-    
+
     synced_ids = [v.video_id for v in synced_entries]
     results = db.scalars(select(DBVideo).where(DBVideo.video_id.in_(synced_ids))).all()
     return results
 
 
+@router.post("/{vtuber_id}/sync_schedule")
+def sync_vtuber_schedule(vtuber_id: int, db: Session = Depends(get_db)):
+    """
+    掃描該主播資料庫中已有的影片，自動辨識週表待機室影片並更新主播的 schedule_image_url。
+    判斷條件（符合任一即算週表）：
+      1. 標題含「週表」「周表」「schedule」「予定」「今週」「来週」
+      2. 排程日期超過今天 +180 天
+    更新邏輯：取符合條件中日期最新的那一筆縮圖 → 更新 vtuber.schedule_image_url。
+    """
+    db_vtuber = get_vtuber(db, vtuber_id=vtuber_id)
+    if not db_vtuber:
+        raise HTTPException(status_code=404, detail="VTuber not found")
+
+    SCHEDULE_KEYWORDS = ["週表", "周表", "schedule", "予定", "今週", "来週"]
+    today = date.today()
+
+    # 取出該主播所有影片
+    all_videos = db.scalars(
+        select(DBVideo).where(DBVideo.vtuber_id == vtuber_id)
+    ).all()
+
+    latest_thumb = None
+    latest_date = None
+    updated_count = 0
+
+    for v in all_videos:
+        title = v.title or ""
+        is_schedule = False
+
+        # 條件一：標題關鍵字
+        if any(k in title for k in SCHEDULE_KEYWORDS):
+            is_schedule = True
+        # 條件二：日期超過半年後
+        elif v.published_at and (v.published_at - today).days > 180:
+            is_schedule = True
+
+        if is_schedule:
+            # 更正舊有誤分類的影片
+            if v.video_type != "schedule":
+                v.video_type = "schedule"
+                updated_count += 1
+            # 追蹤日期最新的縮圖
+            if v.thumbnail_url:
+                if latest_date is None or (v.published_at and v.published_at > latest_date):
+                    latest_thumb = v.thumbnail_url
+                    latest_date = v.published_at
+
+    # 更新主播週表圖
+    schedule_updated = False
+    if latest_thumb:
+        db_vtuber.schedule_image_url = latest_thumb
+        schedule_updated = True
+
+    db.commit()
+
+    return {
+        "success": True,
+        "schedule_videos_found": updated_count + (1 if schedule_updated and updated_count == 0 else 0),
+        "type_corrected": updated_count,
+        "schedule_image_updated": schedule_updated,
+        "schedule_image_url": latest_thumb
+    }
