@@ -1,0 +1,211 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Smart Timeline - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="header-actions mb-4" style="display: flex; justify-content: space-between; align-items: flex-end;">
+  <div>
+    <h2 style="display: flex; align-items: center; gap: 10px;">
+      <a href="{{ url_for('admin.list_videos') }}" class="btn btn-sm" style="background: var(--card-bg); border-color: var(--card-border);">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+      {{ _('Smart Timeline Parser') }}
+    </h2>
+    <p class="text-muted mt-1">{{ _('Parsing timeline for:') }} <strong class="text-primary">{{ video.title }}</strong></p>
+  </div>
+  <div>
+    <button class="btn btn-primary" id="btn-save-all" disabled>
+      <i class="fa-solid fa-save"></i> {{ _('Save All to Database') }}
+    </button>
+  </div>
+</div>
+
+<div class="grid" style="--grid-columns: 2; align-items: start;">
+  <!-- Left Side: Raw Text Input -->
+  <div class="card" style="height: calc(100vh - 200px); display: flex; flex-direction: column;">
+    <h3>{{ _('1. Paste Raw Text') }}</h3>
+    <p class="text-muted mb-2" style="font-size: 0.9em;">
+      {{ _('Paste YouTube comments here. Format: "1. Song Name 13:34" or "1:03:50 Song Name".') }}
+    </p>
+    
+    <div class="form-group mb-2">
+      <label>{{ _('Singers (Optional)') }}</label>
+      <select id="singer_ids" class="form-input" multiple placeholder="{{ _('Select singers for all records...') }}">
+        {% for singer in all_singers %}
+        <option value="{{ singer.id }}" {% if video.vtuber_id == singer.id %}selected{% endif %}>{{ singer.name_main }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <textarea id="raw-text" class="form-input" style="flex: 1; resize: none; font-family: monospace; font-size: 14px;" placeholder="1. 錦鯉抄 13:34&#10;2. 是風動 19:50&#10;3. 不老夢 26:13"></textarea>
+  </div>
+
+  <!-- Right Side: Preview & Edit -->
+  <div class="card" style="height: calc(100vh - 200px); display: flex; flex-direction: column; overflow: hidden;">
+    <h3>{{ _('2. Preview Results') }} <span id="parsed-count" class="badge badge-primary" style="margin-left: 10px;">0</span></h3>
+    <p class="text-muted mb-2" style="font-size: 0.9em;">
+      {{ _('Review parsed results. Unrecognized lines will be ignored. New songs will be automatically created.') }}
+    </p>
+    <div class="table-responsive" style="flex: 1; overflow-y: auto; background: var(--bg-color); border-radius: var(--radius-sm);">
+      <table class="data-table" id="preview-table" style="margin: 0; width: 100%;">
+        <thead style="position: sticky; top: 0; z-index: 10;">
+          <tr>
+            <th style="width: 80px;">{{ _('Time') }}</th>
+            <th style="width: 80px;">{{ _('Seconds') }}</th>
+            <th>{{ _('Song Title') }}</th>
+            <th style="width: 60px;"></th>
+          </tr>
+        </thead>
+        <tbody id="preview-tbody">
+          <!-- Rows will be injected by JS -->
+        </tbody>
+      </table>
+      <div id="empty-state" style="padding: 2rem; text-align: center; color: var(--text-muted);">
+        <i class="fa-solid fa-list-ul fa-3x mb-3" style="opacity: 0.2;"></i>
+        <p>{{ _('Paste text on the left to see preview.') }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const singerSelect = new TomSelect('#singer_ids', {
+    plugins: ['remove_button'],
+    create: false,
+    maxOptions: null
+  });
+
+  const rawText = document.getElementById('raw-text');
+  const tbody = document.getElementById('preview-tbody');
+  const parsedCount = document.getElementById('parsed-count');
+  const emptyState = document.getElementById('empty-state');
+  const btnSave = document.getElementById('btn-save-all');
+  
+  let parsedItems = [];
+
+  rawText.addEventListener('input', () => {
+    parseText(rawText.value);
+  });
+  
+  function parseText(text) {
+    const lines = text.split('\n');
+    parsedItems = [];
+    
+    // Matches times like 13:34, 1:03:50, 13：34 (fullwidth)
+    const timeRegex = /(?:^|\s)((\d{1,2})[:：](\d{2})(?:[:：](\d{2}))?)(?=\s|$)/;
+    
+    lines.forEach(line => {
+      let cleanLine = line.trim();
+      if (!cleanLine) return;
+      
+      const timeMatch = cleanLine.match(timeRegex);
+      if (timeMatch) {
+        const timeStr = timeMatch[1];
+        let seconds = 0;
+        
+        // Parse time to seconds
+        const parts = timeStr.replace(/：/g, ':').split(':').reverse();
+        if (parts[0]) seconds += parseInt(parts[0], 10);
+        if (parts[1]) seconds += parseInt(parts[1], 10) * 60;
+        if (parts[2]) seconds += parseInt(parts[2], 10) * 3600;
+        
+        // Remove time from string to get title
+        let title = cleanLine.replace(timeStr, '').trim();
+        
+        // Remove numbering (e.g. "1. ", "02、", "- ")
+        title = title.replace(/^\d+[\.、]\s*/, '').replace(/^-\s*/, '').trim();
+        
+        if (title && !isNaN(seconds)) {
+          parsedItems.push({
+            original_time: timeStr.replace(/：/g, ':'),
+            timestamp_seconds: seconds,
+            title: title
+          });
+        }
+      }
+    });
+    
+    renderPreview();
+  }
+  
+  function renderPreview() {
+    tbody.innerHTML = '';
+    parsedCount.textContent = parsedItems.length;
+    
+    if (parsedItems.length === 0) {
+      emptyState.style.display = 'block';
+      document.getElementById('preview-table').style.display = 'none';
+      btnSave.disabled = true;
+      return;
+    }
+    
+    emptyState.style.display = 'none';
+    document.getElementById('preview-table').style.display = 'table';
+    btnSave.disabled = false;
+    
+    parsedItems.forEach((item, idx) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="badge" style="background: var(--card-bg); color: var(--primary); font-family: monospace;">${item.original_time}</span></td>
+        <td class="text-muted" style="font-size: 0.9em;">${item.timestamp_seconds}s</td>
+        <td>
+          <input type="text" class="form-input" style="min-height: 32px; padding: 4px 8px;" value="${item.title}" onchange="updateItemTitle(${idx}, this.value)">
+        </td>
+        <td>
+          <button class="btn btn-sm btn-danger" onclick="removeItem(${idx})" style="padding: 4px 8px;"><i class="fa-solid fa-times"></i></button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+  
+  window.updateItemTitle = function(idx, newTitle) {
+    if (parsedItems[idx]) {
+      parsedItems[idx].title = newTitle;
+    }
+  };
+  
+  window.removeItem = function(idx) {
+    parsedItems.splice(idx, 1);
+    renderPreview();
+  };
+  
+  btnSave.addEventListener('click', async () => {
+    if (parsedItems.length === 0) return;
+    
+    btnSave.disabled = true;
+    const oldText = btnSave.innerHTML;
+    btnSave.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> {{ _('Saving...') }}`;
+    
+    try {
+      const singers = singerSelect.getValue();
+      const res = await fetch('{{ url_for("admin.video_timeline_save", id=video.video_id) }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: parsedItems,
+          singer_ids: singers
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('{{ _("Successfully saved") }} ' + data.count + ' {{ _("records!") }}');
+        window.location.href = '{{ url_for("admin.list_videos") }}';
+      } else {
+        alert('{{ _("Error:") }} ' + data.error);
+        btnSave.disabled = false;
+        btnSave.innerHTML = oldText;
+      }
+    } catch (err) {
+      alert('{{ _("Network error occurred") }}');
+      btnSave.disabled = false;
+      btnSave.innerHTML = oldText;
+    }
+  });
+  
+});
+</script>
+{% endblock %}

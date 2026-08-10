@@ -1,0 +1,121 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Singing Streams - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="header-actions mb-4" style="display: flex; justify-content: space-between; align-items: center;">
+  <h2>{{ _('Singing Streams') }}</h2>
+  <div style="display: flex; gap: 10px;">
+    <!-- Minimal header, no add video buttons here, they are in Videos -->
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="form-group" style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 200px;">
+      <input type="text" id="table-search" class="form-input" placeholder="{{ _('Search singing streams...') }}">
+    </div>
+    <div style="width: 200px;">
+      <select id="vtuber-filter" class="form-input">
+        <option value="">{{ _('All VTubers') }}</option>
+        {% for vtuber in all_vtubers %}
+        <option value="{{ vtuber.id }}">{{ vtuber.name_main }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="width: 150px;">
+      <select id="sort-filter" class="form-input">
+        <option value="newest">{{ _('Newest First') }}</option>
+        <option value="oldest">{{ _('Oldest First') }}</option>
+      </select>
+    </div>
+  </div>
+
+  <table class="data-table admin-data-table">
+    <thead>
+      <tr>
+        <th>{{ _('Thumbnail') }}</th>
+        <th>{{ _('Title') }}</th>
+        <th>{{ _('Type') }}</th>
+        <th>{{ _('Published At') }}</th>
+        <th style="text-align: right;">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody id="video-list">
+      {% for v in videos %}
+      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}">
+        <td width="120">
+          {% if v.thumbnail_url %}
+          <img src="{{ v.thumbnail_url }}" alt="thumb" style="width: 100px; border-radius: 8px; object-fit: cover;">
+          {% else %}
+          <div style="width: 100px; height: 56px; background: #eee; border-radius: 8px;"></div>
+          {% endif %}
+        </td>
+        <td class="search-text">
+          <strong style="display: block; margin-bottom: 4px;">{{ v.title }}</strong>
+          <small class="text-muted">{{ v.video_id }}</small>
+        </td>
+        <td class="search-text">
+          <span class="badge badge-info">{{ _(v.video_type) }}</span>
+        </td>
+        <td class="search-text">{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '-' }}</td>
+        <td>
+          <div class="flex gap-2" style="justify-content: flex-end;">
+            <a href="{{ url_for('admin.video_timeline', id=v.video_id) }}" class="btn btn-sm btn-info" title="{{ _('Smart Timeline Parser') }}">
+              <i class="fa-solid fa-list-ol"></i> {{ _('Timeline') }}
+            </a>
+            <a href="https://youtube.com/watch?v={{ v.video_id }}" target="_blank" class="btn btn-sm btn-outline"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('table-search');
+  const vtuberFilter = document.getElementById('vtuber-filter');
+  const sortFilter = document.getElementById('sort-filter');
+  const tbody = document.getElementById('video-list');
+  
+  function applyFilters() {
+    const term = searchInput.value.toLowerCase();
+    const vtuberId = vtuberFilter.value;
+    const sort = sortFilter.value;
+    
+    // 1. Filter
+    const rows = Array.from(tbody.querySelectorAll('.search-item'));
+    rows.forEach(el => {
+      const text = el.querySelector('.search-text').textContent.toLowerCase();
+      const rowVtuber = el.dataset.vtuber;
+      
+      const matchesSearch = text.includes(term);
+      const matchesVtuber = !vtuberId || rowVtuber === vtuberId;
+      
+      el.style.display = (matchesSearch && matchesVtuber) ? '' : 'none';
+    });
+    
+    // 2. Sort
+    const visibleRows = rows.filter(el => el.style.display !== 'none');
+    visibleRows.sort((a, b) => {
+      const dateA = new Date(a.dataset.date).getTime();
+      const dateB = new Date(b.dataset.date).getTime();
+      
+      if (sort === 'newest') return dateB - dateA;
+      if (sort === 'oldest') return dateA - dateB;
+      return 0;
+    });
+    
+    visibleRows.forEach(row => tbody.appendChild(row));
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+  vtuberFilter.addEventListener('change', applyFilters);
+  sortFilter.addEventListener('change', applyFilters);
+});
+</script>
+{% endblock %}

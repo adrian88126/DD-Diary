@@ -1,0 +1,199 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}VTubers - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="action-header">
+  <h2>{{ _('VTubers') }}</h2>
+  <button class="btn btn-primary" onclick="openVtuberForm()"><i class="fa-solid fa-plus"></i> {{ _('Create New') }}</button>
+</div>
+
+<div class="form-group max-w-md mb-4">
+  <input type="text" id="table-search" class="form-input" placeholder="{{ _('Search...') }}">
+</div>
+
+<div class="bulk-action-bar">
+  <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="Select All">
+  <button class="btn btn-sm btn-danger" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> {{ _('Delete Selected') }}</button>
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_vtuber', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_vtubers') }}">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th style="width: 60px;">Avatar</th>
+        <th class="sortable">Name (Main)</th>
+        <th>YouTube</th>
+        <th style="width: 120px;">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in vtubers %}
+      <tr class="search-item" data-id="{{ v.id }}">
+        <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ v.id }}"></td>
+        <td>
+          {% if v.avatar_url and v.avatar_url.strip() %}
+          <img src="{{ v.avatar_url }}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+          {% endif %}
+        </td>
+        <td class="editable-cell search-text" data-field="name_main" title="Double click to edit">{{ v.name_main }}</td>
+        <td>
+          {% if v.youtube_channel_id %}
+          <a href="https://youtube.com/channel/{{ v.youtube_channel_id }}" target="_blank" class="badge badge-danger"><i class="fa-brands fa-youtube"></i> Channel</a>
+          {% endif %}
+        </td>
+        <td>
+          <div class="flex gap-2">
+            {% set v_data = {
+              'action': url_for('admin.edit_vtuber', id=v.id),
+              'name_main': v.name_main,
+              'name_romaji': v.name_romaji,
+              'name_ja': v.name_ja,
+              'name_zh': v.name_zh,
+              'description': v.description,
+              'youtube_channel_id': v.youtube_channel_id,
+              'theme_color': v.theme_color,
+              'avatar_url': v.avatar_url,
+              'banner_url': v.banner_url,
+              'schedule_image_url': v.schedule_image_url,
+              'social_links': v.social_links
+            } %}
+            <button class="btn btn-sm btn-outline" onclick="openVtuberForm(this)" data-vtuber="{{ v_data | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <form method="POST" action="{{ url_for('admin.delete_vtuber', id=v.id) }}" class="delete-form" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer -->
+<div class="drawer {% if request.endpoint in ['admin.create_vtuber', 'admin.edit_vtuber'] %}open{% endif %}" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{% if item %}{{ _('Edit VTuber') }}{% else %}{{ _('New VTuber') }}{% endif %}</h3>
+    <button class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="vtuber-form" method="POST" action="{{ url_for('admin.edit_vtuber', id=item.id) if item else url_for('admin.create_vtuber') }}">
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Main Name') }} *</label>
+          <input type="text" id="name_main" name="name_main" class="form-input" value="{{ item.name_main if item else '' }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('Romaji Name') }}</label>
+          <input type="text" id="name_romaji" name="name_romaji" class="form-input" value="{{ item.name_romaji if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Japanese Name') }}</label>
+          <input type="text" id="name_ja" name="name_ja" class="form-input" value="{{ item.name_ja if item else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Chinese Name') }}</label>
+          <input type="text" id="name_zh" name="name_zh" class="form-input" value="{{ item.name_zh if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Description') }}</label>
+        <textarea id="description" name="description" class="form-input" rows="3">{{ item.description if item else '' }}</textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('YouTube Channel ID') }}</label>
+          <input type="text" id="youtube_channel_id" name="youtube_channel_id" class="form-input" value="{{ item.youtube_channel_id if item else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Theme Color') }}</label>
+          <input type="color" id="theme_color" name="theme_color" class="form-input" value="{{ item.theme_color if item and item.theme_color else '#8a5adb' }}" style="height: 48px; padding: 0.5rem;">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Avatar URL') }}</label>
+        <input type="url" id="avatar_url" name="avatar_url" class="form-input" value="{{ item.avatar_url if item else '' }}">
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Banner URL') }}</label>
+        <input type="url" id="banner_url" name="banner_url" class="form-input" value="{{ item.banner_url if item else '' }}">
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Schedule Image URL') }}</label>
+        <input type="url" id="schedule_image_url" name="schedule_image_url" class="form-input" value="{{ item.schedule_image_url if item else '' }}">
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Social Links (JSON)') }}</label>
+        <textarea id="social_links" name="social_links" class="form-input" rows="3">{{ item.social_links | tojson if item and item.social_links else '' }}</textarea>
+      </div>
+      
+      <div class="flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
+      </div>
+    </form>
+    {% if item and item.youtube_channel_id %}
+    <form method="POST" action="{{ url_for('admin.sync_youtube', id=item.id) }}" class="mt-4">
+      <button type="submit" class="btn btn-outline"><i class="fa-brands fa-youtube"></i> {{ _('Sync YouTube') }}</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+function openVtuberForm(btn) {
+  let data = { action: '{{ url_for("admin.create_vtuber") }}' };
+  if (btn && btn.dataset.vtuber) {
+    data = JSON.parse(btn.dataset.vtuber);
+  }
+
+  document.getElementById('vtuber-form').action = data.action;
+  document.getElementById('drawer-title').textContent = data.name_main ? '{{ _("Edit VTuber") }}' : '{{ _("New VTuber") }}';
+  
+  document.getElementById('name_main').value = data.name_main || '';
+  document.getElementById('name_romaji').value = data.name_romaji || '';
+  document.getElementById('name_ja').value = data.name_ja || '';
+  document.getElementById('name_zh').value = data.name_zh || '';
+  document.getElementById('description').value = data.description || '';
+  document.getElementById('youtube_channel_id').value = data.youtube_channel_id || '';
+  document.getElementById('theme_color').value = data.theme_color || '#8a5adb';
+  document.getElementById('avatar_url').value = data.avatar_url || '';
+  document.getElementById('banner_url').value = data.banner_url || '';
+  document.getElementById('schedule_image_url').value = data.schedule_image_url || '';
+  
+  if (data.social_links && data.social_links !== 'None') {
+    try {
+      const parsed = JSON.parse(data.social_links);
+      document.getElementById('social_links').value = typeof parsed === 'string' ? parsed : JSON.stringify(parsed);
+    } catch(e) {
+      document.getElementById('social_links').value = data.social_links;
+    }
+  } else {
+    document.getElementById('social_links').value = '';
+  }
+  
+  document.getElementById('form-drawer').classList.add('open');
+}
+
+document.getElementById('table-search')?.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.search-item').forEach(el => {
+    const text = el.querySelector('.search-text').textContent.toLowerCase();
+    el.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

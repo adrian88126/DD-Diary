@@ -29,7 +29,7 @@
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: radial-gradient(circle at 50% 20%, #171124 0%, #07050d 80%);
+            background: #09070f;
             color: #cbd5e1;
             margin: 0;
             padding: 0;
@@ -77,9 +77,7 @@
             font-family: 'Outfit', sans-serif;
             font-size: 2.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 30%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
             margin: 0 0 12px 0;
             letter-spacing: -1px;
             display: flex;
@@ -261,7 +259,7 @@
 
         .card-banner-overlay {
             height: 80px;
-            background: var(--vtuber-theme-gradient, linear-gradient(135deg, #1e1b4b, #311042));
+            background: var(--vtuber-theme, #1e1b4b);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             position: relative;
         }
@@ -711,13 +709,13 @@
             <!-- 左側：主播卡片網格 -->
             <section class="vtuber-grid" id="vtuber-grid-container">
                 {% for vt in vtubers %}
-                <a href="share/{{ vt.name_romaji.replace(' ', '_') if vt.name_romaji else vt.id }}/" 
+                <a href="{{ url_for('share.profile', identifier=(vt.name_romaji.replace(' ', '_') if vt.name_romaji else vt.id)) }}" 
                    class="vtuber-card" 
                    data-vtuber-id="{{ vt.id }}"
                    data-search-text="{{ vt.name_main }} {{ vt.name_romaji or '' }} {{ vt.name_ja or '' }} {{ vt.name_zh or '' }} {{ vt.description or '' }}"
                    style="--vtuber-theme: {{ vt.theme_color or '#a78bfa' }}; --vtuber-theme-shadow: {{ vt.theme_color or '#a78bfa' }}4d;">
                     <!-- Card Header Banner -->
-                    <div class="card-banner-overlay" style="background: {% if vt.banner_url and vt.banner_url.strip() %}url('{{ vt.banner_url }}'){% else %}{% if vt.id == 1 %}linear-gradient(135deg, #010201 0%, #0c1c0f 50%, #010201 100%){% else %}linear-gradient(45deg, #1e1b4b, #311042){% endif %}{% endif %} center/cover no-repeat;"></div>
+                    <div class="card-banner-overlay" style="background: {% if vt.banner_url and vt.banner_url.strip() %}url('{{ vt.banner_url }}') center/cover no-repeat{% else %}var(--vtuber-theme, #1e1b4b){% endif %};"></div>
                     
                     <div class="card-body">
                         <div class="avatar-container" style="{% if not vt.avatar_url %}background: {{ vt.theme_color or '#1e1b4b' }};{% endif %}">
@@ -768,7 +766,7 @@
                                 {% endif %}
                                 <span>{{ vt.name_main }}</span>
                             </div>
-                            <a href="share/{{ vt.name_romaji.replace(' ', '_') if vt.name_romaji else vt.id }}/" style="font-size:11px; color:var(--neon-purple); text-decoration:none;">
+                            <a href="{{ url_for('share.profile', identifier=(vt.name_romaji.replace(' ', '_') if vt.name_romaji else vt.id)) }}" style="font-size:11px; color:var(--neon-purple); text-decoration:none;">
                                 專頁 <i class="fa-solid fa-angle-right"></i>
                             </a>
                         </div>

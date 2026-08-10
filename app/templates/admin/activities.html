@@ -1,0 +1,150 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Activities - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="action-header">
+  <h2>Activities</h2>
+  <button class="btn btn-primary" onclick="openActivityForm()"><i class="fa-solid fa-plus"></i> New Activity</button>
+</div>
+
+<div class="form-group max-w-md mb-4">
+  <input type="text" id="table-search" class="form-input" placeholder="Search Activities...">
+</div>
+
+<div class="bulk-action-bar">
+  <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="Select All">
+  <button class="btn btn-sm btn-danger" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_activity', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_activities') }}">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th class="sortable">Title</th>
+        <th class="sortable">Date</th>
+        <th class="sortable">Type</th>
+        <th>VTuber ID</th>
+        <th style="width: 120px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in activities %}
+      <tr class="search-item" data-id="{{ a.id }}">
+        <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ a.id }}"></td>
+        <td class="editable-cell search-text" data-field="title" title="Double click to edit">{{ a.title }}</td>
+        <td class="editable-cell search-text" data-field="event_date" title="Double click to edit">{{ a.event_date.strftime('%Y-%m-%d') if a.event_date else '-' }}</td>
+        <td class="search-text">
+          <span class="badge badge-outline">{{ a.activity_type }}</span>
+        </td>
+        <td class="search-text">{{ a.vtuber_id }}</td>
+        <td>
+          <div class="flex gap-2">
+            {% set act_data = {
+              'action': url_for('admin.edit_activity', id=a.id),
+              'title': a.title,
+              'event_date': a.event_date.strftime('%Y-%m-%d') if a.event_date else '',
+              'activity_type': a.activity_type or 'milestone',
+              'vtuber_id': a.vtuber_id or '',
+              'link_url': a.link_url or '',
+              'description': a.description or ''
+            } %}
+            <button class="btn btn-sm btn-outline" onclick="openActivityForm(this)" data-activity="{{ act_data | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <form method="POST" action="{{ url_for('admin.delete_activity', id=a.id) }}" class="delete-form" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer -->
+<div class="drawer {% if request.endpoint in ['admin.create_activity', 'admin.edit_activity'] %}open{% endif %}" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{% if item %}{{ _('Edit Activity') }}{% else %}{{ _('New Activity') }}{% endif %}</h3>
+    <button class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="activity-form" method="POST" action="{{ url_for('admin.edit_activity', id=item.id) if item else url_for('admin.create_activity') }}">
+      <div class="form-group">
+        <label>{{ _('Title') }} *</label>
+        <input type="text" id="title" name="title" class="form-input" value="{{ item.title if item else '' }}" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Event Date') }} *</label>
+          <input type="date" id="event_date" name="event_date" class="form-input" value="{{ item.event_date.strftime('%Y-%m-%d') if item and item.event_date else '' }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('Activity Type') }} *</label>
+          <select id="activity_type" name="activity_type" class="form-input" required>
+            <option value="milestone" {% if item and item.activity_type == 'milestone' %}selected{% endif %}>{{ _('Milestone') }}</option>
+            <option value="debut" {% if item and item.activity_type == 'debut' %}selected{% endif %}>{{ _('Debut') }}</option>
+            <option value="collaboration" {% if item and item.activity_type == 'collaboration' %}selected{% endif %}>{{ _('Collaboration') }}</option>
+            <option value="event" {% if item and item.activity_type == 'event' %}selected{% endif %}>{{ _('Event') }}</option>
+            <option value="other" {% if item and item.activity_type == 'other' %}selected{% endif %}>{{ _('Other') }}</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('VTuber ID') }}</label>
+          <input type="number" id="vtuber_id" name="vtuber_id" class="form-input" value="{{ item.vtuber_id if item else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Link URL') }}</label>
+          <input type="url" id="link_url" name="link_url" class="form-input" value="{{ item.link_url if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Description') }}</label>
+        <textarea id="description" name="description" class="form-input" rows="3">{{ item.description if item else '' }}</textarea>
+      </div>
+      
+      <div class="flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">{{ _('Save Activity') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+function openActivityForm(btn) {
+  let data = { action: '{{ url_for("admin.create_activity") }}' };
+  if (btn && btn.dataset.activity) {
+    data = JSON.parse(btn.dataset.activity);
+  }
+
+  document.getElementById('activity-form').action = data.action;
+  document.getElementById('drawer-title').textContent = data.title ? '{{ _("Edit Activity") }}' : '{{ _("New Activity") }}';
+  
+  document.getElementById('title').value = data.title || '';
+  document.getElementById('event_date').value = data.event_date || '';
+  document.getElementById('activity_type').value = data.activity_type || 'milestone';
+  document.getElementById('vtuber_id').value = data.vtuber_id || '';
+  document.getElementById('link_url').value = data.link_url || '';
+  document.getElementById('description').value = data.description || '';
+  
+  document.getElementById('form-drawer').classList.add('open');
+}
+
+document.getElementById('table-search')?.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.search-item').forEach(el => {
+    const text = el.querySelector('.search-text').textContent.toLowerCase();
+    el.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

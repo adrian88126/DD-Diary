@@ -1,0 +1,58 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Dashboard - Admin{% endblock %}
+
+{% block admin_content %}
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="grid mb-4">
+  <div class="card stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-microphone"></i></div>
+    <div class="stat-info">
+      <h3>{{ counts.vtubers if counts else 0 }}</h3>
+      <p>VTubers</p>
+    </div>
+  </div>
+  
+  <div class="card stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-music"></i></div>
+    <div class="stat-info">
+      <h3>{{ counts.songs if counts else 0 }}</h3>
+      <p>Songs</p>
+    </div>
+  </div>
+  
+  <div class="card stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+    <div class="stat-info">
+      <h3>{{ counts.artists if counts else 0 }}</h3>
+      <p>Artists</p>
+    </div>
+  </div>
+  
+  <div class="card stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-video"></i></div>
+    <div class="stat-info">
+      <h3>{{ counts.videos if counts else 0 }}</h3>
+      <p>Videos</p>
+    </div>
+  </div>
+  
+  <div class="card stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+    <div class="stat-info">
+      <h3>{{ counts.records if counts else 0 }}</h3>
+      <p>Records</p>
+    </div>
+  </div>
+  
+  <div class="card stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+    <div class="stat-info">
+      <h3>{{ counts.activities if counts else 0 }}</h3>
+      <p>Activities</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,270 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Videos - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="action-header">
+  <h2>Videos</h2>
+  <div class="flex gap-2">
+    <form method="POST" action="{{ url_for('admin.videos_sync_all') }}" style="display:inline; display: flex; align-items: center; gap: 0.5rem;">
+      <input type="text" name="limit" class="form-input" style="width: 90px; padding: 0.3rem 0.5rem;" value="5" title="Latest X videos per VTuber (Type 'ALL' for no limit)" placeholder="X or ALL">
+      <button type="submit" class="btn btn-outline"><i class="fa-brands fa-youtube"></i> {{ _('Sync All VTubers') }}</button>
+    </form>
+    <button class="btn btn-primary" onclick="openVideoForm()"><i class="fa-solid fa-plus"></i> {{ _('New Video') }}</button>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="form-group" style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 200px;">
+      <input type="text" id="table-search" class="form-input" placeholder="{{ _('Search videos by title or ID...') }}">
+    </div>
+    <div style="width: 200px;">
+      <select id="vtuber-filter" class="form-input">
+        <option value="">{{ _('All VTubers') }}</option>
+        {% for vtuber in all_vtubers %}
+        <option value="{{ vtuber.id }}">{{ vtuber.name_main }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="width: 150px;">
+      <select id="type-filter" class="form-input">
+        <option value="">{{ _('All Types') }}</option>
+        <option value="stream_singing">{{ _('stream_singing') }}</option>
+        <option value="cover_mv">{{ _('cover_mv') }}</option>
+        <option value="short">{{ _('short') }}</option>
+        <option value="stream_other">{{ _('stream_other') }}</option>
+        <option value="schedule">{{ _('schedule') }}</option>
+      </select>
+    </div>
+    <div style="width: 150px;">
+      <select id="sort-filter" class="form-input">
+        <option value="newest">{{ _('Newest First') }}</option>
+        <option value="oldest">{{ _('Oldest First') }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="bulk-action-bar">
+  <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="Select All">
+  <button class="btn btn-sm btn-danger" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_video', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_videos') }}">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th style="width: 100px;">Thumbnail</th>
+        <th class="sortable">Title</th>
+        <th class="sortable">Type</th>
+        <th class="sortable">Published</th>
+        <th style="width: 140px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="video-list">
+      {% for v in videos %}
+      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-type="{{ v.video_type }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-id="{{ v.video_id }}">
+        <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ v.video_id }}"></td>
+        <td>
+          {% if v.thumbnail_url %}
+          <img src="{{ v.thumbnail_url }}" alt="Thumbnail" style="width: 80px; height: 45px; object-fit: cover; border-radius: 4px;">
+          {% else %}
+          <div style="width: 80px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 4px;"></div>
+          {% endif %}
+        </td>
+        <td class="editable-cell search-text" data-field="title" title="Double click to edit">{{ v.title }}</td>
+        <td class="search-text">
+          <span class="badge badge-info">{{ _(v.video_type) }}</span>
+        </td>
+        <td class="search-text">{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '-' }}</td>
+        <td>
+          <div class="flex gap-2">
+            {% set vid_data = {
+              'action': url_for('admin.edit_video', id=v.video_id),
+              'video_id': v.video_id,
+              'title': v.title,
+              'published_at': v.published_at.strftime('%Y-%m-%dT%H:%M') if v.published_at else '',
+              'video_type': v.video_type or 'stream_singing',
+              'vtuber_id': v.vtuber_id or '',
+              'thumbnail_url': v.thumbnail_url or ''
+            } %}
+            <button class="btn btn-sm btn-outline" onclick="openVideoForm(this)" data-video="{{ vid_data | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <form method="POST" action="{{ url_for('admin.delete_video', id=v.video_id) }}" class="delete-form" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            </form>
+            <a href="https://youtube.com/watch?v={{ v.video_id }}" target="_blank" class="btn btn-sm btn-outline"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer -->
+<div class="drawer {% if request.endpoint in ['admin.create_video', 'admin.edit_video'] %}open{% endif %}" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{% if item %}{{ _('Edit Video') }}{% else %}{{ _('New Video') }}{% endif %}</h3>
+    <button class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="video-form" method="POST" action="{{ url_for('admin.edit_video', id=item.video_id) if item else url_for('admin.create_video') }}">
+      <div class="form-group">
+        <label>{{ _('Video ID (YouTube ID or URL)') }} *</label>
+        <div class="flex gap-2">
+          <input type="text" id="video_id" name="video_id" class="form-input" value="{{ item.video_id if item else '' }}" required>
+          <button type="button" class="btn btn-outline" id="btn-fetch-yt" onclick="fetchYoutubeData()" style="white-space: nowrap;"><i class="fa-solid fa-cloud-arrow-down"></i> {{ _('Auto Fetch') }}</button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Title') }} *</label>
+        <input type="text" id="title" name="title" class="form-input" value="{{ item.title if item else '' }}" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Published At') }}</label>
+          <input type="datetime-local" id="published_at" name="published_at" class="form-input" value="{{ item.published_at.strftime('%Y-%m-%dT%H:%M') if item and item.published_at else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Video Type') }}</label>
+          <select id="video_type" name="video_type" class="form-input">
+            <option value="stream_singing" {% if item and item.video_type == 'stream_singing' %}selected{% endif %}>{{ _('Stream - Singing') }}</option>
+            <option value="stream_other" {% if item and item.video_type == 'stream_other' %}selected{% endif %}>{{ _('Stream - Other') }}</option>
+            <option value="mv" {% if item and item.video_type == 'mv' %}selected{% endif %}>{{ _('MV') }}</option>
+            <option value="short" {% if item and item.video_type == 'short' %}selected{% endif %}>{{ _('Shorts') }}</option>
+            <option value="schedule" {% if item and item.video_type == 'schedule' %}selected{% endif %}>{{ _('Schedule') }}</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('VTuber ID') }}</label>
+          <input type="number" id="vtuber_id" name="vtuber_id" class="form-input" value="{{ item.vtuber_id if item else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Thumbnail URL') }}</label>
+          <input type="url" id="thumbnail_url" name="thumbnail_url" class="form-input" value="{{ item.thumbnail_url if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">{{ _('Save Video') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+function openVideoForm(btn) {
+  let data = { action: '{{ url_for("admin.create_video") }}' };
+  if (btn && btn.dataset.video) {
+    data = JSON.parse(btn.dataset.video);
+  }
+
+  document.getElementById('video-form').action = data.action;
+  document.getElementById('drawer-title').textContent = data.video_id ? '{{ _("Edit Video") }}' : '{{ _("New Video") }}';
+  
+  document.getElementById('video_id').value = data.video_id || '';
+  document.getElementById('title').value = data.title || '';
+  document.getElementById('published_at').value = data.published_at || '';
+  document.getElementById('video_type').value = data.video_type || 'stream_singing';
+  document.getElementById('vtuber_id').value = data.vtuber_id || '';
+  document.getElementById('thumbnail_url').value = data.thumbnail_url || '';
+  
+  document.getElementById('form-drawer').classList.add('open');
+}
+
+async function fetchYoutubeData() {
+  const vidInput = document.getElementById('video_id');
+  const btn = document.getElementById('btn-fetch-yt');
+  const urlOrId = vidInput.value.trim();
+  
+  if (!urlOrId) {
+    alert('{{ _("Please enter a Video ID or URL first") }}');
+    return;
+  }
+  
+  btn.disabled = true;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+  
+  try {
+    const response = await fetch(`{{ url_for('admin.videos_fetch_info') }}?url=${encodeURIComponent(urlOrId)}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      document.getElementById('video_id').value = result.data.video_id;
+      document.getElementById('title').value = result.data.title;
+      document.getElementById('thumbnail_url').value = result.data.thumbnail_url;
+      if (result.data.published_at) {
+        document.getElementById('published_at').value = result.data.published_at;
+      }
+    } else {
+      alert(result.error || '{{ _("Failed to fetch video data") }}');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('{{ _("Error fetching YouTube data") }}');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('table-search');
+  const vtuberFilter = document.getElementById('vtuber-filter');
+  const typeFilter = document.getElementById('type-filter');
+  const sortFilter = document.getElementById('sort-filter');
+  const tbody = document.getElementById('video-list');
+  
+  function applyFilters() {
+    const term = searchInput.value.toLowerCase();
+    const vtuberId = vtuberFilter.value;
+    const typeId = typeFilter.value;
+    const sort = sortFilter.value;
+    
+    // 1. Filter
+    const rows = Array.from(tbody.querySelectorAll('.search-item'));
+    rows.forEach(el => {
+      const text = el.querySelector('.search-text').textContent.toLowerCase();
+      const rowVtuber = el.dataset.vtuber;
+      const rowType = el.dataset.type;
+      
+      const matchesSearch = text.includes(term);
+      const matchesVtuber = !vtuberId || rowVtuber === vtuberId;
+      const matchesType = !typeId || rowType === typeId;
+      
+      el.style.display = (matchesSearch && matchesVtuber && matchesType) ? '' : 'none';
+    });
+    
+    // 2. Sort
+    const visibleRows = rows.filter(el => el.style.display !== 'none');
+    visibleRows.sort((a, b) => {
+      const dateA = new Date(a.dataset.date).getTime();
+      const dateB = new Date(b.dataset.date).getTime();
+      
+      if (sort === 'newest') return dateB - dateA;
+      if (sort === 'oldest') return dateA - dateB;
+      return 0;
+    });
+    
+    visibleRows.forEach(row => tbody.appendChild(row));
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+  vtuberFilter.addEventListener('change', applyFilters);
+  if (typeFilter) typeFilter.addEventListener('change', applyFilters);
+  sortFilter.addEventListener('change', applyFilters);
+});
+</script>
+{% endblock %}

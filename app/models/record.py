@@ -2,15 +2,20 @@ from typing import List, Optional
 from datetime import datetime
 from sqlalchemy import String, Integer, ForeignKey, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.database import Base
+from app.extensions import db
 from app.models.association import record_vtubers
 
-class SingingRecord(Base):
+
+class SingingRecord(db.Model):
     __tablename__ = "singing_records"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    song_id: Mapped[int] = mapped_column(Integer, ForeignKey("songs.id", ondelete="CASCADE"), nullable=False)
-    video_id: Mapped[str] = mapped_column(String(11), ForeignKey("videos.video_id", ondelete="CASCADE"), nullable=False)
+    song_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("songs.id", ondelete="CASCADE"), nullable=False
+    )
+    video_id: Mapped[str] = mapped_column(
+        String(11), ForeignKey("videos.video_id", ondelete="CASCADE"), nullable=False
+    )
     timestamp_seconds: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     note: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())

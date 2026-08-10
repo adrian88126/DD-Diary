@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Login - VTSong Database{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 80vh; display: flex; align-items: center; justify-content: center;">
+  <div class="card fade-in" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">Login</h2>
+    
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-input" required autofocus>
+      </div>
+      
+      <div class="form-group mb-4">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-input" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

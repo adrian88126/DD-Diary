@@ -1,0 +1,122 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Artists - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="action-header">
+  <h2>Artists</h2>
+  <button class="btn btn-primary" onclick="openArtistForm()"><i class="fa-solid fa-plus"></i> New Artist</button>
+</div>
+
+<div class="form-group max-w-md mb-4">
+  <input type="text" id="table-search" class="form-input" placeholder="Search Artists...">
+</div>
+
+<div class="bulk-action-bar">
+  <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="Select All">
+  <button class="btn btn-sm btn-danger" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_artist', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_artists') }}">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th class="sortable">Name (Main)</th>
+        <th style="width: 120px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in artists %}
+      <tr class="search-item" data-id="{{ a.id }}">
+        <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ a.id }}"></td>
+        <td class="editable-cell search-text" data-field="name_main" title="Double click to edit">{{ a.name_main }}</td>
+        <td>
+          <div class="flex gap-2">
+            {% set a_data = {
+              'action': url_for('admin.edit_artist', id=a.id),
+              'name_main': a.name_main,
+              'name_romaji': a.name_romaji,
+              'name_ja': a.name_ja,
+              'name_zh': a.name_zh
+            } %}
+            <button class="btn btn-sm btn-outline" onclick="openArtistForm(this)" data-artist="{{ a_data | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <form method="POST" action="{{ url_for('admin.delete_artist', id=a.id) }}" class="delete-form" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer -->
+<div class="drawer {% if request.endpoint in ['admin.create_artist', 'admin.edit_artist'] %}open{% endif %}" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{% if item %}{{ _('Edit Artist') }}{% else %}{{ _('New Artist') }}{% endif %}</h3>
+    <button class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="artist-form" method="POST" action="{{ url_for('admin.edit_artist', id=item.id) if item else url_for('admin.create_artist') }}">
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Main Name') }} *</label>
+          <input type="text" id="name_main" name="name_main" class="form-input" value="{{ item.name_main if item else '' }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('Romaji Name') }}</label>
+          <input type="text" id="name_romaji" name="name_romaji" class="form-input" value="{{ item.name_romaji if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Japanese Name') }}</label>
+          <input type="text" id="name_ja" name="name_ja" class="form-input" value="{{ item.name_ja if item else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Chinese Name') }}</label>
+          <input type="text" id="name_zh" name="name_zh" class="form-input" value="{{ item.name_zh if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">{{ _('Save Artist') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+function openArtistForm(btn) {
+  let data = { action: '{{ url_for("admin.create_artist") }}' };
+  if (btn && btn.dataset.artist) {
+    data = JSON.parse(btn.dataset.artist);
+  }
+
+  document.getElementById('artist-form').action = data.action;
+  document.getElementById('drawer-title').textContent = data.name_main ? '{{ _("Edit Artist") }}' : '{{ _("New Artist") }}';
+  
+  document.getElementById('name_main').value = data.name_main || '';
+  document.getElementById('name_romaji').value = data.name_romaji || '';
+  document.getElementById('name_ja').value = data.name_ja || '';
+  document.getElementById('name_zh').value = data.name_zh || '';
+  
+  document.getElementById('form-drawer').classList.add('open');
+}
+
+document.getElementById('table-search')?.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.search-item').forEach(el => {
+    const text = el.querySelector('.search-text').textContent.toLowerCase();
+    el.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

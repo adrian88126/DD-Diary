@@ -2,10 +2,11 @@ from typing import List, Optional
 from datetime import datetime
 from sqlalchemy import String, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.database import Base
+from app.extensions import db
 from app.models.association import vtuber_songs, record_vtubers
 
-class VTuber(Base):
+
+class VTuber(db.Model):
     __tablename__ = "vtubers"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -29,28 +30,26 @@ class VTuber(Base):
     activities: Mapped[List["Activity"]] = relationship(
         "Activity", back_populates="vtuber", cascade="all, delete-orphan"
     )
-    
-    # 新增影片與直播一對多關聯
     videos: Mapped[List["Video"]] = relationship(
         "Video", back_populates="vtuber", cascade="all, delete-orphan"
     )
-    
+
     # 拆分常駐歌單與點歌歌單
     signature_songs: Mapped[List["Song"]] = relationship(
-        "Song", 
-        secondary=vtuber_songs, 
+        "Song",
+        secondary=vtuber_songs,
         primaryjoin="and_(VTuber.id==vtuber_songs.c.vtuber_id, vtuber_songs.c.association_type=='signature')",
         back_populates="signature_vtubers",
-        overlaps="requestable_songs,requestable_vtubers"
+        overlaps="requestable_songs,requestable_vtubers",
     )
     requestable_songs: Mapped[List["Song"]] = relationship(
         "Song",
         secondary=vtuber_songs,
         primaryjoin="and_(VTuber.id==vtuber_songs.c.vtuber_id, vtuber_songs.c.association_type=='requestable')",
         back_populates="requestable_vtubers",
-        overlaps="signature_songs,signature_vtubers"
+        overlaps="signature_songs,signature_vtubers",
     )
-    
+
     singing_records: Mapped[List["SingingRecord"]] = relationship(
         "SingingRecord", secondary=record_vtubers, back_populates="singers"
     )

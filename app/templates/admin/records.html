@@ -1,0 +1,207 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Records - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="action-header">
+  <h2>Records</h2>
+  <button class="btn btn-primary" onclick="openRecordForm()"><i class="fa-solid fa-plus"></i> New Record</button>
+</div>
+
+<div class="form-group max-w-md mb-4">
+  <input type="text" id="table-search" class="form-input" placeholder="Search Records...">
+</div>
+
+<div class="bulk-action-bar">
+  <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="Select All">
+  <button class="btn btn-sm btn-danger" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_record', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_records') }}">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th class="sortable">ID</th>
+        <th class="sortable">Song</th>
+        <th class="sortable">Video</th>
+        <th class="sortable">Timestamp</th>
+        <th style="width: 120px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in records %}
+      <tr class="search-item" data-id="{{ r.id }}">
+        <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ r.id }}"></td>
+        <td class="search-text">{{ r.id }}</td>
+        <td class="search-text">{{ r.song.title_main if r.song else r.song_id }}</td>
+        <td class="search-text">{{ r.video.title if r.video else r.video_id }}</td>
+        <td class="editable-cell" data-field="timestamp_seconds" title="Double click to edit">{{ r.timestamp_seconds }}</td>
+        <td>
+          <div class="flex gap-2">
+            {% set r_data = {
+              'action': url_for('admin.edit_record', id=r.id),
+              'song_id': r.song_id,
+              'video_id': r.video_id,
+              'timestamp_seconds': r.timestamp_seconds,
+              'singer_ids': r.singers | map(attribute='id') | join(','),
+              'note': r.note or ''
+            } %}
+            <button class="btn btn-sm btn-outline" onclick="openRecordForm(this)" data-record="{{ r_data | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <form method="POST" action="{{ url_for('admin.delete_record', id=r.id) }}" class="delete-form" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer -->
+<div class="drawer {% if request.endpoint in ['admin.create_record', 'admin.edit_record'] %}open{% endif %}" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{% if item %}{{ _('Edit Record') }}{% else %}{{ _('New Record') }}{% endif %}</h3>
+    <button class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="record-form" method="POST" action="{{ url_for('admin.edit_record', id=item.id) if item else url_for('admin.create_record') }}">
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Song') }} *</label>
+          <select id="song_id" name="song_id" class="form-input" required placeholder="Search songs...">
+            <option value=""></option>
+            {% for s in all_songs %}
+            <option value="{{ s.id }}">{{ s.title_main }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>{{ _('Video') }} *</label>
+          <select id="video_id" name="video_id" class="form-input" required placeholder="Search videos...">
+            <option value=""></option>
+            {% for v in all_videos %}
+            <option value="{{ v.video_id }}">{{ v.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Timestamp (mm:ss or hh:mm:ss)') }} *</label>
+        <input type="text" id="time_input" class="form-input" placeholder="e.g. 03:45 or 1:12:30" required>
+        <input type="hidden" id="timestamp_seconds" name="timestamp_seconds" value="{{ item.timestamp_seconds if item else '0' }}">
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Singer IDs (comma separated, optionally for collabs)') }}</label>
+        <select id="singer_ids" name="singer_ids[]" class="form-input" multiple placeholder="Search VTubers...">
+          {% for v in all_singers %}
+          <option value="{{ v.id }}">{{ v.name_main }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Note') }}</label>
+        <textarea id="note" name="note" class="form-input" rows="2">{{ item.note if item else '' }}</textarea>
+      </div>
+      
+      <div class="flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">{{ _('Save Record') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+let singerSelect, songSelect, videoSelect;
+document.addEventListener('DOMContentLoaded', function() {
+  singerSelect = new TomSelect("#singer_ids", {
+    plugins: ['remove_button'],
+    create: false,
+    maxItems: null,
+    searchField: ['text'],
+  });
+  songSelect = new TomSelect("#song_id", {
+    create: false,
+    maxItems: 1,
+    searchField: ['text'],
+  });
+  videoSelect = new TomSelect("#video_id", {
+    create: false,
+    maxItems: 1,
+    searchField: ['text'],
+  });
+});
+
+function openRecordForm(btn) {
+  let data = { action: '{{ url_for("admin.create_record") }}' };
+  if (btn && btn.dataset.record) {
+    data = JSON.parse(btn.dataset.record);
+  }
+
+  document.getElementById('record-form').action = data.action;
+  document.getElementById('drawer-title').textContent = data.song_id ? '{{ _("Edit Record") }}' : '{{ _("New Record") }}';
+  
+  if (songSelect) {
+    if (data.song_id) songSelect.setValue(data.song_id);
+    else songSelect.clear();
+  }
+  if (videoSelect) {
+    if (data.video_id) videoSelect.setValue(data.video_id);
+    else videoSelect.clear();
+  }
+  
+  let sec = parseInt(data.timestamp_seconds || '0', 10);
+  document.getElementById('timestamp_seconds').value = sec;
+  let formattedTime = '00:00';
+  if (sec > 0) {
+    let h = Math.floor(sec / 3600);
+    let m = Math.floor((sec % 3600) / 60);
+    let s = sec % 60;
+    if (h > 0) {
+      formattedTime = `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    } else {
+      formattedTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+  }
+  document.getElementById('time_input').value = formattedTime;
+  
+  document.getElementById('note').value = data.note || '';
+
+  if (singerSelect) {
+    if (data.singer_ids) {
+      singerSelect.setValue(data.singer_ids.split(','));
+    } else {
+      singerSelect.clear();
+    }
+  }
+  
+  document.getElementById('form-drawer').classList.add('open');
+}
+
+// Convert MM:SS to seconds before submit
+document.getElementById('time_input').addEventListener('input', function(e) {
+  let parts = e.target.value.split(':').reverse();
+  let totalSeconds = 0;
+  if (parts[0]) totalSeconds += parseInt(parts[0] || 0, 10);
+  if (parts[1]) totalSeconds += parseInt(parts[1] || 0, 10) * 60;
+  if (parts[2]) totalSeconds += parseInt(parts[2] || 0, 10) * 3600;
+  document.getElementById('timestamp_seconds').value = isNaN(totalSeconds) ? 0 : totalSeconds;
+});
+
+document.getElementById('table-search')?.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.search-item').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

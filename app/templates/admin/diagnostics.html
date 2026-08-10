@@ -1,0 +1,90 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Diagnostics - Admin{% endblock %}
+
+{% block admin_content %}
+<h2 class="mb-4">{{ _('Diagnostics') }}</h2>
+
+<div class="grid mb-4" style="--grid-columns: 1;">
+  <div class="card">
+    <h3>{{ _('Duplicate Songs') }}</h3>
+    <p class="text-muted mb-3">{{ _('Finds songs with exact matching titles.') }}</p>
+    {% if duplicate_songs %}
+    <div class="table-responsive mb-3">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>{{ _('Title') }}</th>
+            <th>{{ _('IDs') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for title, ids in duplicate_songs.items() %}
+          <tr>
+            <td>{{ title }}</td>
+            <td>{{ ids | join(', ') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p>{{ _('No duplicate songs found.') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>{{ _('Duplicate Artists') }}</h3>
+    <p class="text-muted mb-3">{{ _('Finds artists with exact matching names.') }}</p>
+    {% if duplicate_artists %}
+    <div class="table-responsive mb-3">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('IDs') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, ids in duplicate_artists.items() %}
+          <tr>
+            <td>{{ name }}</td>
+            <td>{{ ids | join(', ') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p>{{ _('No duplicate artists found.') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>{{ _('Orphan Songs') }}</h3>
+    <p class="text-muted mb-3">{{ _('Songs with no records attached.') }}</p>
+    {% if orphan_songs %}
+    <div class="table-responsive mb-3">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>{{ _('ID') }}</th>
+            <th>{{ _('Title') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for song in orphan_songs %}
+          <tr>
+            <td>{{ song.id }}</td>
+            <td>{{ song.title_main }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p>{{ _('No orphan songs found.') }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

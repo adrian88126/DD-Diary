@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}VTSong Database - Lobby{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+  <div class="text-center mb-4 fade-in stagger-1">
+    <h1 style="font-size: 3rem; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VTSong Database</h1>
+    <p class="text-muted">VTuber 歌唱資料庫</p>
+  </div>
+
+  <div class="form-group max-w-md mx-auto fade-in stagger-2" style="max-width: 600px; margin: 0 auto 2rem auto;">
+    <input type="text" class="form-input" placeholder="Search VTubers..." id="vtuber-search">
+  </div>
+
+  <div class="grid fade-in stagger-3">
+    {% for vtuber in vtubers %}
+    <a href="{{ url_for('share.profile', identifier=vtuber.name_romaji or vtuber.id) }}" class="card" style="text-align: center; border-bottom: 4px solid {{ vtuber.theme_color or 'var(--primary)' }};">
+      <img src="{{ vtuber.avatar_url or url_for('static', filename='img/default_avatar.png') }}" alt="{{ vtuber.name_main }}" class="profile-avatar mb-3" style="width: 80px; height: 80px; margin: 0 auto; display: block;">
+      <h3>{{ vtuber.name_main }}</h3>
+      {% if vtuber.description %}
+        <p class="text-muted" style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ vtuber.description }}</p>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

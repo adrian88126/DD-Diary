@@ -1,0 +1,24 @@
+<!-- app/templates/components/pagination.html -->
+{% macro render_pagination(pagination, endpoint) %}
+<div class="pagination flex justify-center gap-2 mt-4">
+  {% if pagination.has_prev %}
+    <a href="{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}" class="btn btn-outline btn-sm">&laquo; Prev</a>
+  {% endif %}
+  
+  {% for page in pagination.iter_pages() %}
+    {% if page %}
+      {% if page != pagination.page %}
+        <a href="{{ url_for(endpoint, page=page, **kwargs) }}" class="btn btn-outline btn-sm">{{ page }}</a>
+      {% else %}
+        <span class="btn btn-primary btn-sm">{{ page }}</span>
+      {% endif %}
+    {% else %}
+      <span class="btn btn-sm" style="border: none;">...</span>
+    {% endif %}
+  {% endfor %}
+  
+  {% if pagination.has_next %}
+    <a href="{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}" class="btn btn-outline btn-sm">Next &raquo;</a>
+  {% endif %}
+</div>
+{% endmacro %}

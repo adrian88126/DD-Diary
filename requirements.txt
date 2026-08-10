@@ -1,5 +1,9 @@
-fastapi>=0.110.0
-uvicorn[standard]>=0.28.0
-sqlalchemy>=2.0.28
-pydantic>=2.6.4
-pydantic-settings>=2.2.1
+Flask>=3.0.0
+Flask-SQLAlchemy>=3.1.0
+Flask-Login>=0.6.3
+Flask-WTF>=1.2.0
+Flask-Compress>=1.15
+SQLAlchemy>=2.0.28
+python-dotenv>=1.0.0
+Werkzeug>=3.0.0
+requests>=2.31.0

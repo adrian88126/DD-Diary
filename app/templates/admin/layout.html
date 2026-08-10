@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<style>
+  /* TomSelect Custom Overrides for Premium feel */
+  .ts-control {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-color) !important;
+    padding: 0.5rem !important;
+  }
+  .ts-dropdown {
+    background-color: var(--bg-color) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-color) !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+  .ts-control > input {
+    color: var(--text-color) !important;
+  }
+  .ts-dropdown .option {
+    padding: 0.5rem 1rem;
+  }
+  .ts-dropdown .active {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  .ts-control.multi .item {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: var(--radius-sm) !important;
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div style="padding: 0.5rem 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+      <a href="{{ url_for('main.lobby') }}" class="admin-logo-link" style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--text-color); text-decoration: none; overflow: hidden; white-space: nowrap;">
+        <i class="fa-solid fa-music text-primary"></i> <span class="sidebar-text">VTSong</span>
+      </a>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if request.endpoint == 'admin.dashboard' else '' }}">
+        <i class="fa-solid fa-chart-line"></i> <span class="sidebar-text">{{ _('Dashboard') }}</span>
+      </a>
+      <a href="{{ url_for('admin.list_vtubers') }}" class="{{ 'active' if 'vtuber' in request.endpoint else '' }}">
+        <i class="fa-solid fa-microphone"></i> <span class="sidebar-text">{{ _('VTubers') }}</span>
+      </a>
+      <a href="{{ url_for('admin.list_songs') }}" class="{{ 'active' if 'song' in request.endpoint else '' }}">
+        <i class="fa-solid fa-music"></i> <span class="sidebar-text">{{ _('Songs') }}</span>
+      </a>
+      <a href="{{ url_for('admin.list_artists') }}" class="{{ 'active' if 'artist' in request.endpoint else '' }}">
+        <i class="fa-solid fa-users"></i> <span class="sidebar-text">{{ _('Artists') }}</span>
+      </a>
+      <a href="{{ url_for('admin.list_videos') }}" class="{{ 'active' if 'video' in request.endpoint and 'timeline' not in request.endpoint else '' }}">
+        <i class="fa-solid fa-video"></i> <span class="sidebar-text">{{ _('Videos') }}</span>
+      </a>
+      <a href="{{ url_for('admin.list_singing_streams') }}" class="{{ 'active' if 'singing_stream' in request.endpoint or 'timeline' in request.endpoint else '' }}">
+        <i class="fa-solid fa-microphone-lines"></i> <span class="sidebar-text">{{ _('Singing Streams') }}</span>
+      </a>
+      <a href="{{ url_for('admin.list_records') }}" class="{{ 'active' if 'record' in request.endpoint else '' }}">
+        <i class="fa-solid fa-clipboard-list"></i> <span class="sidebar-text">{{ _('Records') }}</span>
+      </a>
+      <a href="{{ url_for('admin.list_activities') }}" class="{{ 'active' if 'activity' in request.endpoint else '' }}">
+        <i class="fa-solid fa-calendar-check"></i> <span class="sidebar-text">{{ _('Activities') }}</span>
+      </a>
+      <a href="{{ url_for('admin.diagnostics') }}" class="{{ 'active' if 'diagnostic' in request.endpoint else '' }}">
+        <i class="fa-solid fa-wrench"></i> <span class="sidebar-text">{{ _('Diagnostics') }}</span>
+      </a>
+      <hr style="border: 1px solid var(--card-border); margin: var(--spacing-sm) 0;" />
+      <a href="{{ url_for('main.lobby') }}">
+        <i class="fa-solid fa-house"></i> <span class="sidebar-text">{{ _('Home') }}</span>
+      </a>
+      <a href="{{ url_for('auth.logout') }}">
+        <i class="fa-solid fa-right-from-bracket"></i> <span class="sidebar-text">{{ _('Logout') }}</span>
+      </a>
+      <a href="{{ url_for('main.set_language', lang='zh' if current_lang == 'en' else 'en') }}">
+        <i class="fa-solid fa-globe"></i> <span class="sidebar-text">EN / 中文</span>
+      </a>
+    </nav>
+    <div style="margin-top: auto; padding-top: 1rem;">
+      <button class="sidebar-collapse-btn" id="admin-sidebar-toggle" style="width: 100%; display: flex; align-items: center; justify-content: center; padding: 10px; background: none; border: 1px solid var(--border-color); border-radius: var(--radius); color: var(--text-muted); cursor: pointer; transition: 0.2s;">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+    </div>
+  </aside>
+
+  <main class="admin-content">
+    {% block admin_content %}{% endblock %}
+  </main>
+</div>
+
+{% include "components/confirm_modal.html" %}
+{% endblock %}
+
+{% block extra_js %}
+<script type="module" src="{{ url_for('static', filename='js/admin.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+{% block admin_js %}{% endblock %}
+{% endblock %}

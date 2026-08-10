@@ -1,0 +1,170 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Songs - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="action-header">
+  <h2>Songs</h2>
+  <button class="btn btn-primary" onclick="openSongForm()"><i class="fa-solid fa-plus"></i> New Song</button>
+</div>
+
+<div class="form-group max-w-md mb-4">
+  <input type="text" id="table-search" class="form-input" placeholder="Search Songs...">
+</div>
+
+<div class="bulk-action-bar">
+  <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="Select All">
+  <button class="btn btn-sm btn-danger" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_song', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_songs') }}">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th class="sortable">Title (Main)</th>
+        <th class="sortable">Type</th>
+        <th>Artists</th>
+        <th style="width: 120px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in songs %}
+      <tr class="search-item" data-id="{{ s.id }}">
+        <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ s.id }}"></td>
+        <td class="editable-cell search-text" data-field="title_main" title="Double click to edit">{{ s.title_main }}</td>
+        <td class="search-text">
+          <span class="badge badge-primary">{{ _(s.song_type) }}</span>
+        </td>
+        <td class="search-text">
+          {% for a in s.artists %}{{ a.name_main }}{% if not loop.last %}, {% endif %}{% endfor %}
+        </td>
+        <td>
+          <div class="flex gap-2">
+            {% set s_data = {
+              'action': url_for('admin.edit_song', id=s.id),
+              'title_main': s.title_main,
+              'title_romaji': s.title_romaji,
+              'title_ja': s.title_ja,
+              'title_zh': s.title_zh,
+              'song_type': s.song_type or 'cover',
+              'artist_ids': s.artists | map(attribute='id') | join(',')
+            } %}
+            <button class="btn btn-sm btn-outline" onclick="openSongForm(this)" data-song="{{ s_data | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <form method="POST" action="{{ url_for('admin.delete_song', id=s.id) }}" class="delete-form" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer -->
+<div class="drawer {% if request.endpoint in ['admin.create_song', 'admin.edit_song'] %}open{% endif %}" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{% if item %}{{ _('Edit Song') }}{% else %}{{ _('New Song') }}{% endif %}</h3>
+    <button class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="song-form" method="POST" action="{{ url_for('admin.edit_song', id=item.id) if item else url_for('admin.create_song') }}">
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Main Title') }} *</label>
+          <input type="text" id="title_main" name="title_main" class="form-input" value="{{ item.title_main if item else '' }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('Romaji Title') }}</label>
+          <input type="text" id="title_romaji" name="title_romaji" class="form-input" value="{{ item.title_romaji if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Japanese Title') }}</label>
+          <input type="text" id="title_ja" name="title_ja" class="form-input" value="{{ item.title_ja if item else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Chinese Title') }}</label>
+          <input type="text" id="title_zh" name="title_zh" class="form-input" value="{{ item.title_zh if item else '' }}">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>{{ _('Song Type') }}</label>
+        <select id="song_type" name="song_type" class="form-input">
+          <option value="cover" {% if item and item.song_type == 'cover' %}selected{% endif %}>{{ _('cover') }}</option>
+          <option value="original" {% if item and item.song_type == 'original' %}selected{% endif %}>{{ _('original') }}</option>
+          <option value="anime" {% if item and item.song_type == 'anime' %}selected{% endif %}>{{ _('anime') }}</option>
+          <option value="game" {% if item and item.song_type == 'game' %}selected{% endif %}>{{ _('game') }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{ _('Artist IDs (comma separated)') }}</label>
+        <select id="artist_ids" name="artist_ids[]" class="form-input" multiple placeholder="Search artists...">
+          {% for a in all_artists %}
+          <option value="{{ a.id }}">{{ a.name_main }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">{{ _('Save Song') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+let artistSelect;
+document.addEventListener('DOMContentLoaded', function() {
+  artistSelect = new TomSelect("#artist_ids", {
+    plugins: ['remove_button'],
+    create: false,
+    maxItems: null,
+    searchField: ['text'],
+  });
+});
+
+function openSongForm(btn) {
+  let data = { action: '{{ url_for("admin.create_song") }}' };
+  if (btn && btn.dataset.song) {
+    data = JSON.parse(btn.dataset.song);
+  }
+
+  document.getElementById('song-form').action = data.action;
+  document.getElementById('drawer-title').textContent = data.title_main ? '{{ _("Edit Song") }}' : '{{ _("New Song") }}';
+  
+  document.getElementById('title_main').value = data.title_main || '';
+  document.getElementById('title_romaji').value = data.title_romaji || '';
+  document.getElementById('title_ja').value = data.title_ja || '';
+  document.getElementById('title_zh').value = data.title_zh || '';
+  document.getElementById('song_type').value = data.song_type || 'original';
+  
+  if (artistSelect) {
+    if (data.artist_ids) {
+      artistSelect.setValue(data.artist_ids.split(','));
+    } else {
+      artistSelect.clear();
+    }
+  }
+  
+  document.getElementById('form-drawer').classList.add('open');
+}
+
+document.getElementById('table-search')?.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.search-item').forEach(el => {
+    const text = el.querySelector('.search-text').textContent.toLowerCase();
+    el.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}
