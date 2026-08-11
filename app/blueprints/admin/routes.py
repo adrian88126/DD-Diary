@@ -437,6 +437,24 @@ def bulk_delete_videos():
     flash(f'Deleted {len(ids)} videos successfully', 'success')
     return redirect(url_for('admin.list_videos'))
 
+@admin_bp.route('/videos/bulk_type', methods=['POST'])
+def bulk_edit_video_type():
+    try:
+        data = request.get_json()
+        ids = data.get('ids', [])
+        new_type = data.get('video_type')
+        if not ids or not new_type:
+            return jsonify({'success': False, 'error': 'Missing ids or video_type'})
+            
+        for vid in ids:
+            video = video_service.get_video(vid)
+            if video:
+                video_service.update_video(vid, {'video_type': new_type})
+                
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
 # Activities
 @admin_bp.route('/activities/<int:id>/inline_edit', methods=['POST'])
 def inline_edit_activity(id):

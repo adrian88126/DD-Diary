@@ -38,6 +38,13 @@
       </select>
     </div>
     <div style="width: 150px;">
+      <select id="records-filter" class="form-input">
+        <option value="">{{ _('All Records') }}</option>
+        <option value="zero">{{ _('No Records (0)') }}</option>
+        <option value="has">{{ _('Has Records (>0)') }}</option>
+      </select>
+    </div>
+    <div style="width: 150px;">
       <select id="sort-filter" class="form-input">
         <option value="newest">{{ _('Newest First') }}</option>
         <option value="oldest">{{ _('Oldest First') }}</option>
@@ -49,10 +56,21 @@
 <div class="bulk-action-bar">
   <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="Select All">
   <button class="btn btn-sm btn-danger" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+  
+  <span style="margin-left: 1rem; margin-right: 0.5rem; color: var(--text-muted);">|</span>
+  
+  <select id="bulk-type-select" class="form-input" style="width: 150px; display: inline-block;">
+    <option value="">-- {{ _('Set Type') }} --</option>
+    <option value="stream_singing">{{ _('stream_singing') }}</option>
+    <option value="cover_mv">{{ _('cover_mv') }}</option>
+    <option value="short">{{ _('short') }}</option>
+    <option value="stream_other">{{ _('stream_other') }}</option>
+  </select>
+  <button class="btn btn-sm btn-info" id="bulk-edit-type-btn"><i class="fa-solid fa-check"></i> {{ _('Apply Type') }}</button>
 </div>
 
 <div class="admin-table-container">
-  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_video', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_videos') }}">
+  <table class="admin-data-table" data-edit-endpoint="{{ url_for('admin.inline_edit_video', id=0) }}" data-bulk-delete-endpoint="{{ url_for('admin.bulk_delete_videos') }}" data-bulk-type-endpoint="{{ url_for('admin.bulk_edit_video_type') }}">
     <thead>
       <tr>
         <th style="width: 40px;"></th>
@@ -66,7 +84,8 @@
     </thead>
     <tbody id="video-list">
       {% for v in videos %}
-      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-type="{{ v.video_type }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-id="{{ v.video_id }}">
+      {% set count = v.singing_records|length %}
+      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-type="{{ v.video_type }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-id="{{ v.video_id }}" data-records="{{ count }}">
         <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ v.video_id }}"></td>
         <td>
           {% if v.thumbnail_url %}
@@ -80,7 +99,6 @@
           <span class="badge badge-info">{{ _(v.video_type) }}</span>
         </td>
         <td>
-          {% set count = v.singing_records|length %}
           <span class="badge {% if count == 0 %}badge-danger{% else %}badge-success{% endif %}">
             <i class="fa-solid fa-clipboard-list"></i> {{ count }}
           </span>
@@ -237,7 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyFilters() {
     const term = searchInput.value.toLowerCase();
     const vtuberId = vtuberFilter.value;
-    const typeId = typeFilter.value;
+    const typeVal = typeFilter.value;
+    const filterRecords = document.getElementById('records-filter').value;
     const sort = sortFilter.value;
     
     // 1. Filter
@@ -246,12 +265,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = el.querySelector('.search-text').textContent.toLowerCase();
       const rowVtuber = el.dataset.vtuber;
       const rowType = el.dataset.type;
+      const rowRecords = parseInt(el.dataset.records || '0', 10);
       
       const matchesSearch = text.includes(term);
       const matchesVtuber = !vtuberId || rowVtuber === vtuberId;
-      const matchesType = !typeId || rowType === typeId;
+      const matchesType = !typeVal || rowType === typeVal;
+      const matchesRecords = !filterRecords || (filterRecords === 'zero' && rowRecords === 0) || (filterRecords === 'has' && rowRecords > 0);
       
-      el.style.display = (matchesSearch && matchesVtuber && matchesType) ? '' : 'none';
+      el.style.display = (matchesSearch && matchesVtuber && matchesType && matchesRecords) ? '' : 'none';
     });
     
     // 2. Sort
@@ -270,8 +291,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchInput.addEventListener('input', applyFilters);
   vtuberFilter.addEventListener('change', applyFilters);
-  if (typeFilter) typeFilter.addEventListener('change', applyFilters);
+  typeFilter.addEventListener('change', applyFilters);
+  document.getElementById('records-filter').addEventListener('change', applyFilters);
   sortFilter.addEventListener('change', applyFilters);
+  
+  // Bulk Edit Video Type Logic
+  const bulkEditTypeBtn = document.getElementById('bulk-edit-type-btn');
+  const bulkTypeSelect = document.getElementById('bulk-type-select');
+  
+  if (bulkEditTypeBtn && bulkTypeSelect) {
+    bulkEditTypeBtn.addEventListener('click', async () => {
+      const selected = Array.from(document.querySelectorAll('.row-cb:checked')).map(cb => cb.value);
+      const newType = bulkTypeSelect.value;
+      
+      if (selected.length === 0) {
+        showToast("Please select at least one video.", "error");
+        return;
+      }
+      if (!newType) {
+        showToast("Please select a video type to apply.", "error");
+        return;
+      }
+      
+      if (!confirm(`Are you sure you want to change the type of ${selected.length} videos to '${newType}'?`)) return;
+      
+      const endpoint = document.querySelector('.admin-data-table').dataset.bulkTypeEndpoint;
+      if (!endpoint) return;
+      
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids: selected, video_type: newType })
+        });
+        
+        if (response.ok) {
+          showToast("Videos updated successfully!", "success");
+          setTimeout(() => location.reload(), 500);
+        } else {
+          const data = await response.json();
+          showToast(data.error || "Failed to update videos", "error");
+        }
+      } catch (err) {
+        showToast("Network error", "error");
+      }
+    });
+  }
 });
 </script>
 {% endblock %}

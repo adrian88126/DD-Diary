@@ -24,6 +24,13 @@
       </select>
     </div>
     <div style="width: 150px;">
+      <select id="records-filter" class="form-input">
+        <option value="">{{ _('All Records') }}</option>
+        <option value="zero">{{ _('No Records (0)') }}</option>
+        <option value="has">{{ _('Has Records (>0)') }}</option>
+      </select>
+    </div>
+    <div style="width: 150px;">
       <select id="sort-filter" class="form-input">
         <option value="newest">{{ _('Newest First') }}</option>
         <option value="oldest">{{ _('Oldest First') }}</option>
@@ -44,7 +51,8 @@
     </thead>
     <tbody id="video-list">
       {% for v in videos %}
-      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}">
+      {% set count = v.singing_records|length %}
+      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-records="{{ count }}">
         <td width="120">
           {% if v.thumbnail_url %}
           <img src="{{ v.thumbnail_url }}" alt="thumb" style="width: 100px; border-radius: 8px; object-fit: cover;">
@@ -60,7 +68,6 @@
           <span class="badge badge-info">{{ _(v.video_type) }}</span>
         </td>
         <td>
-          {% set count = v.singing_records|length %}
           <span class="badge {% if count == 0 %}badge-danger{% else %}badge-success{% endif %}">
             <i class="fa-solid fa-clipboard-list"></i> {{ count }}
           </span>
@@ -92,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyFilters() {
     const term = searchInput.value.toLowerCase();
     const vtuberId = vtuberFilter.value;
+    const filterRecords = document.getElementById('records-filter').value;
     const sort = sortFilter.value;
     
     // 1. Filter
@@ -99,11 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
     rows.forEach(el => {
       const text = el.querySelector('.search-text').textContent.toLowerCase();
       const rowVtuber = el.dataset.vtuber;
+      const rowRecords = parseInt(el.dataset.records || '0', 10);
       
       const matchesSearch = text.includes(term);
       const matchesVtuber = !vtuberId || rowVtuber === vtuberId;
+      const matchesRecords = !filterRecords || (filterRecords === 'zero' && rowRecords === 0) || (filterRecords === 'has' && rowRecords > 0);
       
-      el.style.display = (matchesSearch && matchesVtuber) ? '' : 'none';
+      el.style.display = (matchesSearch && matchesVtuber && matchesRecords) ? '' : 'none';
     });
     
     // 2. Sort
@@ -122,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchInput.addEventListener('input', applyFilters);
   vtuberFilter.addEventListener('change', applyFilters);
+  document.getElementById('records-filter').addEventListener('change', applyFilters);
   sortFilter.addEventListener('change', applyFilters);
 });
 </script>
