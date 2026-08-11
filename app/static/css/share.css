@@ -257,6 +257,91 @@
   display: none !important;
 }
 
+/* ==========================================================================
+   🎵 Tracklist Styles (Spotify-like)
+   ========================================================================== */
+.track-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+.track-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.track-index-wrapper {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.track-index {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.track-play-btn {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: var(--vtuber-active-theme, #fff);
+}
+.track-item:hover .track-index {
+  opacity: 0;
+}
+.track-item:hover .track-play-btn {
+  opacity: 1;
+}
+
+/* Album Card Hover */
+.album-card {
+  position: relative;
+  border: none;
+  background: var(--card-bg);
+  transition: background-color 0.3s, transform 0.3s;
+}
+.album-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.album-img-wrapper {
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  margin-bottom: 12px;
+}
+.album-play-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--vtuber-active-theme, var(--primary));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  transform: translateY(10px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.album-card:hover .album-play-btn {
+  transform: translateY(0);
+  opacity: 1;
+}
+.album-play-btn:hover {
+  transform: scale(1.05) !important;
+}
+
 .app-layout.collapsed .sidebar-avatar {
   width: 40px;
   height: 40px;
@@ -279,6 +364,25 @@
   flex-direction: column;
   min-height: 100vh;
   transition: margin-left 0.3s ease;
+  position: relative;
+}
+
+.hero-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to bottom, var(--vtuber-active-theme, rgba(139, 92, 246, 0.4)), transparent);
+  opacity: 0.15;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.main-content-scroll {
+  position: relative;
+  z-index: 1;
+  padding: 0;
 }
 
 .desktop-only {
@@ -398,7 +502,8 @@
 /* --- Tab Panes --- */
 .tab-pane {
   display: none;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.4s ease forwards;
+  padding: var(--spacing-lg) var(--spacing-lg);
 }
 
 .tab-pane.active {

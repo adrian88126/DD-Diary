@@ -334,15 +334,23 @@ function renderRepertoire() {
         );
     }
 
-    grid.innerHTML = songs.map(song => {
+    grid.innerHTML = songs.map((song, idx) => {
         const artists = song.artists && song.artists.length > 0 
             ? song.artists.map(a => a.name_main).join(', ') 
             : _('Unknown');
+        const songRecord = records.find(r => r.song && r.song.id === song.id);
+        const videoId = songRecord && songRecord.video_id ? songRecord.video_id : '';
+        const timestamp = songRecord ? songRecord.timestamp_seconds : 0;
+        
         return `
-            <div class="history-item" style="border-radius: 8px; margin-bottom: 8px; background: var(--card-bg); border: 1px solid var(--card-border);">
-                <div style="flex:1; min-width:0;">
-                    <h4 style="margin:0 0 4px; font-size:15px; font-weight:700; color:var(--text-bright);">${song.title_main}</h4>
-                    <div style="font-size:13px; color:var(--text-muted);"><i class="fa-solid fa-microphone"></i> ${artists}</div>
+            <div class="track-item" onclick="playSong('${videoId}', ${timestamp}, '${song.title_main.replace(/'/g, "\\'")}', '${artists.replace(/'/g, "\\'")}')">
+                <div class="track-index-wrapper">
+                    <span class="track-index">${idx + 1}</span>
+                    <span class="track-play-btn"><i class="fa-solid fa-play"></i></span>
+                </div>
+                <div class="track-info">
+                    <div style="font-size:15px; font-weight:500; color:var(--text-bright);">${song.title_main}</div>
+                    <div style="font-size:13px; color:var(--text-muted);">${artists}</div>
                 </div>
                 <div style="text-align:right;">
                     <span class="badge" style="background:rgba(255,255,255,0.1); font-size:11px;">${song.song_type || 'cover'}</span>
@@ -365,15 +373,14 @@ function renderVideos(gridId, types) {
         const dateStr = v.published_at ? v.published_at.split('T')[0] : '';
         const thumb = v.thumbnail_url || `https://img.youtube.com/vi/${v.video_id}/mqdefault.jpg`;
         return `
-            <div class="card" style="cursor:pointer; overflow:hidden; border-radius:12px;" onclick="playSong('${v.video_id}', 0, '${v.title.replace(/'/g, "\\'")}', '${(vtuber.name_main || '').replace(/'/g, "\\'")}')">
-                <div style="position:relative;">
-                    <img src="${thumb}" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;">
-                    <div style="position:absolute; bottom:6px; right:6px; background:rgba(0,0,0,0.8); padding:2px 6px; border-radius:4px; font-size:11px; color:#fff;">
-                        ${dateStr}
-                    </div>
+            <div class="card album-card" style="cursor:pointer; overflow:hidden; border-radius:12px; padding: 12px;" onclick="playSong('${v.video_id}', 0, '${v.title.replace(/'/g, "\\'")}', '${(vtuber.name_main || '').replace(/'/g, "\\'")}')">
+                <div class="album-img-wrapper">
+                    <img src="${thumb}" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; border-radius: 8px;">
+                    <div class="album-play-btn"><i class="fa-solid fa-play"></i></div>
                 </div>
-                <div style="padding:12px;">
-                    <h4 style="margin:0; font-size:13px; font-weight:600; color:var(--text-bright); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${v.title}</h4>
+                <div>
+                    <h4 style="margin:0 0 4px; font-size:14px; font-weight:600; color:var(--text-bright); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${v.title}</h4>
+                    <div style="font-size: 12px; color: var(--text-muted);">${dateStr}</div>
                 </div>
             </div>
         `;
@@ -392,29 +399,31 @@ function renderHistory() {
         );
     }
 
-    list.innerHTML = recs.map(r => {
+    list.innerHTML = recs.map((r, idx) => {
         const songTitle = r.song ? r.song.title_main : 'Unknown Song';
         const artists = r.song && r.song.artists && r.song.artists.length > 0 ? r.song.artists.map(a => a.name_main).join(', ') : 'Unknown Artist';
         const videoTitle = r.video ? r.video.title : 'Unknown Video';
         const dateStr = r.video && r.video.published_at ? r.video.published_at.split('T')[0] : '';
         
         return `
-            <div class="history-item">
-                <div style="flex:1; min-width:0;">
-                    <h4 style="margin:0 0 4px; font-size:14px; font-weight:700; color:var(--text-bright); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${songTitle}</h4>
-                    <div style="font-size:12px; color:var(--text-muted); display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                        <span><i class="fa-solid fa-microphone"></i> ${artists}</span>
+            <div class="track-item" onclick="playSong('${r.video_id}', ${r.timestamp_seconds}, '${songTitle.replace(/'/g, "\\'")}', '${artists.replace(/'/g, "\\'")}')">
+                <div class="track-index-wrapper">
+                    <span class="track-index">${idx + 1}</span>
+                    <span class="track-play-btn"><i class="fa-solid fa-play"></i></span>
+                </div>
+                <div class="track-info">
+                    <div style="font-size:15px; font-weight:500; color:var(--text-bright); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${songTitle}</div>
+                    <div style="font-size:13px; color:var(--text-muted); display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                        <span>${artists}</span>
                         <span>•</span>
-                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;"><i class="fa-brands fa-youtube"></i> ${videoTitle}</span>
+                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">${videoTitle}</span>
                         <span>•</span>
                         <span>${dateStr}</span>
-                        <span>•</span>
-                        <span>${formatSeconds(r.timestamp_seconds)}</span>
                     </div>
                 </div>
-                <button onclick="playSong('${r.video_id}', ${r.timestamp_seconds}, '${songTitle.replace(/'/g, "\\'")}', '${artists.replace(/'/g, "\\'")}')" class="btn-primary" style="border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                    <i class="fa-solid fa-play"></i>
-                </button>
+                <div style="color: var(--text-muted); font-variant-numeric: tabular-nums;">
+                    ${formatSeconds(r.timestamp_seconds)}
+                </div>
             </div>
         `;
     }).join('') || '<div style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fa-solid fa-clock-rotate-left fa-3x" style="margin-bottom:16px; opacity:0.5;"></i><br>還沒有任何歷史歌回紀錄呢！</div>';
