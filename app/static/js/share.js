@@ -88,12 +88,44 @@ window.onYouTubeIframeAPIReady = () => {
     // Player will be created dynamically when a video is played
 };
 
+let currentPlaying = { videoId: '', timestamp: 0 };
 window.playSong = (videoId, timestamp = 0, title = '', singer = '') => {
     const container = document.getElementById('youtube-player');
+    currentPlaying.videoId = videoId;
+    currentPlaying.timestamp = timestamp;
     
     // Update player info bar
     document.getElementById('current-song-title').textContent = title || 'Unknown';
     document.getElementById('current-singer-name').innerHTML = `<i class="fa-solid fa-user"></i> ${singer || 'Unknown'}`;
+
+    const onPlayerError = (event) => {
+        const vid = currentPlaying.videoId;
+        const ts = currentPlaying.timestamp;
+        
+        if (ytPlayer) {
+            try { ytPlayer.destroy(); } catch(e) {}
+            ytPlayer = null;
+        }
+        
+        if (event.data === 101 || event.data === 150) {
+            container.innerHTML = `
+                <div style="background:#000; color:#fff; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 20px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#f87171; margin-bottom:10px;"></i>
+                    <div style="font-size:14px; margin-bottom:12px;">上傳者已停用此影片的嵌入功能</div>
+                    <a href="https://www.youtube.com/watch?v=${vid}&t=${ts}s" target="_blank" class="btn-outline btn-sm" style="color:var(--vtuber-active-theme); border-color:var(--vtuber-active-theme); font-weight:600; text-decoration:none;">
+                        <i class="fa-brands fa-youtube"></i> 在 YouTube 上完整觀看
+                    </a>
+                </div>
+            `;
+        } else {
+             container.innerHTML = `
+                <div style="background:#000; color:#fff; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                    <i class="fa-solid fa-circle-exclamation" style="font-size:24px; color:#f87171; margin-bottom:10px;"></i>
+                    <div style="font-size:14px;">影片無法播放 (錯誤碼: ${event.data})</div>
+                </div>
+            `;
+        }
+    };
 
     if (!ytPlayer) {
         container.innerHTML = `<div id="yt-iframe-placeholder"></div>`;
@@ -106,11 +138,14 @@ window.playSong = (videoId, timestamp = 0, title = '', singer = '') => {
                 'start': timestamp
             },
             events: {
-                'onReady': (event) => event.target.playVideo()
+                'onReady': (event) => event.target.playVideo(),
+                'onError': onPlayerError
             }
         });
     } else {
         try {
+            // Remove previous error listener if possible? API doesn't support removeEventListener directly.
+            // But since currentPlaying is updated globally, the old onError will read the new values if it triggers.
             ytPlayer.loadVideoById({ videoId: videoId, startSeconds: timestamp });
         } catch(e) {
             // Re-init if destroyed
@@ -119,7 +154,11 @@ window.playSong = (videoId, timestamp = 0, title = '', singer = '') => {
                 height: '100%',
                 width: '100%',
                 videoId: videoId,
-                playerVars: { 'autoplay': 1, 'start': timestamp }
+                playerVars: { 'autoplay': 1, 'start': timestamp },
+                events: {
+                    'onReady': (event) => event.target.playVideo(),
+                    'onError': onPlayerError
+                }
             });
         }
     }
