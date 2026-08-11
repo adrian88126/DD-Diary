@@ -12,13 +12,24 @@ def get_vtuber_by_identifier(identifier: str):
     if identifier.isdigit():
         return db.session.scalars(select(VTuber).where(VTuber.id == int(identifier))).first()
         
-    normalized_id = identifier.replace("-", "_").lower()
+    ident_lower = identifier.lower()
     
-    vtuber = db.session.scalars(select(VTuber).where(func.lower(VTuber.name_romaji) == normalized_id)).first()
-    if vtuber:
-        return vtuber
-        
-    vtuber = db.session.scalars(select(VTuber).where(func.lower(VTuber.name_romaji).like(f"%{normalized_id}%"))).first()
+    # 1. Exact match
+    vtuber = db.session.scalars(select(VTuber).where(func.lower(VTuber.name_romaji) == ident_lower)).first()
+    if vtuber: return vtuber
+    
+    # 2. Match with spaces instead of hyphens/underscores
+    ident_spaced = ident_lower.replace("-", " ").replace("_", " ")
+    vtuber = db.session.scalars(select(VTuber).where(func.lower(VTuber.name_romaji) == ident_spaced)).first()
+    if vtuber: return vtuber
+    
+    # 3. Match with underscores instead of hyphens
+    ident_underscored = ident_lower.replace("-", "_").replace(" ", "_")
+    vtuber = db.session.scalars(select(VTuber).where(func.lower(VTuber.name_romaji) == ident_underscored)).first()
+    if vtuber: return vtuber
+    
+    # 4. Fallback LIKE search
+    vtuber = db.session.scalars(select(VTuber).where(func.lower(VTuber.name_romaji).like(f"%{ident_lower}%"))).first()
     return vtuber
 
 @share_bp.route('/<identifier>')

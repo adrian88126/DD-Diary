@@ -15,7 +15,7 @@
 
   <div class="grid fade-in stagger-3">
     {% for vtuber in vtubers %}
-    <a href="{{ url_for('share.profile', identifier=vtuber.name_romaji or vtuber.id) }}" class="card" style="text-align: center; border-bottom: 4px solid {{ vtuber.theme_color or 'var(--primary)' }};">
+    <a href="{{ url_for('share.profile', identifier=(vtuber.name_romaji|lower|replace(' ', '-')) if vtuber.name_romaji else vtuber.id) }}" class="card" style="text-align: center; border-bottom: 4px solid {{ vtuber.theme_color or 'var(--primary)' }};">
       <img src="{{ vtuber.avatar_url or url_for('static', filename='img/default_avatar.png') }}" alt="{{ vtuber.name_main }}" class="profile-avatar mb-3" style="width: 80px; height: 80px; margin: 0 auto; display: block;">
       <h3>{{ vtuber.name_main }}</h3>
       {% if vtuber.description %}
