@@ -37,6 +37,7 @@
         <th>{{ _('Thumbnail') }}</th>
         <th>{{ _('Title') }}</th>
         <th>{{ _('Type') }}</th>
+        <th>{{ _('Records') }}</th>
         <th>{{ _('Published At') }}</th>
         <th style="text-align: right;">{{ _('Actions') }}</th>
       </tr>
@@ -58,7 +59,13 @@
         <td class="search-text">
           <span class="badge badge-info">{{ _(v.video_type) }}</span>
         </td>
-        <td class="search-text">{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '-' }}</td>
+        <td>
+          {% set count = v.singing_records|length %}
+          <span class="badge {% if count == 0 %}badge-danger{% else %}badge-success{% endif %}">
+            <i class="fa-solid fa-clipboard-list"></i> {{ count }}
+          </span>
+        </td>
+        <td>{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '-' }}</td>
         <td>
           <div class="flex gap-2" style="justify-content: flex-end;">
             <a href="{{ url_for('admin.video_timeline', id=v.video_id) }}" class="btn btn-sm btn-info" title="{{ _('Smart Timeline Parser') }}">

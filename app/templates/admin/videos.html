@@ -59,6 +59,7 @@
         <th style="width: 100px;">Thumbnail</th>
         <th class="sortable">Title</th>
         <th class="sortable">Type</th>
+        <th class="sortable">Records</th>
         <th class="sortable">Published</th>
         <th style="width: 140px;">Actions</th>
       </tr>
@@ -77,6 +78,12 @@
         <td class="editable-cell search-text" data-field="title" title="Double click to edit">{{ v.title }}</td>
         <td class="search-text">
           <span class="badge badge-info">{{ _(v.video_type) }}</span>
+        </td>
+        <td>
+          {% set count = v.singing_records|length %}
+          <span class="badge {% if count == 0 %}badge-danger{% else %}badge-success{% endif %}">
+            <i class="fa-solid fa-clipboard-list"></i> {{ count }}
+          </span>
         </td>
         <td class="search-text">{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '-' }}</td>
         <td>
