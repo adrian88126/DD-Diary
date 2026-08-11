@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VTSong Database - VTuber Song Management System">
+  <title>VTSong Database - Lobby</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="../static/css/base.css">
+  <script>
+    window.I18N = {};
+  </script>
+  
+</head>
+<body>
+  
+  
+  <nav class="navbar">
+    <div class="container flex justify-between items-center">
+      <a href="/" class="navbar-brand">
+        <i class="fa-solid fa-music text-primary"></i> VTSong
+      </a>
+      
+      <button class="hamburger">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      
+      <div class="nav-links">
+        <a href="/">Home</a>
+        
+          <a href="/auth/login">Login</a>
+        
+        
+        <div class="dropdown" style="display:inline-block; position:relative;">
+          <button class="btn btn-outline btn-sm dropdown-btn" onclick="const el = this.nextElementSibling; el.style.display = el.style.display === 'none' ? 'block' : 'none';">
+            <i class="fa-solid fa-globe"></i>
+          </button>
+          <div class="dropdown-content" style="position:absolute; right:0; background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:0.5rem; display:none; z-index:100; min-width:100px;">
+            
+              <a href="../index.html" style="display:block; padding:0.25rem 0.5rem; text-decoration:none; color:var(--text-color);">中文</a>
+              <a href="./index.html" style="display:block; padding:0.25rem 0.5rem; text-decoration:none; color:var(--text-color);">English</a>
+            
+          </div>
+        </div>
+
+        <button id="theme-toggle" class="btn btn-outline btn-sm">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+  
+
+  
+<div class="container mt-4 mb-4">
+  <div class="text-center mb-4 fade-in stagger-1">
+    <h1 style="font-size: 3rem; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VTSong Database</h1>
+    <p class="text-muted">VTuber 歌唱資料庫</p>
+  </div>
+
+  <div class="form-group max-w-md mx-auto fade-in stagger-2" style="max-width: 600px; margin: 0 auto 2rem auto;">
+    <input type="text" class="form-input" placeholder="Search VTubers..." id="vtuber-search">
+  </div>
+
+  <div class="grid fade-in stagger-3">
+    
+    <a href="./share/taotaotaotie%20ch" class="card" style="text-align: center; border-bottom: 4px solid #00E676;">
+      <img src="../static/img/default_avatar.png" alt="滔滔饕餮 TaotaoTaotie Ch." class="profile-avatar mb-3" style="width: 80px; height: 80px; margin: 0 auto; display: block;">
+      <h3>滔滔饕餮 TaotaoTaotie Ch.</h3>
+      
+        <p class="text-muted" style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">༺  滔滔・饕餮 Taotao ༻
+
+❖──關於本王──❖
+
+哇哈，本王滔滔🥢💚
+本滔可是上古之獸饕餮
+所以你們最好是趕快給我奉上點心，知道嗎？
+
+❖──Hashtag──❖
+
+🥢FanArt   ｜#滔心滔繪
+🥢Live        ｜#滔出來
+🥢Hashtag｜#最餓滔天
+🥢精華       ｜#小剪滔
+
+˙.+。˙.+。˙.+。˙.+。˙.+。˙.+。˙.+
+
+〖眾水之音 ▪︎ Music Stream 所屬〗
+↪︎ 合作洽詢、連動｜musicstreamvt@gmail.com
+</p>
+      
+    </a>
+    
+    <a href="./share/seri%20ch" class="card" style="text-align: center; border-bottom: 4px solid #a78bfa;">
+      <img src="../static/img/default_avatar.png" alt="Seri ch.星璃" class="profile-avatar mb-3" style="width: 80px; height: 80px; margin: 0 auto; display: block;">
+      <h3>Seri ch.星璃</h3>
+      
+        <p class="text-muted" style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">大家好~我是Reverie的星璃せリ(𝓢𝓮𝓻𝓲)。
+我來自於遙遠的霹靂星星，想來體驗地球人的生活。
+我的興趣有很多~
+平常會開歌回、遊戲、雜談!!歡迎大家進來陪我一起聊天!!!(*´▽`*)
+未來的每一天也會為了地球人們而努力(´▽`ʃ♡ƪ)&#34;
+家裡有養一隻外星貓，名字叫做小璃，有時候會亂入直播，還請大家不要介意~
+
+工作邀約聯絡信箱：waradondon2023@gmail.com
+</p>
+      
+    </a>
+    
+    <a href="./share/llb%20ch" class="card" style="text-align: center; border-bottom: 4px solid #9f77b2;">
+      <img src="../static/img/default_avatar.png" alt="祿菈唄爾 LLB ch." class="profile-avatar mb-3" style="width: 80px; height: 80px; margin: 0 auto; display: block;">
+      <h3>祿菈唄爾 LLB ch.</h3>
+      
+        <p class="text-muted" style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">𝄞 雙聲系唱詩班少年 ᛝ 個人勢 Vtuber ₊ ⛪︎
+
+歡迎來到我的電子教堂！
+祿菈唄爾做為一位好唱詩班成員，
+想用聲音傳遞能量，同時盡情玩樂中～
+
+主要的 音樂 ᛝ 遊戲 ᛝ 雜談 ᛝ 配音以外，
+繪畫 ᛝ 看書 ᛝ 學習新技能 的內容也會出現喔！
+
+朝著全職獨立創作者前進的這條路，
+能有你陪我揮灑靈魂嗎？🥺
+
+平常的直播在 YT、Twitch 雙開中，
+關注各路社群媒體這件事也要麻煩你囉！</p>
+      
+    </a>
+    
+  </div>
+</div>
+
+
+  <div id="toast-container">
+    
+      
+    
+  </div>
+
+  <script type="module" src="../static/js/ui.js"></script>
+  
+</body>
+</html>
