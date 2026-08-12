@@ -20,7 +20,7 @@
   {% block navbar %}
   <nav class="navbar">
     <div class="container flex justify-between items-center">
-      <a href="{{ url_for('main.lobby') }}" class="navbar-brand">
+      <a href="{{ lobby_url or url_for('main.lobby') }}" class="navbar-brand">
         <i class="fa-solid fa-music text-primary"></i> DDDiary
       </a>
       
@@ -29,7 +29,7 @@
       </button>
       
       <div class="nav-links">
-        <a href="{{ url_for('main.lobby') }}">{{ _('Home') }}</a>
+        <a href="{{ lobby_url or url_for('main.lobby') }}">{{ _('Home') }}</a>
         {% if current_user and current_user.is_authenticated %}
           <a href="{{ url_for('admin.dashboard') }}">{{ _('Admin') }}</a>
           <a href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>

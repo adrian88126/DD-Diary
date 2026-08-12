@@ -111,7 +111,8 @@ def build_language_site(app, vtubers, songs_count, records_count, videos_count, 
                 records_json=records_json_str,
                 is_static=True,
                 static_link_zh=static_link_zh,
-                static_link_en=static_link_en
+                static_link_en=static_link_en,
+                lobby_url="../../index.html"
             )
             
             html_content = html_content.replace(static_replace_old, static_replace_new)
@@ -175,7 +176,8 @@ def build_language_site(app, vtubers, songs_count, records_count, videos_count, 
             total_videos=videos_count,
             is_static=True,
             static_link_zh=static_link_zh,
-            static_link_en=static_link_en
+            static_link_en=static_link_en,
+            lobby_url="index.html"
         )
         
         lobby_html = lobby_html.replace(static_replace_old, static_replace_new)
