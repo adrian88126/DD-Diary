@@ -11,6 +11,7 @@ def get_songs(
     song_type: str = None, 
     vtuber_id: int = None, 
     is_signature: bool = None, 
+    no_artists: bool = False,
     skip: int = 0, 
     limit: int = 100
 ):
@@ -34,6 +35,9 @@ def get_songs(
         if is_signature:
             # 過濾特定 VTuber 的常駐拿手歌
             stmt = stmt.where(Song.signature_vtubers.any(id=vtuber_id))
+            
+    if no_artists:
+        stmt = stmt.where(~Song.artists.any())
             
     return db.session.scalars(stmt.offset(skip).limit(limit).order_by(Song.id.desc())).all()
 

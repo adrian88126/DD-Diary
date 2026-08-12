@@ -78,9 +78,11 @@ def vtubers_sync_youtube(id):
 # --- Songs ---
 @admin_bp.route('/songs')
 def list_songs():
-    songs = song_service.get_songs(skip=0, limit=1000)
+    filter_param = request.args.get('filter')
+    no_artists = (filter_param == 'no_artists')
+    songs = song_service.get_songs(no_artists=no_artists, skip=0, limit=1000)
     artists = artist_service.get_artists(skip=0, limit=1000)
-    return render_template('admin/songs.html', songs=songs, all_artists=artists)
+    return render_template('admin/songs.html', songs=songs, all_artists=artists, current_filter=filter_param)
 
 @admin_bp.route('/songs/create', methods=['GET', 'POST'])
 def create_song():
@@ -90,7 +92,8 @@ def create_song():
         data['artist_ids'] = artist_ids
         song_service.create_song(data)
         flash('Song created successfully', 'success')
-        return redirect(url_for('admin.list_songs'))
+        filter_param = request.args.get('filter')
+        return redirect(url_for('admin.list_songs', filter=filter_param))
     return render_template('admin/songs_form.html')
 
 @admin_bp.route('/songs/<int:id>/edit', methods=['GET', 'POST'])
@@ -102,14 +105,16 @@ def edit_song(id):
         data['artist_ids'] = artist_ids
         song_service.update_song(id, data)
         flash('Song updated successfully', 'success')
-        return redirect(url_for('admin.list_songs'))
+        filter_param = request.args.get('filter')
+        return redirect(url_for('admin.list_songs', filter=filter_param))
     return render_template('admin/songs_form.html', song=song)
 
 @admin_bp.route('/songs/<int:id>/delete', methods=['POST'])
 def delete_song(id):
     song_service.delete_song(id)
     flash('Song deleted successfully', 'success')
-    return redirect(url_for('admin.list_songs'))
+    filter_param = request.args.get('filter')
+    return redirect(url_for('admin.list_songs', filter=filter_param))
 
 # --- Artists ---
 @admin_bp.route('/artists')

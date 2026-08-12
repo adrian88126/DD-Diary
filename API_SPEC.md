@@ -93,60 +93,24 @@
 
 ## 4. Repertoire & Records (歌單與歌唱紀錄)
 
-### A. 批次時間軸解析與批量登錄
-* **Method & URL**：`POST /api/v1/records/batch-timeline`
-* **說明**：後台「智慧時間軸分割工具」的通訊接口。傳入 YouTube 留言區的原始時間軸文字，由後端解析器分析為單曲紀錄。
+### A. 儲存批次解析時間軸結果至資料庫
+* **Method & URL**：`POST /admin/videos/<id>/timeline/save`
+* **說明**：將管理員在預覽視窗中確認無誤的批量解析與編輯結果（含備註/歌手）正式寫入資料庫。
 * **請求 Payload (JSON)**：
 ```json
 {
-  "video_id": "xbzjE_249hw",
-  "raw_text": "01:20 錦鯉抄\n05:40 牽絲戲\n09:12 不老夢"
+  "items": [
+    { "title": "表裏一体", "timestamp_seconds": 1340, "note": "ゆず" },
+    { "title": "猫", "timestamp_seconds": 7346, "note": "DISH//" }
+  ],
+  "singer_ids": [1]
 }
 ```
 * **回傳範例 (200 OK)**：
 ```json
 {
-  "status": "success",
-  "parsed_count": 3,
-  "records": [
-    {
-      "song_title": "錦鯉抄",
-      "timestamp_seconds": 80,
-      "status": "ready_to_save"
-    },
-    {
-      "song_title": "牽絲戲",
-      "timestamp_seconds": 340,
-      "status": "ready_to_save"
-    },
-    {
-      "song_title": "不老夢",
-      "timestamp_seconds": 552,
-      "status": "ready_to_save"
-    }
-  ]
-}
-```
-
-### B. 儲存解析結果至資料庫
-* **Method & URL**：`POST /api/v1/records/save-timeline`
-* **說明**：將使用者在預覽視窗中確認無誤的批量解析結果正式寫入資料庫。
-* **請求 Payload (JSON)**：
-```json
-{
-  "video_id": "xbzjE_249hw",
-  "records": [
-    { "title": "錦鯉抄", "seconds": 80, "note": "" },
-    { "title": "牽絲戲", "seconds": 340, "note": "" }
-  ]
-}
-```
-* **回傳範例 (200 OK)**：
-```json
-{
-  "status": "success",
-  "saved_count": 2,
-  "message": "Successfully saved 2 records to database."
+  "success": true,
+  "count": 2
 }
 ```
 

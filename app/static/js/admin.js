@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const term = e.target.value.toLowerCase();
-      const rows = document.querySelectorAll('.data-table tbody tr');
+      const rows = document.querySelectorAll('.data-table tbody tr, .admin-data-table tbody tr');
       
       rows.forEach(row => {
         const text = row.textContent.toLowerCase();
@@ -56,34 +56,52 @@ document.addEventListener('DOMContentLoaded', () => {
       if (layout) layout.classList.toggle('collapsed');
     });
   }
-});
 
-  // 1. Table Sorting
+  // 1. Table Sorting (Fixed scopes and Arrow Function 'this' bugs)
   const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-  const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
-    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
-  )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
 
-  document.querySelectorAll('th.sortable').forEach(th => th.addEventListener('click', (() => {
-    const table = th.closest('table');
-    const tbody = table.querySelector('tbody');
-    Array.from(tbody.querySelectorAll('tr'))
-      .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-      .forEach(tr => tbody.appendChild(tr));
-    
-    // Update visual indicators
-    table.querySelectorAll('th.sortable').forEach(el => { el.classList.remove('asc', 'desc'); });
-    th.classList.add(this.asc ? 'asc' : 'desc');
-  })));
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const table = th.closest('table');
+      const tbody = table.querySelector('tbody');
+      const idx = Array.from(th.parentNode.children).indexOf(th);
+      
+      // Toggle sorting direction using dataset
+      const asc = th.dataset.asc !== 'true';
+      th.dataset.asc = asc ? 'true' : 'false';
+      
+      Array.from(tbody.querySelectorAll('tr'))
+        .sort((a, b) => {
+          const v1 = getCellValue(asc ? a : b, idx).trim();
+          const v2 = getCellValue(asc ? b : a, idx).trim();
+          
+          // Parse as numbers if possible, otherwise string compare
+          const num1 = parseFloat(v1.replace(/s$/, '')); // strip 's' suffix if seconds
+          const num2 = parseFloat(v2.replace(/s$/, ''));
+          if (!isNaN(num1) && !isNaN(num2)) {
+            return num1 - num2;
+          }
+          return v1.localeCompare(v2, undefined, { numeric: true, sensitivity: 'base' });
+        })
+        .forEach(tr => tbody.appendChild(tr));
+      
+      // Update visual indicators
+      table.querySelectorAll('th.sortable').forEach(el => {
+        el.classList.remove('asc', 'desc');
+        if (el !== th) el.removeAttribute('data-asc');
+      });
+      th.classList.add(asc ? 'asc' : 'desc');
+    });
+  });
 
-  // 2. Inline Editing
+  // 2. Inline Editing (Fixed string template syntax error)
   document.querySelectorAll('.editable-cell').forEach(cell => {
     cell.addEventListener('dblclick', function() {
       if (this.classList.contains('editing')) return;
       
       const originalValue = this.innerText.trim();
       this.classList.add('editing');
-      this.innerHTML = <input type="text" class="inline-edit-input" value=" + originalValue.replace(/"/g, '&quot;') + ">;
+      this.innerHTML = `<input type="text" class="inline-edit-input" value="${originalValue.replace(/"/g, '&quot;')}">`;
       
       const input = this.querySelector('input');
       input.focus();
@@ -109,13 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             
             if (data.success) {
-              import('./ui.js').then(module => module.showToast('Saved successfully', 'success'));
+              showToast('Saved successfully', 'success');
               this.innerText = newValue;
             } else {
               throw new Error(data.error || 'Failed to save');
             }
           } catch (error) {
-            import('./ui.js').then(module => module.showToast('Error saving: ' + error.message, 'error'));
+            showToast('Error saving: ' + error.message, 'error');
             this.innerText = originalValue;
           }
         } else {
@@ -200,4 +218,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-
+});

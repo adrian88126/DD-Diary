@@ -8,8 +8,16 @@
   <button class="btn btn-primary" onclick="openSongForm()"><i class="fa-solid fa-plus"></i> New Song</button>
 </div>
 
-<div class="form-group max-w-md mb-4">
-  <input type="text" id="table-search" class="form-input" placeholder="Search Songs...">
+<div class="flex items-center gap-3 mb-4" style="flex-wrap: wrap;">
+  <div class="form-group max-w-md" style="margin-bottom: 0; flex: 1;">
+    <input type="text" id="table-search" class="form-input" placeholder="Search Songs...">
+  </div>
+  <div class="flex items-center gap-2">
+    <input type="checkbox" id="filter-no-artists-cb" class="admin-checkbox" {% if current_filter == 'no_artists' %}checked{% endif %} onchange="toggleFilterNoArtists(this.checked)">
+    <label for="filter-no-artists-cb" style="cursor: pointer; user-select: none; font-size: 0.95em; color: var(--text-color);">
+      <i class="fa-solid fa-user-slash" style="margin-right: 4px; color: var(--text-muted);"></i> 只顯示未指定歌手的歌曲
+    </label>
+  </div>
 </div>
 
 <div class="bulk-action-bar">
@@ -53,7 +61,7 @@
             <button class="btn btn-sm btn-outline" onclick="openSongForm(this)" data-song="{{ s_data | tojson | forceescape }}">
               <i class="fa-solid fa-pen"></i>
             </button>
-            <form method="POST" action="{{ url_for('admin.delete_song', id=s.id) }}" class="delete-form" style="display:inline;">
+            <form method="POST" action="{{ url_for('admin.delete_song', id=s.id, filter=current_filter) }}" class="delete-form" style="display:inline;">
               <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
             </form>
           </div>
@@ -139,7 +147,7 @@ function openSongForm(btn) {
     data = JSON.parse(btn.dataset.song);
   }
 
-  document.getElementById('song-form').action = data.action;
+  document.getElementById('song-form').action = data.action + window.location.search;
   document.getElementById('drawer-title').textContent = data.title_main ? '{{ _("Edit Song") }}' : '{{ _("New Song") }}';
   
   document.getElementById('title_main').value = data.title_main || '';
@@ -166,5 +174,15 @@ document.getElementById('table-search')?.addEventListener('input', (e) => {
     el.style.display = text.includes(term) ? '' : 'none';
   });
 });
+
+window.toggleFilterNoArtists = (isChecked) => {
+  const url = new URL(window.location.href);
+  if (isChecked) {
+    url.searchParams.set('filter', 'no_artists');
+  } else {
+    url.searchParams.delete('filter');
+  }
+  window.location.href = url.pathname + url.search;
+};
 </script>
 {% endblock %}

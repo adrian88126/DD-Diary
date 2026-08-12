@@ -37,6 +37,31 @@
       </select>
     </div>
     
+    <div class="form-row mb-2" style="background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); gap: 12px; display: flex;">
+      <div class="form-group" style="margin-bottom: 0; flex: 1;">
+        <label style="font-size: 0.85em; font-weight: 600;">符號 1 後面是：</label>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <input type="text" id="symbol-1" class="form-input" style="width: 50px; text-align: center; min-height: 32px; padding: 4px; font-weight: bold;" value="/" oninput="reparseTimeline()">
+          <select id="symbol-1-type" class="form-input" style="min-height: 32px; padding: 4px 8px; font-size: 0.9em;" onchange="reparseTimeline()">
+            <option value="singer" selected>原唱歌手</option>
+            <option value="note">備註</option>
+            <option value="ignore">忽略</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom: 0; flex: 1;">
+        <label style="font-size: 0.85em; font-weight: 600;">符號 2 後面是：</label>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <input type="text" id="symbol-2" class="form-input" style="width: 50px; text-align: center; min-height: 32px; padding: 4px; font-weight: bold;" value="-" oninput="reparseTimeline()">
+          <select id="symbol-2-type" class="form-input" style="min-height: 32px; padding: 4px 8px; font-size: 0.9em;" onchange="reparseTimeline()">
+            <option value="singer">原唱歌手</option>
+            <option value="note" selected>備註</option>
+            <option value="ignore">忽略</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
     <textarea id="raw-text" class="form-input" style="flex: 1; resize: none; font-family: monospace; font-size: 14px;" placeholder="1. 錦鯉抄 13:34&#10;2. 是風動 19:50&#10;3. 不老夢 26:13"></textarea>
   </div>
 
@@ -53,6 +78,8 @@
             <th style="width: 80px;">{{ _('Time') }}</th>
             <th style="width: 80px;">{{ _('Seconds') }}</th>
             <th>{{ _('Song Title') }}</th>
+            <th style="width: 150px;">{{ _('Singer') }}</th>
+            <th style="width: 150px;">{{ _('Note') }}</th>
             <th style="width: 60px;"></th>
           </tr>
         </thead>
@@ -94,8 +121,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const lines = text.split('\n');
     parsedItems = [];
     
-    // Matches times like 13:34, 1:03:50, 13：34 (fullwidth)
+    const sym1 = document.getElementById('symbol-1').value;
+    const type1 = document.getElementById('symbol-1-type').value;
+    const sym2 = document.getElementById('symbol-2').value;
+    const type2 = document.getElementById('symbol-2-type').value;
+    
     const timeRegex = /(?:^|\s)((\d{1,2})[:：](\d{2})(?:[:：](\d{2}))?)(?=\s|$)/;
+    
+    function applySplitRule(textStr, symbol, type) {
+      if (!symbol) return { text: textStr, extracted: '' };
+      const escapedSym = symbol.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp(`\\s*${escapedSym}\\s+(.+)$`);
+      const match = textStr.match(regex);
+      if (match) {
+        return {
+          text: textStr.substring(0, match.index).trim(),
+          extracted: match[1].trim()
+        };
+      }
+      return { text: textStr, extracted: '' };
+    }
     
     lines.forEach(line => {
       let cleanLine = line.trim();
@@ -106,23 +151,44 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeStr = timeMatch[1];
         let seconds = 0;
         
-        // Parse time to seconds
         const parts = timeStr.replace(/：/g, ':').split(':').reverse();
         if (parts[0]) seconds += parseInt(parts[0], 10);
         if (parts[1]) seconds += parseInt(parts[1], 10) * 60;
         if (parts[2]) seconds += parseInt(parts[2], 10) * 3600;
         
-        // Remove time from string to get title
         let title = cleanLine.replace(timeStr, '').trim();
-        
-        // Remove numbering (e.g. "1. ", "02、", "- ")
         title = title.replace(/^\d+[\.、]\s*/, '').replace(/^-\s*/, '').trim();
         
-        if (title && !isNaN(seconds)) {
+        let songTitle = title;
+        let songSinger = '';
+        let songNote = '';
+        
+        // 級聯切分 (連續套用兩個符號規則)
+        if (sym1) {
+          let split1 = applySplitRule(songTitle, sym1, type1);
+          songTitle = split1.text;
+          if (split1.extracted) {
+            if (type1 === 'singer') songSinger = split1.extracted;
+            else if (type1 === 'note') songNote = split1.extracted;
+          }
+        }
+        
+        if (sym2) {
+          let split2 = applySplitRule(songTitle, sym2, type2);
+          songTitle = split2.text;
+          if (split2.extracted) {
+            if (type2 === 'singer') songSinger = split2.extracted;
+            else if (type2 === 'note') songNote = split2.extracted;
+          }
+        }
+        
+        if (songTitle && !isNaN(seconds)) {
           parsedItems.push({
             original_time: timeStr.replace(/：/g, ':'),
             timestamp_seconds: seconds,
-            title: title
+            title: songTitle,
+            singer: songSinger,
+            note: songNote
           });
         }
       }
@@ -155,6 +221,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <input type="text" class="form-input" style="min-height: 32px; padding: 4px 8px;" value="${item.title}" onchange="updateItemTitle(${idx}, this.value)">
         </td>
         <td>
+          <input type="text" class="form-input" style="min-height: 32px; padding: 4px 8px;" value="${item.singer || ''}" onchange="updateItemSinger(${idx}, this.value)">
+        </td>
+        <td>
+          <input type="text" class="form-input" style="min-height: 32px; padding: 4px 8px;" value="${item.note || ''}" onchange="updateItemNote(${idx}, this.value)">
+        </td>
+        <td>
           <button class="btn btn-sm btn-danger" onclick="removeItem(${idx})" style="padding: 4px 8px;"><i class="fa-solid fa-times"></i></button>
         </td>
       `;
@@ -165,6 +237,24 @@ document.addEventListener('DOMContentLoaded', () => {
   window.updateItemTitle = function(idx, newTitle) {
     if (parsedItems[idx]) {
       parsedItems[idx].title = newTitle;
+    }
+  };
+  
+  window.updateItemSinger = function(idx, newSinger) {
+    if (parsedItems[idx]) {
+      parsedItems[idx].singer = newSinger;
+    }
+  };
+  
+  window.updateItemNote = function(idx, newNote) {
+    if (parsedItems[idx]) {
+      parsedItems[idx].note = newNote;
+    }
+  };
+  
+  window.reparseTimeline = function() {
+    if (rawText) {
+      parseText(rawText.value);
     }
   };
   
@@ -193,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (data.success) {
         alert('{{ _("Successfully saved") }} ' + data.count + ' {{ _("records!") }}');
-        window.location.href = '{{ url_for("admin.list_videos") }}';
+        window.location.href = '{{ url_for("admin.list_singing_streams") }}' + window.location.search;
       } else {
         alert('{{ _("Error:") }} ' + data.error);
         btnSave.disabled = false;

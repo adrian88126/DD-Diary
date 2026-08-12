@@ -89,6 +89,20 @@ def batch_create_timeline(video_id: str, items: list, singer_ids: list = None):
             db.session.add(db_song)
             db.session.flush() # 取得新增後的 ID
             
+        # 處理歌手關聯 (如果有填寫歌手)
+        artist_name = item.get("singer", "").strip()
+        if artist_name:
+            from app.models.artist import Artist
+            db_artist = db.session.scalars(
+                select(Artist).where(func.lower(Artist.name_main) == artist_name.lower())
+            ).first()
+            if not db_artist:
+                db_artist = Artist(name_main=artist_name)
+                db.session.add(db_artist)
+                db.session.flush()
+            if db_artist not in db_song.artists:
+                db_song.artists.append(db_artist)
+            
         # 檢查是否已經有同秒數的紀錄
         existing_record = db.session.scalars(
             select(SingingRecord).where(
@@ -99,10 +113,12 @@ def batch_create_timeline(video_id: str, items: list, singer_ids: list = None):
         ).first()
         
         if not existing_record:
+            note = item.get("note", "").strip()
             new_record = SingingRecord(
                 video_id=video_id,
                 song_id=db_song.id,
-                timestamp_seconds=timestamp
+                timestamp_seconds=timestamp,
+                note=note if note else None
             )
             
             if singer_ids:

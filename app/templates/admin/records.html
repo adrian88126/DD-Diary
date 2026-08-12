@@ -24,6 +24,7 @@
         <th style="width: 40px;"></th>
         <th class="sortable">ID</th>
         <th class="sortable">Song</th>
+        <th>Artist</th>
         <th class="sortable">Video</th>
         <th class="sortable">Timestamp</th>
         <th style="width: 120px;">Actions</th>
@@ -35,6 +36,13 @@
         <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ r.id }}"></td>
         <td class="search-text">{{ r.id }}</td>
         <td class="search-text">{{ r.song.title_main if r.song else r.song_id }}</td>
+        <td class="search-text">
+          {% if r.song and r.song.artists %}
+            {% for a in r.song.artists %}{{ a.name_main }}{% if not loop.last %}, {% endif %}{% endfor %}
+          {% else %}
+            -
+          {% endif %}
+        </td>
         <td class="search-text">{{ r.video.title if r.video else r.video_id }}</td>
         <td class="editable-cell" data-field="timestamp_seconds" title="Double click to edit">{{ r.timestamp_seconds }}</td>
         <td>

@@ -95,11 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const vtuberFilter = document.getElementById('vtuber-filter');
   const sortFilter = document.getElementById('sort-filter');
   const tbody = document.getElementById('video-list');
+  const recordsFilter = document.getElementById('records-filter');
+  
+  // 讀取 URL 參數還原篩選器狀態
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('search')) searchInput.value = params.get('search');
+  if (params.has('vtuber_id')) vtuberFilter.value = params.get('vtuber_id');
+  if (params.has('records')) recordsFilter.value = params.get('records');
+  if (params.has('sort')) sortFilter.value = params.get('sort');
   
   function applyFilters() {
     const term = searchInput.value.toLowerCase();
     const vtuberId = vtuberFilter.value;
-    const filterRecords = document.getElementById('records-filter').value;
+    const filterRecords = recordsFilter.value;
     const sort = sortFilter.value;
     
     // 1. Filter
@@ -128,12 +136,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     visibleRows.forEach(row => tbody.appendChild(row));
+    
+    // 3. 更新 URL 參數
+    const url = new URL(window.location.href);
+    if (term) url.searchParams.set('search', term); else url.searchParams.delete('search');
+    if (vtuberId) url.searchParams.set('vtuber_id', vtuberId); else url.searchParams.delete('vtuber_id');
+    if (filterRecords) url.searchParams.set('records', filterRecords); else url.searchParams.delete('records');
+    if (sort) url.searchParams.set('sort', sort); else url.searchParams.delete('sort');
+    window.history.replaceState({}, '', url.pathname + url.search);
+    
+    // 4. 動態更新 Timeline 按鈕的 href 以帶上當前參數
+    tbody.querySelectorAll('a[title="Smart Timeline Parser"]').forEach(a => {
+      const baseHref = a.getAttribute('href').split('?')[0];
+      a.setAttribute('href', baseHref + url.search);
+    });
   }
 
   searchInput.addEventListener('input', applyFilters);
   vtuberFilter.addEventListener('change', applyFilters);
-  document.getElementById('records-filter').addEventListener('change', applyFilters);
+  recordsFilter.addEventListener('change', applyFilters);
   sortFilter.addEventListener('change', applyFilters);
+  
+  // 初始套用過濾
+  applyFilters();
 });
 </script>
 {% endblock %}

@@ -133,5 +133,8 @@
     "Collaboration": "連動/合作",
     "Shorts": "短影音",
     "All": "全部",
-    "Management and login features are only available in the local Flask environment.": "管理與登入功能僅在本地 Flask 環境下可用。"
+    "Management and login features are only available in the local Flask environment.": "管理與登入功能僅在本地 Flask 環境下可用。",
+    "Note / Singer": "備註 / 歌手",
+    "Singer": "原唱歌手",
+    "Note": "備註"
 }
