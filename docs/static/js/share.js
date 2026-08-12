@@ -1,4 +1,3 @@
-import { showToast, formatSeconds, _ } from './ui.js';
 
 // Data from window
 const vtuber = window.vtuberData || {};

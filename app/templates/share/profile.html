@@ -218,8 +218,8 @@
         window.activitiesData = {{ activities_json | safe }};
         window.recordsData = {{ records_json | safe }};
     </script>
-    <script type="module" src="{{ url_for('static', filename='js/ui.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='js/share.js') }}?v=7"></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/share.js') }}?v=7"></script>
 
     <!-- 🖼️ 高清圖片燈箱 Modal -->
     <div id="image-lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">

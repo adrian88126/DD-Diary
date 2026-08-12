@@ -34,7 +34,11 @@
           <a href="{{ url_for('admin.dashboard') }}">{{ _('Admin') }}</a>
           <a href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
         {% else %}
-          <a href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
+          {% if is_static %}
+            <a href="javascript:showToast('{{ _("Management and login features are only available in the local Flask environment.") }}', 'warning')">{{ _('Login') }}</a>
+          {% else %}
+            <a href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
+          {% endif %}
         {% endif %}
         
         <div class="dropdown" style="display:inline-block; position:relative;">
@@ -74,7 +78,7 @@
     {% endwith %}
   </div>
 
-  <script type="module" src="{{ url_for('static', filename='js/ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

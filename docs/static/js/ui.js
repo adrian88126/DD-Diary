@@ -1,6 +1,6 @@
 // app/static/js/ui.js
 
-export function showToast(message, type = 'success') {
+function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
   if (!container) return;
 
@@ -18,7 +18,7 @@ export function showToast(message, type = 'success') {
   }, 3000);
 }
 
-export function formatSeconds(seconds) {
+function formatSeconds(seconds) {
   if (!seconds || isNaN(seconds)) return "00:00";
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
@@ -79,14 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-export function openDrawer(drawerId) {
+function openDrawer(drawerId) {
   const drawer = document.getElementById(drawerId);
   if (drawer) {
     drawer.classList.add('open');
   }
 }
 
-export function closeDrawer(drawerId) {
+function closeDrawer(drawerId) {
   const drawer = document.getElementById(drawerId);
   if (drawer) {
     drawer.classList.remove('open');
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * @param {string} key 
  * @returns {string} translated text
  */
-export function _(key) {
+function _(key) {
     if (window.I18N && window.I18N[key]) {
         return window.I18N[key];
     }
@@ -126,3 +126,7 @@ export function _(key) {
 
 // Make it global for easy access in other scripts or inline handlers if needed
 window._ = _;
+window.showToast = showToast;
+window.formatSeconds = formatSeconds;
+window.openDrawer = openDrawer;
+window.closeDrawer = closeDrawer;
