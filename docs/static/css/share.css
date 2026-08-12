@@ -272,6 +272,15 @@
 .track-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+.track-info {
+  flex: 1;
+  min-width: 0;
+  margin-right: 16px;
+}
+.track-item > div:last-child {
+  flex-shrink: 0;
+  text-align: right;
+}
 .track-index-wrapper {
   position: relative;
   width: 32px;

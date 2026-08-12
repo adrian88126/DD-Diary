@@ -98,9 +98,9 @@
             <div class="tabs fade-in stagger-1 sidebar-nav">
                 <div class="tab-item active" id="tab-link-bio" onclick="switchTab('bio')"><i class="fa-solid fa-user" style="width:20px;"></i> <span class="tab-text">總覽</span></div>
                 <div class="tab-item" id="tab-link-requestable" onclick="switchTab('requestable')"><i class="fa-solid fa-list" style="width:20px;"></i> <span class="tab-text">歌單</span></div>
-                <div class="tab-item" id="tab-link-singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone" style="width:20px;"></i> <span class="tab-text">歌回時間軸</span></div>
+                <div class="tab-item" id="tab-link-singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone" style="width:20px;"></i> <span class="tab-text">歌回紀錄</span></div>
                 <div class="tab-item" id="tab-link-live" onclick="switchTab('live')"><i class="fa-solid fa-video" style="width:20px;"></i> <span class="tab-text">其他影片</span></div>
-                <div class="tab-item" id="tab-link-history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> <span class="tab-text">演唱紀錄</span></div>
+                <div class="tab-item" id="tab-link-history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> <span class="tab-text">歌回時間軸</span></div>
                 <div class="tab-item" id="tab-link-mv" onclick="switchTab('mv')"><i class="fa-solid fa-film" style="width:20px;"></i> <span class="tab-text">音樂影片</span></div>
             </div>
 
@@ -230,6 +230,12 @@
 
                     <!-- 分頁 4: 直播紀錄 -->
                     <div class="tab-pane" id="pane-live">
+                        <div class="video-filter-bar" style="margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-sm btn-outline active" onclick="filterOtherVideos('all', this)">全部</button>
+                            <button class="btn btn-sm btn-outline" onclick="filterOtherVideos('talk', this)">雜談/單人</button>
+                            <button class="btn btn-sm btn-outline" onclick="filterOtherVideos('collab', this)">連動/合作</button>
+                            <button class="btn btn-sm btn-outline" onclick="filterOtherVideos('shorts', this)">短影音</button>
+                        </div>
                         <div class="card-grid" id="live-grid"></div>
                     </div>
 

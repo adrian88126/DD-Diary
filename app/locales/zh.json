@@ -41,9 +41,9 @@
     "Error": "錯誤",
     "Overview": "總覽",
     "Song List": "歌單",
-    "Singing Streams": "歌枠影片",
+    "Singing Streams": "歌回紀錄",
     "Other Streams": "其他影片",
-    "Singing History": "演唱紀錄",
+    "Singing History": "歌回時間軸",
     "MV": "音樂影片",
     "Back to Lobby": "返回大廳",
     "View Profile": "觀看專頁",
@@ -112,7 +112,7 @@
     "Orphan Songs": "孤立歌曲",
     "Songs with no records attached.": "沒有任何歌唱紀錄關聯的歌曲。",
     "No orphan songs found.": "未發現孤立歌曲。",
-    "Singing Streams": "歌回時間軸",
+    "Singing Streams": "歌回紀錄",
     "Smart Timeline Parser": "智慧時間軸分割工具",
     "Parsing timeline for:": "正在解析下列影片的時間軸：",
     "Save All to Database": "全部儲存至資料庫",
@@ -128,5 +128,9 @@
     "Successfully saved": "成功儲存",
     "records!": "筆紀錄！",
     "Error:": "錯誤：",
-    "Network error occurred": "發生網路錯誤"
+    "Network error occurred": "發生網路錯誤",
+    "Talk / Solo": "雜談/單人",
+    "Collaboration": "連動/合作",
+    "Shorts": "短影音",
+    "All": "全部"
 }

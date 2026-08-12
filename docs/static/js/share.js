@@ -9,6 +9,7 @@ const records = window.recordsData || [];
 // Active states
 let currentTab = 'bio'; // 'bio' is default from HTML
 let searchQuery = '';
+let currentOtherVideoFilter = 'all';
 
 document.addEventListener('DOMContentLoaded', () => {
     initTabs();
@@ -180,7 +181,7 @@ function renderCurrentTab() {
         case 'bio': renderBio(); break;
         case 'requestable': renderRepertoire(); break;
         case 'singing': renderVideos('singing-grid', ['stream_singing']); break;
-        case 'live': renderVideos('live-grid', ['stream_other', 'other']); break;
+        case 'live': renderOtherVideosFiltered(); break;
         case 'history': renderHistory(); break;
         case 'mv': renderVideos('mv-grid', ['cover_mv', 'original_mv']); break;
     }
@@ -243,14 +244,18 @@ function renderBio() {
     if (socialContainer && vtuber.social_links) {
         try {
             const links = typeof vtuber.social_links === 'string' ? JSON.parse(vtuber.social_links) : vtuber.social_links;
-            socialContainer.innerHTML = links.map(link => {
+            socialContainer.innerHTML = links.map(item => {
+                const link = typeof item === 'string' ? item : (item && item.url ? item.url : '');
+                if (!link) return '';
+                
                 let iconClass = 'fa-solid fa-link';
-                if (link.includes('youtube.com')) iconClass = 'fa-brands fa-youtube';
-                else if (link.includes('twitter.com') || link.includes('x.com')) iconClass = 'fa-brands fa-x-twitter';
-                else if (link.includes('facebook.com')) iconClass = 'fa-brands fa-facebook';
-                else if (link.includes('instagram.com')) iconClass = 'fa-brands fa-instagram';
-                else if (link.includes('discord')) iconClass = 'fa-brands fa-discord';
-                else if (link.includes('twitch.tv')) iconClass = 'fa-brands fa-twitch';
+                const lowerLink = link.toLowerCase();
+                if (lowerLink.includes('youtube.com')) iconClass = 'fa-brands fa-youtube';
+                else if (lowerLink.includes('twitter.com') || lowerLink.includes('x.com')) iconClass = 'fa-brands fa-x-twitter';
+                else if (lowerLink.includes('facebook.com')) iconClass = 'fa-brands fa-facebook';
+                else if (lowerLink.includes('instagram.com')) iconClass = 'fa-brands fa-instagram';
+                else if (lowerLink.includes('discord')) iconClass = 'fa-brands fa-discord';
+                else if (lowerLink.includes('twitch.tv')) iconClass = 'fa-brands fa-twitch';
                 
                 return `<a href="${link}" target="_blank" class="social-icon" title="${link}"><i class="${iconClass}"></i></a>`;
             }).join('');
@@ -500,3 +505,53 @@ window.toggleLightboxZoom = (event) => {
 window.exportToExcel = () => {
     showToast('匯出功能即將推出', 'warning');
 };
+
+window.filterOtherVideos = (filterType, btn) => {
+    const bar = btn.parentElement;
+    bar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    currentOtherVideoFilter = filterType;
+    renderOtherVideosFiltered();
+};
+
+function renderOtherVideosFiltered() {
+    const grid = document.getElementById('live-grid');
+    if (!grid) return;
+
+    let vids = videos.filter(v => ['stream_other', 'other', 'short', 'shorts'].includes(v.video_type));
+    
+    if (searchQuery) {
+        vids = vids.filter(v => v.title.toLowerCase().includes(searchQuery));
+    }
+
+    if (currentOtherVideoFilter === 'talk') {
+        vids = vids.filter(v => !isCollabTitle(v.title));
+    } else if (currentOtherVideoFilter === 'collab') {
+        vids = vids.filter(v => isCollabTitle(v.title));
+    } else if (currentOtherVideoFilter === 'shorts') {
+        vids = vids.filter(v => v.title.toLowerCase().includes('shorts') || v.video_type === 'short' || v.video_type === 'shorts');
+    }
+
+    grid.innerHTML = vids.map(v => {
+        const dateStr = v.published_at ? v.published_at.split('T')[0] : '';
+        const thumb = v.thumbnail_url || `https://img.youtube.com/vi/${v.video_id}/mqdefault.jpg`;
+        return `
+            <div class="card album-card" style="cursor:pointer; overflow:hidden; border-radius:12px; padding: 12px;" onclick="playSong('${v.video_id}', 0, '${v.title.replace(/'/g, "\\'")}', '${(vtuber.name_main || '').replace(/'/g, "\\'")}')">
+                <div class="album-img-wrapper">
+                    <img src="${thumb}" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; border-radius: 8px;">
+                    <div class="album-play-btn"><i class="fa-solid fa-play"></i></div>
+                </div>
+                <div>
+                    <h4 style="margin:0 0 4px; font-size:14px; font-weight:600; color:var(--text-bright); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${v.title}</h4>
+                    <div style="font-size: 12px; color: var(--text-muted);">${dateStr}</div>
+                </div>
+            </div>
+        `;
+    }).join('') || `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);"><i class="fa-solid fa-video-slash fa-3x" style="margin-bottom:16px; opacity:0.5;"></i><br>${_('No videos here yet!')}</div>`;
+}
+
+function isCollabTitle(title) {
+    const t = title.toLowerCase();
+    return t.includes('連動') || t.includes('合作') || t.includes('collab') || t.includes('連同') || t.includes('w/') || t.includes('feat') || t.includes('ft.');
+}

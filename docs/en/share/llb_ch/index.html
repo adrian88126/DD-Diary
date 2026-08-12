@@ -210,6 +210,12 @@
 
                     <!-- 分頁 4: 直播紀錄 -->
                     <div class="tab-pane" id="pane-live">
+                        <div class="video-filter-bar" style="margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-sm btn-outline active" onclick="filterOtherVideos('all', this)">All</button>
+                            <button class="btn btn-sm btn-outline" onclick="filterOtherVideos('talk', this)">Talk / Solo</button>
+                            <button class="btn btn-sm btn-outline" onclick="filterOtherVideos('collab', this)">Collaboration</button>
+                            <button class="btn btn-sm btn-outline" onclick="filterOtherVideos('shorts', this)">Shorts</button>
+                        </div>
                         <div class="card-grid" id="live-grid"></div>
                     </div>
 
