@@ -24,8 +24,16 @@ VTSong_Database/
 ├── run.py                     # Flask 應用程式進入點 (監聽 5000 端口)
 ├── build_static.py            # 靜態網站中英雙語打包腳本
 ├── init_db.py                 # 資料庫初始化與 Schema 建立腳本
-├── requirements.txt           # Python 依賴包
+├── sync_cli.py                # YouTube 影片同步 CLI 工具
+├── run_tests.py               # 系統測試套件入口
+├── requirements.txt           # Python 依賴套件
 ├── vtuber_songs.db            # 主資料庫（SQLite）
+│
+├── manuals/                   # 專案架構與開發技術手冊
+│   ├── PROJECT_MANUAL.md      # 專案總體手冊
+│   ├── DATABASE.md            # 資料庫設計手冊
+│   ├── API_SPEC.md            # API 規格書
+│   └── BUILD_PROCESS.md       # 靜態打包原理
 │
 ├── app/
 │   ├── __init__.py            # Flask 應用工廠與 extensions 初始化
@@ -41,17 +49,19 @@ VTSong_Database/
 │   │   ├── video.py           # 影片/直播
 │   │   ├── record.py          # 演唱歷史紀錄
 │   │   ├── activity.py        # 里程碑/大事記
-│   │   └── association.py     # 多對多關係表 (song_artists, record_singers)
+│   │   ├── clip.py            # 剪輯創作者 (ClipAuthor) 與精選切片 (Clip)
+│   │   └── association.py     # 多對多關係表 (song_artists, record_vtubers, clip_vtubers)
 │   │
 │   ├── services/              # 主要業務邏輯
 │   │   ├── vtuber_service.py  # 主播資料增刪與社群連結轉檔同步
-│   │   └── youtube_service.py # YouTube API 影片獲取與同步
+│   │   ├── youtube_service.py # YouTube API 影片獲取與同步
+│   │   └── clip_service.py    # 剪輯師管理、頻道/播放清單影片爬取與智慧自動標籤分類
 │   │
 │   ├── blueprints/            # Flask 路由藍圖
 │   │   ├── main/routes.py     # 首頁大廳路由
 │   │   ├── share/routes.py    # 主播專頁路由
 │   │   ├── auth/routes.py     # 後台登入與登出
-│   │   ├── admin/routes.py    # 後台管理面板路由
+│   │   ├── admin/routes.py    # 後台管理面板路由 (含 /admin/clip_authors 與 /admin/clips)
 │   │   └── api/               # REST API 各類別 CRUD 路由
 │   │
 │   ├── static/                # 前端靜態資源
@@ -60,18 +70,25 @@ VTSong_Database/
 │   │   │   └── share.css      # 主播分享頁排版樣式 (修正時間軸靠右)
 │   │   └── js/
 │   │       ├── ui.js          # 共用 UI 函式（Toast、光暗切換、漢堡選單控制，全域掛載）
-│   │       └── share.js       # 個人頁面互動（燈箱、日曆、快捷過濾、播放，全域掛載）
+│   │       ├── share.js       # 個人頁面互動（燈箱、日曆、快捷過濾、播放，全域掛載）
+│   │       └── admin.js       # 後台管理行為（表頭排序、行內編輯、批次操作）
 │   │
 │   └── templates/             # Jinja2 模板
 │       ├── base.html          # 通用導覽列、多國語系下拉式選單與 Toast 容器
 │       ├── main/
 │       │   └── lobby.html     # 大廳頁面 (繼承 base.html，帶有數據快照與週表牆)
 │       ├── share/
-│       │   └── profile.html   # 主播公開專頁 (多分頁切換、帶時間軸播放)
+│       │   └── profile.html   # 主播公開專頁 (多分頁切換、精選切片條件渲染、帶時間軸播放)
 │       ├── auth/
 │       │   └── login.html     # 後台登入表單
 │       └── admin/
-│           └── dashboard.html # 後台管理主介面
+│           ├── dashboard.html # 後台管理主介面
+│           ├── clip_authors.html # 剪輯師管理與爬取觸發
+│           ├── clips_pending.html # 待審核影片標題智慧預測與批次匯入
+│           ├── clips_playlist_import.html # 播放清單匯入頁面 (貼網址 → 抓取 → 預覽 → 匯入)
+│           └── clips.html     # 已匯入切片列表管理
+│
+└── docs/                      # GitHub Pages 靜態網站輸出目錄
 ```
 
 ---
@@ -90,7 +107,15 @@ VTSong_Database/
 * **影音同步播放**：調用 YouTube IFrame API 播放器，監聽特定歌曲的時間戳記，提供點擊後即時跳轉到指定秒數的播放功能。
 * **大事記時間軸**：加載並渲染該主播的大事記與里程碑。
 * **多功能週表燈箱**：控制 `#image-lightbox-modal`，支援點擊週表圖片放大、滾輪縮放、以及按鍵盤左右鍵切換多張圖片的輪播模式。
-* **影片分類過濾器**：在「其他影片」Tab 實作 `window.filterOtherVideos(filterType, btn)`。支援點選「全部」、「雜談/單人」、「連動/合作」以及「短影音」進行前端實時過濾，並與頂端搜尋列的 `searchQuery` 保持完美聯動。
+* **影片與切片即時過濾器**：
+  * 「其他影片」Tab 支援「全部」、「雜談/單人」、「連動/合作」以及「短影音」分類過濾。
+  * 「精選切片」Tab 支援「全部標籤」、「🎵 歌唱」、「🤝 連動」、「💬 雜談」、「🎮 遊戲」、「🎧 ASMR」、「🤪 迷因」與剪輯師多重過濾，並與頂端搜尋列的 `searchQuery`（標題、作者名稱、標籤）100% 即時聯動。
+
+### C. `app/static/js/admin.js` (後台管理核心行為)
+* **多型態表頭排序 (Table Sorting)**：監聽所有 `th.sortable`，支援文字自然排序（中英日多語系）、純數字大小、日期（`YYYY-MM-DD`）以及時間戳記（`mm:ss` / `hh:mm:ss`）的即時升降序切換。
+* **單元格雙擊行內編輯 (Inline Editing)**：雙擊表格單元格可原地切換為輸入框並發送 AJAX 儲存更新。
+* **全域批次操作 (Bulk Actions)**：支援表格項目的多選勾選框、全選連動（僅勾選當前過濾可見項目），並調用批次刪除與批次修改 API。
+* **快速鍵支援**：支援 `Esc` 關閉抽屜、`Ctrl+F` 或 `/` 聚焦搜尋列、`Alt+N` 快速開啟新增抽屜。
 
 ---
 
@@ -101,4 +126,6 @@ VTSong_Database/
 3. **進入後台管理**：在瀏覽器中開啟 `http://127.0.0.1:5000/`，點選右上角 **Login** 登入（預設帳號密碼為 `admin` / `admin123`），即可進入後台管理面版：
    * 點選 **VTubers** 可新增主播資料並填寫其頻道 ID，可一鍵點選「同步影片」爬取 YouTube 最新存檔。
    * 點選 **演唱紀錄** 可使用「智慧時間軸分割工具」貼上留言區文字（如 `03:40 歌曲名稱`），一鍵解析並寫入資料庫。
+   * 點選 **Playlist Import** 可貼上 YouTube 播放清單網址，一鍵抓取清單內所有影片，系統自動偵測標籤、主播、歌曲與作者，勾選後批次匯入為切片。
+   * 點選 **精選切片** 支援多選勾選框、全選、批次刪除，以及一鍵批次修改「剪輯作者」、「標籤（覆蓋/追加/移除）」、「關聯主播」與「關聯歌曲」。
 4. **一鍵靜態打包**：資料庫有更新後，在本機終端機中執行 `python build_static.py`。生成出的雙語靜態網頁成品將會儲存於專案根目錄的 `docs/` 下，直接推送至 GitHub 即可利用 GitHub Pages 進行公開託管。

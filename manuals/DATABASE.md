@@ -98,6 +98,36 @@
 
 ---
 
+### G. `clip_authors` (剪輯創作者表)
+儲存 YouTube 烤肉曼 / 剪輯師的頻道與個人資訊。
+
+| 欄位名 | 類型 | 說明 | 備註 |
+|--------|------|------|------|
+| `id` | INTEGER | 主鍵 (Primary Key)，自動遞增 | |
+| `name` | VARCHAR | 剪輯師名稱 | 唯一索引，不可為空 |
+| `youtube_channel_id` | VARCHAR | YouTube 頻道 ID (如 `UC...`) | 可為空 |
+| `channel_url` | VARCHAR | 剪輯師頻道網址 | 可為空 |
+| `created_at` | DATETIME | 建立時間戳記 | 預設當前時間 |
+
+---
+
+### H. `clips` (精選切片表)
+記錄精選的短片、烤肉與歌唱精華切片。
+
+| 欄位名 | 類型 | 說明 | 備註 |
+|--------|------|------|------|
+| `id` | INTEGER | 主鍵 (Primary Key)，自動遞增 | |
+| `video_id` | VARCHAR | YouTube 影片 ID (11 碼) | 唯一索引，不可為空 |
+| `title` | VARCHAR | 切片影片標題 | 不可為空 |
+| `tags` | TEXT | 逗號分隔的標籤 (如 歌唱,連動,雜談) | 可為空 |
+| `published_at` | DATE | 影片發布日期 | 可為空 |
+| `author_id` | INTEGER | 關聯的剪輯師 ID | 外鍵，指向 `clip_authors.id` |
+| `song_id` | INTEGER | 關聯的歌曲 ID | 外鍵，指向 `songs.id` |
+| `created_at` | DATETIME | 建立時間戳記 | 預設當前時間 |
+| `thumbnail_url` | PROPERTY | 動態產生的封面縮圖網址 | 由 `video_id` 即時計算，無需額外儲存 |
+
+---
+
 ## 3. 多對多關係聯結表 (Association Tables)
 
 為滿足靈活的關聯查詢，系統設計了多對多的聯結表：
@@ -108,16 +138,22 @@
 * `artist_id` (INTEGER, 外鍵指向 `artists.id`)
 * **主鍵**：(`song_id`, `artist_id`) 聯合主鍵。
 
-### B. `record_singers` (歌唱紀錄 ↔ 聯手合唱主播)
+### B. `record_vtubers` (歌唱紀錄 ↔ 聯手合唱主播)
 一次歌唱紀錄可以有多位主播共同合唱。
 * `record_id` (INTEGER, 外鍵指向 `singing_records.id`)
 * `vtuber_id` (INTEGER, 外鍵指向 `vtubers.id`)
 * **主鍵**：(`record_id`, `vtuber_id`) 聯合主鍵。
 
+### C. `clip_vtubers` (精選切片 ↔ 出場主播)
+一部切片可標記多位出場的主播。
+* `clip_id` (INTEGER, 外鍵指向 `clips.id`)
+* `vtuber_id` (INTEGER, 外鍵指向 `vtubers.id`)
+* **主鍵**：(`clip_id`, `vtuber_id`) 聯合主鍵。
+
 ---
 
 ## 4. 資料庫初始化與資料遷移
-* **初始化腳本**：[`init_db.py`](file:///c:/Users/林郁勝/Documents/Antigravity/VTSong_Database/init_db.py)。
+* **初始化腳本**：[`../init_db.py`](../init_db.py)。
   * **功能**：檢測 `vtuber_songs.db` 是否存在，若不存在則依據 ORM 定義自動建立所有資料表、聯合主鍵、外鍵約束與索引。
-  * **內建種子資料**：預置了範例主播（包含滔滔饕餮、祿菈唄爾、星璃）的基礎資料與大事記，方便開發環境快速呈現。
+  * **內建種子資料**：預置了範例主播的基礎資料與大事記，方便開發環境快速呈現。
 * **資料庫升級**：專案使用 **Flask-Migrate (Alembic)** 進行資料庫版本控制。在對 model 結構進行變更後，可使用常規的 Flask-Migrate 命令生成與應用遷移腳本。

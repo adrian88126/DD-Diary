@@ -1,0 +1,195 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Clip Authors - Admin{% endblock %}
+
+{% block admin_content %}
+<div class="action-header">
+  <h2>剪輯創作者</h2>
+  <button class="btn btn-primary" onclick="openAuthorDrawer()">
+    <i class="fa-solid fa-plus"></i> {{ _('Create New') }}
+  </button>
+</div>
+
+<div class="form-group max-w-md mb-4" style="margin-bottom: 1rem;">
+  <input type="text" id="table-search" class="form-input" placeholder="{{ _('Search...') }}" onkeyup="filterItems()">
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" id="data-table">
+    <thead>
+      <tr>
+        <th class="sortable">{{ _('Name') }}</th>
+        <th class="sortable">{{ _('YouTube Channel ID') }}</th>
+        <th>{{ _('Channel URL') }}</th>
+        <th class="sortable">{{ _('Clips Count') }}</th>
+        <th>{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for author in authors %}
+      {% set author_dict = {'id': author.id, 'name': author.name, 'youtube_channel_id': author.youtube_channel_id or '', 'channel_url': author.channel_url or ''} %}
+      <tr class="search-item" data-name="{{ author.name | lower }}">
+        <td>{{ author.name }}</td>
+        <td>{{ author.youtube_channel_id or '' }}</td>
+        <td>
+          {% if author.channel_url %}
+            <a href="{{ author.channel_url }}" target="_blank" rel="noopener noreferrer">{{ author.channel_url }}</a>
+          {% endif %}
+        </td>
+        <td>{{ author.clips_count }}</td>
+        <td>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <button class="btn btn-sm btn-secondary" onclick="openAuthorDrawer(this)" data-author="{{ author_dict | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i> {{ _('Edit') }}
+            </button>
+            <form action="{{ url_for('admin.delete_clip_author', id=author.id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ _('Are you sure you want to delete this author?') }}');">
+              <button type="submit" class="btn btn-sm btn-danger">
+                <i class="fa-solid fa-trash"></i> {{ _('Delete') }}
+              </button>
+            </form>
+            <form action="/admin/clip_authors/{{ author.id }}/sync" method="POST" style="margin:0;" onsubmit="showSyncSpinner(this);">
+              <button type="submit" class="btn btn-sm btn-outline sync-btn">
+                <i class="fa-solid fa-download"></i> <span class="sync-text">{{ _('爬取影片') }}</span>
+                <i class="fa-solid fa-spinner fa-spin sync-spinner" style="display:none;"></i>
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer form -->
+<div class="drawer" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{{ _('Create Clip Author') }}</h3>
+    <button type="button" class="drawer-close" onclick="closeDrawer()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="author-form" action="{{ url_for('admin.create_clip_author') }}" method="POST">
+      
+      <div class="form-group" style="background: rgba(138, 90, 219, 0.05); padding: 12px; border-radius: var(--radius); border: 1px dashed var(--card-border); margin-bottom: 1rem;">
+        <label class="form-label" style="font-weight:600; color:var(--primary);"><i class="fa-solid fa-wand-magic-sparkles"></i> 貼上網址自動抓取作者資訊</label>
+        <div style="display:flex;gap:.5rem;">
+          <input type="text" class="form-input" id="fetch_url_input" placeholder="貼上頻道網址 (@xxx)、影片網址或頻道 ID">
+          <button type="button" class="btn btn-outline" id="btn-fetch-author" onclick="fetchAuthorData()" style="white-space:nowrap;">
+            <i class="fa-solid fa-cloud-arrow-down"></i> 自動抓取
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="name">{{ _('Name') }} *</label>
+        <input type="text" class="form-input" id="name" name="name" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="youtube_channel_id">{{ _('YouTube Channel ID') }}</label>
+        <input type="text" class="form-input" id="youtube_channel_id" name="youtube_channel_id" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="channel_url">{{ _('Channel URL') }}</label>
+        <input type="url" class="form-input" id="channel_url" name="channel_url">
+      </div>
+      
+      <div style="margin-top:1.5rem;">
+        <button type="submit" class="btn btn-primary" style="width:100%;">{{ _('Save') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function filterItems() {
+  const query = document.getElementById('table-search').value.toLowerCase();
+  const items = document.querySelectorAll('.search-item');
+  items.forEach(item => {
+    const name = item.getAttribute('data-name');
+    if (name.includes(query)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function openAuthorDrawer(btn) {
+  const drawer = document.getElementById('form-drawer');
+  const form = document.getElementById('author-form');
+  const title = document.getElementById('drawer-title');
+  
+  if (btn && btn.dataset.author) {
+    try {
+      const data = JSON.parse(btn.dataset.author);
+      title.textContent = "{{ _('Edit Clip Author') }}";
+      form.action = `/admin/clip_authors/${data.id}/edit`;
+      document.getElementById('name').value = data.name || '';
+      document.getElementById('youtube_channel_id').value = data.youtube_channel_id || '';
+      document.getElementById('channel_url').value = data.channel_url || '';
+    } catch(e) {
+      console.error("Error parsing author data", e);
+    }
+  } else {
+    title.textContent = "{{ _('Create Clip Author') }}";
+    form.action = "{{ url_for('admin.create_clip_author') }}";
+    form.reset();
+  }
+  
+  drawer.classList.add('open');
+}
+
+async function fetchAuthorData() {
+  const inputElem = document.getElementById('fetch_url_input');
+  const btn = document.getElementById('btn-fetch-author');
+  const urlOrId = inputElem.value.trim();
+  
+  if (!urlOrId) {
+    alert('請先輸入 YouTube 頻道網址、影片網址或頻道 ID！');
+    return;
+  }
+  
+  btn.disabled = true;
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 抓取中...';
+  
+  try {
+    const res = await fetch(`/admin/clip_authors/fetch_info?url=${encodeURIComponent(urlOrId)}`);
+    const json = await res.json();
+    
+    if (json.success) {
+      const data = json.data;
+      if (data.name) document.getElementById('name').value = data.name;
+      if (data.youtube_channel_id) document.getElementById('youtube_channel_id').value = data.youtube_channel_id;
+      if (data.channel_url) document.getElementById('channel_url').value = data.channel_url;
+    } else {
+      alert('抓取失敗: ' + (json.error || '無法分析該頻道網址'));
+    }
+  } catch(e) {
+    alert('發生網路錯誤: ' + e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+}
+
+function closeDrawer() {
+  document.getElementById('form-drawer').classList.remove('open');
+}
+
+function showSyncSpinner(formElem) {
+  const btn = formElem.querySelector('.sync-btn');
+  const text = formElem.querySelector('.sync-text');
+  const spinner = formElem.querySelector('.sync-spinner');
+  
+  btn.disabled = true;
+  text.style.display = 'none';
+  spinner.style.display = 'inline-block';
+  
+  // Submit the form normally, the page will reload when done
+  return true; 
+}
+</script>
+{% endblock %}

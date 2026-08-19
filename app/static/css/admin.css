@@ -185,11 +185,13 @@
 
 .admin-data-table th.sortable {
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  user-select: none;
 }
 
 .admin-data-table th.sortable:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(138, 90, 219, 0.15) !important;
+  color: var(--primary) !important;
 }
 
 .admin-data-table th.sortable::after {
@@ -198,19 +200,26 @@
   font-weight: 900;
   margin-left: 8px;
   color: var(--text-muted);
-  opacity: 0.5;
+  opacity: 0.35;
+  font-size: 0.85em;
+  display: inline-block;
+}
+
+.admin-data-table th.sortable:hover::after {
+  opacity: 0.8;
+  color: var(--primary);
 }
 
 .admin-data-table th.sortable.asc::after {
-  content: '\f0de'; /* fa-sort-up */
-  opacity: 1;
-  color: var(--primary);
+  content: '\f0de' !important; /* fa-sort-up */
+  opacity: 1 !important;
+  color: var(--primary) !important;
 }
 
 .admin-data-table th.sortable.desc::after {
-  content: '\f0dd'; /* fa-sort-down */
-  opacity: 1;
-  color: var(--primary);
+  content: '\f0dd' !important; /* fa-sort-down */
+  opacity: 1 !important;
+  color: var(--primary) !important;
 }
 
 .admin-data-table tbody tr {

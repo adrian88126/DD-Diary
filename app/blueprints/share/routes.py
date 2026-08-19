@@ -42,6 +42,30 @@ def profile(identifier):
     activities = get_activities(vtuber_id=vtuber.id, limit=2000)
     records = get_records(vtuber_id=vtuber.id, limit=2000)
     
+    # 查詢與該主播關聯的切片
+    clips = vtuber.clips if hasattr(vtuber, 'clips') else []
+    clips_data = []
+    clip_authors_map = {}
+    for c in clips:
+        author_name = c.author.name if c.author else "未知剪輯師"
+        author_id = c.author.id if c.author else 0
+        if c.author:
+            clip_authors_map[c.author.id] = c.author.name
+
+        clips_data.append({
+            "id": c.id,
+            "video_id": c.video_id,
+            "title": c.title,
+            "tags": c.tags or "",
+            "published_at": c.published_at.isoformat() if c.published_at else None,
+            "author_id": author_id,
+            "author_name": author_name,
+            "song_title": c.song.title_main if c.song else None,
+            "thumbnail_url": f"https://img.youtube.com/vi/{c.video_id}/mqdefault.jpg"
+        })
+
+    all_clip_authors = [{"id": aid, "name": aname} for aid, aname in clip_authors_map.items()]
+    
     videos_data = [{"video_id": v.video_id, "title": v.title, "published_at": v.published_at.isoformat() if v.published_at else None, "video_type": v.video_type, "thumbnail_url": v.thumbnail_url} for v in videos]
     activities_data = [{"id": a.id, "title": a.title, "event_date": a.event_date.isoformat() if a.event_date else None, "activity_type": a.activity_type, "link_url": a.link_url} for a in activities]
     records_data = []
@@ -82,8 +106,16 @@ def profile(identifier):
 
     return render_template('share/profile.html', 
         vtuber=vtuber, 
+        clips=clips_data,
+        all_clip_authors=all_clip_authors,
+        vtuber_dict=vtuber_dict,
+        videos_data=videos_data,
+        activities_data=activities_data,
+        records_data=records_data,
+        clips_data=clips_data,
         vtuber_json=json.dumps(vtuber_dict),
         videos_json=json.dumps(videos_data),
         activities_json=json.dumps(activities_data),
-        records_json=json.dumps(records_data)
+        records_json=json.dumps(records_data),
+        clips_json=json.dumps(clips_data)
     )

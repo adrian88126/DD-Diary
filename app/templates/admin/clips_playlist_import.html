@@ -1,0 +1,337 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}播放清單匯入 - Admin{% endblock %}
+
+{% block admin_content %}
+<style>
+.clip-lightbox { position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center; }
+.clip-lightbox-backdrop { position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px); }
+.clip-lightbox-content { position:relative;width:90%;max-width:960px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.4); }
+.clip-lightbox-content iframe { width:100%;height:100%;border:none; }
+.clip-lightbox-close { position:absolute;top:.6rem;right:.6rem;z-index:10;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:2.2rem;height:2.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:.2s; }
+.clip-lightbox-close:hover { background:rgba(255,0,0,.7); }
+
+/* --- Playlist Import Specific Styles --- */
+.playlist-fetch-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--card-border);
+}
+.playlist-fetch-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+}
+.playlist-fetch-card .card-title i {
+  color: var(--primary);
+}
+.playlist-meta {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+.playlist-meta .meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.playlist-meta .meta-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+.playlist-meta .meta-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.pending-grid { display: grid; gap: 1rem; margin-top: 1rem; }
+.pending-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 40px 160px 1fr;
+  gap: 1rem;
+  align-items: start;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.pending-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(138, 90, 219, 0.3);
+}
+@media(max-width: 768px) {
+  .pending-card { grid-template-columns: 1fr; }
+}
+.clip-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 0.15s; }
+.clip-thumb:hover { transform: scale(1.03); }
+.clip-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+.tag-pill {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  background: rgba(138, 90, 219, 0.08);
+  color: var(--text-color);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin: 0.2rem;
+  user-select: none;
+  transition: var(--transition);
+}
+.tag-pill:hover {
+  background: rgba(138, 90, 219, 0.18);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.tag-pill.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.bulk-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--card-border);
+  margin-bottom: 0.5rem;
+  box-shadow: var(--shadow-sm);
+}
+.select-actions { display: flex; align-items: center; gap: 0.75rem; }
+.select-counter {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.duration-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: var(--text-muted);
+}
+</style>
+
+<div class="action-header">
+  <h2><i class="fa-solid fa-list-ul"></i> 播放清單匯入</h2>
+</div>
+
+<!-- Step 1: 貼上播放清單網址 -->
+<div class="playlist-fetch-card">
+  <div class="card-title">
+    <i class="fa-solid fa-wand-magic-sparkles"></i> 貼上 YouTube 播放清單網址
+  </div>
+  <form method="POST" action="{{ url_for('admin.playlist_import_fetch') }}" id="playlist-fetch-form">
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end;">
+      <div style="flex: 2; min-width: 300px;">
+        <label class="form-label" for="playlist_url">播放清單網址或 ID</label>
+        <input type="text" class="form-input" id="playlist_url" name="playlist_url"
+               placeholder="例如: https://www.youtube.com/playlist?list=PLxxxxxxxxx"
+               value="{{ playlist_url or '' }}">
+      </div>
+      <div style="flex: 1; min-width: 180px;">
+        <label class="form-label" for="playlist_author_id">指定作者（可選）</label>
+        <select id="playlist_author_id" name="author_id" class="form-input">
+          <option value="">自動偵測</option>
+          {% for author in all_authors %}
+          <option value="{{ author.id }}">{{ author.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" id="btn-fetch-playlist" style="white-space: nowrap;">
+          <i class="fa-solid fa-cloud-arrow-down"></i> 抓取播放清單
+        </button>
+      </div>
+    </div>
+    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
+      <i class="fa-solid fa-circle-info"></i>
+      支援格式：完整播放清單網址、含 <code>list=</code> 參數的影片網址、或直接貼上播放清單 ID（PL 開頭）
+    </div>
+  </form>
+</div>
+
+{% if playlist_result %}
+<!-- Step 2: 播放清單資訊 & 預覽結果 -->
+<div class="playlist-meta">
+  <div class="meta-item">
+    <span class="meta-label">播放清單</span>
+    <span class="meta-value">{{ playlist_result.playlist_title or '(無標題)' }}</span>
+  </div>
+  {% if playlist_result.channel_name %}
+  <div class="meta-item">
+    <span class="meta-label">頻道</span>
+    <span class="meta-value">{{ playlist_result.channel_name }}</span>
+  </div>
+  {% endif %}
+  {% if playlist_result.author_name %}
+  <div class="meta-item">
+    <span class="meta-label">對應作者</span>
+    <span class="meta-value" style="color: var(--primary-color);">{{ playlist_result.author_name }}</span>
+  </div>
+  {% endif %}
+  <div class="meta-item">
+    <span class="meta-label">待匯入</span>
+    <span class="meta-value">{{ pending_clips | length }} 部影片</span>
+  </div>
+</div>
+
+{% if pending_clips %}
+<form id="pending-form" action="{{ url_for('admin.import_clips') }}" method="POST">
+  <div class="bulk-actions-bar">
+    <div class="select-actions">
+      <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-weight:500;">
+        <input type="checkbox" id="select-all-checkbox" style="width:18px;height:18px;" onchange="toggleSelectAll(this)">
+        全選
+      </label>
+      <span class="select-counter" id="select-counter">已選 0 / {{ pending_clips | length }}</span>
+    </div>
+    <div style="display:flex;gap:0.5rem;">
+      <button type="button" class="btn btn-outline" onclick="document.getElementById('pending-form').submit();">
+        <i class="fa-solid fa-check"></i> 匯入選取
+      </button>
+    </div>
+  </div>
+
+  <div class="pending-grid">
+    {% for clip in pending_clips %}
+    <div class="pending-card">
+      <div>
+        <input type="checkbox" name="selected" value="{{ clip.video_id }}" class="clip-checkbox"
+               style="width:20px;height:20px;" onchange="updateSelectCounter()">
+      </div>
+      <div>
+        <img src="{{ clip.thumbnail_url }}" alt="Thumbnail" class="clip-thumb" onclick="openLightbox('{{ clip.video_id }}')">
+        {% if clip.duration %}
+        <div style="text-align:center;margin-top:4px;"><span class="duration-badge">{{ clip.duration }}</span></div>
+        {% endif %}
+      </div>
+      <div>
+        <h4 style="margin:0 0 .5rem 0; font-size: 0.95rem;">{{ clip.title }}</h4>
+
+        <input type="hidden" name="title_{{ clip.video_id }}" value="{{ clip.title }}">
+        <input type="hidden" name="published_at_{{ clip.video_id }}" value="{{ clip.published_at or '' }}">
+        <input type="hidden" name="author_id_{{ clip.video_id }}" value="{{ clip.author_id or '' }}">
+
+        <div class="form-group" style="margin-bottom: 0.5rem;">
+          <label class="form-label" style="font-size:0.8rem;">{{ _('Tags') }}</label>
+          <input type="text" class="form-input" name="tags_{{ clip.video_id }}" value="{{ clip.tags }}" style="font-size:0.85rem;">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+          <div class="form-group">
+            <label class="form-label" style="font-size:0.8rem;">{{ _('VTubers') }}</label>
+            <select name="vtuber_ids_{{ clip.video_id }}[]" multiple class="tom-select-vtuber">
+              {% for v in all_vtubers %}
+              <option value="{{ v.id }}" {% if v.id in clip.detected_vtuber_ids %}selected{% endif %}>{{ v.name_main }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size:0.8rem;">{{ _('Song') }}</label>
+            <select name="song_id_{{ clip.video_id }}" class="tom-select-song">
+              <option value="">{{ _('Select Song (Optional)...') }}</option>
+              {% for s in all_songs %}
+              <option value="{{ s.id }}" {% if s.id == clip.detected_song_id %}selected{% endif %}>{{ s.title_main }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</form>
+{% endif %}
+{% endif %}
+
+<div id="clip-lightbox" class="clip-lightbox" style="display:none;">
+  <div class="clip-lightbox-backdrop" onclick="closeLightbox()"></div>
+  <div class="clip-lightbox-content">
+    <button class="clip-lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <iframe id="clip-lightbox-iframe" src="" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+// Lightbox
+function openLightbox(videoId) {
+  document.getElementById('clip-lightbox-iframe').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+  document.getElementById('clip-lightbox').style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('clip-lightbox-iframe').src = '';
+  document.getElementById('clip-lightbox').style.display = 'none';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// Fetch 按鈕 Loading 狀態
+document.getElementById('playlist-fetch-form').addEventListener('submit', function() {
+  const btn = document.getElementById('btn-fetch-playlist');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 抓取中...';
+});
+
+// 全選/取消全選
+function toggleSelectAll(masterCheckbox) {
+  const checkboxes = document.querySelectorAll('.clip-checkbox');
+  checkboxes.forEach(cb => { cb.checked = masterCheckbox.checked; });
+  updateSelectCounter();
+}
+
+// 選取計數
+function updateSelectCounter() {
+  const total = document.querySelectorAll('.clip-checkbox').length;
+  const checked = document.querySelectorAll('.clip-checkbox:checked').length;
+  const counter = document.getElementById('select-counter');
+  if (counter) counter.textContent = `已選 ${checked} / ${total}`;
+  const selectAll = document.getElementById('select-all-checkbox');
+  if (selectAll) selectAll.checked = (checked === total && total > 0);
+}
+
+// Initialize TomSelect if available
+document.addEventListener("DOMContentLoaded", function() {
+  if (window.TomSelect) {
+    document.querySelectorAll('.tom-select-vtuber').forEach(el => {
+      new TomSelect(el, { plugins: ['remove_button'] });
+    });
+    document.querySelectorAll('.tom-select-song').forEach(el => {
+      new TomSelect(el, { create: false });
+    });
+  }
+});
+</script>
+{% endblock %}

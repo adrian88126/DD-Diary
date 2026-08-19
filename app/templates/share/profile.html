@@ -68,6 +68,9 @@
                 <div class="tab-item" id="tab-link-live" onclick="switchTab('live')"><i class="fa-solid fa-video" style="width:20px;"></i> <span class="tab-text">{{ _('Other Streams') }}</span></div>
                 <div class="tab-item" id="tab-link-history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> <span class="tab-text">{{ _('Singing History') }}</span></div>
                 <div class="tab-item" id="tab-link-mv" onclick="switchTab('mv')"><i class="fa-solid fa-film" style="width:20px;"></i> <span class="tab-text">{{ _('MV') }}</span></div>
+                {% if clips and clips|length > 0 %}
+                <div class="tab-item" id="tab-link-clips" onclick="switchTab('clips')"><i class="fa-solid fa-scissors" style="width:20px;"></i> <span class="tab-text">精選切片</span></div>
+                {% endif %}
             </div>
 
             <div class="player-card-wrapper sidebar-player">
@@ -198,6 +201,58 @@
                     <div class="tab-pane" id="pane-mv">
                         <div class="card-grid" id="mv-grid"></div>
                     </div>
+
+                    {% if clips and clips|length > 0 %}
+                    <!-- 分頁 7: 精選切片 (Clips) -->
+                    <div class="tab-pane" id="pane-clips">
+                        <div class="clips-filter-header" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                            <div class="tag-bar" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                                <button class="btn btn-sm btn-outline active profile-tag-btn" onclick="filterProfileClips('all', this)">全部標籤</button>
+                                <button class="btn btn-sm btn-outline profile-tag-btn" onclick="filterProfileClips('歌唱', this)">🎵 歌唱</button>
+                                <button class="btn btn-sm btn-outline profile-tag-btn" onclick="filterProfileClips('連動', this)">🤝 連動</button>
+                                <button class="btn btn-sm btn-outline profile-tag-btn" onclick="filterProfileClips('雜談', this)">💬 雜談</button>
+                                <button class="btn btn-sm btn-outline profile-tag-btn" onclick="filterProfileClips('遊戲', this)">🎮 遊戲</button>
+                                <button class="btn btn-sm btn-outline profile-tag-btn" onclick="filterProfileClips('ASMR', this)">🎧 ASMR</button>
+                                <button class="btn btn-sm btn-outline profile-tag-btn" onclick="filterProfileClips('迷因', this)">🤪 迷因</button>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <label style="font-size: 13px; color: var(--text-muted); white-space: nowrap;"><i class="fa-solid fa-user-gear"></i> 剪輯師：</label>
+                                <select id="profile-clip-author-select" class="form-input" style="padding: 4px 8px; font-size: 13px; border-radius: 8px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color);" onchange="filterProfileClipsByAuthor(this.value)">
+                                    <option value="all">全部剪輯師</option>
+                                    {% for author in all_clip_authors %}
+                                    <option value="{{ author.id }}">{{ author.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card-grid" id="clips-grid">
+                            {% for clip in clips %}
+                            <div class="video-card clip-card-item" data-tags="{{ clip.tags }}" data-author-id="{{ clip.author_id }}" style="cursor: pointer; transition: transform 0.2s;" onclick="openProfileClipLightbox('{{ clip.video_id }}')">
+                                <div class="video-thumbnail-wrapper" style="position: relative; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; background: #000;">
+                                    <img src="{{ clip.thumbnail_url }}" alt="{{ clip.title }}" style="width:100%; height:100%; object-fit: cover;" loading="lazy">
+                                    <div style="position: absolute; inset:0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s;" class="play-overlay">
+                                        <i class="fa-solid fa-play" style="font-size: 32px; color: #fff; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));"></i>
+                                    </div>
+                                    <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.75); color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px;">{{ clip.author_name }}</span>
+                                </div>
+                                <div class="video-info" style="padding: 10px 4px 0 4px;">
+                                    <div class="video-title" style="font-size: 14px; font-weight: 600; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--text-color);">{{ clip.title }}</div>
+                                    <div style="margin-top: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+                                        {% if clip.tags %}
+                                            {% for t in clip.tags.split(',') %}
+                                                {% if t.strip() %}
+                                                <span style="font-size: 11px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted); border: 1px solid var(--border-color);">{{ t.strip() }}</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             
@@ -208,18 +263,89 @@
         </main>
     </div>
 
+    <!-- 影音播放 Modal (Lightbox) -->
+    <div id="profile-clip-modal" style="display:none; position:fixed; inset:0; z-index:9999; align-items:center; justify-content:center;">
+        <div style="position:absolute; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px);" onclick="closeProfileClipLightbox()"></div>
+        <div style="position:relative; width:90%; max-width:900px; aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.6); z-index:10000;">
+            <button onclick="closeProfileClipLightbox()" style="position:absolute; top:10px; right:10px; z-index:10001; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:32px; height:32px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+            <iframe id="profile-clip-iframe" src="" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
+
     <!-- YouTube IFrame Player API -->
     <script src="https://www.youtube.com/iframe_api"></script>
     
     <!-- 注入傳送 JSON 數據並加載外部 ES 模組 -->
     <script>
-        window.vtuberData = {{ vtuber_json | safe }};
-        window.videosData = {{ videos_json | safe }};
-        window.activitiesData = {{ activities_json | safe }};
-        window.recordsData = {{ records_json | safe }};
+        window.vtuberData = {{ vtuber_dict | tojson }};
+        window.videosData = {{ videos_data | tojson }};
+        window.activitiesData = {{ activities_data | tojson }};
+        window.recordsData = {{ records_data | tojson }};
+        window.clipsData = {{ clips_data | tojson }};
+
+        // 切片過濾與 Modal 功能
+        let currentClipTag = 'all';
+        let currentClipAuthor = 'all';
+
+        function filterProfileClips(tag, btn) {
+            currentClipTag = tag;
+            if (btn) {
+                document.querySelectorAll('.profile-tag-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            applyClipFilters();
+        }
+
+        function filterProfileClipsByAuthor(authorId) {
+            currentClipAuthor = authorId;
+            applyClipFilters();
+        }
+
+        function applyClipFilters() {
+            const cards = document.querySelectorAll('.clip-card-item');
+            const searchInput = document.getElementById('share-search-input');
+            const query = (window.getSearchQuery ? window.getSearchQuery() : (searchInput ? searchInput.value : '')).trim().toLowerCase();
+
+            cards.forEach(card => {
+                const title = (card.querySelector('.video-title')?.textContent || '').toLowerCase();
+                const tags = (card.getAttribute('data-tags') || '').split(',').map(t => t.trim().toLowerCase());
+                const authorId = card.getAttribute('data-author-id');
+                const authorElem = card.querySelector('.video-thumbnail-wrapper span');
+                const authorName = (authorElem ? authorElem.textContent : '').toLowerCase();
+                
+                const matchTag = (currentClipTag === 'all') || tags.includes(currentClipTag.toLowerCase());
+                const matchAuthor = (currentClipAuthor === 'all') || (authorId === currentClipAuthor);
+                const matchQuery = !query || title.includes(query) || authorName.includes(query) || tags.some(t => t.includes(query));
+
+                if (matchTag && matchAuthor && matchQuery) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        window.applyClipFilters = applyClipFilters;
+
+        function openProfileClipLightbox(videoId) {
+            const modal = document.getElementById('profile-clip-modal');
+            const iframe = document.getElementById('profile-clip-iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            modal.style.display = 'flex';
+        }
+
+        function closeProfileClipLightbox() {
+            const modal = document.getElementById('profile-clip-modal');
+            const iframe = document.getElementById('profile-clip-iframe');
+            iframe.src = '';
+            modal.style.display = 'none';
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeProfileClipLightbox();
+        });
     </script>
     <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/share.js') }}?v=7"></script>
+    <script src="{{ url_for('static', filename='js/share.js') }}?v=8"></script>
 
     <!-- 🖼️ 高清圖片燈箱 Modal -->
     <div id="image-lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">

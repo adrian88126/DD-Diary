@@ -13,6 +13,7 @@ from app.models.video import Video
 from app.models.activity import Activity
 from app.models.song import Song
 from app.models.record import SingingRecord
+from app.models.clip import Clip, ClipAuthor
 
 from flask import render_template
 
@@ -79,14 +80,42 @@ def build_language_site(app, vtubers, songs_count, records_count, videos_count, 
             vt_dict = {
                 "id": vt.id,
                 "name_main": vt.name_main,
+                "name_ja": vt.name_ja,
+                "name_zh": vt.name_zh,
+                "name_romaji": vt.name_romaji,
+                "description": vt.description,
+                "avatar_url": vt.avatar_url,
+                "banner_url": vt.banner_url,
                 "theme_color": vt.theme_color,
                 "social_links": vt.social_links
             }
             
-            vt_json_str = json.dumps(vt_dict, ensure_ascii=False)
-            videos_json_str = json.dumps([serialize_video(v) for v in vt_videos], ensure_ascii=False)
-            activities_json_str = json.dumps([serialize_activity(a) for a in vt_activities], ensure_ascii=False)
-            records_json_str = json.dumps([serialize_record(r) for r in vt_records], ensure_ascii=False)
+            vt_clips = db.session.scalars(select(Clip).join(Clip.vtubers).where(VTuber.id == vt_id).order_by(Clip.id.desc())).all()
+            clips_data = []
+            clip_authors_map = {}
+            for c in vt_clips:
+                author_name = c.author.name if c.author else "未知剪輯師"
+                author_id = c.author.id if c.author else 0
+                if c.author:
+                    clip_authors_map[c.author.id] = c.author.name
+
+                clips_data.append({
+                    "id": c.id,
+                    "video_id": c.video_id,
+                    "title": c.title,
+                    "tags": c.tags or "",
+                    "published_at": c.published_at.isoformat() if c.published_at else None,
+                    "author_id": author_id,
+                    "author_name": author_name,
+                    "song_title": c.song.title_main if c.song else None,
+                    "thumbnail_url": f"https://img.youtube.com/vi/{c.video_id}/mqdefault.jpg"
+                })
+
+            all_clip_authors = [{"id": aid, "name": aname} for aid, aname in clip_authors_map.items()]
+            
+            videos_data = [serialize_video(v) for v in vt_videos]
+            activities_data = [serialize_activity(a) for a in vt_activities]
+            records_data = [serialize_record(r) for r in vt_records]
             
             if is_sub_lang:
                 static_link_zh = f"../../../share/{vt_id}/index.html"
@@ -105,10 +134,16 @@ def build_language_site(app, vtubers, songs_count, records_count, videos_count, 
                 
             html_content = render_template('share/profile.html', 
                 vtuber=vt, 
-                vtuber_json=vt_json_str,
-                videos_json=videos_json_str,
-                activities_json=activities_json_str,
-                records_json=records_json_str,
+                vtuber_dict=vt_dict,
+                videos=vt_videos,
+                videos_data=videos_data,
+                activities=vt_activities,
+                activities_data=activities_data,
+                records=vt_records,
+                records_data=records_data,
+                clips=vt_clips,
+                clips_data=clips_data,
+                all_clip_authors=all_clip_authors,
                 is_static=True,
                 static_link_zh=static_link_zh,
                 static_link_en=static_link_en,

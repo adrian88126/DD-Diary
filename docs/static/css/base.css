@@ -21,6 +21,12 @@
   --warning: #ffc107;
   --info: #17a2b8;
 
+  /* Color Aliases for theme consistency */
+  --primary-color: var(--primary);
+  --bg-secondary: var(--card-bg);
+  --bg-tertiary: rgba(0, 0, 0, 0.05);
+  --border-color: var(--card-border);
+
   /* Typography */
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Noto Sans TC', sans-serif;
@@ -53,6 +59,10 @@
   --text-muted: #a0a0a0;
   --card-bg: rgba(30, 30, 30, 0.6);
   --card-border: rgba(255, 255, 255, 0.1);
+  --primary-color: var(--primary);
+  --bg-secondary: var(--card-bg);
+  --bg-tertiary: rgba(255, 255, 255, 0.08);
+  --border-color: var(--card-border);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -62,6 +72,10 @@
     --text-muted: #a0a0a0;
     --card-bg: rgba(30, 30, 30, 0.6);
     --card-border: rgba(255, 255, 255, 0.1);
+    --primary-color: var(--primary);
+    --bg-secondary: var(--card-bg);
+    --bg-tertiary: rgba(255, 255, 255, 0.08);
+    --border-color: var(--card-border);
   }
 }
 
@@ -181,6 +195,44 @@ a:hover {
 .btn-outline:hover {
   background: var(--primary);
   color: white;
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-color);
+  border: 1px solid var(--card-border);
+}
+.btn-secondary:hover {
+  background: rgba(138, 90, 219, 0.15);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-info {
+  background: var(--info);
+  color: white;
+}
+.btn-info:hover {
+  filter: brightness(1.1);
+  color: white;
+}
+
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+.btn-success:hover {
+  filter: brightness(1.1);
+  color: white;
+}
+
+.btn-warning {
+  background: var(--warning);
+  color: #000;
+}
+.btn-warning:hover {
+  filter: brightness(1.1);
+  color: #000;
 }
 
 .btn-danger {

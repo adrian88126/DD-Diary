@@ -10,11 +10,17 @@ let currentTab = 'bio'; // 'bio' is default from HTML
 let searchQuery = '';
 let currentOtherVideoFilter = 'all';
 
-document.addEventListener('DOMContentLoaded', () => {
+function startShareApp() {
     initTabs();
     initSearch();
     renderAll();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startShareApp);
+} else {
+    startShareApp();
+}
 
 function initTabs() {
     window.switchTab = (tabId) => {
@@ -63,6 +69,8 @@ function initTabs() {
 function initSearch() {
     const searchInput = document.getElementById('share-search-input');
     const clearBtn = document.getElementById('clear-search-btn');
+
+    window.getSearchQuery = () => searchQuery;
 
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -183,6 +191,7 @@ function renderCurrentTab() {
         case 'live': renderOtherVideosFiltered(); break;
         case 'history': renderHistory(); break;
         case 'mv': renderVideos('mv-grid', ['cover_mv', 'original_mv']); break;
+        case 'clips': if (typeof window.applyClipFilters === 'function') window.applyClipFilters(); break;
     }
 }
 

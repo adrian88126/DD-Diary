@@ -1,0 +1,652 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Clips - Admin{% endblock %}
+
+{% block admin_content %}
+<style>
+.clip-lightbox { position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center; }
+.clip-lightbox-backdrop { position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px); }
+.clip-lightbox-content { position:relative;width:90%;max-width:960px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.4); }
+.clip-lightbox-content iframe { width:100%;height:100%;border:none; }
+.clip-lightbox-close { position:absolute;top:.6rem;right:.6rem;z-index:10;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:2.2rem;height:2.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:.2s; }
+.clip-lightbox-close:hover { background:rgba(255,0,0,.7); }
+
+.clip-list-thumb { width:120px; aspect-ratio:16/9; object-fit:cover; border-radius:6px; cursor:pointer; }
+.clip-tags { display:flex; flex-wrap:wrap; gap:4px; }
+.clip-tag {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  background: rgba(138, 90, 219, 0.1);
+  color: var(--primary);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  font-weight: 500;
+}
+</style>
+
+<div class="action-header">
+  <h2>精選切片</h2>
+  <button class="btn btn-primary" onclick="openClipDrawer()">
+    <i class="fa-solid fa-plus"></i> {{ _('Create New') }}
+  </button>
+</div>
+
+<div class="flex items-center gap-3 mb-4" style="flex-wrap: wrap; margin-bottom: 1rem;">
+  <div style="flex: 1; min-width: 200px;">
+    <input type="text" id="search-title" class="form-input" placeholder="搜尋切片標題..." onkeyup="filterClips()">
+  </div>
+  <div style="width: 200px;">
+    <select id="filter-author" class="form-input" onchange="filterClips()">
+      <option value="">{{ _('All Authors') }}</option>
+      {% for author in all_authors %}
+      <option value="{{ author.id }}" {% if selected_author == author.id %}selected{% endif %}>{{ author.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div style="width: 150px;">
+    <select id="filter-tag" class="form-input" onchange="filterClips()">
+      <option value="">所有標籤</option>
+      <option value="歌唱">🎵 歌唱</option>
+      <option value="連動">🤝 連動</option>
+      <option value="雜談">💬 雜談</option>
+      <option value="遊戲">🎮 遊戲</option>
+      <option value="ASMR">🎧 ASMR</option>
+      <option value="迷因">🤪 迷因</option>
+    </select>
+  </div>
+</div>
+
+<div class="bulk-action-bar" id="clips-bulk-bar" style="display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem; background:var(--card-bg); border:1px solid var(--card-border); padding:0.6rem 1rem; border-radius:var(--radius); margin-bottom:1rem;">
+  <div style="display:flex; align-items:center; gap:0.5rem;">
+    <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="全選" onchange="toggleSelectAllClips(this)">
+    <span id="selected-count-text" style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">已選擇 0 筆</span>
+  </div>
+  
+  <span style="color:var(--card-border);">|</span>
+  
+  <button type="button" class="btn btn-sm btn-danger" id="bulk-delete-btn" onclick="executeBulkDelete()" disabled>
+    <i class="fa-solid fa-trash"></i> {{ _('Delete Selected') }}
+  </button>
+  
+  <div style="display:flex; align-items:center; gap:0.4rem;">
+    <select id="quick-bulk-author" class="form-input" style="width:150px; min-height:36px; padding:0.25rem 0.5rem; font-size:0.85rem;" disabled>
+      <option value="">-- 設定作者 --</option>
+      <option value="none">❌ 清除作者</option>
+      {% for author in all_authors %}
+      <option value="{{ author.id }}">{{ author.name }}</option>
+      {% endfor %}
+    </select>
+    <button type="button" class="btn btn-sm btn-outline" id="quick-author-btn" onclick="executeQuickAuthor()" disabled>
+      <i class="fa-solid fa-check"></i> 套用
+    </button>
+  </div>
+  
+  <span style="color:var(--card-border);">|</span>
+
+  <button type="button" class="btn btn-sm btn-secondary" id="bulk-modal-btn" onclick="openBulkEditModal()" disabled>
+    <i class="fa-solid fa-pen-to-square"></i> 批次修改 (標籤/主播/歌曲)
+  </button>
+</div>
+
+<div class="admin-table-container">
+  <table class="admin-data-table" id="data-table">
+    <thead>
+      <tr>
+        <th style="width: 40px; text-align: center;"></th>
+        <th>{{ _('Thumbnail') }}</th>
+        <th class="sortable">{{ _('Title') }}</th>
+        <th class="sortable">{{ _('Author') }}</th>
+        <th class="sortable">{{ _('VTubers') }}</th>
+        <th class="sortable">{{ _('Song') }}</th>
+        <th>{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for clip in clips %}
+      {% set clip_dict = {
+        'id': clip.id,
+        'video_id': clip.video_id,
+        'title': clip.title,
+        'tags': clip.tags or '',
+        'author_id': clip.author_id or '',
+        'song_id': clip.song_id or '',
+        'vtuber_ids': clip.vtubers | map(attribute='id') | list
+      } %}
+      <tr class="search-item" data-id="{{ clip.id }}" data-title="{{ clip.title | lower }}" data-author="{{ clip.author_id or '' }}" data-tags="{{ clip.tags or '' }}">
+        <td style="text-align: center;">
+          <input type="checkbox" class="admin-checkbox row-cb" value="{{ clip.id }}" onchange="updateBulkActionState()">
+        </td>
+        <td>
+          <img src="{{ clip.thumbnail_url }}" alt="Thumbnail" class="clip-list-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://i.ytimg.com/vi/{{ clip.video_id }}/hqdefault.jpg';" onclick="openLightbox('{{ clip.video_id }}')">
+        </td>
+        <td>
+          <div style="font-weight:bold;margin-bottom:4px;">{{ clip.title }}</div>
+          <div class="clip-tags">
+            {% if clip.tags %}
+              {% for tag in clip.tags.split(',') %}
+                {% if tag.strip() %}
+                <span class="clip-tag">{{ tag.strip() }}</span>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </td>
+        <td>{{ clip.author.name if clip.author else '' }}</td>
+        <td>
+          {% for vtuber in clip.vtubers %}
+          <span class="badge badge-primary">{{ vtuber.name_main }}</span>
+          {% endfor %}
+        </td>
+        <td>{{ clip.song.title_main if clip.song else '' }}</td>
+        <td>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <button class="btn btn-sm btn-secondary" onclick="openClipDrawer(this)" data-clip="{{ clip_dict | tojson | forceescape }}">
+              <i class="fa-solid fa-pen"></i> {{ _('Edit') }}
+            </button>
+            <form action="{{ url_for('admin.delete_clip', id=clip.id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ _('Are you sure you want to delete this clip?') }}');">
+              <button type="submit" class="btn btn-sm btn-danger">
+                <i class="fa-solid fa-trash"></i> {{ _('Delete') }}
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Drawer form for manual creation/editing -->
+<div class="drawer" id="form-drawer">
+  <div class="drawer-header">
+    <h3 id="drawer-title">{{ _('Create Clip') }}</h3>
+    <button type="button" class="drawer-close" onclick="closeDrawer()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <form id="clip-form" action="{{ url_for('admin.create_clip') }}" method="POST">
+      
+      <div class="form-group">
+        <label class="form-label" for="video_id">{{ _('YouTube Video ID or URL') }}</label>
+        <div style="display:flex;gap:.5rem;">
+          <input type="text" class="form-input" id="video_id" name="video_id" placeholder="貼上網址 (例如: https://youtu.be/xxx) 或 ID" required>
+          <button type="button" class="btn btn-outline" id="btn-fetch-clip" onclick="fetchClipYoutubeData()" style="white-space:nowrap;">
+            <i class="fa-solid fa-cloud-arrow-down"></i> 自動抓取
+          </button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="title">{{ _('Title') }}</label>
+        <input type="text" class="form-input" id="title" name="title" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="tags">{{ _('Tags (comma separated)') }}</label>
+        <input type="text" class="form-input" id="tags" name="tags" placeholder="例如: 歌唱,連動">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="author_id">{{ _('Author') }}</label>
+        <select id="author_id" name="author_id" class="form-input">
+          <option value="">{{ _('Select Author...') }}</option>
+          {% for author in all_authors %}
+          <option value="{{ author.id }}">{{ author.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="vtubers">{{ _('VTubers') }}</label>
+        <select id="vtubers" name="vtuber_ids[]" multiple class="tom-select-vtuber">
+          {% for v in all_vtubers %}
+          <option value="{{ v.id }}">{{ v.name_main }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="song_id">{{ _('Song') }}</label>
+        <select id="song_id" name="song_id" class="tom-select-song">
+          <option value="">{{ _('Select Song (Optional)...') }}</option>
+          {% for s in all_songs %}
+          <option value="{{ s.id }}">{{ s.title_main }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div style="margin-top:1.5rem;">
+        <button type="submit" class="btn btn-primary" style="width:100%;">{{ _('Save') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Drawer for Bulk Edit -->
+<div class="drawer" id="bulk-edit-drawer">
+  <div class="drawer-header">
+    <h3><i class="fa-solid fa-pen-to-square text-primary"></i> 批次修改切片 (<span id="bulk-target-count">0</span> 部)</h3>
+    <button type="button" class="drawer-close" onclick="closeBulkEditDrawer()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body">
+    <!-- 區塊 1: 批次修改標籤 -->
+    <div class="card" style="padding:1rem; margin-bottom:1rem; border:1px solid var(--card-border); background:var(--card-bg); border-radius:var(--radius);">
+      <h4 style="margin-top:0; font-size:1rem; display:flex; align-items:center; gap:0.4rem;">
+        <i class="fa-solid fa-tags text-primary"></i> 批次修改標籤
+      </h4>
+      <div class="form-group">
+        <label class="form-label">選擇處理模式</label>
+        <select id="bulk-tag-mode" class="form-input">
+          <option value="append">➕ 追加標籤 (保留現有標籤，加入新標籤)</option>
+          <option value="replace">🔄 覆蓋標籤 (替換為指定標籤)</option>
+          <option value="remove">❌ 移除標籤 (從現有標籤中移除指定標籤)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">目標標籤 (可用逗號分隔)</label>
+        <input type="text" class="form-input" id="bulk-tags-input" placeholder="例如: 歌唱,連動">
+        <div style="margin-top:0.4rem; display:flex; gap:4px; flex-wrap:wrap;">
+          <span class="tag-pill" onclick="appendBulkTag('歌唱')">🎵 歌唱</span>
+          <span class="tag-pill" onclick="appendBulkTag('連動')">🤝 連動</span>
+          <span class="tag-pill" onclick="appendBulkTag('雜談')">💬 雜談</span>
+          <span class="tag-pill" onclick="appendBulkTag('遊戲')">🎮 遊戲</span>
+          <span class="tag-pill" onclick="appendBulkTag('ASMR')">🎧 ASMR</span>
+          <span class="tag-pill" onclick="appendBulkTag('迷因')">🤪 迷因</span>
+        </div>
+      </div>
+      <button type="button" class="btn btn-sm btn-primary" style="width:100%;" onclick="applyBulkAction('set_tags')">
+        <i class="fa-solid fa-check"></i> 套用標籤修改
+      </button>
+    </div>
+
+    <!-- 區塊 2: 批次修改作者 -->
+    <div class="card" style="padding:1rem; margin-bottom:1rem; border:1px solid var(--card-border); background:var(--card-bg); border-radius:var(--radius);">
+      <h4 style="margin-top:0; font-size:1rem; display:flex; align-items:center; gap:0.4rem;">
+        <i class="fa-solid fa-user-gear text-primary"></i> 批次修改剪輯作者
+      </h4>
+      <div class="form-group">
+        <label class="form-label">選擇剪輯作者</label>
+        <select id="bulk-author-select-drawer" class="form-input">
+          <option value="">(請選擇作者)</option>
+          <option value="none">❌ 清除作者 (設為無作者)</option>
+          {% for author in all_authors %}
+          <option value="{{ author.id }}">{{ author.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="button" class="btn btn-sm btn-primary" style="width:100%;" onclick="applyBulkAction('set_author')">
+        <i class="fa-solid fa-check"></i> 套用作者修改
+      </button>
+    </div>
+
+    <!-- 區塊 3: 批次修改關聯主播 -->
+    <div class="card" style="padding:1rem; margin-bottom:1rem; border:1px solid var(--card-border); background:var(--card-bg); border-radius:var(--radius);">
+      <h4 style="margin-top:0; font-size:1rem; display:flex; align-items:center; gap:0.4rem;">
+        <i class="fa-solid fa-microphone text-primary"></i> 批次關聯主播
+      </h4>
+      <div class="form-group">
+        <label class="form-label">處理模式</label>
+        <select id="bulk-vtuber-mode" class="form-input">
+          <option value="replace">🔄 覆蓋主播關聯 (以選擇的主播為準)</option>
+          <option value="append">➕ 追加主播關聯 (保留原有關聯並新增)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">選擇主播</label>
+        <select id="bulk-vtubers" multiple class="tom-select-bulk-vtuber">
+          {% for v in all_vtubers %}
+          <option value="{{ v.id }}">{{ v.name_main }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="button" class="btn btn-sm btn-primary" style="width:100%;" onclick="applyBulkAction('set_vtubers')">
+        <i class="fa-solid fa-check"></i> 套用主播關聯
+      </button>
+    </div>
+
+    <!-- 區塊 4: 批次關聯歌曲 -->
+    <div class="card" style="padding:1rem; margin-bottom:1rem; border:1px solid var(--card-border); background:var(--card-bg); border-radius:var(--radius);">
+      <h4 style="margin-top:0; font-size:1rem; display:flex; align-items:center; gap:0.4rem;">
+        <i class="fa-solid fa-music text-primary"></i> 批次關聯歌曲
+      </h4>
+      <div class="form-group">
+        <label class="form-label">選擇歌曲</label>
+        <select id="bulk-song" class="tom-select-bulk-song">
+          <option value="">❌ 清除歌曲關聯</option>
+          {% for s in all_songs %}
+          <option value="{{ s.id }}">{{ s.title_main }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="button" class="btn btn-sm btn-primary" style="width:100%;" onclick="applyBulkAction('set_song')">
+        <i class="fa-solid fa-check"></i> 套用歌曲關聯
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="clip-lightbox" class="clip-lightbox" style="display:none;">
+  <div class="clip-lightbox-backdrop" onclick="closeLightbox()"></div>
+  <div class="clip-lightbox-content">
+    <button class="clip-lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <iframe id="clip-lightbox-iframe" src="" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+function filterClips() {
+  const query = document.getElementById('search-title').value.toLowerCase();
+  const authorId = document.getElementById('filter-author').value;
+  const filterTag = document.getElementById('filter-tag').value;
+  
+  const items = document.querySelectorAll('.search-item');
+  items.forEach(item => {
+    const title = item.getAttribute('data-title');
+    const author = item.getAttribute('data-author');
+    const tagsStr = item.getAttribute('data-tags');
+    const tags = tagsStr ? tagsStr.split(',') : [];
+    
+    const matchesTitle = title.includes(query);
+    const matchesAuthor = !authorId || author === authorId;
+    const matchesTag = !filterTag || tags.includes(filterTag);
+    
+    if (matchesTitle && matchesAuthor && matchesTag) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+      const cb = item.querySelector('.row-cb');
+      if (cb) cb.checked = false;
+    }
+  });
+  updateBulkActionState();
+}
+
+function openLightbox(videoId) {
+  document.getElementById('clip-lightbox-iframe').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+  document.getElementById('clip-lightbox').style.display = 'flex';
+}
+
+function closeLightbox() {
+  document.getElementById('clip-lightbox-iframe').src = '';
+  document.getElementById('clip-lightbox').style.display = 'none';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function openClipDrawer(btn) {
+  const drawer = document.getElementById('form-drawer');
+  const form = document.getElementById('clip-form');
+  const title = document.getElementById('drawer-title');
+  
+  if (btn && btn.dataset.clip) {
+    try {
+      const data = JSON.parse(btn.dataset.clip);
+      title.textContent = "{{ _('Edit Clip') }}";
+      form.action = `/admin/clips/${data.id}/edit`;
+      
+      document.getElementById('video_id').value = data.video_id || '';
+      document.getElementById('title').value = data.title || '';
+      document.getElementById('tags').value = data.tags || '';
+      document.getElementById('author_id').value = data.author_id || '';
+      
+      if (window.vtuberSelect) {
+        window.vtuberSelect.setValue(data.vtuber_ids || []);
+      }
+      if (window.songSelect) {
+        window.songSelect.setValue(data.song_id || '');
+      }
+    } catch(e) {
+      console.error("Error parsing clip data", e);
+    }
+  } else {
+    title.textContent = "{{ _('Create Clip') }}";
+    form.action = "{{ url_for('admin.create_clip') }}";
+    form.reset();
+    if (window.vtuberSelect) window.vtuberSelect.clear();
+    if (window.songSelect) window.songSelect.clear();
+  }
+  
+  drawer.classList.add('open');
+}
+
+async function fetchClipYoutubeData() {
+  const inputElem = document.getElementById('video_id');
+  const btn = document.getElementById('btn-fetch-clip');
+  const urlOrId = inputElem.value.trim();
+  
+  if (!urlOrId) {
+    alert('請先輸入 YouTube 網址或影片 ID！');
+    return;
+  }
+  
+  btn.disabled = true;
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 抓取中...';
+  
+  try {
+    const res = await fetch(`/admin/clips/fetch_info?url=${encodeURIComponent(urlOrId)}`);
+    const json = await res.json();
+    
+    if (json.success) {
+      const data = json.data;
+      document.getElementById('video_id').value = data.video_id;
+      document.getElementById('title').value = data.title;
+      if (data.tags) {
+        document.getElementById('tags').value = data.tags;
+      }
+      
+      if (data.detected_vtuber_ids && data.detected_vtuber_ids.length > 0 && window.vtuberSelect) {
+        window.vtuberSelect.setValue(data.detected_vtuber_ids);
+      }
+      if (data.detected_song_id && window.songSelect) {
+        window.songSelect.setValue(data.detected_song_id);
+      }
+      
+      if (data.detected_author_id) {
+        const authorSelect = document.getElementById('author_id');
+        let opt = authorSelect.querySelector(`option[value="${data.detected_author_id}"]`);
+        if (!opt && data.detected_author_name) {
+          opt = document.createElement('option');
+          opt.value = data.detected_author_id;
+          opt.textContent = data.detected_author_name;
+          authorSelect.appendChild(opt);
+        }
+        authorSelect.value = data.detected_author_id;
+      }
+    } else {
+      alert('抓取失敗: ' + (json.error || '無法分析該網址'));
+    }
+  } catch(e) {
+    alert('發生網路錯誤: ' + e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+}
+
+function closeDrawer() {
+  document.getElementById('form-drawer').classList.remove('open');
+}
+
+/* --- Bulk Actions Logic --- */
+function getSelectedClipIds() {
+  const cbs = document.querySelectorAll('.row-cb:checked');
+  return Array.from(cbs).map(cb => parseInt(cb.value)).filter(id => !isNaN(id));
+}
+
+function updateBulkActionState() {
+  const selectedIds = getSelectedClipIds();
+  const count = selectedIds.length;
+  
+  const textElem = document.getElementById('selected-count-text');
+  if (textElem) textElem.textContent = `已選擇 ${count} 筆`;
+  
+  const deleteBtn = document.getElementById('bulk-delete-btn');
+  const quickAuthorSelect = document.getElementById('quick-bulk-author');
+  const quickAuthorBtn = document.getElementById('quick-author-btn');
+  const bulkModalBtn = document.getElementById('bulk-modal-btn');
+  
+  const disabled = count === 0;
+  if (deleteBtn) deleteBtn.disabled = disabled;
+  if (quickAuthorSelect) quickAuthorSelect.disabled = disabled;
+  if (quickAuthorBtn) quickAuthorBtn.disabled = disabled;
+  if (bulkModalBtn) bulkModalBtn.disabled = disabled;
+  
+  const targetCountElem = document.getElementById('bulk-target-count');
+  if (targetCountElem) targetCountElem.textContent = count;
+  
+  const visibleRows = Array.from(document.querySelectorAll('.search-item')).filter(r => r.style.display !== 'none');
+  const visibleChecked = visibleRows.filter(r => {
+    const cb = r.querySelector('.row-cb');
+    return cb && cb.checked;
+  });
+  const selectAll = document.getElementById('select-all-cb');
+  if (selectAll) {
+    selectAll.checked = visibleRows.length > 0 && visibleChecked.length === visibleRows.length;
+  }
+}
+
+function toggleSelectAllClips(masterCheckbox) {
+  const visibleRows = document.querySelectorAll('.search-item');
+  visibleRows.forEach(row => {
+    if (row.style.display !== 'none') {
+      const cb = row.querySelector('.row-cb');
+      if (cb) cb.checked = masterCheckbox.checked;
+    }
+  });
+  updateBulkActionState();
+}
+
+async function executeBulkDelete() {
+  const ids = getSelectedClipIds();
+  if (ids.length === 0) return alert('請先勾選要刪除的切片！');
+  
+  if (!confirm(`確定要永久刪除已選取的 ${ids.length} 部切片嗎？此動作無法復原！`)) {
+    return;
+  }
+  
+  try {
+    const res = await fetch('/admin/clips/bulk_delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids: ids })
+    });
+    const json = await res.json();
+    if (json.success) {
+      alert(`已成功刪除 ${json.count} 部切片！`);
+      window.location.reload();
+    } else {
+      alert('刪除失敗: ' + (json.error || '未知錯誤'));
+    }
+  } catch(e) {
+    alert('網路錯誤: ' + e);
+  }
+}
+
+async function executeQuickAuthor() {
+  const ids = getSelectedClipIds();
+  if (ids.length === 0) return alert('請先勾選要修改的切片！');
+  
+  const val = document.getElementById('quick-bulk-author').value;
+  if (!val) return alert('請先選擇要設定的作者！');
+  
+  const authorId = val === 'none' ? null : parseInt(val);
+  
+  try {
+    const res = await fetch('/admin/clips/bulk_edit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ids: ids,
+        action_type: 'set_author',
+        author_id: authorId
+      })
+    });
+    const json = await res.json();
+    if (json.success) {
+      alert(`已成功更新 ${json.count} 部切片的作者！`);
+      window.location.reload();
+    } else {
+      alert('修改失敗: ' + (json.error || '未知錯誤'));
+    }
+  } catch(e) {
+    alert('網路錯誤: ' + e);
+  }
+}
+
+function openBulkEditModal() {
+  const ids = getSelectedClipIds();
+  if (ids.length === 0) return alert('請先勾選切片！');
+  
+  document.getElementById('bulk-target-count').textContent = ids.length;
+  document.getElementById('bulk-edit-drawer').classList.add('open');
+}
+
+function closeBulkEditDrawer() {
+  document.getElementById('bulk-edit-drawer').classList.remove('open');
+}
+
+function appendBulkTag(tagText) {
+  const input = document.getElementById('bulk-tags-input');
+  let current = input.value.split(',').map(t => t.trim()).filter(t => t);
+  if (!current.includes(tagText)) {
+    current.push(tagText);
+    input.value = current.join(',');
+  }
+}
+
+async function applyBulkAction(actionType) {
+  const ids = getSelectedClipIds();
+  if (ids.length === 0) return alert('請先勾選切片！');
+  
+  const payload = { ids: ids, action_type: actionType };
+  
+  if (actionType === 'set_tags') {
+    const tags = document.getElementById('bulk-tags-input').value.trim();
+    const tagMode = document.getElementById('bulk-tag-mode').value;
+    if (!tags && tagMode !== 'replace') {
+      return alert('請先輸入或點選標籤！');
+    }
+    payload.tags = tags;
+    payload.tag_mode = tagMode;
+  } else if (actionType === 'set_author') {
+    const val = document.getElementById('bulk-author-select-drawer').value;
+    if (!val) return alert('請選擇作者！');
+    payload.author_id = val === 'none' ? null : parseInt(val);
+  } else if (actionType === 'set_vtubers') {
+    const vtuberMode = document.getElementById('bulk-vtuber-mode').value;
+    const vtubers = window.bulkVtuberSelect ? window.bulkVtuberSelect.getValue() : [];
+    payload.vtuber_mode = vtuberMode;
+    payload.vtuber_ids = vtubers.map(id => parseInt(id));
+  } else if (actionType === 'set_song') {
+    const songId = window.bulkSongSelect ? window.bulkSongSelect.getValue() : '';
+    payload.song_id = songId ? parseInt(songId) : null;
+  }
+  
+  try {
+    const res = await fetch('/admin/clips/bulk_edit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (json.success) {
+      alert(`已成功批次更新 ${json.count} 部切片！`);
+      window.location.reload();
+    } else {
+      alert('更新失敗: ' + (json.error || '未知錯誤'));
+    }
+  } catch(e) {
+    alert('網路錯誤: ' + e);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  if (window.TomSelect) {
+    window.vtuberSelect = new TomSelect('#vtubers', { plugins: ['remove_button'] });
+    window.songSelect = new TomSelect('#song_id', { create: false });
+    window.bulkVtuberSelect = new TomSelect('#bulk-vtubers', { plugins: ['remove_button'] });
+    window.bulkSongSelect = new TomSelect('#bulk-song', { create: false });
+  }
+});
+</script>
+{% endblock %}

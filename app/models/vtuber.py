@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import String, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.extensions import db
-from app.models.association import vtuber_songs, record_vtubers
+from app.models.association import vtuber_songs, record_vtubers, clip_vtubers
 
 
 class VTuber(db.Model):
@@ -52,4 +52,8 @@ class VTuber(db.Model):
 
     singing_records: Mapped[List["SingingRecord"]] = relationship(
         "SingingRecord", secondary=record_vtubers, back_populates="singers"
+    )
+
+    clips: Mapped[List["Clip"]] = relationship(
+        "Clip", secondary=clip_vtubers, back_populates="vtubers"
     )

@@ -17,19 +17,15 @@ def get_db_connection():
     return conn
 
 def init_database():
-    """初始化最新版資料表與索引"""
-    print("正在初始化最新版 SQLite 資料庫...")
-    
-    if os.path.exists(DB_FILE):
-        os.remove(DB_FILE)
-        print(f"已清除舊的資料庫檔案: {DB_FILE}")
+    """初始化最新版資料表與索引 (不會刪除既有檔案)"""
+    print("正在檢查與初始化 SQLite 資料庫資料表...")
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
     # 1. 建立 vtubers 表
     cursor.execute("""
-    CREATE TABLE vtubers (
+    CREATE TABLE IF NOT EXISTS vtubers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_main TEXT NOT NULL,
         name_ja TEXT,
@@ -48,7 +44,7 @@ def init_database():
 
     # 2. 建立 vtuber_links 表
     cursor.execute("""
-    CREATE TABLE vtuber_links (
+    CREATE TABLE IF NOT EXISTS vtuber_links (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         vtuber_id INTEGER NOT NULL,
         platform TEXT NOT NULL,
@@ -59,7 +55,7 @@ def init_database():
 
     # 3. 建立 activities 表
     cursor.execute("""
-    CREATE TABLE activities (
+    CREATE TABLE IF NOT EXISTS activities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         vtuber_id INTEGER,
         title TEXT NOT NULL,
@@ -74,7 +70,7 @@ def init_database():
 
     # 4. 建立 videos 表
     cursor.execute("""
-    CREATE TABLE videos (
+    CREATE TABLE IF NOT EXISTS videos (
         video_id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
         published_at DATE,
@@ -88,7 +84,7 @@ def init_database():
 
     # 5. 建立 songs 表
     cursor.execute("""
-    CREATE TABLE songs (
+    CREATE TABLE IF NOT EXISTS songs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title_main TEXT NOT NULL,
         title_ja TEXT,
@@ -102,7 +98,7 @@ def init_database():
 
     # 6. 建立 artists 表
     cursor.execute("""
-    CREATE TABLE artists (
+    CREATE TABLE IF NOT EXISTS artists (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_main TEXT NOT NULL,
         name_ja TEXT,
@@ -114,7 +110,7 @@ def init_database():
 
     # 7. 建立 song_artists 多對多聯結表
     cursor.execute("""
-    CREATE TABLE song_artists (
+    CREATE TABLE IF NOT EXISTS song_artists (
         song_id INTEGER NOT NULL,
         artist_id INTEGER NOT NULL,
         PRIMARY KEY (song_id, artist_id),
@@ -125,7 +121,7 @@ def init_database():
 
     # 8. 建立 vtuber_songs 多對多聯結表
     cursor.execute("""
-    CREATE TABLE vtuber_songs (
+    CREATE TABLE IF NOT EXISTS vtuber_songs (
         vtuber_id INTEGER NOT NULL,
         song_id INTEGER NOT NULL,
         association_type TEXT NOT NULL CHECK(association_type IN ('signature', 'requestable')) DEFAULT 'signature',
@@ -137,7 +133,7 @@ def init_database():
 
     # 9. 建立 singing_records 表
     cursor.execute("""
-    CREATE TABLE singing_records (
+    CREATE TABLE IF NOT EXISTS singing_records (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         song_id INTEGER NOT NULL,
         video_id TEXT NOT NULL,
@@ -151,7 +147,7 @@ def init_database():
 
     # 10. 建立 record_vtubers 多對多聯結表 (Feat. 合唱)
     cursor.execute("""
-    CREATE TABLE record_vtubers (
+    CREATE TABLE IF NOT EXISTS record_vtubers (
         record_id INTEGER NOT NULL,
         vtuber_id INTEGER NOT NULL,
         PRIMARY KEY (record_id, vtuber_id),
@@ -160,22 +156,63 @@ def init_database():
     );
     """)
 
+    # 11. 建立 clip_authors 表 (剪輯作者/Clipper)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS clip_authors (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL UNIQUE,
+        youtube_channel_id TEXT,
+        channel_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    """)
+
+    # 12. 建立 clips 表 (切片精華)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS clips (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        video_id TEXT NOT NULL UNIQUE,
+        title TEXT NOT NULL,
+        tags TEXT,
+        published_at DATE,
+        author_id INTEGER,
+        song_id INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (author_id) REFERENCES clip_authors(id) ON DELETE SET NULL,
+        FOREIGN KEY (song_id) REFERENCES songs(id) ON DELETE SET NULL
+    );
+    """)
+
+    # 13. 建立 clip_vtubers 多對多聯結表
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS clip_vtubers (
+        clip_id INTEGER NOT NULL,
+        vtuber_id INTEGER NOT NULL,
+        PRIMARY KEY (clip_id, vtuber_id),
+        FOREIGN KEY (clip_id) REFERENCES clips(id) ON DELETE CASCADE,
+        FOREIGN KEY (vtuber_id) REFERENCES vtubers(id) ON DELETE CASCADE
+    );
+    """)
+
     # 建立高效能索引
     print("正在建立資料庫優化索引...")
-    cursor.execute("CREATE INDEX idx_songs_romaji ON songs(title_romaji);")
-    cursor.execute("CREATE INDEX idx_artists_romaji ON artists(name_romaji);")
-    cursor.execute("CREATE INDEX idx_songs_title_main ON songs(title_main);")
-    cursor.execute("CREATE INDEX idx_artists_name_main ON artists(name_main);")
-    cursor.execute("CREATE INDEX idx_activities_event_date ON activities(event_date);")
-    cursor.execute("CREATE INDEX idx_videos_published_at ON videos(published_at);")
-    cursor.execute("CREATE INDEX idx_records_song_id ON singing_records(song_id);")
-    cursor.execute("CREATE INDEX idx_records_video_id ON singing_records(video_id);")
-    cursor.execute("CREATE INDEX idx_activities_vtuber_id ON activities(vtuber_id);")
-    cursor.execute("CREATE INDEX idx_videos_vtuber_id ON videos(vtuber_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_songs_romaji ON songs(title_romaji);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_artists_romaji ON artists(name_romaji);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_songs_title_main ON songs(title_main);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_artists_name_main ON artists(name_main);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_activities_event_date ON activities(event_date);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_videos_published_at ON videos(published_at);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_records_song_id ON singing_records(song_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_records_video_id ON singing_records(video_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_activities_vtuber_id ON activities(vtuber_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_videos_vtuber_id ON videos(vtuber_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_clips_video_id ON clips(video_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_clips_author_id ON clips(author_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_clips_song_id ON clips(song_id);")
 
     conn.commit()
     conn.close()
-    print("資料庫表與索引建立完成！")
+    print("資料庫表與索引檢查及升級完成！")
 
 def seed_data():
     """寫入增強型測試資料"""

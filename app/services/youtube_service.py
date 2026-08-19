@@ -235,11 +235,93 @@ def fetch_single_video_info(video_url_or_id: str) -> Optional[dict]:
                 if m:
                     pub_date = datetime.strptime(m.group(1), "%Y-%m-%d").date()
                     
+            # Fetch Channel ID & Name
+            channel_id = ""
+            channel_name = ""
+            m_cid = re.search(r'<meta\s+itemprop="channelId"\s+content="([^"]+)"', html)
+            if not m_cid:
+                m_cid = re.search(r'"channelId"\s*:\s*"([^"]+)"', html)
+            if m_cid:
+                channel_id = m_cid.group(1)
+                
+            m_cname = re.search(r'<link\s+itemprop="name"\s+content="([^"]+)"', html)
+            if not m_cname:
+                m_cname = re.search(r'<meta\s+property="og:site_name"\s+content="([^"]+)"', html)
+            if m_cname:
+                channel_name = m_cname.group(1)
+
             return {
                 "video_id": video_id,
                 "title": title,
                 "thumbnail_url": _upgrade_thumb_quality(f"https://img.youtube.com/vi/{video_id}/mqdefault.jpg"),
-                "published_at": pub_date
+                "published_at": pub_date,
+                "channel_id": channel_id,
+                "channel_name": channel_name
+            }
+    except Exception:
+        pass
+    return None
+
+def fetch_single_channel_info(url_or_id: str) -> Optional[dict]:
+    input_str = url_or_id.strip()
+    if not input_str:
+        return None
+        
+    # 如果輸入的是影片網址
+    if "watch?v=" in input_str or "youtu.be/" in input_str or "/shorts/" in input_str:
+        v_info = fetch_single_video_info(input_str)
+        if v_info and v_info.get("channel_id"):
+            cid = v_info["channel_id"]
+            cname = v_info.get("channel_name", "")
+            return {
+                "youtube_channel_id": cid,
+                "name": cname,
+                "channel_url": f"https://www.youtube.com/channel/{cid}"
+            }
+            
+    # 如果是頻道 ID 或網址
+    target_url = input_str
+    if not input_str.startswith("http"):
+        if input_str.startswith("UC"):
+            target_url = f"https://www.youtube.com/channel/{input_str}"
+        elif input_str.startswith("@"):
+            target_url = f"https://www.youtube.com/{input_str}"
+        else:
+            target_url = f"https://www.youtube.com/channel/{input_str}"
+            
+    try:
+        req = urllib.request.Request(
+            target_url,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept-Language': 'zh-TW,zh;q=0.9,en;q=0.8'
+            }
+        )
+        with urllib.request.urlopen(req, timeout=5.0) as response:
+            html = response.read().decode('utf-8', errors='ignore')
+            
+            cname = ""
+            cid = ""
+            
+            m_title = re.search(r'<meta\s+property="og:title"\s+content="([^"]+)"', html)
+            if m_title:
+                cname = m_title.group(1)
+                
+            m_cid = re.search(r'<meta\s+itemprop="identifier"\s+content="([^"]+)"', html)
+            if not m_cid:
+                m_cid = re.search(r'<meta\s+itemprop="channelId"\s+content="([^"]+)"', html)
+            if not m_cid:
+                m_cid = re.search(r'"channelId"\s*:\s*"([^"]+)"', html)
+            if m_cid:
+                cid = m_cid.group(1)
+                
+            if not cid and input_str.startswith("UC"):
+                cid = input_str
+                
+            return {
+                "youtube_channel_id": cid,
+                "name": cname,
+                "channel_url": f"https://www.youtube.com/channel/{cid}" if cid else target_url
             }
     except Exception:
         pass
@@ -427,6 +509,192 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
         return videos[:limit]
     return videos
 
+def resolve_playlist_id(url_or_id: str) -> Optional[str]:
+    """從各種格式的播放清單 URL 或 ID 解析出 playlist ID"""
+    if not url_or_id:
+        return None
+    url_or_id = url_or_id.strip()
+
+    # 直接是 playlist ID (PL 開頭或其他格式)
+    if re.match(r'^(PL|UU|UULF|UULP|UUSH|UULV|FL|LL|WL|OL|RD)[a-zA-Z0-9_-]+$', url_or_id):
+        return url_or_id
+
+    # URL 帶 list= 參數
+    m = re.search(r'[?&]list=([a-zA-Z0-9_-]+)', url_or_id)
+    if m:
+        return m.group(1)
+
+    return None
+
+
+def scrape_youtube_playlist_videos(playlist_url_or_id: str, limit: Optional[int] = 200) -> list:
+    """抓取 YouTube 播放清單中的所有影片 metadata"""
+    playlist_id = resolve_playlist_id(playlist_url_or_id)
+    if not playlist_id:
+        raise ValueError(f"無法解析播放清單 ID。請確認輸入的是正確的播放清單網址或 ID！(輸入內容: {playlist_url_or_id})")
+
+    url = f"https://www.youtube.com/playlist?list={playlist_id}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+    }
+
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=15) as response:
+            html = response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        raise Exception(f"無法取得播放清單頁面: {e}")
+
+    # 取得 API key 與初始資料
+    api_key_match = re.search(r'"INNERTUBE_API_KEY"\s*:\s*"([^"]+)"', html)
+    api_key = api_key_match.group(1) if api_key_match else None
+
+    data_match = re.search(r'ytInitialData\s*=\s*(\{.*?\});', html)
+    if not data_match:
+        data_match = re.search(r'window\["ytInitialData"\]\s*=\s*(\{.*?\});', html)
+    if not data_match:
+        return []
+
+    try:
+        yt_data = json.loads(data_match.group(1))
+    except Exception:
+        return []
+
+    # 取得播放清單標題與頻道資訊
+    playlist_header = yt_data.get('header', {}).get('playlistHeaderRenderer', {})
+    playlist_title = playlist_header.get('title', {}).get('simpleText', '')
+    owner_text = playlist_header.get('ownerText', {}).get('runs', [{}])
+    playlist_channel_name = owner_text[0].get('text', '') if owner_text else ''
+    playlist_channel_id = ''
+    if owner_text:
+        nav_ep = owner_text[0].get('navigationEndpoint', {}).get('browseEndpoint', {})
+        playlist_channel_id = nav_ep.get('browseId', '')
+
+    videos = []
+    seen_video_ids = set()
+    continuation_token = None
+
+    def parse_playlist_items(data):
+        nonlocal continuation_token
+        if isinstance(data, dict):
+            # playlistVideoRenderer - 標準播放清單項目
+            if 'playlistVideoRenderer' in data:
+                pvr = data['playlistVideoRenderer']
+                vid = pvr.get('videoId')
+                if vid and vid not in seen_video_ids:
+                    seen_video_ids.add(vid)
+                    title = ''
+                    title_runs = pvr.get('title', {}).get('runs', [])
+                    if title_runs:
+                        title = title_runs[0].get('text', '')
+
+                    thumb_url = f"https://img.youtube.com/vi/{vid}/mqdefault.jpg"
+
+                    # 嘗試解析影片長度
+                    length_text = pvr.get('lengthText', {}).get('simpleText', '')
+
+                    # 頻道資訊
+                    short_byline = pvr.get('shortBylineText', {}).get('runs', [{}])
+                    video_channel_name = short_byline[0].get('text', '') if short_byline else ''
+                    video_channel_id = ''
+                    if short_byline:
+                        browse_ep = short_byline[0].get('navigationEndpoint', {}).get('browseEndpoint', {})
+                        video_channel_id = browse_ep.get('browseId', '')
+
+                    videos.append({
+                        "video_id": vid,
+                        "title": title,
+                        "thumbnail_url": thumb_url,
+                        "published_at": None,
+                        "is_approximate": False,
+                        "duration": length_text,
+                        "channel_name": video_channel_name,
+                        "channel_id": video_channel_id,
+                    })
+
+            # lockupViewModel - 新版 YouTube 播放清單格式
+            if 'lockupViewModel' in data:
+                lvm = data['lockupViewModel']
+                vid = lvm.get('contentId')
+                if vid and vid not in seen_video_ids:
+                    seen_video_ids.add(vid)
+                    title = lvm.get('metadata', {}).get('lockupMetadataViewModel', {}).get('title', {}).get('content', '')
+                    thumb_url = f"https://img.youtube.com/vi/{vid}/mqdefault.jpg"
+                    videos.append({
+                        "video_id": vid,
+                        "title": title,
+                        "thumbnail_url": thumb_url,
+                        "published_at": None,
+                        "is_approximate": False,
+                        "duration": "",
+                        "channel_name": "",
+                        "channel_id": "",
+                    })
+
+            # Continuation token
+            if 'continuationItemRenderer' in data:
+                cir = data['continuationItemRenderer']
+                ce = cir.get('continuationEndpoint', {})
+                if ce:
+                    cc = ce.get('continuationCommand', {})
+                    if cc:
+                        continuation_token = cc.get('token')
+
+            for v in data.values():
+                parse_playlist_items(v)
+        elif isinstance(data, list):
+            for x in data:
+                parse_playlist_items(x)
+
+    parse_playlist_items(yt_data)
+
+    # 分頁：使用 continuation token 獲取更多影片
+    while continuation_token and api_key and (limit is None or len(videos) < limit):
+        time.sleep(0.3)
+        browse_url = f"https://www.youtube.com/youtubei/v1/browse?key={api_key}"
+        post_data = {
+            "context": {
+                "client": {
+                    "clientName": "WEB",
+                    "clientVersion": "2.20240101.01.00",
+                    "hl": "zh-TW",
+                    "gl": "TW"
+                }
+            },
+            "continuation": continuation_token
+        }
+
+        req_post = urllib.request.Request(
+            browse_url,
+            data=json.dumps(post_data).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            }
+        )
+
+        try:
+            with urllib.request.urlopen(req_post, timeout=15) as resp:
+                resp_data = json.loads(resp.read().decode("utf-8"))
+        except Exception:
+            break
+
+        continuation_token = None
+        parse_playlist_items(resp_data)
+
+    if limit is not None:
+        videos = videos[:limit]
+
+    return {
+        "playlist_id": playlist_id,
+        "playlist_title": playlist_title,
+        "channel_name": playlist_channel_name,
+        "channel_id": playlist_channel_id,
+        "videos": videos
+    }
+
+
 def sync_vtuber_youtube(
     vtuber_id: int,
     limit: Optional[int] = None,
@@ -537,9 +805,10 @@ def sync_vtuber_youtube(
         pub_date = v_info["published_at"]
         is_approx = v_info.get("is_approximate", False)
 
-        exact_date = fetch_exact_youtube_date_helper(vid)
-        if exact_date:
-            pub_date = exact_date
+        if pub_date is None or is_approx:
+            exact_date = fetch_exact_youtube_date_helper(vid)
+            if exact_date:
+                pub_date = exact_date
 
         lower_title = title.lower()
         is_schedule = False

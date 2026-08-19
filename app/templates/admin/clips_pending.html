@@ -1,0 +1,170 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+<style>
+.clip-lightbox { position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center; }
+.clip-lightbox-backdrop { position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px); }
+.clip-lightbox-content { position:relative;width:90%;max-width:960px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.4); }
+.clip-lightbox-content iframe { width:100%;height:100%;border:none; }
+.clip-lightbox-close { position:absolute;top:.6rem;right:.6rem;z-index:10;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:2.2rem;height:2.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:.2s; }
+.clip-lightbox-close:hover { background:rgba(255,0,0,.7); }
+.pending-grid { display: grid; gap: 1rem; margin-top: 1rem; }
+.pending-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 40px 160px 1fr;
+  gap: 1rem;
+  align-items: start;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.pending-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(138, 90, 219, 0.3);
+}
+@media(max-width: 768px) {
+  .pending-card { grid-template-columns: 1fr; }
+}
+.clip-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 0.15s; }
+.clip-thumb:hover { transform: scale(1.03); }
+.clip-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+.tag-pill {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  background: rgba(138, 90, 219, 0.08);
+  color: var(--text-color);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin: 0.2rem;
+  user-select: none;
+  transition: var(--transition);
+}
+.tag-pill:hover {
+  background: rgba(138, 90, 219, 0.18);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.tag-pill.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+</style>
+
+<div class="action-header" style="justify-content:space-between;">
+  <h2>待審核切片 - {{ author_name }}</h2>
+  <div style="display:flex;gap:.5rem;">
+    <button type="button" class="btn btn-outline" onclick="document.getElementById('import-action').value='all'; document.getElementById('pending-form').submit();">
+      <i class="fa-solid fa-check-double"></i> {{ _('全部匯入') }}
+    </button>
+    <button type="button" class="btn btn-primary" onclick="document.getElementById('import-action').value='selected'; document.getElementById('pending-form').submit();">
+      <i class="fa-solid fa-check"></i> {{ _('匯入選取') }}
+    </button>
+  </div>
+</div>
+
+<form id="pending-form" action="{{ url_for('admin.import_clips') }}" method="POST">
+  <input type="hidden" id="import-action" name="action" value="selected" />
+  
+  <div class="pending-grid">
+    {% for clip in pending_clips %}
+    <div class="pending-card">
+      <div>
+        <input type="checkbox" name="selected" value="{{ clip.video_id }}" class="clip-checkbox">
+      </div>
+      <div>
+        <img src="{{ clip.thumbnail_url }}" alt="Thumbnail" class="clip-thumb" onclick="openLightbox('{{ clip.video_id }}')">
+      </div>
+      <div>
+        <h4 style="margin:0 0 .5rem 0;">{{ clip.title }}</h4>
+        
+        <input type="hidden" name="video_id_{{ loop.index0 }}" value="{{ clip.video_id }}">
+        <input type="hidden" name="title_{{ loop.index0 }}" value="{{ clip.title }}">
+        <input type="hidden" name="published_at_{{ loop.index0 }}" value="{{ clip.published_at or '' }}">
+        <input type="hidden" name="author_id_{{ loop.index0 }}" value="{{ author.id }}">
+        
+        <div class="form-group">
+          <label class="form-label">{{ _('Tags') }}</label>
+          <input type="text" class="form-input" name="tags_{{ loop.index0 }}" value="{{ clip.tags }}">
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+          <div class="form-group">
+            <label class="form-label">{{ _('VTubers') }}</label>
+            <select name="vtuber_ids_{{ loop.index0 }}[]" multiple class="tom-select-vtuber">
+              {% for v in all_vtubers %}
+              <option value="{{ v.id }}" {% if v.id in clip.detected_vtuber_ids %}selected{% endif %}>{{ v.name_main }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ _('Song') }}</label>
+            <select name="song_id_{{ loop.index0 }}" class="tom-select-song">
+              <option value="">{{ _('Select Song (Optional)...') }}</option>
+              {% for s in all_songs %}
+              <option value="{{ s.id }}" {% if s.id == clip.detected_song_id %}selected{% endif %}>{{ s.title_main }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div style="padding:2rem;text-align:center;">{{ _('No pending clips found.') }}</div>
+    {% endfor %}
+  </div>
+</form>
+
+<div id="clip-lightbox" class="clip-lightbox" style="display:none;">
+  <div class="clip-lightbox-backdrop" onclick="closeLightbox()"></div>
+  <div class="clip-lightbox-content">
+    <button class="clip-lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <iframe id="clip-lightbox-iframe" src="" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+function openLightbox(videoId) {
+  document.getElementById('clip-lightbox-iframe').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+  document.getElementById('clip-lightbox').style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('clip-lightbox-iframe').src = '';
+  document.getElementById('clip-lightbox').style.display = 'none';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function toggleTag(pillElement, inputId) {
+  const tag = pillElement.textContent.trim();
+  const input = document.getElementById(inputId);
+  let tags = input.value.split(',').map(t => t.trim()).filter(t => t);
+  
+  if (tags.includes(tag)) {
+    tags = tags.filter(t => t !== tag);
+    pillElement.classList.remove('active');
+  } else {
+    tags.push(tag);
+    pillElement.classList.add('active');
+  }
+  
+  input.value = tags.join(', ');
+}
+
+// Initialize TomSelect if available
+document.addEventListener("DOMContentLoaded", function() {
+  if (window.TomSelect) {
+    document.querySelectorAll('.tom-select-vtuber').forEach(el => {
+      new TomSelect(el, { plugins: ['remove_button'] });
+    });
+    document.querySelectorAll('.tom-select-song').forEach(el => {
+      new TomSelect(el, { create: false });
+    });
+  }
+});
+</script>
+{% endblock %}

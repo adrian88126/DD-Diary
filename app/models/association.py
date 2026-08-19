@@ -25,3 +25,11 @@ record_vtubers = Table(
     Column("record_id", Integer, ForeignKey("singing_records.id", ondelete="CASCADE"), primary_key=True),
     Column("vtuber_id", Integer, ForeignKey("vtubers.id", ondelete="CASCADE"), primary_key=True),
 )
+
+# 烤肉精華片段與 VTuber 的多對多聯結表
+clip_vtubers = Table(
+    "clip_vtubers",
+    db.metadata,
+    Column("clip_id", Integer, ForeignKey("clips.id", ondelete="CASCADE"), primary_key=True),
+    Column("vtuber_id", Integer, ForeignKey("vtubers.id", ondelete="CASCADE"), primary_key=True),
+)
