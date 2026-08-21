@@ -1,90 +1,344 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Diagnostics - Admin{% endblock %}
+{% block title %}系統自檢與資料健康診斷 - DDDiary Admin{% endblock %}
 
 {% block admin_content %}
-<h2 class="mb-4">{{ _('Diagnostics') }}</h2>
-
-<div class="grid mb-4" style="--grid-columns: 1;">
-  <div class="card">
-    <h3>{{ _('Duplicate Songs') }}</h3>
-    <p class="text-muted mb-3">{{ _('Finds songs with exact matching titles.') }}</p>
-    {% if duplicate_songs %}
-    <div class="table-responsive mb-3">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>{{ _('Title') }}</th>
-            <th>{{ _('IDs') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for title, ids in duplicate_songs.items() %}
-          <tr>
-            <td>{{ title }}</td>
-            <td>{{ ids | join(', ') }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+<div class="diagnostics-dashboard">
+  <!-- 頂部標題與總覽 -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h2 style="margin: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-heart-pulse" style="color: var(--primary);"></i>
+        <span>系統自檢與資料健康診斷</span>
+      </h2>
+      <p style="margin: 4px 0 0 0; color: var(--text-muted); font-size: 0.9rem;">
+        全方位掃描資料庫中的重複項、孤立數據、缺失欄位與關聯異常，並提供一鍵自動修復工具。
+      </p>
     </div>
-    {% else %}
-    <p>{{ _('No duplicate songs found.') }}</p>
-    {% endif %}
+    
+    <!-- 健康評分徽章 -->
+    <div style="display: flex; align-items: center; gap: 15px; background: var(--card-bg); padding: 10px 20px; border-radius: var(--radius); border: 1px solid var(--card-border);">
+      <div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">系統健康指標</div>
+        <div style="font-size: 1.6rem; font-weight: bold; color: {% if report.health_score >= 90 %}#10b981{% elif report.health_score >= 70 %}#f59e0b{% else %}#ef4444{% endif %};">
+          {{ report.health_score }} <span style="font-size: 0.9rem; color: var(--text-muted);">/ 100</span>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">待優化項目</div>
+        <div style="font-size: 1.2rem; font-weight: bold; color: var(--text-color);">
+          {{ report.total_issues }} 筆
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>{{ _('Duplicate Artists') }}</h3>
-    <p class="text-muted mb-3">{{ _('Finds artists with exact matching names.') }}</p>
-    {% if duplicate_artists %}
-    <div class="table-responsive mb-3">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>{{ _('Name') }}</th>
-            <th>{{ _('IDs') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for name, ids in duplicate_artists.items() %}
-          <tr>
-            <td>{{ name }}</td>
-            <td>{{ ids | join(', ') }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <!-- ⚡ 一鍵快速修復工具列 -->
+  <div class="card" style="margin-bottom: var(--spacing-lg); background: linear-gradient(135deg, rgba(138, 90, 219, 0.08) 0%, rgba(0,0,0,0) 100%); border-left: 4px solid var(--primary);">
+    <h3 style="margin: 0 0 0.75rem 0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+      <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i>
+      <span>一鍵快速修復工具 (Quick Auto-Fix)</span>
+    </h3>
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+      {% if report.songs.duplicate_songs %}
+      <form action="{{ url_for('admin.diagnostics_auto_link_duplicates') }}" method="POST" style="margin:0;" onsubmit="return confirm('確定要自動合併所有同名歌曲嗎？演唱紀錄將自動轉移至首筆。');">
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa-solid fa-code-merge"></i> 一鍵合併重複歌曲 ({{ report.songs.duplicate_songs | length }})
+        </button>
+      </form>
+      {% endif %}
+
+      {% if report.songs.duplicate_artists %}
+      <form action="{{ url_for('admin.diagnostics_auto_link_duplicate_artists') }}" method="POST" style="margin:0;" onsubmit="return confirm('確定要自動合併所有同名歌手嗎？');">
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa-solid fa-user-group"></i> 一鍵合併重複歌手 ({{ report.songs.duplicate_artists | length }})
+        </button>
+      </form>
+      {% endif %}
+
+      {% if report.clips.untagged_clips %}
+      <form action="{{ url_for('admin.diagnostics_auto_fix_untagged_clips') }}" method="POST" style="margin:0;">
+        <button type="submit" class="btn btn-sm btn-secondary" style="border-color: #8b5cf6;">
+          <i class="fa-solid fa-tags"></i> 一鍵 AI 智慧補標籤 ({{ report.clips.untagged_clips | length }})
+        </button>
+      </form>
+      {% endif %}
+
+      {% if report.records.duplicate_records %}
+      <form action="{{ url_for('admin.diagnostics_auto_clean_duplicate_records') }}" method="POST" style="margin:0;" onsubmit="return confirm('確定要清理重複的演唱紀錄嗎？');">
+        <button type="submit" class="btn btn-sm btn-danger">
+          <i class="fa-solid fa-broom"></i> 一鍵清理重複演唱紀錄 ({{ report.records.duplicate_records | length }})
+        </button>
+      </form>
+      {% endif %}
+
+      {% if not report.songs.duplicate_songs and not report.songs.duplicate_artists and not report.clips.untagged_clips and not report.records.duplicate_records %}
+      <span style="color: #10b981; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-circle-check"></i> 目前無可批次自動修復的重複項，資料庫狀態良好！
+      </span>
+      {% endif %}
     </div>
-    {% else %}
-    <p>{{ _('No duplicate artists found.') }}</p>
-    {% endif %}
   </div>
 
-  <div class="card">
-    <h3>{{ _('Orphan Songs') }}</h3>
-    <p class="text-muted mb-3">{{ _('Songs with no records attached.') }}</p>
-    {% if orphan_songs %}
-    <div class="table-responsive mb-3">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>{{ _('ID') }}</th>
-            <th>{{ _('Title') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for song in orphan_songs %}
-          <tr>
-            <td>{{ song.id }}</td>
-            <td>{{ song.title_main }}</td>
-          </tr>
+  <!-- 四大維度檢測面板 -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: var(--spacing-lg);">
+    
+    <!-- 1. 🎵 歌曲與歌手診斷 -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem;">
+        <h3 style="margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-music" style="color: #3b82f6;"></i>
+          <span>歌曲與歌手診斷</span>
+        </h3>
+        <span class="badge badge-primary">{{ report.songs.duplicate_songs|length + report.songs.duplicate_artists|length + report.songs.orphan_songs|length }} 項</span>
+      </div>
+
+      <!-- 重複歌曲 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>重複歌曲 (Duplicate Songs)</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.songs.duplicate_songs|length }} 組</span>
+        </div>
+        {% if report.songs.duplicate_songs %}
+        <div class="admin-table-container" style="max-height: 180px; overflow-y: auto; margin-bottom: 0;">
+          <table class="admin-data-table" style="font-size: 0.85rem;">
+            <thead>
+              <tr><th>標題</th><th>重複 ID 清單</th><th>歌手</th></tr>
+            </thead>
+            <tbody>
+              {% for title, items in report.songs.duplicate_songs.items() %}
+              <tr>
+                <td style="font-weight: 500;">{{ title }}</td>
+                <td><span class="badge badge-outline">{% for it in items %}#{{ it.id }}{% if not loop.last %}, {% endif %}{% endfor %}</span></td>
+                <td style="color: var(--text-muted);">{% for it in items %}{{ it.artists | join(', ') }}{% if not loop.last %} / {% endif %}{% endfor %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 無重複歌曲</div>
+        {% endif %}
+      </div>
+
+      <!-- 重複歌手 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>重複歌手 (Duplicate Artists)</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.songs.duplicate_artists|length }} 組</span>
+        </div>
+        {% if report.songs.duplicate_artists %}
+        <div class="admin-table-container" style="max-height: 180px; overflow-y: auto; margin-bottom: 0;">
+          <table class="admin-data-table" style="font-size: 0.85rem;">
+            <thead>
+              <tr><th>歌手名</th><th>重複 ID</th></tr>
+            </thead>
+            <tbody>
+              {% for name, items in report.songs.duplicate_artists.items() %}
+              <tr>
+                <td>{{ name }}</td>
+                <td><span class="badge badge-outline">{% for it in items %}#{{ it.id }}{% if not loop.last %}, {% endif %}{% endfor %}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 無重複歌手</div>
+        {% endif %}
+      </div>
+
+      <!-- 孤立歌曲 -->
+      <div>
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>孤立歌曲 (未被任何主播演唱引用)</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.songs.orphan_songs|length }} 首</span>
+        </div>
+        {% if report.songs.orphan_songs %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); max-height: 80px; overflow-y: auto; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 6px;">
+          {% for s in report.songs.orphan_songs[:15] %}
+          <span style="display: inline-block; margin-right: 8px; margin-bottom: 4px;">#{{ s.id }} {{ s.title_main }}</span>
           {% endfor %}
-        </tbody>
-      </table>
+          {% if report.songs.orphan_songs|length > 15 %}...等共 {{ report.songs.orphan_songs|length }} 首{% endif %}
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 所有收錄歌曲皆有正常引用</div>
+        {% endif %}
+      </div>
     </div>
-    {% else %}
-    <p>{{ _('No orphan songs found.') }}</p>
-    {% endif %}
+
+    <!-- 2. ✂️ 精選切片與剪輯師診斷 -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem;">
+        <h3 style="margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-scissors" style="color: #ec4899;"></i>
+          <span>精選切片與剪輯師診斷</span>
+        </h3>
+        <span class="badge badge-primary">{{ report.clips.untagged_clips|length + report.clips.unassigned_author_clips|length + report.clips.unassociated_vtuber_clips|length }} 項</span>
+      </div>
+
+      <!-- 未標記主播切片 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>未標記出場主播的切片 (Unassociated VTuber)</span>
+          <span style="color: {% if report.clips.unassociated_vtuber_clips %}#ef4444{% else %}var(--text-muted){% endif %}; font-size: 0.8rem;">
+            {{ report.clips.unassociated_vtuber_clips|length }} 部
+          </span>
+        </div>
+        {% if report.clips.unassociated_vtuber_clips %}
+        <div class="admin-table-container" style="max-height: 160px; overflow-y: auto; margin-bottom: 0;">
+          <table class="admin-data-table" style="font-size: 0.85rem;">
+            <thead><tr><th>標題</th><th>操作</th></tr></thead>
+            <tbody>
+              {% for c in report.clips.unassociated_vtuber_clips[:10] %}
+              <tr>
+                <td style="max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ c.title }}</td>
+                <td><a href="{{ url_for('admin.list_clips') }}" class="btn btn-sm btn-outline">去修改</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 所有切片皆已正確標記主播</div>
+        {% endif %}
+      </div>
+
+      <!-- 無標籤切片 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>未打標籤的切片 (Untagged Clips)</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.clips.untagged_clips|length }} 部</span>
+        </div>
+        {% if report.clips.untagged_clips %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 6px;">
+          共有 {{ report.clips.untagged_clips|length }} 部切片標籤為空，可點選上方「一鍵 AI 智慧補標籤」自動填補！
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 所有切片皆具備完整分類標籤</div>
+        {% endif %}
+      </div>
+
+      <!-- 未設定剪輯師作者 -->
+      <div>
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>未分配作者的切片 / 空白剪輯師</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">
+            未分配 {{ report.clips.unassigned_author_clips|length }} 部 / 空白剪輯師 {{ report.clips.empty_authors|length }} 位
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 🎤 演唱紀錄與時間軸診斷 -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem;">
+        <h3 style="margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-microphone-lines" style="color: #10b981;"></i>
+          <span>演唱紀錄與時間軸診斷</span>
+        </h3>
+        <span class="badge badge-primary">{{ report.records.duplicate_records|length + report.records.invalid_timestamp_records|length }} 項</span>
+      </div>
+
+      <!-- 重複演唱紀錄 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>同一秒數重複紀錄 (Duplicate Records)</span>
+          <span style="color: {% if report.records.duplicate_records %}#ef4444{% else %}var(--text-muted){% endif %}; font-size: 0.8rem;">
+            {{ report.records.duplicate_records|length }} 組
+          </span>
+        </div>
+        {% if report.records.duplicate_records %}
+        <div class="admin-table-container" style="max-height: 160px; overflow-y: auto; margin-bottom: 0;">
+          <table class="admin-data-table" style="font-size: 0.85rem;">
+            <thead><tr><th>影片 ID</th><th>秒數</th><th>重複筆數</th></tr></thead>
+            <tbody>
+              {% for d in report.records.duplicate_records %}
+              <tr>
+                <td>{{ d.video_id }}</td>
+                <td>{{ d.timestamp }}s</td>
+                <td><span class="badge badge-danger">{{ d.records|length }} 筆</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 無重複時間戳演唱紀錄</div>
+        {% endif %}
+      </div>
+
+      <!-- 異常秒數 -->
+      <div>
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>異常秒數紀錄 (秒數 <= 0)</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.records.invalid_timestamp_records|length }} 筆</span>
+        </div>
+        {% if report.records.invalid_timestamp_records %}
+        <div style="font-size: 0.85rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 8px; border-radius: 6px;">
+          發現 {{ report.records.invalid_timestamp_records|length }} 筆演唱紀錄的秒數為 0 或負數，建議前往演唱紀錄管理修正。
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 時間軸秒數全數合規</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- 4. 👤 主播與影片資料完整性 -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem;">
+        <h3 style="margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-user-check" style="color: #f59e0b;"></i>
+          <span>主播與影片資料完整性</span>
+        </h3>
+        <span class="badge badge-primary">{{ report.vtubers_videos.incomplete_vtubers|length + report.vtubers_videos.orphan_videos|length }} 項</span>
+      </div>
+
+      <!-- 缺失資料主播 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>缺少頻道 ID 或頭像的主播</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.vtubers_videos.incomplete_vtubers|length }} 位</span>
+        </div>
+        {% if report.vtubers_videos.incomplete_vtubers %}
+        <div class="admin-table-container" style="max-height: 160px; overflow-y: auto; margin-bottom: 0;">
+          <table class="admin-data-table" style="font-size: 0.85rem;">
+            <thead><tr><th>主播</th><th>缺少項目</th><th>操作</th></tr></thead>
+            <tbody>
+              {% for v in report.vtubers_videos.incomplete_vtubers %}
+              <tr>
+                <td>{{ v.name_main }}</td>
+                <td style="color: #f59e0b;">
+                  {% if not v.youtube_channel_id %}頻道 ID {% endif %}
+                  {% if not v.avatar_url %}頭像{% endif %}
+                </td>
+                <td><a href="{{ url_for('admin.list_vtubers') }}" class="btn btn-sm btn-outline">補齊</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 所有主播資料完整度 100%</div>
+        {% endif %}
+      </div>
+
+      <!-- 孤立影片 -->
+      <div>
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>未關聯主播的影片 (Orphan Videos)</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.vtubers_videos.orphan_videos|length }} 部</span>
+        </div>
+        {% if report.vtubers_videos.orphan_videos %}
+        <div style="font-size: 0.85rem; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 8px; border-radius: 6px;">
+          發現 {{ report.vtubers_videos.orphan_videos|length }} 部影片未關聯所屬主播。
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 所有影片皆已正確歸屬主播</div>
+        {% endif %}
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock %}

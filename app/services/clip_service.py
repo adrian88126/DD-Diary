@@ -232,13 +232,51 @@ def fetch_and_tag_clips(author_id, limit=50):
 
 def import_clips(items):
     for item in items:
+        # 1. 智慧處理 Song (支援數字 ID 或自訂新歌名)
+        raw_song = item.get("song_id")
+        song_id = None
+        if raw_song:
+            if isinstance(raw_song, int):
+                song_id = raw_song
+            elif isinstance(raw_song, str) and raw_song.isdigit():
+                song_id = int(raw_song)
+            elif isinstance(raw_song, str) and raw_song.strip():
+                song_title = raw_song.strip()
+                existing_song = db.session.scalars(select(Song).where(Song.title_main == song_title)).first()
+                if existing_song:
+                    song_id = existing_song.id
+                else:
+                    new_song = Song(title_main=song_title)
+                    db.session.add(new_song)
+                    db.session.flush()
+                    song_id = new_song.id
+
+        # 2. 智慧處理 Author (支援數字 ID 或自訂新剪輯者名稱)
+        raw_author = item.get("author_id")
+        author_id = None
+        if raw_author:
+            if isinstance(raw_author, int):
+                author_id = raw_author
+            elif isinstance(raw_author, str) and raw_author.isdigit():
+                author_id = int(raw_author)
+            elif isinstance(raw_author, str) and raw_author.strip():
+                author_name = raw_author.strip()
+                existing_author = db.session.scalars(select(ClipAuthor).where(ClipAuthor.name == author_name)).first()
+                if existing_author:
+                    author_id = existing_author.id
+                else:
+                    new_author = ClipAuthor(name=author_name)
+                    db.session.add(new_author)
+                    db.session.flush()
+                    author_id = new_author.id
+
         clip = Clip(
             video_id=item.get("video_id"),
             title=item.get("title"),
             tags=item.get("tags"),
             published_at=item.get("published_at"),
-            author_id=item.get("author_id"),
-            song_id=item.get("song_id")
+            author_id=author_id,
+            song_id=song_id
         )
         db.session.add(clip)
         db.session.flush()
@@ -251,7 +289,7 @@ def import_clips(items):
     db.session.commit()
 
 def fetch_and_tag_playlist_clips(playlist_url, author_id=None, limit=200):
-    """從 YouTube 播放清單抓取影片並執行智慧標籤分析"""
+    """從 YouTube 播放清單抓取影片並執行智慧標籤分析，支援每部影片獨立作者識別"""
     playlist_data = scrape_youtube_playlist_videos(playlist_url, limit=limit)
     if not playlist_data or not playlist_data.get('videos'):
         return {"playlist_title": "", "channel_name": "", "channel_id": "", "clips": []}
@@ -262,6 +300,7 @@ def fetch_and_tag_playlist_clips(playlist_url, author_id=None, limit=200):
 
     vtubers = db.session.scalars(select(VTuber)).all()
     songs = db.session.scalars(select(Song)).all()
+    all_authors = list(db.session.scalars(select(ClipAuthor)).all())
 
     tag_rules = {
         '歌唱': ['歌回', '歌枠', '唱了', 'Singing', 'Cover', '唱歌', '歌ってみた', 'cover'],
@@ -272,38 +311,13 @@ def fetch_and_tag_playlist_clips(playlist_url, author_id=None, limit=200):
         '遊戲': ['遊戲', 'Game', 'game', 'Minecraft', 'APEX', 'Apex', 'FF14', '原神', 'マイクラ', 'ゲーム']
     }
 
-    # 自動偵測/建立作者
-    detected_author_id = author_id
-    detected_author_name = ""
-    if not detected_author_id:
-        pl_channel_id = playlist_data.get('channel_id', '')
-        pl_channel_name = playlist_data.get('channel_name', '')
-        if pl_channel_id or pl_channel_name:
-            all_authors = db.session.scalars(select(ClipAuthor)).all()
-            for a in all_authors:
-                if (pl_channel_id and a.youtube_channel_id == pl_channel_id) or \
-                   (pl_channel_name and a.name == pl_channel_name):
-                    detected_author_id = a.id
-                    detected_author_name = a.name
-                    break
-            # 若資料庫中尚未有該作者，自動建立
-            if not detected_author_id and pl_channel_name:
-                try:
-                    new_author = ClipAuthor(
-                        name=pl_channel_name,
-                        youtube_channel_id=pl_channel_id,
-                        channel_url=f"https://www.youtube.com/channel/{pl_channel_id}" if pl_channel_id else ""
-                    )
-                    db.session.add(new_author)
-                    db.session.flush()
-                    detected_author_id = new_author.id
-                    detected_author_name = pl_channel_name
-                except Exception:
-                    db.session.rollback()
-    else:
-        author = get_clip_author(author_id)
+    # 播放清單預設作者（若使用者指定，或由播放清單作者推導）
+    default_author_id = author_id
+    default_author_name = ""
+    if default_author_id:
+        author = get_clip_author(default_author_id)
         if author:
-            detected_author_name = author.name
+            default_author_name = author.name
 
     results = []
     for vid in playlist_data.get('videos', []):
@@ -313,13 +327,13 @@ def fetch_and_tag_playlist_clips(playlist_url, author_id=None, limit=200):
 
         title = vid.get("title", "")
 
-        # 智慧標籤
+        # 1. 智慧標籤
         detected_tags = []
         for tag_name, keywords in tag_rules.items():
             if any(kw in title for kw in keywords):
                 detected_tags.append(tag_name)
 
-        # 智慧主播識別
+        # 2. 智慧主播識別
         detected_vtuber_ids = []
         for v in vtubers:
             names_to_check = [v.name_main, v.name_ja, v.name_zh, v.name_romaji]
@@ -327,7 +341,7 @@ def fetch_and_tag_playlist_clips(playlist_url, author_id=None, limit=200):
             if any(name in title for name in names_to_check):
                 detected_vtuber_ids.append(v.id)
 
-        # 智慧歌曲識別
+        # 3. 智慧歌曲識別
         detected_song_id = None
         for s in songs:
             song_titles = [s.title_main, s.title_ja, s.title_zh, s.title_romaji]
@@ -336,24 +350,63 @@ def fetch_and_tag_playlist_clips(playlist_url, author_id=None, limit=200):
                 detected_song_id = s.id
                 break
 
+        # 4. 智慧個別影片作者識別
+        v_channel_id = vid.get("channel_id", "")
+        v_channel_name = vid.get("channel_name", "")
+        v_author_id = default_author_id
+        v_author_name = default_author_name
+
+        if not v_author_id:
+            # 優先比對該部影片的頻道資訊
+            target_cid = v_channel_id or playlist_data.get('channel_id', '')
+            target_cname = v_channel_name or playlist_data.get('channel_name', '')
+            
+            if target_cid or target_cname:
+                for a in all_authors:
+                    if (target_cid and a.youtube_channel_id == target_cid) or \
+                       (target_cname and a.name == target_cname):
+                        v_author_id = a.id
+                        v_author_name = a.name
+                        break
+                        
+                # 若尚未存在，為該部影片自動建立剪輯師
+                if not v_author_id and target_cname:
+                    try:
+                        new_author = ClipAuthor(
+                            name=target_cname,
+                            youtube_channel_id=target_cid,
+                            channel_url=f"https://www.youtube.com/channel/{target_cid}" if target_cid else ""
+                        )
+                        db.session.add(new_author)
+                        db.session.flush()
+                        v_author_id = new_author.id
+                        v_author_name = target_cname
+                        all_authors.append(new_author)
+                    except Exception:
+                        db.session.rollback()
+
         results.append({
             "video_id": video_id,
             "title": title,
             "thumbnail_url": vid.get("thumbnail_url"),
             "published_at": vid.get("published_at"),
             "duration": vid.get("duration", ""),
+            "channel_name": v_channel_name,
             "tags": ",".join(detected_tags) if detected_tags else "",
             "detected_vtuber_ids": detected_vtuber_ids,
             "detected_song_id": detected_song_id,
-            "author_id": detected_author_id,
+            "author_id": v_author_id,
+            "author_name": v_author_name,
         })
+
+    db.session.commit()
 
     return {
         "playlist_title": playlist_data.get("playlist_title", ""),
         "playlist_id": playlist_data.get("playlist_id", ""),
         "channel_name": playlist_data.get("channel_name", ""),
         "channel_id": playlist_data.get("channel_id", ""),
-        "author_id": detected_author_id,
-        "author_name": detected_author_name,
+        "author_id": default_author_id,
+        "author_name": default_author_name,
         "clips": results,
     }

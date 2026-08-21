@@ -1,5 +1,6 @@
 import sys
 import time
+import argparse
 
 # 確保控制台支援 UTF-8 中文輸出
 try:
@@ -11,10 +12,70 @@ except AttributeError:
 GREEN = "\033[92m"
 RED = "\033[91m"
 YELLOW = "\033[93m"
+BLUE = "\033[94m"
+MAGENTA = "\033[95m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
+def run_diagnostics_cli():
+    print("=" * 65)
+    print(f"{BOLD}{MAGENTA}🩺 DDDiary 系統資料庫深度健檢與自檢報告 (Health Diagnostics){RESET}")
+    print("=" * 65)
+    
+    from app import create_app
+    from app.services.diagnostics_service import get_system_health_report
+    
+    app = create_app()
+    with app.app_context():
+        rep = get_system_health_report()
+        
+    score = rep["health_score"]
+    score_color = GREEN if score >= 90 else (YELLOW if score >= 70 else RED)
+    
+    print(f"\n📊 {BOLD}系統健康指標總評：{score_color}{score} / 100 分{RESET} (共偵測到 {rep['total_issues']} 項待優化項目)")
+    print("-" * 65)
+    
+    # 1. 歌曲與歌手
+    songs_info = rep["songs"]
+    print(f"\n{BOLD}{BLUE}🎵 1. 歌曲與歌手 (Songs & Artists){RESET}")
+    print(f"  • 重複歌曲：{len(songs_info['duplicate_songs'])} 組" + (f" {YELLOW}(可執行一鍵合併){RESET}" if songs_info['duplicate_songs'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 重複歌手：{len(songs_info['duplicate_artists'])} 組" + (f" {YELLOW}(可執行一鍵合併){RESET}" if songs_info['duplicate_artists'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 孤立歌曲 (未被引用)：{len(songs_info['orphan_songs'])} 首" + (f" {YELLOW}(可清理){RESET}" if songs_info['orphan_songs'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 無歌手歌曲：{len(songs_info['unknown_songs'])} 首")
+
+    # 2. 精選切片與剪輯師
+    clips_info = rep["clips"]
+    print(f"\n{BOLD}{BLUE}✂️ 2. 精選切片與剪輯師 (Clips & Authors){RESET}")
+    print(f"  • 未標記出場主播的切片：{len(clips_info['unassociated_vtuber_clips'])} 部" + (f" {RED}⚠ 建議補齊{RESET}" if clips_info['unassociated_vtuber_clips'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 未打標籤切片：{len(clips_info['untagged_clips'])} 部" + (f" {YELLOW}(可執行 AI 一鍵補標籤){RESET}" if clips_info['untagged_clips'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 未分配作者切片：{len(clips_info['unassigned_author_clips'])} 部")
+    print(f"  • 0 部切片的空白剪輯師：{len(clips_info['empty_authors'])} 位")
+
+    # 3. 演唱紀錄與時間軸
+    recs_info = rep["records"]
+    print(f"\n{BOLD}{BLUE}🎤 3. 演唱紀錄與時間軸 (Records & Timeline){RESET}")
+    print(f"  • 同一秒數重複登錄紀錄：{len(recs_info['duplicate_records'])} 組" + (f" {RED}⚠ 建議清理{RESET}" if recs_info['duplicate_records'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 異常時間戳 (<= 0 秒)：{len(recs_info['invalid_timestamp_records'])} 筆" + (f" {RED}⚠ 需修正{RESET}" if recs_info['invalid_timestamp_records'] else f" {GREEN}✓{RESET}"))
+
+    # 4. 主播與影片
+    vt_info = rep["vtubers_videos"]
+    print(f"\n{BOLD}{BLUE}👤 4. 主播與影片資料完整性 (VTubers & Videos){RESET}")
+    print(f"  • 缺少頻道 ID / 頭像的主播：{len(vt_info['incomplete_vtubers'])} 位" + (f" {YELLOW}⚠ 建議補齊{RESET}" if vt_info['incomplete_vtubers'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 未關聯主播的孤立影片：{len(vt_info['orphan_videos'])} 部")
+
+    print("\n" + "=" * 65)
+    print(f"💡 {BOLD}提示：可登入後台訪問 http://127.0.0.1:5000/admin/diagnostics 使用一鍵修復工具！{RESET}")
+    print("=" * 65)
+
 def main():
+    parser = argparse.ArgumentParser(description="VTSong Database Test & Diagnostics Suite")
+    parser.add_argument("--diagnose", "--health", action="store_true", help="執行深度資料庫健檢與自檢報告")
+    args = parser.parse_args()
+    
+    if args.diagnose:
+        run_diagnostics_cli()
+        return
+
     print("=" * 60)
     print(f"{BOLD}🎬 VTSong Database 自動化測試套件開始執行{RESET}")
     print("=" * 60)

@@ -77,9 +77,30 @@
 <div class="drawer {% if request.endpoint in ['admin.create_vtuber', 'admin.edit_vtuber'] %}open{% endif %}" id="form-drawer">
   <div class="drawer-header">
     <h3 id="drawer-title">{% if item %}{{ _('Edit VTuber') }}{% else %}{{ _('New VTuber') }}{% endif %}</h3>
-    <button class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="drawer-close" onclick="closeVtuberDrawer()"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="drawer-body">
+    <!-- 🚀 YouTube 網址一鍵智慧自動抓取卡片 -->
+    <div style="background: linear-gradient(135deg, rgba(138, 90, 219, 0.1) 0%, rgba(0,0,0,0) 100%); border: 1px dashed var(--primary); border-radius: var(--radius); padding: 1rem; margin-bottom: 1.25rem;">
+      <label style="font-size: 0.85rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 6px; margin-bottom: 0.5rem;">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> 貼上 YouTube 頻道網址自動抓取資料
+      </label>
+      <div style="display: flex; gap: 0.5rem;">
+        <input type="text" id="fetch_channel_url" class="form-input" placeholder="例如: https://www.youtube.com/@TaotaoTaotie 或 UCxxxxxx" style="font-size: 0.85rem;">
+        <button type="button" id="btn-fetch-vtuber-info" class="btn btn-secondary" onclick="fetchVtuberYoutubeInfo()" style="white-space: nowrap;">
+          <i class="fa-solid fa-cloud-arrow-down"></i> 抓取資料
+        </button>
+      </div>
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">
+        支援頻道網址、@Handle 或 Channel ID，系統將自動填入主姓名、簡介、頻道 ID、頭像與封面！
+      </div>
+    </div>
+
+    <!-- 預覽頭像與橫幅 -->
+    <div id="vtuber-preview-banner" style="display:none; position:relative; width:100%; height:80px; border-radius:8px; overflow:hidden; margin-bottom:1rem; background-size:cover; background-position:center; border: 1px solid var(--card-border);">
+      <img id="vtuber-preview-avatar" src="" style="width:50px; height:50px; border-radius:50%; border:2px solid #fff; position:absolute; left:12px; bottom:8px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.5);">
+    </div>
+
     <form id="vtuber-form" method="POST" action="{{ url_for('admin.edit_vtuber', id=item.id) if item else url_for('admin.create_vtuber') }}">
       <div class="form-row">
         <div class="form-group">
@@ -87,8 +108,8 @@
           <input type="text" id="name_main" name="name_main" class="form-input" value="{{ item.name_main if item else '' }}" required>
         </div>
         <div class="form-group">
-          <label>{{ _('Romaji Name') }}</label>
-          <input type="text" id="name_romaji" name="name_romaji" class="form-input" value="{{ item.name_romaji if item else '' }}">
+          <label>{{ _('Romaji Name') }} (URL 代稱)</label>
+          <input type="text" id="name_romaji" name="name_romaji" class="form-input" value="{{ item.name_romaji if item else '' }}" placeholder="如: taotaotaotie_ch">
         </div>
       </div>
       
@@ -104,14 +125,14 @@
       </div>
       
       <div class="form-group">
-        <label>{{ _('Description') }}</label>
+        <label>{{ _('Description') }} (個人簡介)</label>
         <textarea id="description" name="description" class="form-input" rows="3">{{ item.description if item else '' }}</textarea>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>{{ _('YouTube Channel ID') }}</label>
-          <input type="text" id="youtube_channel_id" name="youtube_channel_id" class="form-input" value="{{ item.youtube_channel_id if item else '' }}">
+          <input type="text" id="youtube_channel_id" name="youtube_channel_id" class="form-input" value="{{ item.youtube_channel_id if item else '' }}" placeholder="UCxxxxxxxxxxxxxxxxxxxxxx">
         </div>
         <div class="form-group">
           <label>{{ _('Theme Color') }}</label>
@@ -121,12 +142,12 @@
       
       <div class="form-group">
         <label>{{ _('Avatar URL') }}</label>
-        <input type="url" id="avatar_url" name="avatar_url" class="form-input" value="{{ item.avatar_url if item else '' }}">
+        <input type="url" id="avatar_url" name="avatar_url" class="form-input" value="{{ item.avatar_url if item else '' }}" oninput="updateMediaPreviews()">
       </div>
       
       <div class="form-group">
         <label>{{ _('Banner URL') }}</label>
-        <input type="url" id="banner_url" name="banner_url" class="form-input" value="{{ item.banner_url if item else '' }}">
+        <input type="url" id="banner_url" name="banner_url" class="form-input" value="{{ item.banner_url if item else '' }}" oninput="updateMediaPreviews()">
       </div>
       
       <div class="form-group">
@@ -136,24 +157,47 @@
       
       <div class="form-group">
         <label>{{ _('Social Links (JSON)') }}</label>
-        <textarea id="social_links" name="social_links" class="form-input" rows="3">{{ item.social_links | tojson if item and item.social_links else '' }}</textarea>
+        <textarea id="social_links" name="social_links" class="form-input" rows="2" placeholder='{"twitter": "https://x.com/...", "youtube": "..."}'>{{ item.social_links | tojson if item and item.social_links else '' }}</textarea>
       </div>
       
       <div class="flex gap-2 mt-4">
-        <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">{{ _('Save') }}</button>
       </div>
     </form>
-    {% if item and item.youtube_channel_id %}
-    <form method="POST" action="{{ url_for('admin.sync_youtube', id=item.id) }}" class="mt-4">
-      <button type="submit" class="btn btn-outline"><i class="fa-brands fa-youtube"></i> {{ _('Sync YouTube') }}</button>
-    </form>
-    {% endif %}
   </div>
 </div>
 {% endblock %}
 
 {% block admin_js %}
 <script>
+function closeVtuberDrawer() {
+  document.getElementById('form-drawer').classList.remove('open');
+}
+
+function updateMediaPreviews() {
+  const avatar = document.getElementById('avatar_url').value.trim();
+  const banner = document.getElementById('banner_url').value.trim();
+  const previewBanner = document.getElementById('vtuber-preview-banner');
+  const previewAvatar = document.getElementById('vtuber-preview-avatar');
+
+  if (banner || avatar) {
+    previewBanner.style.display = 'block';
+    if (banner) {
+      previewBanner.style.backgroundImage = `url('${banner}')`;
+    } else {
+      previewBanner.style.background = 'var(--card-border)';
+    }
+    if (avatar) {
+      previewAvatar.src = avatar;
+      previewAvatar.style.display = 'block';
+    } else {
+      previewAvatar.style.display = 'none';
+    }
+  } else {
+    previewBanner.style.display = 'none';
+  }
+}
+
 function openVtuberForm(btn) {
   let data = { action: '{{ url_for("admin.create_vtuber") }}' };
   if (btn && btn.dataset.vtuber) {
@@ -173,6 +217,7 @@ function openVtuberForm(btn) {
   document.getElementById('avatar_url').value = data.avatar_url || '';
   document.getElementById('banner_url').value = data.banner_url || '';
   document.getElementById('schedule_image_url').value = data.schedule_image_url || '';
+  document.getElementById('fetch_channel_url').value = '';
   
   if (data.social_links && data.social_links !== 'None') {
     try {
@@ -185,8 +230,81 @@ function openVtuberForm(btn) {
     document.getElementById('social_links').value = '';
   }
   
+  updateMediaPreviews();
   document.getElementById('form-drawer').classList.add('open');
 }
+
+// 🚀 YouTube 頻道資訊自動抓取與欄位填入
+async function fetchVtuberYoutubeInfo() {
+  let url = document.getElementById('fetch_channel_url').value.trim();
+  if (!url) {
+    url = document.getElementById('youtube_channel_id').value.trim();
+  }
+  if (!url) {
+    alert('請先輸入 YouTube 頻道網址、@Handle 或 Channel ID！');
+    return;
+  }
+
+  const btn = document.getElementById('btn-fetch-vtuber-info');
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 抓取中...';
+
+  try {
+    const resp = await fetch(`/api/v1/vtubers/fetch_youtube_info?channel_url=${encodeURIComponent(url)}`);
+    const data = await resp.json();
+
+    if (!resp.ok || data.error) {
+      throw new Error(data.error || '無法解析該頻道資訊');
+    }
+
+    // 自動填入表單各欄位
+    if (data.title) {
+      if (!document.getElementById('name_main').value) {
+        document.getElementById('name_main').value = data.title;
+      }
+      if (!document.getElementById('name_zh').value) {
+        document.getElementById('name_zh').value = data.title;
+      }
+      if (!document.getElementById('name_romaji').value) {
+        // 嘗試由 title 或 handle 產生安全的 romaji  slug
+        let slug = data.title.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+        if (slug) document.getElementById('name_romaji').value = slug;
+      }
+    }
+
+    if (data.channel_id) {
+      document.getElementById('youtube_channel_id').value = data.channel_id;
+    }
+    if (data.description) {
+      document.getElementById('description').value = data.description;
+    }
+    if (data.avatar_url) {
+      document.getElementById('avatar_url').value = data.avatar_url;
+    }
+    if (data.banner_url) {
+      document.getElementById('banner_url').value = data.banner_url;
+    }
+
+    updateMediaPreviews();
+
+    if (window.showToast) {
+      window.showToast(`成功抓取《${data.title}》的頻道資料並自動填入！`, 'success');
+    } else {
+      alert(`成功抓取《${data.title}》的頻道資料並自動填入！`);
+    }
+  } catch (err) {
+    alert('抓取失敗: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+}
+
+// 監聽貼上事件自動觸發
+document.getElementById('fetch_channel_url')?.addEventListener('paste', () => {
+  setTimeout(fetchVtuberYoutubeInfo, 100);
+});
 
 document.getElementById('table-search')?.addEventListener('input', (e) => {
   const term = e.target.value.toLowerCase();

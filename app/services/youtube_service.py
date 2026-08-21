@@ -621,6 +621,19 @@ def scrape_youtube_playlist_videos(playlist_url_or_id: str, limit: Optional[int]
                     seen_video_ids.add(vid)
                     title = lvm.get('metadata', {}).get('lockupMetadataViewModel', {}).get('title', {}).get('content', '')
                     thumb_url = f"https://img.youtube.com/vi/{vid}/mqdefault.jpg"
+                    
+                    video_channel_name = ""
+                    video_channel_id = ""
+                    metadata_rows = lvm.get('metadata', {}).get('lockupMetadataViewModel', {}).get('metadata', {}).get('contentMetadataViewModel', {}).get('metadataRows', [])
+                    if metadata_rows:
+                        parts = metadata_rows[0].get('metadataParts', [])
+                        if parts:
+                            video_channel_name = parts[0].get('text', {}).get('content', '')
+                            cmd_runs = parts[0].get('text', {}).get('commandRuns', [])
+                            if cmd_runs:
+                                ep = cmd_runs[0].get('onTap', {}).get('innertubeCommand', {}).get('browseEndpoint', {})
+                                video_channel_id = ep.get('browseId', '')
+
                     videos.append({
                         "video_id": vid,
                         "title": title,
@@ -628,8 +641,8 @@ def scrape_youtube_playlist_videos(playlist_url_or_id: str, limit: Optional[int]
                         "published_at": None,
                         "is_approximate": False,
                         "duration": "",
-                        "channel_name": "",
-                        "channel_id": "",
+                        "channel_name": video_channel_name,
+                        "channel_id": video_channel_id,
                     })
 
             # Continuation token

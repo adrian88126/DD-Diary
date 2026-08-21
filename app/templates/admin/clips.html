@@ -187,7 +187,7 @@
       
       <div class="form-group">
         <label class="form-label" for="author_id">{{ _('Author') }}</label>
-        <select id="author_id" name="author_id" class="form-input">
+        <select id="author_id" name="author_id" class="tom-select-author">
           <option value="">{{ _('Select Author...') }}</option>
           {% for author in all_authors %}
           <option value="{{ author.id }}">{{ author.name }}</option>
@@ -386,7 +386,12 @@ function openClipDrawer(btn) {
       document.getElementById('video_id').value = data.video_id || '';
       document.getElementById('title').value = data.title || '';
       document.getElementById('tags').value = data.tags || '';
-      document.getElementById('author_id').value = data.author_id || '';
+      
+      if (window.authorSelect) {
+        window.authorSelect.setValue(data.author_id || '');
+      } else {
+        document.getElementById('author_id').value = data.author_id || '';
+      }
       
       if (window.vtuberSelect) {
         window.vtuberSelect.setValue(data.vtuber_ids || []);
@@ -401,6 +406,7 @@ function openClipDrawer(btn) {
     title.textContent = "{{ _('Create Clip') }}";
     form.action = "{{ url_for('admin.create_clip') }}";
     form.reset();
+    if (window.authorSelect) window.authorSelect.clear();
     if (window.vtuberSelect) window.vtuberSelect.clear();
     if (window.songSelect) window.songSelect.clear();
   }
@@ -442,15 +448,20 @@ async function fetchClipYoutubeData() {
       }
       
       if (data.detected_author_id) {
-        const authorSelect = document.getElementById('author_id');
-        let opt = authorSelect.querySelector(`option[value="${data.detected_author_id}"]`);
-        if (!opt && data.detected_author_name) {
-          opt = document.createElement('option');
-          opt.value = data.detected_author_id;
-          opt.textContent = data.detected_author_name;
-          authorSelect.appendChild(opt);
+        if (window.authorSelect) {
+          window.authorSelect.addOption({ value: data.detected_author_id, text: data.detected_author_name || `作者 #${data.detected_author_id}` });
+          window.authorSelect.setValue(data.detected_author_id);
+        } else {
+          const authorSelect = document.getElementById('author_id');
+          let opt = authorSelect.querySelector(`option[value="${data.detected_author_id}"]`);
+          if (!opt && data.detected_author_name) {
+            opt = document.createElement('option');
+            opt.value = data.detected_author_id;
+            opt.textContent = data.detected_author_name;
+            authorSelect.appendChild(opt);
+          }
+          authorSelect.value = data.detected_author_id;
         }
-        authorSelect.value = data.detected_author_id;
       }
     } else {
       alert('抓取失敗: ' + (json.error || '無法分析該網址'));
@@ -642,8 +653,57 @@ async function applyBulkAction(actionType) {
 
 document.addEventListener("DOMContentLoaded", function() {
   if (window.TomSelect) {
+    window.authorSelect = new TomSelect('#author_id', {
+      create: function(input, callback) {
+        fetch('/api/v1/clip_authors/quick_create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: input.trim() })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (res.success && res.author) {
+            if (window.showToast) window.showToast(`已新增剪輯師：${res.author.name}`, 'success');
+            callback({ value: res.author.id, text: res.author.name });
+          } else {
+            alert(res.error || '新增剪輯師失敗');
+            callback(false);
+          }
+        })
+        .catch(err => {
+          alert('網路異常：' + err);
+          callback(false);
+        });
+      },
+      createOnBlur: false,
+      persist: true
+    });
     window.vtuberSelect = new TomSelect('#vtubers', { plugins: ['remove_button'] });
-    window.songSelect = new TomSelect('#song_id', { create: false });
+    window.songSelect = new TomSelect('#song_id', {
+      create: function(input, callback) {
+        fetch('/api/v1/songs/quick_create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title_main: input.trim() })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (res.success && res.song) {
+            if (window.showToast) window.showToast(`已新增歌曲《${res.song.title_main}》！`, 'success');
+            callback({ value: res.song.id, text: res.song.title_main });
+          } else {
+            alert(res.error || '新增歌曲失敗');
+            callback(false);
+          }
+        })
+        .catch(err => {
+          alert('網路異常：' + err);
+          callback(false);
+        });
+      },
+      createOnBlur: false,
+      persist: true
+    });
     window.bulkVtuberSelect = new TomSelect('#bulk-vtubers', { plugins: ['remove_button'] });
     window.bulkSongSelect = new TomSelect('#bulk-song', { create: false });
   }

@@ -62,56 +62,34 @@
   color: var(--text-color);
 }
 
-.pending-grid { display: grid; gap: 1rem; margin-top: 1rem; }
+.pending-grid { display: grid; gap: 1.25rem; margin-top: 1rem; }
 .pending-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
-  padding: 1rem;
+  padding: 1.25rem;
   display: grid;
-  grid-template-columns: 40px 160px 1fr;
-  gap: 1rem;
+  grid-template-columns: 40px 180px 1fr;
+  gap: 1.25rem;
   align-items: start;
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
 }
 .pending-card:hover {
   box-shadow: var(--shadow-md);
-  border-color: rgba(138, 90, 219, 0.3);
+  border-color: rgba(138, 90, 219, 0.4);
 }
-@media(max-width: 768px) {
+@media(max-width: 900px) {
   .pending-card { grid-template-columns: 1fr; }
 }
 .clip-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 0.15s; }
 .clip-thumb:hover { transform: scale(1.03); }
 .clip-checkbox {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
   accent-color: var(--primary);
-}
-.tag-pill {
-  display: inline-block;
-  padding: 0.25rem 0.65rem;
-  background: rgba(138, 90, 219, 0.08);
-  color: var(--text-color);
-  border: 1px solid var(--card-border);
-  border-radius: 999px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  margin: 0.2rem;
-  user-select: none;
-  transition: var(--transition);
-}
-.tag-pill:hover {
-  background: rgba(138, 90, 219, 0.18);
-  color: var(--primary);
-  border-color: var(--primary);
-}
-.tag-pill.active {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
+  margin-top: 4px;
 }
 
 .bulk-actions-bar {
@@ -143,6 +121,16 @@
   font-family: monospace;
   color: var(--text-muted);
 }
+.quick-add-link {
+  font-size: 0.75rem;
+  color: var(--primary);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.quick-add-link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
 </style>
 
 <div class="action-header">
@@ -160,12 +148,12 @@
         <label class="form-label" for="playlist_url">播放清單網址或 ID</label>
         <input type="text" class="form-input" id="playlist_url" name="playlist_url"
                placeholder="例如: https://www.youtube.com/playlist?list=PLxxxxxxxxx"
-               value="{{ playlist_url or '' }}">
+               value="{{ playlist_url or '' }}" required>
       </div>
       <div style="flex: 1; min-width: 180px;">
-        <label class="form-label" for="playlist_author_id">指定作者（可選）</label>
+        <label class="form-label" for="playlist_author_id">預設統一作者（可選）</label>
         <select id="playlist_author_id" name="author_id" class="form-input">
-          <option value="">自動偵測</option>
+          <option value="">智慧個別偵測（推薦多作者清單）</option>
           {% for author in all_authors %}
           <option value="{{ author.id }}">{{ author.name }}</option>
           {% endfor %}
@@ -179,7 +167,7 @@
     </div>
     <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
       <i class="fa-solid fa-circle-info"></i>
-      支援格式：完整播放清單網址、含 <code>list=</code> 參數的影片網址、或直接貼上播放清單 ID（PL 開頭）
+      支援格式：完整播放清單網址、含 <code>list=</code> 參數的影片網址、或直接貼上播放清單 ID（PL 開頭）。系統會自動辨識每部影片的專屬剪輯師與歌曲！
     </div>
   </form>
 </div>
@@ -193,19 +181,13 @@
   </div>
   {% if playlist_result.channel_name %}
   <div class="meta-item">
-    <span class="meta-label">頻道</span>
+    <span class="meta-label">清單所屬頻道</span>
     <span class="meta-value">{{ playlist_result.channel_name }}</span>
   </div>
   {% endif %}
-  {% if playlist_result.author_name %}
   <div class="meta-item">
-    <span class="meta-label">對應作者</span>
-    <span class="meta-value" style="color: var(--primary-color);">{{ playlist_result.author_name }}</span>
-  </div>
-  {% endif %}
-  <div class="meta-item">
-    <span class="meta-label">待匯入</span>
-    <span class="meta-value">{{ pending_clips | length }} 部影片</span>
+    <span class="meta-label">待匯入數量</span>
+    <span class="meta-value" style="color: var(--primary);">{{ pending_clips | length }} 部影片</span>
   </div>
 </div>
 
@@ -213,15 +195,15 @@
 <form id="pending-form" action="{{ url_for('admin.import_clips') }}" method="POST">
   <div class="bulk-actions-bar">
     <div class="select-actions">
-      <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-weight:500;">
+      <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-weight:600;">
         <input type="checkbox" id="select-all-checkbox" style="width:18px;height:18px;" onchange="toggleSelectAll(this)">
         全選
       </label>
       <span class="select-counter" id="select-counter">已選 0 / {{ pending_clips | length }}</span>
     </div>
     <div style="display:flex;gap:0.5rem;">
-      <button type="button" class="btn btn-outline" onclick="document.getElementById('pending-form').submit();">
-        <i class="fa-solid fa-check"></i> 匯入選取
+      <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-check"></i> 匯入勾選項目的切片
       </button>
     </div>
   </div>
@@ -229,40 +211,59 @@
   <div class="pending-grid">
     {% for clip in pending_clips %}
     <div class="pending-card">
-      <div>
-        <input type="checkbox" name="selected" value="{{ clip.video_id }}" class="clip-checkbox"
-               style="width:20px;height:20px;" onchange="updateSelectCounter()">
+      <div style="text-align: center;">
+        <input type="checkbox" name="selected" value="{{ clip.video_id }}" class="clip-checkbox" onchange="updateSelectCounter()">
       </div>
       <div>
-        <img src="{{ clip.thumbnail_url }}" alt="Thumbnail" class="clip-thumb" onclick="openLightbox('{{ clip.video_id }}')">
+        <img src="{{ clip.thumbnail_url }}" alt="Thumbnail" class="clip-thumb" onclick="openLightbox('{{ clip.video_id }}')" title="點擊預覽影片">
         {% if clip.duration %}
         <div style="text-align:center;margin-top:4px;"><span class="duration-badge">{{ clip.duration }}</span></div>
         {% endif %}
       </div>
       <div>
-        <h4 style="margin:0 0 .5rem 0; font-size: 0.95rem;">{{ clip.title }}</h4>
+        <h4 style="margin:0 0 .5rem 0; font-size: 0.95rem; font-weight: 600; line-height: 1.4;">{{ clip.title }}</h4>
 
         <input type="hidden" name="title_{{ clip.video_id }}" value="{{ clip.title }}">
         <input type="hidden" name="published_at_{{ clip.video_id }}" value="{{ clip.published_at or '' }}">
-        <input type="hidden" name="author_id_{{ clip.video_id }}" value="{{ clip.author_id or '' }}">
 
-        <div class="form-group" style="margin-bottom: 0.5rem;">
-          <label class="form-label" style="font-size:0.8rem;">{{ _('Tags') }}</label>
-          <input type="text" class="form-input" name="tags_{{ clip.video_id }}" value="{{ clip.tags }}" style="font-size:0.85rem;">
+        <!-- 標籤 -->
+        <div class="form-group" style="margin-bottom: 0.75rem;">
+          <label class="form-label" style="font-size:0.8rem; margin-bottom: 2px;">{{ _('Tags') }} (逗號分隔)</label>
+          <input type="text" class="form-input" name="tags_{{ clip.video_id }}" value="{{ clip.tags }}" style="font-size:0.85rem; padding: 6px 10px;">
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+        <!-- 3 欄式配置：作者、主播、歌曲 -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:.75rem;">
+          <!-- 剪輯師 (支援輸入自訂新增) -->
           <div class="form-group">
-            <label class="form-label" style="font-size:0.8rem;">{{ _('VTubers') }}</label>
+            <label class="form-label" style="font-size:0.8rem; margin-bottom: 2px; display:flex; justify-content:space-between;">
+              <span>{{ _('Author') }} (剪輯師)</span>
+            </label>
+            <select name="author_id_{{ clip.video_id }}" class="tom-select-author">
+              <option value="">(未指定作者)</option>
+              {% for a in all_authors %}
+              <option value="{{ a.id }}" {% if a.id == clip.author_id %}selected{% endif %}>{{ a.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- 出場主播 -->
+          <div class="form-group">
+            <label class="form-label" style="font-size:0.8rem; margin-bottom: 2px;">{{ _('VTubers') }}</label>
             <select name="vtuber_ids_{{ clip.video_id }}[]" multiple class="tom-select-vtuber">
               {% for v in all_vtubers %}
               <option value="{{ v.id }}" {% if v.id in clip.detected_vtuber_ids %}selected{% endif %}>{{ v.name_main }}</option>
               {% endfor %}
             </select>
           </div>
+
+          <!-- 歌曲 (支援輸入自訂直接新增) -->
           <div class="form-group">
-            <label class="form-label" style="font-size:0.8rem;">{{ _('Song') }}</label>
-            <select name="song_id_{{ clip.video_id }}" class="tom-select-song">
+            <label class="form-label" style="font-size:0.8rem; margin-bottom: 2px; display:flex; justify-content:space-between; align-items:center;">
+              <span>{{ _('Song') }} (演唱歌曲)</span>
+              <span class="quick-add-link" onclick="quickAddSongModal('{{ clip.video_id }}')">+ 新增歌曲</span>
+            </label>
+            <select name="song_id_{{ clip.video_id }}" class="tom-select-song" id="song-select-{{ clip.video_id }}">
               <option value="">{{ _('Select Song (Optional)...') }}</option>
               {% for s in all_songs %}
               <option value="{{ s.id }}" {% if s.id == clip.detected_song_id %}selected{% endif %}>{{ s.title_main }}</option>
@@ -270,6 +271,7 @@
             </select>
           </div>
         </div>
+
       </div>
     </div>
     {% endfor %}
@@ -278,6 +280,7 @@
 {% endif %}
 {% endif %}
 
+<!-- YouTube 影片燈箱 -->
 <div id="clip-lightbox" class="clip-lightbox" style="display:none;">
   <div class="clip-lightbox-backdrop" onclick="closeLightbox()"></div>
   <div class="clip-lightbox-content">
@@ -287,6 +290,10 @@
 </div>
 
 <script>
+// 全域 TomSelect 實例陣列 (用於即時同步新建立的歌曲與作者)
+window.songSelectInstances = [];
+window.authorSelectInstances = [];
+
 // Lightbox
 function openLightbox(videoId) {
   document.getElementById('clip-lightbox-iframe').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
@@ -299,11 +306,14 @@ function closeLightbox() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 // Fetch 按鈕 Loading 狀態
-document.getElementById('playlist-fetch-form').addEventListener('submit', function() {
-  const btn = document.getElementById('btn-fetch-playlist');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 抓取中...';
-});
+const fetchForm = document.getElementById('playlist-fetch-form');
+if (fetchForm) {
+  fetchForm.addEventListener('submit', function() {
+    const btn = document.getElementById('btn-fetch-playlist');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 正在爬取播放清單...';
+  });
+}
 
 // 全選/取消全選
 function toggleSelectAll(masterCheckbox) {
@@ -322,14 +332,119 @@ function updateSelectCounter() {
   if (selectAll) selectAll.checked = (checked === total && total > 0);
 }
 
-// Initialize TomSelect if available
+// 快速新增歌曲彈窗輔助
+async function quickAddSongModal(videoId) {
+  const title = prompt('請輸入要新增的歌曲名稱：');
+  if (!title || !title.trim()) return;
+
+  try {
+    const resp = await fetch('/api/v1/songs/quick_create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title_main: title.trim() })
+    });
+    const res = await resp.json();
+    if (res.success && res.song) {
+      const newOption = { value: res.song.id, text: res.song.title_main };
+      
+      // 同步添加到頁面上所有的歌曲下拉選單
+      window.songSelectInstances.forEach(ts => {
+        ts.addOption(newOption);
+      });
+
+      // 將當前卡片的選單選中這首歌
+      const currentTs = window.songSelectInstances.find(ts => ts.input.id === `song-select-${videoId}`);
+      if (currentTs) {
+        currentTs.setValue(res.song.id);
+      }
+
+      if (window.showToast) {
+        window.showToast(`已成功建立並選取歌曲《${res.song.title_main}》！`, 'success');
+      } else {
+        alert(`已成功建立並選取歌曲《${res.song.title_main}》！`);
+      }
+    } else {
+      alert(res.error || '新增歌曲失敗');
+    }
+  } catch (err) {
+    alert('網路通訊異常：' + err);
+  }
+}
+
+// 初始化 TomSelect (支援輸入建立歌曲與作者)
 document.addEventListener("DOMContentLoaded", function() {
   if (window.TomSelect) {
+    // 1. VTubers 多選
     document.querySelectorAll('.tom-select-vtuber').forEach(el => {
       new TomSelect(el, { plugins: ['remove_button'] });
     });
+
+    // 2. 剪輯師下拉選單 (支援直接輸入新剪輯師)
+    document.querySelectorAll('.tom-select-author').forEach(el => {
+      const ts = new TomSelect(el, {
+        create: function(input, callback) {
+          fetch('/api/v1/clip_authors/quick_create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: input.trim() })
+          })
+          .then(r => r.json())
+          .then(res => {
+            if (res.success && res.author) {
+              const opt = { value: res.author.id, text: res.author.name };
+              window.authorSelectInstances.forEach(otherTs => {
+                if (otherTs !== ts) otherTs.addOption(opt);
+              });
+              if (window.showToast) window.showToast(`已新增剪輯師：${res.author.name}`, 'success');
+              callback(opt);
+            } else {
+              alert(res.error || '新增剪輯師失敗');
+              callback(false);
+            }
+          })
+          .catch(err => {
+            alert('網路異常：' + err);
+            callback(false);
+          });
+        },
+        createOnBlur: false,
+        persist: true
+      });
+      window.authorSelectInstances.push(ts);
+    });
+
+    // 3. 歌曲下拉選單 (支援直接輸入新歌曲)
     document.querySelectorAll('.tom-select-song').forEach(el => {
-      new TomSelect(el, { create: false });
+      const ts = new TomSelect(el, {
+        create: function(input, callback) {
+          fetch('/api/v1/songs/quick_create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title_main: input.trim() })
+          })
+          .then(r => r.json())
+          .then(res => {
+            if (res.success && res.song) {
+              const opt = { value: res.song.id, text: res.song.title_main };
+              window.songSelectInstances.forEach(otherTs => {
+                if (otherTs !== ts) otherTs.addOption(opt);
+              });
+              if (window.showToast) window.showToast(`已新增歌曲《${res.song.title_main}》！`, 'success');
+              callback(opt);
+            } else {
+              alert(res.error || '新增歌曲失敗');
+              callback(false);
+            }
+          })
+          .catch(err => {
+            alert('網路異常：' + err);
+            callback(false);
+          });
+        },
+        createOnBlur: false,
+        persist: true
+      });
+      window.songSelectInstances.push(ts);
     });
   }
 });

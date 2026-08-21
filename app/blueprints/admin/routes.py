@@ -349,25 +349,31 @@ def delete_activity(id):
 # --- Diagnostics ---
 @admin_bp.route('/diagnostics')
 def diagnostics():
-    unknown_songs = diagnostics_service.get_unknown_songs()
-    duplicate_songs = diagnostics_service.get_duplicate_songs()
-    duplicate_artists = diagnostics_service.get_duplicate_artists()
-    return render_template('admin/diagnostics.html', 
-        unknown_songs=unknown_songs,
-        duplicate_songs=duplicate_songs,
-        duplicate_artists=duplicate_artists
-    )
+    report = diagnostics_service.get_system_health_report()
+    return render_template('admin/diagnostics.html', report=report)
 
 @admin_bp.route('/diagnostics/auto_link_duplicates', methods=['POST'])
 def diagnostics_auto_link_duplicates():
     res = diagnostics_service.auto_link_duplicates()
-    flash(f"Cleaned {res['cleaned_count']} duplicate songs", 'success')
+    flash(f"已成功合併 {res['cleaned_count']} 首重複歌曲！", 'success')
     return redirect(url_for('admin.diagnostics'))
 
 @admin_bp.route('/diagnostics/auto_link_duplicate_artists', methods=['POST'])
 def diagnostics_auto_link_duplicate_artists():
     res = diagnostics_service.auto_link_duplicate_artists()
-    flash(f"Cleaned {res['cleaned_count']} duplicate artists", 'success')
+    flash(f"已成功合併 {res['cleaned_count']} 位重複歌手！", 'success')
+    return redirect(url_for('admin.diagnostics'))
+
+@admin_bp.route('/diagnostics/auto_fix_untagged_clips', methods=['POST'])
+def diagnostics_auto_fix_untagged_clips():
+    res = diagnostics_service.auto_fix_untagged_clips()
+    flash(f"已為 {res['fixed_count']} 部切片智慧自動補上標籤！", 'success')
+    return redirect(url_for('admin.diagnostics'))
+
+@admin_bp.route('/diagnostics/auto_clean_duplicate_records', methods=['POST'])
+def diagnostics_auto_clean_duplicate_records():
+    res = diagnostics_service.auto_clean_duplicate_records()
+    flash(f"已清除 {res['deleted_count']} 筆重複演唱紀錄！", 'success')
     return redirect(url_for('admin.diagnostics'))
 
 import json

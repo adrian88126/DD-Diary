@@ -51,10 +51,15 @@
 }
 ```
 
-### B. 修改歌曲
+### B. 快速建立歌曲 (Quick Create)
+* **Method & URL**：`POST /api/v1/songs/quick_create`
+* **請求 Payload (JSON)**：`{ "title_main": "歌名" }`
+* **回傳範例**：`{ "success": true, "is_new": true, "song": { "id": 5, "title_main": "歌名" } }`
+
+### C. 修改歌曲
 * **Method & URL**：`PUT /api/v1/songs/<id>` 或 `POST /admin/songs/<id>/edit`
 
-### C. 刪除歌曲
+### D. 刪除歌曲
 * **Method & URL**：`DELETE /api/v1/songs/<id>` 或 `POST /admin/songs/<id>/delete`
 
 ---
@@ -112,8 +117,13 @@
 
 ---
 
-## 5. 健康診斷與重複資料合併 API (Diagnostics)
+## 5. 系統自檢與健康診斷 API (Diagnostics & Health Checks)
 
+* `GET /admin/diagnostics`：全方位系統健康評分儀表板，展示四大維度異常診斷報告。
+* `POST /admin/diagnostics/auto_link_duplicates`：一鍵合併所有同名重複歌曲，並自動轉移演唱紀錄與點歌關係。
+* `POST /admin/diagnostics/auto_link_duplicate_artists`：一鍵合併所有同名重複歌手，並自動更新歌曲外鍵。
+* `POST /admin/diagnostics/auto_fix_untagged_clips`：一鍵為所有無標籤切片執行 AI 關鍵字智慧自動補標籤。
+* `POST /admin/diagnostics/auto_clean_duplicate_records`：一鍵清理同一秒數重複登錄的演唱紀錄。
 * `GET /api/v1/diagnostics/duplicate-artists`：診斷並列出資料庫中文字相似或重複的歌手。
 * `POST /api/v1/diagnostics/merge-artists`：一鍵合併指定 ID 的重複歌手，並自動更新受影響歌曲的歌手外鍵。
 

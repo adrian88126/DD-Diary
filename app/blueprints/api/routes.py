@@ -85,3 +85,68 @@ def fetch_video_info():
             return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+
+@api_bp.route('/songs/quick_create', methods=['POST'])
+def quick_create_song():
+    data = request.get_json() if request.is_json else request.form.to_dict()
+    title = data.get('title_main', '').strip() if data else ''
+    if not title:
+        return jsonify({'success': False, 'error': '歌名不可為空'}), 400
+        
+    from app.extensions import db
+    from app.models.song import Song
+    from sqlalchemy import select
+    
+    # 檢查是否已存在
+    existing = db.session.scalars(select(Song).where(Song.title_main == title)).first()
+    if existing:
+        return jsonify({
+            'success': True,
+            'is_new': False,
+            'song': {'id': existing.id, 'title_main': existing.title_main}
+        })
+        
+    try:
+        new_song = Song(title_main=title)
+        db.session.add(new_song)
+        db.session.commit()
+        return jsonify({
+            'success': True,
+            'is_new': True,
+            'song': {'id': new_song.id, 'title_main': new_song.title_main}
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@api_bp.route('/clip_authors/quick_create', methods=['POST'])
+def quick_create_clip_author():
+    data = request.get_json() if request.is_json else request.form.to_dict()
+    name = data.get('name', '').strip() if data else ''
+    if not name:
+        return jsonify({'success': False, 'error': '剪輯師名稱不可為空'}), 400
+        
+    from app.extensions import db
+    from app.models.clip import ClipAuthor
+    from sqlalchemy import select
+    
+    existing = db.session.scalars(select(ClipAuthor).where(ClipAuthor.name == name)).first()
+    if existing:
+        return jsonify({
+            'success': True,
+            'is_new': False,
+            'author': {'id': existing.id, 'name': existing.name}
+        })
+        
+    try:
+        new_author = ClipAuthor(name=name)
+        db.session.add(new_author)
+        db.session.commit()
+        return jsonify({
+            'success': True,
+            'is_new': True,
+            'author': {'id': new_author.id, 'name': new_author.name}
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
