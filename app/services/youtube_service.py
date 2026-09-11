@@ -377,8 +377,10 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
         if isinstance(d, dict):
             if 'lockupViewModel' in d:
                 lvm = d['lockupViewModel']
+                content_type = lvm.get('contentType', '')
                 vid = lvm.get('contentId')
-                if vid and vid not in seen_video_ids:
+                # 防呆：確保是有效的 11 碼 YouTube 影片，避免抓取到播放清單 (PL...)
+                if vid and len(vid) == 11 and not vid.startswith(('PL', 'UC', 'RD', 'OLAK5uy_')) and vid not in seen_video_ids:
                     seen_video_ids.add(vid)
                     
                     title = lvm.get('metadata', {}).get('lockupMetadataViewModel', {}).get('title', {}).get('content', '')
@@ -406,7 +408,8 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
                         "title": title,
                         "thumbnail_url": thumb_url,
                         "published_at": pub_date,
-                        "is_approximate": is_approx
+                        "is_approximate": is_approx,
+                        "is_short": (tab == "shorts" or 'SHORT' in content_type.upper())
                     })
                     
             if 'shortsLockupViewModel' in d:
@@ -425,7 +428,8 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
                         "title": title,
                         "thumbnail_url": thumb_url,
                         "published_at": None,
-                        "is_approximate": False
+                        "is_approximate": False,
+                        "is_short": True
                     })
             
             for k in ["videoRenderer", "gridVideoRenderer"]:
@@ -451,7 +455,8 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
                             "title": title,
                             "thumbnail_url": thumb_url,
                             "published_at": pub_date,
-                            "is_approximate": is_approx
+                            "is_approximate": is_approx,
+                            "is_short": (tab == "shorts")
                         })
                         
             if "continuationItemRenderer" in d:
@@ -785,12 +790,15 @@ def sync_vtuber_youtube(
     all_videos_map = {}
     
     for v in scraped_videos:
-        all_videos_map[v["video_id"]] = {
-            "video_id": v["video_id"],
+        vid = v["video_id"]
+        prev_short = all_videos_map.get(vid, {}).get("is_short", False)
+        all_videos_map[vid] = {
+            "video_id": vid,
             "title": v["title"],
             "thumbnail_url": v["thumbnail_url"],
             "published_at": v["published_at"],
-            "is_approximate": v.get("is_approximate", False)
+            "is_approximate": v.get("is_approximate", False),
+            "is_short": prev_short or v.get("is_short", False)
         }
         
     for v in rss_videos:
@@ -803,6 +811,7 @@ def sync_vtuber_youtube(
         else:
             if limit is None or len(all_videos_map) < limit:
                 v["is_approximate"] = False
+                v["is_short"] = False
                 all_videos_map[vid] = v
             
     from datetime import date as date_type
@@ -813,6 +822,8 @@ def sync_vtuber_youtube(
 
     synced_entries = []
     for vid, v_info in all_videos_map.items():
+        if not vid or len(vid) != 11:
+            continue
         title = v_info["title"]
         thumb_url = v_info["thumbnail_url"]
         pub_date = v_info["published_at"]
@@ -830,11 +841,19 @@ def sync_vtuber_youtube(
         elif pub_date and (pub_date - today).days > 180:
             is_schedule = True
 
+        # 嚴格精準判斷短影音 (Short)
+        is_short = v_info.get("is_short", False)
+        if not is_short:
+            if any(k in lower_title for k in ["#short", "#shorts", "shorts", "#短影音", "短影音", "#ytshorts", "#shortsvideo", "#tiktok"]):
+                is_short = True
+            elif re.search(r'(^|[\s_#\(\[\{【（])shorts?([\s_#\)\]\}】）]|$)', lower_title):
+                is_short = True
+
         db_video = db.session.scalars(select(Video).where(Video.video_id == vid)).first()
         if not db_video:
             if is_schedule:
                 v_type = "schedule"
-            elif any(k in lower_title for k in ["#short", "#shorts", "shorts"]):
+            elif is_short:
                 v_type = "short"
             elif any(k in lower_title for k in ["歌", "live", "mv", "cover", "original", "singing", "翻唱", "原創"]):
                 v_type = "stream_singing"
@@ -854,7 +873,7 @@ def sync_vtuber_youtube(
         else:
             if is_schedule and db_video.video_type != "schedule":
                 db_video.video_type = "schedule"
-            elif any(k in lower_title for k in ["#short", "#shorts", "shorts"]) and db_video.video_type in ["stream_singing", "stream_other", "other"]:
+            elif is_short and db_video.video_type in ["stream_singing", "stream_other", "other"]:
                 db_video.video_type = "short"
                 
             if db_video.vtuber_id is None:

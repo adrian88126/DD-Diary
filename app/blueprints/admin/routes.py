@@ -216,6 +216,30 @@ def delete_video(id):
     flash('Video deleted successfully', 'success')
     return redirect(url_for('admin.list_videos'))
 
+@admin_bp.route('/videos/<id>/convert_to_short', methods=['POST'])
+def video_convert_to_short(id):
+    video = video_service.get_video(id)
+    if not video:
+        return jsonify({"success": False, "error": "Video not found"}), 404
+    video_service.update_video(id, {"video_type": "short"})
+    return jsonify({"success": True, "video_id": id, "title": video.title})
+
+@admin_bp.route('/videos/bulk_convert_to_short', methods=['POST'])
+def bulk_convert_to_short():
+    data = request.get_json() or {}
+    video_ids = data.get('video_ids', [])
+    if not video_ids:
+        return jsonify({"success": False, "error": "No videos selected"}), 400
+    
+    count = 0
+    for vid in video_ids:
+        v = video_service.get_video(vid)
+        if v:
+            video_service.update_video(vid, {"video_type": "short"})
+            count += 1
+            
+    return jsonify({"success": True, "count": count})
+
 @admin_bp.route('/videos/fetch_info', methods=['GET'])
 def videos_fetch_info():
     url = request.args.get('url', '').strip()

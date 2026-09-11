@@ -86,6 +86,13 @@
 * **Method & URL**：`POST /api/v1/vtubers/<id>/sync-youtube` 或 `POST /admin/vtubers/<id>/sync`
 * **說明**：觸發爬蟲或 YouTube Data API 抓取該頻道最新影片存檔，並寫入 `videos` 資料表。
 
+### C. 影片切換為 Short 短影音 (Convert to Short)
+* **單筆切換**：`POST /admin/videos/<id>/convert_to_short`
+  * 回傳：`{ "success": true, "video_id": "...", "title": "..." }`
+* **批次切換**：`POST /admin/videos/bulk_convert_to_short`
+  * 請求 Payload：`{ "video_ids": ["vid1", "vid2"] }`
+  * 回傳：`{ "success": true, "count": 2 }`
+
 ---
 
 ## 4. 歌唱歷史紀錄 (Singing Records) API

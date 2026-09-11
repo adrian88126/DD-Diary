@@ -59,7 +59,30 @@ python run.py
 訪問 **`http://127.0.0.1:5000/`**。
 * 點擊右上角「登入」（預設密碼為 `admin123`），進入後台進行主播管理、歌曲資料登錄、YouTube 影片同步與時間軸解析。
 
-### 3. 一鍵編譯為靜態網頁
+### 3. YouTube 影片與直播存檔同步 (CLI 指令)
+除了在後台介面點擊「同步影片」之外，您也可以透過終端機腳本進行背景批次同步：
+```bash
+# 快速同步所有 VTuber 的最新 5 部影片（推薦平時快速更新）
+python sync_cli.py --limit 5
+
+# 同步指定 VTuber (例如 ID 為 1) 的最新 10 部影片
+python sync_cli.py --vtuber 1 --limit 10
+
+# 完整同步所有 VTuber 的全部影片存檔（影片量較多時可能耗時數分鐘）
+python sync_cli.py
+```
+
+### 4. 系統健康自檢與自動化測試 (CLI 指令)
+在推送或發布前，可透過 CLI 進行全系統健康度診斷與整合測試：
+```bash
+# 執行全系統資料庫深度健檢報告 (Health Diagnostics)
+python run_tests.py --diagnose
+
+# 執行全站四大自動化測試套件 (Database, API, DOM/JS, Static Build)
+python run_tests.py
+```
+
+### 5. 一鍵編譯為靜態網頁
 當您在本地後台更新了資料庫內容後，執行打包指令：
 ```bash
 python build_static.py

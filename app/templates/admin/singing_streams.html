@@ -6,7 +6,7 @@
 <div class="header-actions mb-4" style="display: flex; justify-content: space-between; align-items: center;">
   <h2>{{ _('Singing Streams') }}</h2>
   <div style="display: flex; gap: 10px;">
-    <!-- Minimal header, no add video buttons here, they are in Videos -->
+    <!-- Minimal header -->
   </div>
 </div>
 
@@ -38,9 +38,22 @@
     </div>
   </div>
 
+  <!-- 批次操作工具列 -->
+  <div class="bulk-action-bar mb-3" style="display: flex; gap: 0.75rem; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: var(--radius); border: 1px solid var(--card-border);">
+    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; margin: 0; font-size: 0.85rem; user-select: none;">
+      <input type="checkbox" id="select-all-cb" class="admin-checkbox" title="全選/取消全選">
+      <span>全選</span>
+    </label>
+    <span style="font-size: 0.85rem; color: var(--text-muted);">已選取 <strong id="selected-count" style="color: var(--primary);">0</strong> 部</span>
+    <button type="button" class="btn btn-sm btn-warning" id="bulk-short-btn" onclick="bulkConvertToShort()" disabled style="display: flex; align-items: center; gap: 5px;">
+      <i class="fa-solid fa-bolt"></i> 批次轉為 Short
+    </button>
+  </div>
+
   <table class="data-table admin-data-table">
     <thead>
       <tr>
+        <th style="width: 40px; text-align: center;"></th>
         <th>{{ _('Thumbnail') }}</th>
         <th>{{ _('Title') }}</th>
         <th>{{ _('Type') }}</th>
@@ -52,7 +65,10 @@
     <tbody id="video-list">
       {% for v in videos %}
       {% set count = v.singing_records|length %}
-      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-records="{{ count }}">
+      <tr class="search-item" id="row-{{ v.video_id }}" data-vid="{{ v.video_id }}" data-vtuber="{{ v.vtuber_id }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-records="{{ count }}">
+        <td style="text-align: center;">
+          <input type="checkbox" class="admin-checkbox row-cb" value="{{ v.video_id }}" onchange="updateSelectedCount()">
+        </td>
         <td width="120">
           {% if v.thumbnail_url %}
           <img src="{{ v.thumbnail_url }}" alt="thumb" style="width: 100px; border-radius: 8px; object-fit: cover;">
@@ -61,7 +77,7 @@
           {% endif %}
         </td>
         <td class="search-text">
-          <strong style="display: block; margin-bottom: 4px;">{{ v.title }}</strong>
+          <strong class="video-title" style="display: block; margin-bottom: 4px;">{{ v.title }}</strong>
           <small class="text-muted">{{ v.video_id }}</small>
         </td>
         <td class="search-text">
@@ -74,7 +90,11 @@
         </td>
         <td>{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '-' }}</td>
         <td>
-          <div class="flex gap-2" style="justify-content: flex-end;">
+          <div class="flex gap-2" style="justify-content: flex-end; flex-wrap: wrap;">
+            <!-- 一鍵轉為 Short 按鈕 -->
+            <button type="button" class="btn btn-sm btn-secondary btn-to-short" onclick="convertToShort('{{ v.video_id }}', this)" title="轉換為 Short 短影音">
+              <i class="fa-solid fa-mobile-screen"></i> 轉為 Short
+            </button>
             <a href="{{ url_for('admin.video_timeline', id=v.video_id) }}" class="btn btn-sm btn-info" title="{{ _('Smart Timeline Parser') }}">
               <i class="fa-solid fa-list-ol"></i> {{ _('Timeline') }}
             </a>
@@ -96,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sortFilter = document.getElementById('sort-filter');
   const tbody = document.getElementById('video-list');
   const recordsFilter = document.getElementById('records-filter');
+  const selectAllCb = document.getElementById('select-all-cb');
   
   // 讀取 URL 參數還原篩選器狀態
   const params = new URLSearchParams(window.location.search);
@@ -150,6 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const baseHref = a.getAttribute('href').split('?')[0];
       a.setAttribute('href', baseHref + url.search);
     });
+
+    updateSelectedCount();
   }
 
   searchInput.addEventListener('input', applyFilters);
@@ -157,8 +180,132 @@ document.addEventListener('DOMContentLoaded', () => {
   recordsFilter.addEventListener('change', applyFilters);
   sortFilter.addEventListener('change', applyFilters);
   
+  // 全選 / 取消全選
+  selectAllCb.addEventListener('change', () => {
+    const visibleCheckboxes = Array.from(tbody.querySelectorAll('.search-item'))
+      .filter(row => row.style.display !== 'none')
+      .map(row => row.querySelector('.row-cb'))
+      .filter(cb => cb);
+      
+    visibleCheckboxes.forEach(cb => cb.checked = selectAllCb.checked);
+    updateSelectedCount();
+  });
+
   // 初始套用過濾
   applyFilters();
 });
+
+// 更新已勾選數量與按鈕狀態
+function updateSelectedCount() {
+  const checked = document.querySelectorAll('.row-cb:checked');
+  const countSpan = document.getElementById('selected-count');
+  const bulkBtn = document.getElementById('bulk-short-btn');
+  if (countSpan) countSpan.textContent = checked.length;
+  if (bulkBtn) bulkBtn.disabled = checked.length === 0;
+}
+
+// 🚀 單筆一鍵轉為 Short
+async function convertToShort(videoId, btn) {
+  const row = document.getElementById(`row-${videoId}`);
+  const titleEl = row ? row.querySelector('.video-title') : null;
+  const title = titleEl ? titleEl.textContent.trim() : videoId;
+
+  if (!confirm(`確定要將《${title}》轉為 Short 短影音嗎？\n該影片將從歌回列表中移至 Short 專區。`)) {
+    return;
+  }
+
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 處理中...';
+
+  try {
+    const res = await fetch(`/admin/videos/${encodeURIComponent(videoId)}/convert_to_short`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      if (window.showToast) {
+        window.showToast(`已成功將《${title}》轉為 Short 短影音！`, 'success');
+      } else {
+        alert(`已成功將《${title}》轉為 Short 短影音！`);
+      }
+
+      // 平滑淡出並移除行
+      if (row) {
+        row.style.transition = 'all 0.3s ease';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(20px)';
+        setTimeout(() => {
+          row.remove();
+          updateSelectedCount();
+        }, 300);
+      }
+    } else {
+      alert('轉換失敗: ' + (data.error || '未知錯誤'));
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+  } catch (err) {
+    alert('發生網路異常: ' + err);
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+}
+
+// 🚀 批次一鍵轉為 Short
+async function bulkConvertToShort() {
+  const checked = Array.from(document.querySelectorAll('.row-cb:checked'));
+  if (checked.length === 0) return alert('請先勾選要轉換的影片！');
+
+  const videoIds = checked.map(cb => cb.value);
+  if (!confirm(`確定要將選取的 ${videoIds.length} 部影片全部轉為 Short 短影音嗎？`)) {
+    return;
+  }
+
+  const bulkBtn = document.getElementById('bulk-short-btn');
+  const originalHtml = bulkBtn.innerHTML;
+  bulkBtn.disabled = true;
+  bulkBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 批次處理中...';
+
+  try {
+    const res = await fetch('/admin/videos/bulk_convert_to_short', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ video_ids: videoIds })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      if (window.showToast) {
+        window.showToast(`已成功將 ${data.count} 部影片轉為 Short 短影音！`, 'success');
+      } else {
+        alert(`已成功將 ${data.count} 部影片轉為 Short 短影音！`);
+      }
+
+      // 平滑淡出並移除所有選取的行
+      videoIds.forEach(vid => {
+        const row = document.getElementById(`row-${vid}`);
+        if (row) {
+          row.style.transition = 'all 0.3s ease';
+          row.style.opacity = '0';
+          row.style.transform = 'translateX(20px)';
+          setTimeout(() => row.remove(), 300);
+        }
+      });
+
+      document.getElementById('select-all-cb').checked = false;
+      setTimeout(updateSelectedCount, 350);
+    } else {
+      alert('批次轉換失敗: ' + (data.error || '未知錯誤'));
+    }
+  } catch (err) {
+    alert('發生網路異常: ' + err);
+  } finally {
+    bulkBtn.disabled = false;
+    bulkBtn.innerHTML = originalHtml;
+  }
+}
 </script>
 {% endblock %}
