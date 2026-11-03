@@ -136,3 +136,4 @@ VTSong_Database/
    * 完整同步所有主播全部影片：`python sync_cli.py`
 5. **終端機系統自檢與測試**：執行 `python run_tests.py --diagnose` 可在終端機直接印出全系統資料庫健康分析報告；執行 `python run_tests.py` 可跑完整自動化測試套件。
 6. **一鍵靜態打包**：資料庫有更新後，在本機終端機中執行 `python build_static.py`。生成出的雙語靜態網頁成品將會儲存於專案根目錄的 `docs/` 下，直接推送至 GitHub 即可利用 GitHub Pages 進行公開託管。
+7. **Windows 一鍵發布腳本 (deploy.bat)**：平時若更新資料庫，可直接雙擊專案根目錄的 `deploy.bat`，自動執行打包、提交 commit 與推送至 GitHub。

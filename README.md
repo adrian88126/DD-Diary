@@ -89,6 +89,12 @@ python build_static.py
 ```
 這會自動清空並將最新的 SQLite 資料渲染成靜態 HTML，中英文版檔案會完全輸出在 **`docs/`** 目錄下。
 
+### 6. 一鍵打包並發布至 GitHub (Windows 雙擊腳本)
+若您在 Windows 上管理資料庫，直接在專案根目錄**雙擊執行 `deploy.bat`** 即可：
+* 自動偵測 `.venv` 虛擬環境並執行 `build_static.py` 打包最新雙語網頁。
+* 可輸入自訂更新說明（或直接按 Enter 使用預設 Commit 訊息）。
+* 自動執行 `git add .`、`git commit` 並直接 `git push` 上傳至 GitHub！
+
 ---
 
 ## 🌐 部署至 GitHub Pages
