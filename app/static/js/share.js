@@ -735,7 +735,103 @@ window.toggleLightboxZoom = (event) => {
 };
 
 window.exportToExcel = () => {
-    showToast('匯出功能即將推出', 'warning');
+    const recs = (typeof records !== 'undefined' && records) ? records : (window.recordsData || []);
+    if (!recs || recs.length === 0) {
+        if (typeof showToast === 'function') {
+            showToast('目前沒有可匯出的歌單紀錄！', 'warning');
+        } else {
+            alert('目前沒有可匯出的歌單紀錄！');
+        }
+        return;
+    }
+
+    let exportList = recs;
+    const q = (typeof searchQuery === 'string') ? searchQuery.trim().toLowerCase() : '';
+    if (q) {
+        exportList = recs.filter(r => {
+            const titleMatch = r.song && r.song.title_main && r.song.title_main.toLowerCase().includes(q);
+            const artistMatch = r.song && r.song.artists && r.song.artists.some(a => a.name_main && a.name_main.toLowerCase().includes(q));
+            const videoMatch = r.video && r.video.title && r.video.title.toLowerCase().includes(q);
+            const noteMatch = r.note && r.note.toLowerCase().includes(q);
+            return titleMatch || artistMatch || videoMatch || noteMatch;
+        });
+    }
+
+    if (exportList.length === 0) {
+        if (typeof showToast === 'function') {
+            showToast('目前搜尋條件下沒有符合可匯出的紀錄！', 'warning');
+        } else {
+            alert('目前搜尋條件下沒有符合可匯出的紀錄！');
+        }
+        return;
+    }
+
+    const escapeCsv = (str) => {
+        if (str === null || str === undefined) return '""';
+        const text = String(str).replace(/"/g, '""');
+        return `"${text}"`;
+    };
+
+    const formatTime = (sec) => {
+        if (typeof formatSeconds === 'function') return formatSeconds(sec);
+        if (!sec || isNaN(sec)) return '00:00';
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = Math.floor(sec % 60);
+        if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    };
+
+    const headers = ['歌名', '原唱歌手', '歌曲類型', '備註', '演唱日期', '歌回直播標題', '時間軸', 'YouTube播放連結'];
+    const rows = [headers.map(escapeCsv).join(',')];
+
+    exportList.forEach(r => {
+        const songTitle = r.song ? (r.song.title_main || '') : '';
+        const artists = (r.song && r.song.artists && r.song.artists.length > 0)
+            ? r.song.artists.map(a => a.name_main).join(', ')
+            : '';
+        let songType = r.song ? (r.song.song_type || 'cover') : '';
+        if (songType === 'original') songType = '原創曲';
+        else if (songType === 'cover') songType = '翻唱曲';
+        
+        const note = r.note || '';
+        const dateStr = (r.video && r.video.published_at) ? r.video.published_at.split('T')[0] : '';
+        const videoTitle = r.video ? (r.video.title || '') : '';
+        const timeStr = formatTime(r.timestamp_seconds || 0);
+        const ytLink = r.video_id ? `https://www.youtube.com/watch?v=${r.video_id}&t=${r.timestamp_seconds || 0}s` : '';
+
+        rows.push([
+            escapeCsv(songTitle),
+            escapeCsv(artists),
+            escapeCsv(songType),
+            escapeCsv(note),
+            escapeCsv(dateStr),
+            escapeCsv(videoTitle),
+            escapeCsv(timeStr),
+            escapeCsv(ytLink)
+        ].join(','));
+    });
+
+    // UTF-8 BOM (\uFEFF) ensures Excel on Windows displays Japanese and Chinese correctly without garbled text
+    const csvContent = '\uFEFF' + rows.join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const vtuberName = (typeof vtuber !== 'undefined' && vtuber.name_main) ? vtuber.name_main : 'VTuber';
+    const today = new Date().toISOString().split('T')[0];
+    a.href = url;
+    a.download = `${vtuberName}_歌單與歌回紀錄_${today}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    if (typeof showToast === 'function') {
+        const msg = q
+            ? `已匯出符合「${q}」的 ${exportList.length} 筆歌單紀錄！`
+            : `已成功匯出全部 ${exportList.length} 筆歌單紀錄！`;
+        showToast(msg, 'success');
+    }
 };
 
 window.filterOtherVideos = (filterType, btn) => {
