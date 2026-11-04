@@ -67,14 +67,88 @@ def run_diagnostics_cli():
     print(f"💡 {BOLD}提示：可登入後台訪問 http://127.0.0.1:5000/admin/diagnostics 使用一鍵修復工具！{RESET}")
     print("=" * 65)
 
+def run_all_suites_structured():
+    """執行四大自動化測試套件並回傳結構化結果 (供 Web UI 與 CLI 共用)"""
+    import io
+    from contextlib import redirect_stdout
+    from tests import test_database, test_api, test_frontend_integrity, test_static
+
+    suites = [
+        {
+            "id": "database",
+            "name": "資料庫結構與關聯完整性 (Database Integrity)",
+            "desc": "檢查 11 張核心資料表、外鍵關聯、孤立紀錄與 YouTube 11 碼 ID 合規性",
+            "module": test_database,
+        },
+        {
+            "id": "api_crud",
+            "name": "後端 API、管理頁與 CRUD 沙盒模擬 (API & CRUD Sandbox)",
+            "desc": "實測 17 個前/後台路由與主播、歌手、歌曲、活動日期、影片分類、切片之建立/修改/刪除",
+            "module": test_api,
+        },
+        {
+            "id": "frontend",
+            "name": "前端模板、onclick 函式綁定與批次檔檢測 (Frontend & Batch Check)",
+            "desc": "交叉比對所有 HTML onclick 按鈕與 JS 實作、檢查未完成空殼、BOM 匯出與 .bat 換行格式",
+            "module": test_frontend_integrity,
+        },
+        {
+            "id": "static_build",
+            "name": "雙語靜態打包與快取產物驗證 (Static Build & Cache)",
+            "desc": "實際執行 build_static.py 並檢驗中/英雙語大廳與各主播靜態分享頁面",
+            "module": test_static,
+        },
+    ]
+
+    start_time = time.time()
+    results = []
+    all_passed = True
+
+    for suite in suites:
+        t0 = time.time()
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                errors = suite["module"].run_tests()
+            passed = not bool(errors)
+        except Exception as e:
+            errors = [f"執行測試模組時發生異常：{e}"]
+            passed = False
+        dt = round(time.time() - t0, 2)
+        if not passed:
+            all_passed = False
+        results.append({
+            "id": suite["id"],
+            "name": suite["name"],
+            "desc": suite["desc"],
+            "passed": passed,
+            "errors": errors,
+            "duration": dt,
+        })
+
+    total_duration = round(time.time() - start_time, 2)
+    return {
+        "all_passed": all_passed,
+        "total_duration": total_duration,
+        "suites": results,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description="VTSong Database Test & Diagnostics Suite")
     parser.add_argument("--diagnose", "--health", action="store_true", help="執行深度資料庫健檢與自檢報告")
+    parser.add_argument("--json", action="store_true", help="以 JSON 格式輸出測試結果")
     args = parser.parse_args()
     
     if args.diagnose:
         run_diagnostics_cli()
         return
+
+    if args.json:
+        import json
+        res = run_all_suites_structured()
+        print(json.dumps(res, ensure_ascii=False))
+        sys.exit(0 if res["all_passed"] else 1)
 
     print("=" * 60)
     print(f"{BOLD}🎬 VTSong Database 自動化測試套件開始執行{RESET}")
@@ -94,8 +168,8 @@ def main():
         
     suites = [
         {"name": "資料庫與數據關聯檢測 (Database Integrity)", "module": test_database},
-        {"name": "後端 API 整合測試 (Backend API Integration)", "module": test_api},
-        {"name": "後台網頁 DOM 與 JS 選取器完整性檢測 (DOM/JS Selector Check)", "module": test_frontend_integrity},
+        {"name": "後端 API 與全模組 CRUD 沙盒測試 (API & CRUD Sandbox)", "module": test_api},
+        {"name": "前端 DOM/onclick 綁定與批次檔檢測 (Frontend & Batch Check)", "module": test_frontend_integrity},
         {"name": "靜態打包產物與快取驗證 (Static Build & Cache Check)", "module": test_static}
     ]
     

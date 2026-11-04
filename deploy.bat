@@ -1,9 +1,9 @@
 @echo off
 chcp 65001 >nul
-title DDDiary - 打包與上傳至 GitHub
+title DDDiary - 自動化測試、打包與上傳至 GitHub
 
 echo ============================================================
-echo   DDDiary 靜態網頁自動打包與 GitHub 一鍵發布工具
+echo   DDDiary 全系統自檢、靜態網頁打包與 GitHub 一鍵發布工具
 echo ============================================================
 echo.
 
@@ -17,13 +17,13 @@ if exist ".venv\Scripts\python.exe" (
 )
 
 echo.
-echo [1/4] 正在重新打包中英雙語靜態網頁 (docs/)...
+echo [1/4] 正在執行全系統功能自動化測試與雙語靜態網頁打包 (docs/)...
 echo ------------------------------------------------------------
-"%PY_BIN%" build_static.py
+"%PY_BIN%" run_tests.py
 if %ERRORLEVEL% neq 0 (
     echo.
-    echo [!] 錯誤：靜態打包流程失敗！已中止後續上傳動作。
-    echo 請檢查上方錯誤訊息後再試。
+    echo [!] 警告：全系統功能測試或靜態打包發現錯誤！已自動攔截中止上傳。
+    echo 請根據上方測試報告修正問題後再重新執行。
     echo.
     pause
     exit /b 1
@@ -68,7 +68,7 @@ if %ERRORLEVEL% neq 0 (
 
 echo.
 echo ============================================================
-echo   全部完成！最新資料與靜態頁面已成功發布至 GitHub！
+echo   全部完成！全系統測試通過，最新靜態頁面已成功發布至 GitHub！
 echo   GitHub Pages 預計於 1 至 2 分鐘內完成線上更新。
 echo ============================================================
 echo.

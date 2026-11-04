@@ -1,6 +1,83 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}系統自檢與資料健康診斷 - DDDiary Admin{% endblock %}
+{% block title %}系統自檢與資料健康診斷 - DDDiary Admin
+<script>
+async function runFullSystemTests() {
+  const btn = document.getElementById("run-e2e-test-btn");
+  const icon = document.getElementById("run-e2e-icon");
+  const text = document.getElementById("run-e2e-text");
+  const container = document.getElementById("e2e-test-results-container");
+  const banner = document.getElementById("e2e-test-summary-banner");
+  const grid = document.getElementById("e2e-test-suites-grid");
+
+  btn.disabled = true;
+  icon.className = "fa-solid fa-spinner fa-spin";
+  text.textContent = "正在實測全系統 4 大模組 (約 5~8 秒)...";
+  container.style.display = "block";
+  banner.style.background = "rgba(59, 130, 246, 0.15)";
+  banner.style.color = "#60a5fa";
+  banner.innerHTML = "<span>⏳ 正在獨立沙盒中執行 CRUD 模擬、前端按鈕掃描與靜態編譯驗證，請稍候...</span>";
+  grid.innerHTML = "";
+
+  try {
+    const res = await fetch("{{ url_for('admin.diagnostics_run_system_tests') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await res.json();
+    if (!data.success || !data.result) {
+      throw new Error(data.error || "執行失敗");
+    }
+
+    const r = data.result;
+    if (r.all_passed) {
+      banner.style.background = "rgba(16, 185, 129, 0.15)";
+      banner.style.color = "#10b981";
+      banner.innerHTML = `<span>🎉 完美通過！全系統 ${r.suites.length} 大核心模組 100% 正常運作！</span><span>總耗時：${r.total_duration} 秒</span>`;
+      if (typeof showToast === "function") showToast("全系統功能測試 100% 通過！", "success");
+    } else {
+      banner.style.background = "rgba(239, 68, 68, 0.15)";
+      banner.style.color = "#ef4444";
+      banner.innerHTML = `<span>🚨 測試發現異常項目！請檢查下方紅字報告。</span><span>總耗時：${r.total_duration} 秒</span>`;
+      if (typeof showToast === "function") showToast("測試發現部分異常，請檢查報告！", "error");
+    }
+
+    grid.innerHTML = r.suites.map(s => {
+      const badgeColor = s.passed ? "#10b981" : "#ef4444";
+      const badgeBg = s.passed ? "rgba(16, 185, 129, 0.12)" : "rgba(239, 68, 68, 0.12)";
+      const statusIcon = s.passed ? "fa-circle-check" : "fa-circle-xmark";
+      const statusText = s.passed ? "PASS 正常" : `FAIL (${s.errors.length} 錯誤)`;
+      const errHtml = (!s.passed && s.errors && s.errors.length > 0)
+        ? `<ul style="margin: 8px 0 0 0; padding-left: 18px; color: #ef4444; font-size: 0.82rem;">` +
+          s.errors.map(e => `<li>${e}</li>`).join("") +
+          `</ul>`
+        : "";
+      return `
+        <div style="background: rgba(0,0,0,0.2); border: 1px solid ${s.passed ? "var(--card-border)" : "#ef4444"}; border-radius: 8px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px;">
+            <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-color);">${s.name}</div>
+            <span style="white-space: nowrap; font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; color: ${badgeColor}; background: ${badgeBg};">
+              <i class="fa-solid ${statusIcon}"></i> ${statusText}
+            </span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">${s.desc || ""}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-align: right;">耗時 ${s.duration}s</div>
+          ${errHtml}
+        </div>
+      `;
+    }).join("");
+  } catch (err) {
+    banner.style.background = "rgba(239, 68, 68, 0.15)";
+    banner.style.color = "#ef4444";
+    banner.innerHTML = `<span>❌ 測試執行發生錯誤：${err.message}</span>`;
+  } finally {
+    btn.disabled = false;
+    icon.className = "fa-solid fa-rocket";
+    text.textContent = "🚀 重新執行全系統功能測試";
+  }
+}
+</script>
+{% endblock %}
 
 {% block admin_content %}
 <div class="diagnostics-dashboard">
@@ -30,6 +107,33 @@
           {{ report.total_issues }} 筆
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- 🧪 全系統功能自動化測試中心 (E2E Functional Test Runner) -->
+  <div class="card" style="margin-bottom: var(--spacing-lg); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(0,0,0,0) 100%); border-left: 4px solid #10b981;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-vial-circle-check" style="color: #10b981;"></i>
+          <span>全系統功能自動化測試中心 (E2E Functional Test Suite)</span>
+        </h3>
+        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem;">
+          一鍵實測「資料庫關聯、後端 API 與全模組新增/修改/刪除沙盒、前端 onclick 按鈕綁定、靜態雙語打包」四大核心模組，確保改動後零回歸錯誤。
+        </p>
+      </div>
+      <div>
+        <button id="run-e2e-test-btn" type="button" onclick="runFullSystemTests()" class="btn btn-primary" style="background: #10b981; border-color: #10b981; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;">
+          <i class="fa-solid fa-rocket" id="run-e2e-icon"></i>
+          <span id="run-e2e-text">🚀 執行全系統功能測試</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 測試結果動態展開面板 -->
+    <div id="e2e-test-results-container" style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--card-border);">
+      <div id="e2e-test-summary-banner" style="padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;"></div>
+      <div id="e2e-test-suites-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;"></div>
     </div>
   </div>
 

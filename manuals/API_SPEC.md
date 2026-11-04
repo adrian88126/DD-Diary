@@ -146,6 +146,7 @@
 * `POST /admin/diagnostics/auto_link_duplicate_artists`：一鍵合併所有同名重複歌手，並自動更新歌曲外鍵。
 * `POST /admin/diagnostics/auto_fix_untagged_clips`：一鍵為所有無標籤切片執行 AI 關鍵字智慧自動補標籤。
 * `POST /admin/diagnostics/auto_clean_duplicate_records`：一鍵清理同一秒數重複登錄的演唱紀錄。
+* `POST /admin/diagnostics/run_system_tests`：於獨立子行程執行全系統 4 大自動化測試套件 (`run_tests.py --json`)，回傳各模組通過狀態、耗時與錯誤明細 JSON。
 * `GET /api/v1/diagnostics/duplicate-artists`：診斷並列出資料庫中文字相似或重複的歌手。
 * `POST /api/v1/diagnostics/merge-artists`：一鍵合併指定 ID 的重複歌手，並自動更新受影響歌曲的歌手外鍵。
 * `GET /admin/backup/export`：一鍵匯出下載當前完整 SQLite 資料庫檔案（`vtuber_songs_backup_<timestamp>.db`）。

@@ -461,6 +461,34 @@ def diagnostics_auto_clean_duplicate_records():
     flash(f"已清除 {res['deleted_count']} 筆重複演唱紀錄！", 'success')
     return redirect(url_for('admin.diagnostics'))
 
+@admin_bp.route('/diagnostics/run_system_tests', methods=['POST'])
+def diagnostics_run_system_tests():
+    import sys
+    import subprocess
+    import json
+    try:
+        proc = subprocess.run(
+            [sys.executable, "run_tests.py", "--json"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="ignore",
+            timeout=60
+        )
+        out = (proc.stdout or "").strip()
+        # 取最後一行 JSON 輸出
+        lines = [line.strip() for line in out.splitlines() if line.strip().startswith("{")]
+        if lines:
+            result_data = json.loads(lines[-1])
+            return jsonify({"success": True, "result": result_data})
+        return jsonify({
+            "success": False,
+            "error": proc.stderr or out or "無法解析測試輸出"
+        }), 500
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 # --- Database Backup & Restore ---
 def _get_active_db_path():
     import os

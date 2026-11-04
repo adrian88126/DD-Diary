@@ -5,7 +5,28 @@ from app.models.song import Song
 from app.models.association import clip_vtubers
 from sqlalchemy import select
 from app.services.youtube_service import scrape_youtube_channel_videos, scrape_youtube_playlist_videos
-from datetime import datetime
+from datetime import datetime, date
+
+def _parse_clip_date(val):
+    if val is None or val == "":
+        return None
+    if isinstance(val, datetime):
+        return val.date()
+    if isinstance(val, date):
+        return val
+    if isinstance(val, str):
+        val = val.strip().replace("/", "-")
+        if not val:
+            return None
+        if "T" in val:
+            val = val.split("T")[0]
+        elif " " in val:
+            val = val.split(" ")[0]
+        try:
+            return datetime.strptime(val, "%Y-%m-%d").date()
+        except ValueError:
+            return None
+    return None
 
 def get_clip_author(author_id):
     return db.session.scalar(select(ClipAuthor).where(ClipAuthor.id == author_id))
@@ -60,7 +81,7 @@ def create_clip(data):
         video_id=data.get("video_id"),
         title=data.get("title"),
         tags=data.get("tags"),
-        published_at=data.get("published_at"),
+        published_at=_parse_clip_date(data.get("published_at")),
         author_id=data.get("author_id"),
         song_id=data.get("song_id")
     )
@@ -82,7 +103,7 @@ def update_clip(clip_id, data):
         if "tags" in data:
             clip.tags = data["tags"]
         if "published_at" in data:
-            clip.published_at = data["published_at"]
+            clip.published_at = _parse_clip_date(data["published_at"])
         if "author_id" in data:
             clip.author_id = data["author_id"]
         if "song_id" in data:
@@ -274,7 +295,7 @@ def import_clips(items):
             video_id=item.get("video_id"),
             title=item.get("title"),
             tags=item.get("tags"),
-            published_at=item.get("published_at"),
+            published_at=_parse_clip_date(item.get("published_at")),
             author_id=author_id,
             song_id=song_id
         )
