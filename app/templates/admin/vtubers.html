@@ -30,7 +30,7 @@
     </thead>
     <tbody>
       {% for v in vtubers %}
-      <tr class="search-item" data-id="{{ v.id }}">
+      <tr class="search-item" id="row-{{ v.id }}" data-id="{{ v.id }}">
         <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ v.id }}"></td>
         <td>
           {% if v.avatar_url and v.avatar_url.strip() %}
@@ -204,7 +204,10 @@ function openVtuberForm(btn) {
     data = JSON.parse(btn.dataset.vtuber);
   }
 
-  document.getElementById('vtuber-form').action = data.action;
+  const rowId = btn ? (btn.closest('tr')?.dataset?.id || '') : '';
+  const currentSearch = new URLSearchParams(window.location.search);
+  if (rowId) currentSearch.set('_anchor', 'row-' + rowId);
+  document.getElementById('vtuber-form').action = data.action + (currentSearch.toString() ? '?' + currentSearch.toString() : '');
   document.getElementById('drawer-title').textContent = data.name_main ? '{{ _("Edit VTuber") }}' : '{{ _("New VTuber") }}';
   
   document.getElementById('name_main').value = data.name_main || '';
@@ -306,12 +309,6 @@ document.getElementById('fetch_channel_url')?.addEventListener('paste', () => {
   setTimeout(fetchVtuberYoutubeInfo, 100);
 });
 
-document.getElementById('table-search')?.addEventListener('input', (e) => {
-  const term = e.target.value.toLowerCase();
-  document.querySelectorAll('.search-item').forEach(el => {
-    const text = el.querySelector('.search-text').textContent.toLowerCase();
-    el.style.display = text.includes(term) ? '' : 'none';
-  });
-});
+// table-search 由 admin.js AdminFilterEngine 統一管理
 </script>
 {% endblock %}

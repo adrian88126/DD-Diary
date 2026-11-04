@@ -33,6 +33,39 @@
     </div>
   </div>
 
+  <!-- 💾 資料庫備份與還原工具 (Backup & Restore) -->
+  <div class="card" style="margin-bottom: var(--spacing-lg); background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(0,0,0,0) 100%); border-left: 4px solid #3b82f6;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-database" style="color: #3b82f6;"></i>
+          <span>資料庫備份與還原 (Database Backup & Restore)</span>
+        </h3>
+        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem;">
+          隨時完整匯出當前資料庫 (.db)，或從歷史備份檔一鍵還原。還原前系統會自動保留安全快照。
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <!-- 一鍵下載備份 -->
+        <a href="{{ url_for('admin.backup_export') }}" class="btn btn-sm btn-primary" style="display: inline-flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-download"></i> 一鍵下載備份 (.db)
+        </a>
+        
+        <!-- 一鍵還原備份表單 -->
+        <form action="{{ url_for('admin.backup_import') }}" method="POST" enctype="multipart/form-data" style="margin: 0; display: inline-flex; align-items: center; gap: 8px;" onsubmit="return confirm('⚠️ 警告：還原資料庫將覆蓋現有全部資料！\n系統會自動建立目前資料的快照。\n\n確定要繼續還原嗎？');">
+          <label class="btn btn-sm btn-outline" style="cursor: pointer; margin: 0; display: inline-flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span id="restore-filename-display">選擇備份檔</span>
+            <input type="file" name="backup_file" accept=".db,.sqlite,.sqlite3" style="display: none;" onchange="if(this.files[0]){ document.getElementById('restore-filename-display').textContent = this.files[0].name; document.getElementById('restore-submit-btn').style.display='inline-flex'; }">
+          </label>
+          <button type="submit" id="restore-submit-btn" class="btn btn-sm btn-danger" style="display: none;">
+            <i class="fa-solid fa-rotate-left"></i> 確認還原
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- ⚡ 一鍵快速修復工具列 -->
   <div class="card" style="margin-bottom: var(--spacing-lg); background: linear-gradient(135deg, rgba(138, 90, 219, 0.08) 0%, rgba(0,0,0,0) 100%); border-left: 4px solid var(--primary);">
     <h3 style="margin: 0 0 0.75rem 0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">

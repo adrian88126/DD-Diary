@@ -65,6 +65,11 @@ python run.py
 # 快速同步所有 VTuber 的最新 5 部影片（推薦平時快速更新）
 python sync_cli.py --limit 5
 
+# 排除已畢業或不需要更新的 VTuber (支援名稱關鍵字或 ID，可用逗號分隔)
+python sync_cli.py --limit 5 --exclude 星璃
+python sync_cli.py --limit 5 --exclude 7
+python sync_cli.py --exclude "星璃,7"
+
 # 同步指定 VTuber (例如 ID 為 1) 的最新 10 部影片
 python sync_cli.py --vtuber 1 --limit 10
 

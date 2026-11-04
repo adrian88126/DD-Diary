@@ -112,7 +112,7 @@
         'song_id': clip.song_id or '',
         'vtuber_ids': clip.vtubers | map(attribute='id') | list
       } %}
-      <tr class="search-item" data-id="{{ clip.id }}" data-title="{{ clip.title | lower }}" data-author="{{ clip.author_id or '' }}" data-tags="{{ clip.tags or '' }}">
+      <tr class="search-item" id="row-{{ clip.id }}" data-id="{{ clip.id }}" data-title="{{ clip.title | lower }}" data-author="{{ clip.author_id or '' }}" data-tags="{{ clip.tags or '' }}">
         <td style="text-align: center;">
           <input type="checkbox" class="admin-checkbox row-cb" value="{{ clip.id }}" onchange="updateBulkActionState()">
         </td>
@@ -140,7 +140,7 @@
         <td>{{ clip.song.title_main if clip.song else '' }}</td>
         <td>
           <div style="display:flex;gap:.5rem;align-items:center;">
-            <button class="btn btn-sm btn-secondary" onclick="openClipDrawer(this)" data-clip="{{ clip_dict | tojson | forceescape }}">
+            <button class="btn btn-sm btn-secondary edit-row-btn" onclick="openClipDrawer(this)" data-clip="{{ clip_dict | tojson | forceescape }}">
               <i class="fa-solid fa-pen"></i> {{ _('Edit') }}
             </button>
             <form action="{{ url_for('admin.delete_clip', id=clip.id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ _('Are you sure you want to delete this clip?') }}');">
@@ -214,8 +214,11 @@
         </select>
       </div>
       
-      <div style="margin-top:1.5rem;">
-        <button type="submit" class="btn btn-primary" style="width:100%;">{{ _('Save') }}</button>
+      <div style="margin-top:1.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button type="submit" class="btn btn-primary" style="flex:1;">{{ _('Save') }}</button>
+        <button type="button" class="btn btn-secondary" id="save-next-clip-btn" onclick="saveClipAndNext()" style="display:none;">
+          <i class="fa-solid fa-forward-step"></i> 儲存並下一筆
+        </button>
       </div>
     </form>
   </div>
@@ -372,16 +375,24 @@ function closeLightbox() {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
+let currentEditingClipBtn = null;
 function openClipDrawer(btn) {
+  currentEditingClipBtn = btn || null;
   const drawer = document.getElementById('form-drawer');
   const form = document.getElementById('clip-form');
   const title = document.getElementById('drawer-title');
+  const saveNextBtn = document.getElementById('save-next-clip-btn');
   
   if (btn && btn.dataset.clip) {
     try {
+      if (saveNextBtn) saveNextBtn.style.display = 'inline-flex';
       const data = JSON.parse(btn.dataset.clip);
       title.textContent = "{{ _('Edit Clip') }}";
-      form.action = `/admin/clips/${data.id}/edit`;
+      
+      const rowId = btn ? (btn.closest('tr')?.dataset?.id || '') : '';
+      const currentSearch = new URLSearchParams(window.location.search);
+      if (rowId) currentSearch.set('_anchor', 'row-' + rowId);
+      form.action = `/admin/clips/${data.id}/edit` + (currentSearch.toString() ? '?' + currentSearch.toString() : '');
       
       document.getElementById('video_id').value = data.video_id || '';
       document.getElementById('title').value = data.title || '';
@@ -403,6 +414,7 @@ function openClipDrawer(btn) {
       console.error("Error parsing clip data", e);
     }
   } else {
+    if (saveNextBtn) saveNextBtn.style.display = 'none';
     title.textContent = "{{ _('Create Clip') }}";
     form.action = "{{ url_for('admin.create_clip') }}";
     form.reset();
@@ -581,6 +593,56 @@ async function executeQuickAuthor() {
     }
   } catch(e) {
     alert('網路錯誤: ' + e);
+  }
+}
+
+
+async function saveClipAndNext() {
+  const form = document.getElementById('clip-form');
+  if (!form.reportValidity()) return;
+
+  const btn = document.getElementById('save-next-clip-btn');
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...';
+
+  try {
+    const formData = new FormData(form);
+    await fetch(form.action, { method: 'POST', body: formData });
+
+    if (window.showToast) {
+      window.showToast('切片資料已更新！已自動切換至下一部', 'success');
+    }
+
+    if (currentEditingClipBtn) {
+      const currentRow = currentEditingClipBtn.closest('tr');
+      if (currentRow) {
+        currentRow.classList.add('row-highlight');
+        setTimeout(() => currentRow.classList.remove('row-highlight'), 2500);
+
+        let nextRow = currentRow.nextElementSibling;
+        while (nextRow && nextRow.style.display === 'none') {
+          nextRow = nextRow.nextElementSibling;
+        }
+
+        if (nextRow) {
+          const nextBtn = nextRow.querySelector('.edit-row-btn');
+          if (nextBtn) {
+            openClipDrawer(nextBtn);
+            nextRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+        }
+      }
+    }
+
+    document.getElementById('form-drawer').classList.remove('open');
+    if (window.showToast) window.showToast('已完成最後一筆編輯！', 'info');
+  } catch(e) {
+    alert('儲存失敗: ' + e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
   }
 }
 

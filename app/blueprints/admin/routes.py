@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import render_template, request, redirect, url_for, flash, jsonify, send_file, current_app
 from flask_login import login_required
 from app.blueprints.admin import admin_bp
 from app.services import (
@@ -7,6 +7,14 @@ from app.services import (
     clip_service
 )
 from app.extensions import db
+
+def redirect_with_args(endpoint, **explicit_args):
+    """重定向並完整保留目前請求的查詢參數 (search, vtuber_id, _anchor 等)"""
+    args = dict(request.args)
+    args.update(explicit_args)
+    args = {k: v for k, v in args.items() if v is not None}
+    return redirect(url_for(endpoint, **args))
+
 
 @admin_bp.before_request
 @login_required
@@ -51,7 +59,7 @@ def create_vtuber():
         data = request.form.to_dict()
         vtuber_service.create_vtuber(data)
         flash('VTuber created successfully', 'success')
-        return redirect(url_for('admin.list_vtubers'))
+        return redirect_with_args('admin.list_vtubers')
     return render_template('admin/vtubers_form.html')
 
 @admin_bp.route('/vtubers/<int:id>/edit', methods=['GET', 'POST'])
@@ -61,14 +69,14 @@ def edit_vtuber(id):
         data = request.form.to_dict()
         vtuber_service.update_vtuber(id, data)
         flash('VTuber updated successfully', 'success')
-        return redirect(url_for('admin.list_vtubers'))
+        return redirect_with_args('admin.list_vtubers')
     return render_template('admin/vtubers_form.html', vtuber=vtuber)
 
 @admin_bp.route('/vtubers/<int:id>/delete', methods=['POST'])
 def delete_vtuber(id):
     vtuber_service.delete_vtuber(id)
     flash('VTuber deleted successfully', 'success')
-    return redirect(url_for('admin.list_vtubers'))
+    return redirect_with_args('admin.list_vtubers')
 
 @admin_bp.route('/vtubers/<int:id>/sync_youtube', methods=['POST'])
 def vtubers_sync_youtube(id):
@@ -77,7 +85,7 @@ def vtubers_sync_youtube(id):
         flash(f'Synced {len(results)} videos successfully', 'success')
     except Exception as e:
         flash(f'Error syncing YouTube: {e}', 'error')
-    return redirect(url_for('admin.list_vtubers'))
+    return redirect_with_args('admin.list_vtubers')
 
 # --- Songs ---
 @admin_bp.route('/songs')
@@ -97,7 +105,7 @@ def create_song():
         song_service.create_song(data)
         flash('Song created successfully', 'success')
         filter_param = request.args.get('filter')
-        return redirect(url_for('admin.list_songs', filter=filter_param))
+        return redirect_with_args('admin.list_songs', filter=filter_param)
     return render_template('admin/songs_form.html')
 
 @admin_bp.route('/songs/<int:id>/edit', methods=['GET', 'POST'])
@@ -110,7 +118,7 @@ def edit_song(id):
         song_service.update_song(id, data)
         flash('Song updated successfully', 'success')
         filter_param = request.args.get('filter')
-        return redirect(url_for('admin.list_songs', filter=filter_param))
+        return redirect_with_args('admin.list_songs', filter=filter_param)
     return render_template('admin/songs_form.html', song=song)
 
 @admin_bp.route('/songs/<int:id>/delete', methods=['POST'])
@@ -118,7 +126,7 @@ def delete_song(id):
     song_service.delete_song(id)
     flash('Song deleted successfully', 'success')
     filter_param = request.args.get('filter')
-    return redirect(url_for('admin.list_songs', filter=filter_param))
+    return redirect_with_args('admin.list_songs', filter=filter_param)
 
 # --- Artists ---
 @admin_bp.route('/artists')
@@ -132,7 +140,7 @@ def create_artist():
         data = request.form.to_dict()
         artist_service.create_artist(data)
         flash('Artist created successfully', 'success')
-        return redirect(url_for('admin.list_artists'))
+        return redirect_with_args('admin.list_artists')
     return render_template('admin/artists_form.html')
 
 @admin_bp.route('/artists/<int:id>/edit', methods=['GET', 'POST'])
@@ -142,14 +150,14 @@ def edit_artist(id):
         data = request.form.to_dict()
         artist_service.update_artist(id, data)
         flash('Artist updated successfully', 'success')
-        return redirect(url_for('admin.list_artists'))
+        return redirect_with_args('admin.list_artists')
     return render_template('admin/artists_form.html', artist=artist)
 
 @admin_bp.route('/artists/<int:id>/delete', methods=['POST'])
 def delete_artist(id):
     artist_service.delete_artist(id)
     flash('Artist deleted successfully', 'success')
-    return redirect(url_for('admin.list_artists'))
+    return redirect_with_args('admin.list_artists')
 
 # --- Videos ---
 @admin_bp.route('/videos')
@@ -184,7 +192,7 @@ def create_video():
             data['vtuber_id'] = None
         video_service.create_video(data)
         flash('Video created successfully', 'success')
-        return redirect(url_for('admin.list_videos'))
+        return redirect_with_args('admin.list_videos')
     return render_template('admin/videos_form.html')
 
 @admin_bp.route('/videos/<id>/edit', methods=['GET', 'POST'])
@@ -207,14 +215,14 @@ def edit_video(id):
             data['vtuber_id'] = None
         video_service.update_video(id, data)
         flash('Video updated successfully', 'success')
-        return redirect(url_for('admin.list_videos'))
+        return redirect_with_args('admin.list_videos')
     return render_template('admin/videos_form.html', video=video)
 
 @admin_bp.route('/videos/<id>/delete', methods=['POST'])
 def delete_video(id):
     video_service.delete_video(id)
     flash('Video deleted successfully', 'success')
-    return redirect(url_for('admin.list_videos'))
+    return redirect_with_args('admin.list_videos')
 
 @admin_bp.route('/videos/<id>/convert_to_short', methods=['POST'])
 def video_convert_to_short(id):
@@ -275,14 +283,14 @@ def videos_sync_all():
                 pass
     msg = f'Successfully synced {success_count} VTubers from YouTube (latest {limit} videos each)' if limit else f'Successfully synced {success_count} VTubers from YouTube (ALL videos)'
     flash(msg, 'success')
-    return redirect(url_for('admin.list_videos'))
+    return redirect_with_args('admin.list_videos')
 
 @admin_bp.route('/videos/<id>/timeline', methods=['GET'])
 def video_timeline(id):
     video = video_service.get_video(id)
     if not video:
         flash('Video not found', 'danger')
-        return redirect(url_for('admin.list_videos'))
+        return redirect_with_args('admin.list_videos')
     vtubers = vtuber_service.get_vtubers(skip=0, limit=1000)
     return render_template('admin/timeline.html', video=video, all_singers=vtubers)
 
@@ -318,7 +326,7 @@ def create_record():
         data['singer_ids'] = singer_ids
         record_service.create_record(data)
         flash('Record created successfully', 'success')
-        return redirect(url_for('admin.list_records'))
+        return redirect_with_args('admin.list_records')
     return render_template('admin/records_form.html')
 
 @admin_bp.route('/records/<int:id>/edit', methods=['GET', 'POST'])
@@ -330,14 +338,14 @@ def edit_record(id):
         data['singer_ids'] = singer_ids
         record_service.update_record(id, data)
         flash('Record updated successfully', 'success')
-        return redirect(url_for('admin.list_records'))
+        return redirect_with_args('admin.list_records')
     return render_template('admin/records_form.html', record=record)
 
 @admin_bp.route('/records/<int:id>/delete', methods=['POST'])
 def delete_record(id):
     record_service.delete_record(id)
     flash('Record deleted successfully', 'success')
-    return redirect(url_for('admin.list_records'))
+    return redirect_with_args('admin.list_records')
 
 # --- Activities ---
 @admin_bp.route('/activities')
@@ -351,7 +359,7 @@ def create_activity():
         data = request.form.to_dict()
         activity_service.create_activity(data)
         flash('Activity created successfully', 'success')
-        return redirect(url_for('admin.list_activities'))
+        return redirect_with_args('admin.list_activities')
     return render_template('admin/activities_form.html')
 
 @admin_bp.route('/activities/<int:id>/edit', methods=['GET', 'POST'])
@@ -361,14 +369,14 @@ def edit_activity(id):
         data = request.form.to_dict()
         activity_service.update_activity(id, data)
         flash('Activity updated successfully', 'success')
-        return redirect(url_for('admin.list_activities'))
+        return redirect_with_args('admin.list_activities')
     return render_template('admin/activities_form.html', activity=activity)
 
 @admin_bp.route('/activities/<int:id>/delete', methods=['POST'])
 def delete_activity(id):
     activity_service.delete_activity(id)
     flash('Activity deleted successfully', 'success')
-    return redirect(url_for('admin.list_activities'))
+    return redirect_with_args('admin.list_activities')
 
 # --- Diagnostics ---
 @admin_bp.route('/diagnostics')
@@ -400,6 +408,83 @@ def diagnostics_auto_clean_duplicate_records():
     flash(f"已清除 {res['deleted_count']} 筆重複演唱紀錄！", 'success')
     return redirect(url_for('admin.diagnostics'))
 
+# --- Database Backup & Restore ---
+def _get_active_db_path():
+    import os
+    uri = current_app.config.get('SQLALCHEMY_DATABASE_URI', '')
+    if uri.startswith('sqlite:///'):
+        p = uri[len('sqlite:///'):]
+        if os.path.exists(p):
+            return p
+        instance_p = os.path.join(current_app.instance_path, os.path.basename(p))
+        if os.path.exists(instance_p):
+            return instance_p
+        root_p = os.path.join(current_app.root_path, '..', os.path.basename(p))
+        if os.path.exists(root_p):
+            return os.path.abspath(root_p)
+        return p
+    return None
+
+@admin_bp.route('/backup/export', methods=['GET'])
+def backup_export():
+    import os
+    from datetime import datetime
+    db_path = _get_active_db_path()
+    if not db_path or not os.path.exists(db_path):
+        flash('找不到 SQLite 資料庫檔案！', 'danger')
+        return redirect(url_for('admin.diagnostics'))
+    
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f"vtuber_songs_backup_{timestamp}.db"
+    return send_file(
+        db_path,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/x-sqlite3'
+    )
+
+@admin_bp.route('/backup/import', methods=['POST'])
+def backup_import():
+    import os
+    import shutil
+    from datetime import datetime
+    file = request.files.get('backup_file')
+    if not file or not file.filename:
+        flash('請選擇要還原的 .db 備份檔案！', 'warning')
+        return redirect(url_for('admin.diagnostics'))
+    
+    # Validate SQLite header (First 16 bytes: b"SQLite format 3\x00")
+    header = file.read(16)
+    if not header.startswith(b'SQLite format 3\x00'):
+        flash('匯入失敗：上傳的檔案非有效的 SQLite 格式資料庫！', 'danger')
+        return redirect(url_for('admin.diagnostics'))
+    
+    file.seek(0)
+    db_path = _get_active_db_path()
+    if not db_path:
+        flash('無法識別系統資料庫路徑！', 'danger')
+        return redirect(url_for('admin.diagnostics'))
+    
+    try:
+        # 自動建立目前資料庫的安全快照備份
+        if os.path.exists(db_path):
+            backup_dir = os.path.join(os.path.dirname(db_path), 'backups')
+            os.makedirs(backup_dir, exist_ok=True)
+            auto_bak = os.path.join(backup_dir, f"pre_restore_{datetime.now().strftime('%Y%m%d_%H%M%S')}.db")
+            shutil.copy2(db_path, auto_bak)
+        
+        # 暫時釋放 SQLAlchemy 連線
+        db.session.remove()
+        db.engine.dispose()
+        
+        # 寫入還原檔案
+        file.save(db_path)
+        flash('資料庫已成功還原！系統已為您自動備份前一份資料庫至 backups/ 資料夾。', 'success')
+    except Exception as e:
+        flash(f'還原過程發生錯誤: {str(e)}', 'danger')
+        
+    return redirect(url_for('admin.diagnostics'))
+
 import json
 
 # --- Bulk & Inline API ---
@@ -420,7 +505,7 @@ def bulk_delete_vtubers():
     for i in ids:
         vtuber_service.delete_vtuber(int(i))
     flash(f'Deleted {len(ids)} VTubers successfully', 'success')
-    return redirect(url_for('admin.list_vtubers'))
+    return redirect_with_args('admin.list_vtubers')
 
 # Songs
 @admin_bp.route('/songs/<int:id>/inline_edit', methods=['POST'])
@@ -438,7 +523,7 @@ def bulk_delete_songs():
     for i in ids:
         song_service.delete_song(int(i))
     flash(f'Deleted {len(ids)} songs successfully', 'success')
-    return redirect(url_for('admin.list_songs'))
+    return redirect_with_args('admin.list_songs')
 
 # Artists
 @admin_bp.route('/artists/<int:id>/inline_edit', methods=['POST'])
@@ -456,7 +541,7 @@ def bulk_delete_artists():
     for i in ids:
         artist_service.delete_artist(int(i))
     flash(f'Deleted {len(ids)} artists successfully', 'success')
-    return redirect(url_for('admin.list_artists'))
+    return redirect_with_args('admin.list_artists')
 
 # Videos
 @admin_bp.route('/videos/<id>/inline_edit', methods=['POST'])
@@ -474,7 +559,7 @@ def bulk_delete_videos():
     for i in ids:
         video_service.delete_video(i)
     flash(f'Deleted {len(ids)} videos successfully', 'success')
-    return redirect(url_for('admin.list_videos'))
+    return redirect_with_args('admin.list_videos')
 
 @admin_bp.route('/videos/bulk_type', methods=['POST'])
 def bulk_edit_video_type():
@@ -510,7 +595,7 @@ def bulk_delete_activities():
     for i in ids:
         activity_service.delete_activity(int(i))
     flash(f'Deleted {len(ids)} activities successfully', 'success')
-    return redirect(url_for('admin.list_activities'))
+    return redirect_with_args('admin.list_activities')
 
 # Records
 @admin_bp.route('/records/<int:id>/inline_edit', methods=['POST'])
@@ -528,7 +613,7 @@ def bulk_delete_records():
     for i in ids:
         record_service.delete_record(int(i))
     flash(f'Deleted {len(ids)} records successfully', 'success')
-    return redirect(url_for('admin.list_records'))
+    return redirect_with_args('admin.list_records')
 
 # --- Clip Authors (剪輯創作者) ---
 @admin_bp.route('/clip_authors')
@@ -546,7 +631,7 @@ def create_clip_author():
         flash('剪輯創作者新增成功！', 'success')
     except Exception as e:
         flash(f'新增失敗: {e}', 'error')
-    return redirect(url_for('admin.list_clip_authors'))
+    return redirect_with_args('admin.list_clip_authors')
 
 @admin_bp.route('/clip_authors/<int:id>/edit', methods=['POST'])
 def edit_clip_author(id):
@@ -556,7 +641,7 @@ def edit_clip_author(id):
         flash('剪輯創作者資料已更新！', 'success')
     except Exception as e:
         flash(f'更新失敗: {e}', 'error')
-    return redirect(url_for('admin.list_clip_authors'))
+    return redirect_with_args('admin.list_clip_authors')
 
 @admin_bp.route('/clip_authors/<int:id>/delete', methods=['POST'])
 def delete_clip_author(id):
@@ -565,7 +650,7 @@ def delete_clip_author(id):
         flash('剪輯創作者已刪除！', 'success')
     except Exception as e:
         flash(f'刪除失敗: {e}', 'error')
-    return redirect(url_for('admin.list_clip_authors'))
+    return redirect_with_args('admin.list_clip_authors')
 
 @admin_bp.route('/clip_authors/<int:id>/sync', methods=['POST'])
 def sync_clip_author(id):
@@ -583,7 +668,7 @@ def sync_clip_author(id):
                                all_songs=all_songs)
     except Exception as e:
         flash(f'爬取失敗: {e}', 'error')
-        return redirect(url_for('admin.list_clip_authors'))
+        return redirect_with_args('admin.list_clip_authors')
 
 @admin_bp.route('/clips/fetch_info', methods=['GET'])
 def clips_fetch_info():
@@ -718,7 +803,7 @@ def create_clip():
         flash('切片建立成功！', 'success')
     except Exception as e:
         flash(f'建立失敗: {e}', 'error')
-    return redirect(url_for('admin.list_clips'))
+    return redirect_with_args('admin.list_clips')
 
 @admin_bp.route('/clips/<int:id>/edit', methods=['POST'])
 def edit_clip(id):
@@ -734,7 +819,7 @@ def edit_clip(id):
         flash('切片資料已更新！', 'success')
     except Exception as e:
         flash(f'更新失敗: {e}', 'error')
-    return redirect(url_for('admin.list_clips'))
+    return redirect_with_args('admin.list_clips')
 
 @admin_bp.route('/clips/<int:id>/delete', methods=['POST'])
 def delete_clip(id):
@@ -743,14 +828,14 @@ def delete_clip(id):
         flash('切片已刪除！', 'success')
     except Exception as e:
         flash(f'刪除失敗: {e}', 'error')
-    return redirect(url_for('admin.list_clips'))
+    return redirect_with_args('admin.list_clips')
 
 @admin_bp.route('/clips/import', methods=['POST'])
 def import_clips():
     selected_video_ids = request.form.getlist('selected')
     if not selected_video_ids:
         flash('未選擇任何切片進行匯入。', 'warning')
-        return redirect(url_for('admin.list_clip_authors'))
+        return redirect_with_args('admin.list_clip_authors')
 
     items_to_import = []
     for vid in selected_video_ids:
@@ -777,7 +862,7 @@ def import_clips():
     except Exception as e:
         flash(f'匯入失敗: {e}', 'error')
         
-    return redirect(url_for('admin.list_clips'))
+    return redirect_with_args('admin.list_clips')
 
 @admin_bp.route('/clips/bulk_delete', methods=['POST'])
 def bulk_delete_clips():
@@ -796,7 +881,7 @@ def bulk_delete_clips():
         if request.is_json:
             return jsonify({'success': False, 'error': str(e)})
         flash(f'批次刪除失敗: {e}', 'error')
-    return redirect(url_for('admin.list_clips'))
+    return redirect_with_args('admin.list_clips')
 
 @admin_bp.route('/clips/bulk_edit', methods=['POST'])
 def bulk_edit_clips():

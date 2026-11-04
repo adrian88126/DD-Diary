@@ -8,8 +8,18 @@
   <button class="btn btn-primary" onclick="openRecordForm()"><i class="fa-solid fa-plus"></i> New Record</button>
 </div>
 
-<div class="form-group max-w-md mb-4">
-  <input type="text" id="table-search" class="form-input" placeholder="Search Records...">
+<div class="flex items-center gap-3 mb-4" style="flex-wrap: wrap;">
+  <div class="form-group max-w-md" style="margin-bottom: 0; flex: 1; min-width: 240px;">
+    <input type="text" id="table-search" class="form-input" placeholder="Search Records (song, artist, video)...">
+  </div>
+  <div style="width: 200px;">
+    <select id="vtuber-filter" class="form-input">
+      <option value="">{{ _('All VTubers') }}</option>
+      {% for v in all_singers %}
+      <option value="{{ v.name_main }}">{{ v.name_main }}</option>
+      {% endfor %}
+    </select>
+  </div>
 </div>
 
 <div class="bulk-action-bar">
@@ -32,7 +42,7 @@
     </thead>
     <tbody>
       {% for r in records %}
-      <tr class="search-item" data-id="{{ r.id }}">
+      <tr class="search-item" id="row-{{ r.id }}" data-id="{{ r.id }}">
         <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ r.id }}"></td>
         <td class="search-text">{{ r.id }}</td>
         <td class="search-text">{{ r.song.title_main if r.song else r.song_id }}</td>
@@ -55,7 +65,7 @@
               'singer_ids': r.singers | map(attribute='id') | join(','),
               'note': r.note or ''
             } %}
-            <button class="btn btn-sm btn-outline" onclick="openRecordForm(this)" data-record="{{ r_data | tojson | forceescape }}">
+            <button class="btn btn-sm btn-outline edit-row-btn" onclick="openRecordForm(this)" data-record="{{ r_data | tojson | forceescape }}" title="編輯">
               <i class="fa-solid fa-pen"></i>
             </button>
             <form method="POST" action="{{ url_for('admin.delete_record', id=r.id) }}" class="delete-form" style="display:inline;">
@@ -118,8 +128,11 @@
         <textarea id="note" name="note" class="form-input" rows="2">{{ item.note if item else '' }}</textarea>
       </div>
       
-      <div class="flex gap-2 mt-4">
-        <button type="submit" class="btn btn-primary">{{ _('Save Record') }}</button>
+      <div class="flex gap-2 mt-4" style="flex-wrap: wrap;">
+        <button type="submit" class="btn btn-primary" style="flex: 1;">{{ _('Save Record') }}</button>
+        <button type="button" class="btn btn-secondary" id="save-next-btn" onclick="saveRecordAndNext()" style="display: none;">
+          <i class="fa-solid fa-forward-step"></i> 儲存並下一筆
+        </button>
       </div>
     </form>
   </div>
@@ -129,6 +142,8 @@
 {% block admin_js %}
 <script>
 let singerSelect, songSelect, videoSelect;
+let currentEditingBtn = null;
+
 document.addEventListener('DOMContentLoaded', function() {
   singerSelect = new TomSelect("#singer_ids", {
     plugins: ['remove_button'],
@@ -149,12 +164,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function openRecordForm(btn) {
+  currentEditingBtn = btn || null;
   let data = { action: '{{ url_for("admin.create_record") }}' };
+  const saveNextBtn = document.getElementById('save-next-btn');
+
   if (btn && btn.dataset.record) {
     data = JSON.parse(btn.dataset.record);
+    if (saveNextBtn) saveNextBtn.style.display = 'inline-flex';
+  } else {
+    if (saveNextBtn) saveNextBtn.style.display = 'none';
   }
 
-  document.getElementById('record-form').action = data.action;
+  const rowId = btn ? (btn.closest('tr')?.dataset?.id || '') : '';
+  const form = document.getElementById('record-form');
+  
+  // 保留網址 query 與 anchor
+  const baseAction = data.action;
+  const currentSearch = new URLSearchParams(window.location.search);
+  if (rowId) currentSearch.set('_anchor', 'row-' + rowId);
+  form.action = baseAction + (currentSearch.toString() ? '?' + currentSearch.toString() : '');
+
   document.getElementById('drawer-title').textContent = data.song_id ? '{{ _("Edit Record") }}' : '{{ _("New Record") }}';
   
   if (songSelect) {
@@ -166,7 +195,7 @@ function openRecordForm(btn) {
     else videoSelect.clear();
   }
   
-  let sec = parseInt(data.timestamp_seconds || '0', 10);
+  let sec = parseInt(data.timestamp_seconds || 0, 10);
   document.getElementById('timestamp_seconds').value = sec;
   let formattedTime = '00:00';
   if (sec > 0) {
@@ -180,7 +209,6 @@ function openRecordForm(btn) {
     }
   }
   document.getElementById('time_input').value = formattedTime;
-  
   document.getElementById('note').value = data.note || '';
 
   if (singerSelect) {
@@ -195,7 +223,7 @@ function openRecordForm(btn) {
 }
 
 // Convert MM:SS to seconds before submit
-document.getElementById('time_input').addEventListener('input', function(e) {
+document.getElementById('time_input')?.addEventListener('input', function(e) {
   let parts = e.target.value.split(':').reverse();
   let totalSeconds = 0;
   if (parts[0]) totalSeconds += parseInt(parts[0] || 0, 10);
@@ -204,12 +232,60 @@ document.getElementById('time_input').addEventListener('input', function(e) {
   document.getElementById('timestamp_seconds').value = isNaN(totalSeconds) ? 0 : totalSeconds;
 });
 
-document.getElementById('table-search')?.addEventListener('input', (e) => {
-  const term = e.target.value.toLowerCase();
-  document.querySelectorAll('.search-item').forEach(el => {
-    const text = el.textContent.toLowerCase();
-    el.style.display = text.includes(term) ? '' : 'none';
-  });
-});
+// 🚀 儲存並連續編輯下一筆
+async function saveRecordAndNext() {
+  const form = document.getElementById('record-form');
+  if (!form.reportValidity()) return;
+
+  const saveNextBtn = document.getElementById('save-next-btn');
+  const originalHtml = saveNextBtn.innerHTML;
+  saveNextBtn.disabled = true;
+  saveNextBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...';
+
+  try {
+    const formData = new FormData(form);
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (window.showToast) {
+      window.showToast('紀錄已更新！已自動切換至下一筆', 'success');
+    }
+
+    // 找到當前行
+    if (currentEditingBtn) {
+      const currentRow = currentEditingBtn.closest('tr');
+      if (currentRow) {
+        currentRow.classList.add('row-highlight');
+        setTimeout(() => currentRow.classList.remove('row-highlight'), 2500);
+
+        // 尋找下一個可見行
+        let nextRow = currentRow.nextElementSibling;
+        while (nextRow && nextRow.style.display === 'none') {
+          nextRow = nextRow.nextElementSibling;
+        }
+
+        if (nextRow) {
+          const nextBtn = nextRow.querySelector('.edit-row-btn');
+          if (nextBtn) {
+            openRecordForm(nextBtn);
+            nextRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+        }
+      }
+    }
+
+    // 若無下一筆，關閉抽屜
+    document.getElementById('form-drawer').classList.remove('open');
+    if (window.showToast) window.showToast('已完成最後一筆編輯！', 'info');
+  } catch(e) {
+    alert('儲存失敗: ' + e);
+  } finally {
+    saveNextBtn.disabled = false;
+    saveNextBtn.innerHTML = originalHtml;
+  }
+}
 </script>
 {% endblock %}

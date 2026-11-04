@@ -13,6 +13,7 @@ let currentOtherVideoFilter = 'all';
 function startShareApp() {
     initTabs();
     initSearch();
+    if (typeof syncPlayerControlsUI === 'function') syncPlayerControlsUI();
     renderAll();
 }
 
@@ -90,6 +91,220 @@ function initSearch() {
     };
 }
 
+// Player & Playlist state
+let currentPlaylist = [];
+let currentPlayIndex = -1;
+let isAutoplayEnabled = localStorage.getItem('vtsong_autoplay') !== 'false';
+let isShuffleEnabled = localStorage.getItem('vtsong_shuffle') === 'true';
+let shuffleHistory = [];
+
+function syncPlayerControlsUI() {
+    const autoplayBtn = document.getElementById('player-autoplay-btn');
+    if (autoplayBtn) {
+        if (isAutoplayEnabled) autoplayBtn.classList.add('active');
+        else autoplayBtn.classList.remove('active');
+    }
+    const shuffleBtn = document.getElementById('player-shuffle-btn');
+    if (shuffleBtn) {
+        if (isShuffleEnabled) shuffleBtn.classList.add('active');
+        else shuffleBtn.classList.remove('active');
+    }
+}
+window.syncPlayerControlsUI = syncPlayerControlsUI;
+
+function buildPlaylistForCurrentTab() {
+    let list = [];
+    if (currentTab === 'history') {
+        let recs = records;
+        if (searchQuery) {
+            recs = recs.filter(r => 
+                (r.song && r.song.title_main.toLowerCase().includes(searchQuery)) ||
+                (r.video && r.video.title.toLowerCase().includes(searchQuery))
+            );
+        }
+        list = recs.map((r, i) => ({
+            id: r.id || ('hist_' + i),
+            videoId: r.video_id,
+            timestamp: r.timestamp_seconds || 0,
+            title: r.song ? r.song.title_main : 'Unknown Song',
+            singer: (r.song && r.song.artists && r.song.artists.length > 0) ? r.song.artists.map(a => a.name_main).join(', ') : (vtuber.name_main || '')
+        }));
+    } else if (currentTab === 'requestable') {
+        const uniqueSongs = new Map();
+        records.forEach(r => {
+            if (!r.song) return;
+            if (!uniqueSongs.has(r.song.id)) uniqueSongs.set(r.song.id, r.song);
+        });
+        let songs = Array.from(uniqueSongs.values());
+        if (searchQuery) {
+            songs = songs.filter(s => 
+                (s.title_main && s.title_main.toLowerCase().includes(searchQuery)) ||
+                (s.artists && s.artists.some(a => a.name_main.toLowerCase().includes(searchQuery)))
+            );
+        }
+        list = songs.map((s, i) => {
+            const songRecord = records.find(r => r.song && r.song.id === s.id);
+            return {
+                id: s.id || ('req_' + i),
+                videoId: songRecord && songRecord.video_id ? songRecord.video_id : '',
+                timestamp: songRecord ? songRecord.timestamp_seconds : 0,
+                title: s.title_main,
+                singer: (s.artists && s.artists.length > 0) ? s.artists.map(a => a.name_main).join(', ') : (vtuber.name_main || '')
+            };
+        }).filter(item => item.videoId);
+    } else if (currentTab === 'mv') {
+        let vids = videos.filter(v => ['cover_mv', 'original_mv'].includes(v.video_type));
+        if (searchQuery) vids = vids.filter(v => v.title.toLowerCase().includes(searchQuery));
+        list = vids.map(v => ({
+            id: v.video_id,
+            videoId: v.video_id,
+            timestamp: 0,
+            title: v.title,
+            singer: vtuber.name_main || ''
+        }));
+    } else if (currentTab === 'singing') {
+        let vids = videos.filter(v => v.video_type === 'stream_singing');
+        if (searchQuery) vids = vids.filter(v => v.title.toLowerCase().includes(searchQuery));
+        list = vids.map(v => ({
+            id: v.video_id,
+            videoId: v.video_id,
+            timestamp: 0,
+            title: v.title,
+            singer: vtuber.name_main || ''
+        }));
+    }
+
+    if (list.length === 0) {
+        // Fallback: all singing records
+        list = records.map((r, i) => ({
+            id: r.id || ('all_' + i),
+            videoId: r.video_id,
+            timestamp: r.timestamp_seconds || 0,
+            title: r.song ? r.song.title_main : 'Unknown Song',
+            singer: (r.song && r.song.artists && r.song.artists.length > 0) ? r.song.artists.map(a => a.name_main).join(', ') : (vtuber.name_main || '')
+        })).filter(item => item.videoId);
+    }
+    return list;
+}
+
+function updatePlayingTrackHighlight(videoId, timestamp) {
+    document.querySelectorAll('.track-item').forEach(el => {
+        el.classList.remove('is-playing');
+    });
+    // Find track item with matching videoId and timestamp
+    document.querySelectorAll('.track-item').forEach(el => {
+        const onclickAttr = el.getAttribute('onclick') || '';
+        if (onclickAttr.includes(`'${videoId}'`) && (onclickAttr.includes(`, ${timestamp},`) || onclickAttr.includes(`, ${timestamp})`))) {
+            el.classList.add('is-playing');
+        }
+    });
+}
+
+function onPlayerStateChange(event) {
+    const playIcon = document.getElementById('player-play-icon');
+    if (event.data === YT.PlayerState.PLAYING) {
+        if (playIcon) playIcon.className = 'fa-solid fa-pause';
+    } else if (event.data === YT.PlayerState.PAUSED) {
+        if (playIcon) playIcon.className = 'fa-solid fa-play';
+    } else if (event.data === YT.PlayerState.ENDED) {
+        if (playIcon) playIcon.className = 'fa-solid fa-play';
+        if (isAutoplayEnabled) {
+            setTimeout(() => {
+                playNextSong();
+            }, 600);
+        }
+    }
+}
+
+window.togglePlayPause = () => {
+    if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') {
+        if (currentPlaylist.length === 0) {
+            window.startRadioMode();
+        } else {
+            window.playNextSong();
+        }
+        return;
+    }
+    const state = ytPlayer.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) {
+        ytPlayer.pauseVideo();
+    } else {
+        ytPlayer.playVideo();
+    }
+};
+
+window.toggleAutoplay = () => {
+    isAutoplayEnabled = !isAutoplayEnabled;
+    localStorage.setItem('vtsong_autoplay', isAutoplayEnabled ? 'true' : 'false');
+    syncPlayerControlsUI();
+};
+
+window.toggleShuffle = () => {
+    isShuffleEnabled = !isShuffleEnabled;
+    localStorage.setItem('vtsong_shuffle', isShuffleEnabled ? 'true' : 'false');
+    syncPlayerControlsUI();
+};
+
+window.playNextSong = () => {
+    if (currentPlaylist.length === 0) {
+        currentPlaylist = buildPlaylistForCurrentTab();
+    }
+    if (currentPlaylist.length === 0) return;
+
+    if (isShuffleEnabled) {
+        if (currentPlayIndex >= 0) shuffleHistory.push(currentPlayIndex);
+        if (shuffleHistory.length > 50) shuffleHistory.shift();
+
+        let nextIdx = Math.floor(Math.random() * currentPlaylist.length);
+        if (currentPlaylist.length > 1 && nextIdx === currentPlayIndex) {
+            nextIdx = (nextIdx + 1) % currentPlaylist.length;
+        }
+        currentPlayIndex = nextIdx;
+    } else {
+        currentPlayIndex = (currentPlayIndex + 1) % currentPlaylist.length;
+    }
+
+    const item = currentPlaylist[currentPlayIndex];
+    if (item) {
+        window.playSong(item.videoId, item.timestamp, item.title, item.singer, true);
+    }
+};
+
+window.playPrevSong = () => {
+    if (currentPlaylist.length === 0) {
+        currentPlaylist = buildPlaylistForCurrentTab();
+    }
+    if (currentPlaylist.length === 0) return;
+
+    if (isShuffleEnabled && shuffleHistory.length > 0) {
+        currentPlayIndex = shuffleHistory.pop();
+    } else {
+        currentPlayIndex = (currentPlayIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
+    }
+
+    const item = currentPlaylist[currentPlayIndex];
+    if (item) {
+        window.playSong(item.videoId, item.timestamp, item.title, item.singer, true);
+    }
+};
+
+window.startRadioMode = () => {
+    isAutoplayEnabled = true;
+    isShuffleEnabled = true;
+    localStorage.setItem('vtsong_autoplay', 'true');
+    localStorage.setItem('vtsong_shuffle', 'true');
+    syncPlayerControlsUI();
+
+    currentPlaylist = buildPlaylistForCurrentTab();
+    if (currentPlaylist.length === 0) return;
+
+    currentPlayIndex = Math.floor(Math.random() * currentPlaylist.length);
+    const item = currentPlaylist[currentPlayIndex];
+    if (item) {
+        window.playSong(item.videoId, item.timestamp, item.title, item.singer, true);
+    }
+};
+
 // YT API
 let ytPlayer = null;
 window.onYouTubeIframeAPIReady = () => {
@@ -97,7 +312,15 @@ window.onYouTubeIframeAPIReady = () => {
 };
 
 let currentPlaying = { videoId: '', timestamp: 0 };
-window.playSong = (videoId, timestamp = 0, title = '', singer = '') => {
+window.playSong = (videoId, timestamp = 0, title = '', singer = '', fromRadio = false) => {
+    if (!fromRadio) {
+        currentPlaylist = buildPlaylistForCurrentTab();
+        const foundIdx = currentPlaylist.findIndex(p => p.videoId === videoId && Math.abs(p.timestamp - timestamp) < 2);
+        if (foundIdx !== -1) {
+            currentPlayIndex = foundIdx;
+        }
+    }
+    updatePlayingTrackHighlight(videoId, timestamp);
     const container = document.getElementById('youtube-player');
     currentPlaying.videoId = videoId;
     currentPlaying.timestamp = timestamp;
@@ -147,7 +370,8 @@ window.playSong = (videoId, timestamp = 0, title = '', singer = '') => {
             },
             events: {
                 'onReady': (event) => event.target.playVideo(),
-                'onError': onPlayerError
+                'onError': onPlayerError,
+                'onStateChange': onPlayerStateChange
             }
         });
     } else {

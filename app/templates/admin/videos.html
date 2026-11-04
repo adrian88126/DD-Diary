@@ -85,7 +85,7 @@
     <tbody id="video-list">
       {% for v in videos %}
       {% set count = v.singing_records|length %}
-      <tr class="search-item" data-vtuber="{{ v.vtuber_id }}" data-type="{{ v.video_type }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-id="{{ v.video_id }}" data-records="{{ count }}">
+      <tr class="search-item" id="row-{{ v.video_id }}" data-vtuber="{{ v.vtuber_id }}" data-type="{{ v.video_type }}" data-date="{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '1970-01-01' }}" data-id="{{ v.video_id }}" data-records="{{ count }}">
         <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ v.video_id }}"></td>
         <td>
           {% if v.thumbnail_url %}
@@ -115,7 +115,7 @@
               'vtuber_id': v.vtuber_id or '',
               'thumbnail_url': v.thumbnail_url or ''
             } %}
-            <button class="btn btn-sm btn-outline" onclick="openVideoForm(this)" data-video="{{ vid_data | tojson | forceescape }}">
+            <button class="btn btn-sm btn-outline edit-row-btn" onclick="openVideoForm(this)" data-video="{{ vid_data | tojson | forceescape }}">
               <i class="fa-solid fa-pen"></i>
             </button>
             <form method="POST" action="{{ url_for('admin.delete_video', id=v.video_id) }}" class="delete-form" style="display:inline;">
@@ -179,8 +179,11 @@
         </div>
       </div>
       
-      <div class="flex gap-2 mt-4">
-        <button type="submit" class="btn btn-primary">{{ _('Save Video') }}</button>
+      <div class="flex gap-2 mt-4" style="flex-wrap: wrap;">
+        <button type="submit" class="btn btn-primary" style="flex: 1;">{{ _('Save Video') }}</button>
+        <button type="button" class="btn btn-secondary" id="save-next-video-btn" onclick="saveVideoAndNext()" style="display: none;">
+          <i class="fa-solid fa-forward-step"></i> 儲存並下一筆
+        </button>
       </div>
     </form>
   </div>
@@ -189,13 +192,73 @@
 
 {% block admin_js %}
 <script>
+let currentEditingVideoBtn = null;
+
+async function saveVideoAndNext() {
+  const form = document.getElementById('video-form');
+  if (!form.reportValidity()) return;
+
+  const btn = document.getElementById('save-next-video-btn');
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...';
+
+  try {
+    const formData = new FormData(form);
+    await fetch(form.action, { method: 'POST', body: formData });
+
+    if (window.showToast) {
+      window.showToast('影片已儲存！已自動切換至下一部', 'success');
+    }
+
+    if (currentEditingVideoBtn) {
+      const currentRow = currentEditingVideoBtn.closest('tr');
+      if (currentRow) {
+        currentRow.classList.add('row-highlight');
+        setTimeout(() => currentRow.classList.remove('row-highlight'), 2500);
+
+        let nextRow = currentRow.nextElementSibling;
+        while (nextRow && nextRow.style.display === 'none') {
+          nextRow = nextRow.nextElementSibling;
+        }
+
+        if (nextRow) {
+          const nextBtn = nextRow.querySelector('.edit-row-btn');
+          if (nextBtn) {
+            openVideoForm(nextBtn);
+            nextRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+        }
+      }
+    }
+
+    document.getElementById('form-drawer').classList.remove('open');
+    if (window.showToast) window.showToast('已完成最後一筆編輯！', 'info');
+  } catch(e) {
+    alert('儲存失敗: ' + e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+}
+
 function openVideoForm(btn) {
+  currentEditingVideoBtn = btn || null;
   let data = { action: '{{ url_for("admin.create_video") }}' };
+  const saveNextBtn = document.getElementById('save-next-video-btn');
+
   if (btn && btn.dataset.video) {
     data = JSON.parse(btn.dataset.video);
+    if (saveNextBtn) saveNextBtn.style.display = 'inline-flex';
+  } else {
+    if (saveNextBtn) saveNextBtn.style.display = 'none';
   }
 
-  document.getElementById('video-form').action = data.action;
+  const rowId = btn ? (btn.closest('tr')?.dataset?.id || '') : '';
+  const currentSearch = new URLSearchParams(window.location.search);
+  if (rowId) currentSearch.set('_anchor', 'row-' + rowId);
+  document.getElementById('video-form').action = data.action + (currentSearch.toString() ? '?' + currentSearch.toString() : '');
   document.getElementById('drawer-title').textContent = data.video_id ? '{{ _("Edit Video") }}' : '{{ _("New Video") }}';
   
   document.getElementById('video_id').value = data.video_id || '';

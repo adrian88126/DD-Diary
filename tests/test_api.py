@@ -19,7 +19,9 @@ def run_tests():
             "/api/v1/songs",
             "/api/v1/vtubers",
             "/api/v1/records",
-            "/api/v1/activities"
+            "/api/v1/activities",
+            "/admin/diagnostics",
+            "/admin/backup/export"
         ]
         
         for ep in endpoints:

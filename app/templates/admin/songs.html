@@ -9,7 +9,7 @@
 </div>
 
 <div class="flex items-center gap-3 mb-4" style="flex-wrap: wrap;">
-  <div class="form-group max-w-md" style="margin-bottom: 0; flex: 1;">
+  <div class="form-group max-w-md" style="margin-bottom: 0; flex: 1; min-width: 240px;">
     <input type="text" id="table-search" class="form-input" placeholder="Search Songs...">
   </div>
   <div class="flex items-center gap-2">
@@ -38,7 +38,7 @@
     </thead>
     <tbody>
       {% for s in songs %}
-      <tr class="search-item" data-id="{{ s.id }}">
+      <tr class="search-item" id="row-{{ s.id }}" data-id="{{ s.id }}">
         <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ s.id }}"></td>
         <td class="editable-cell search-text" data-field="title_main" title="Double click to edit">{{ s.title_main }}</td>
         <td class="search-text">
@@ -58,7 +58,7 @@
               'song_type': s.song_type or 'cover',
               'artist_ids': s.artists | map(attribute='id') | join(',')
             } %}
-            <button class="btn btn-sm btn-outline" onclick="openSongForm(this)" data-song="{{ s_data | tojson | forceescape }}">
+            <button class="btn btn-sm btn-outline edit-row-btn" onclick="openSongForm(this)" data-song="{{ s_data | tojson | forceescape }}" title="編輯">
               <i class="fa-solid fa-pen"></i>
             </button>
             <form method="POST" action="{{ url_for('admin.delete_song', id=s.id, filter=current_filter) }}" class="delete-form" style="display:inline;">
@@ -121,8 +121,11 @@
         </select>
       </div>
       
-      <div class="flex gap-2 mt-4">
-        <button type="submit" class="btn btn-primary">{{ _('Save Song') }}</button>
+      <div class="flex gap-2 mt-4" style="flex-wrap: wrap;">
+        <button type="submit" class="btn btn-primary" style="flex: 1;">{{ _('Save Song') }}</button>
+        <button type="button" class="btn btn-secondary" id="save-next-song-btn" onclick="saveSongAndNext()" style="display: none;">
+          <i class="fa-solid fa-forward-step"></i> 儲存並下一筆
+        </button>
       </div>
     </form>
   </div>
@@ -132,6 +135,8 @@
 {% block admin_js %}
 <script>
 let artistSelect;
+let currentEditingSongBtn = null;
+
 document.addEventListener('DOMContentLoaded', function() {
   artistSelect = new TomSelect("#artist_ids", {
     plugins: ['remove_button'],
@@ -142,12 +147,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function openSongForm(btn) {
+  currentEditingSongBtn = btn || null;
   let data = { action: '{{ url_for("admin.create_song") }}' };
+  const saveNextBtn = document.getElementById('save-next-song-btn');
+
   if (btn && btn.dataset.song) {
     data = JSON.parse(btn.dataset.song);
+    if (saveNextBtn) saveNextBtn.style.display = 'inline-flex';
+  } else {
+    if (saveNextBtn) saveNextBtn.style.display = 'none';
   }
 
-  document.getElementById('song-form').action = data.action + window.location.search;
+  const rowId = btn ? (btn.closest('tr')?.dataset?.id || '') : '';
+  const form = document.getElementById('song-form');
+  
+  const baseAction = data.action;
+  const currentSearch = new URLSearchParams(window.location.search);
+  if (rowId) currentSearch.set('_anchor', 'row-' + rowId);
+  form.action = baseAction + (currentSearch.toString() ? '?' + currentSearch.toString() : '');
+
   document.getElementById('drawer-title').textContent = data.title_main ? '{{ _("Edit Song") }}' : '{{ _("New Song") }}';
   
   document.getElementById('title_main').value = data.title_main || '';
@@ -167,13 +185,58 @@ function openSongForm(btn) {
   document.getElementById('form-drawer').classList.add('open');
 }
 
-document.getElementById('table-search')?.addEventListener('input', (e) => {
-  const term = e.target.value.toLowerCase();
-  document.querySelectorAll('.search-item').forEach(el => {
-    const text = el.querySelector('.search-text').textContent.toLowerCase();
-    el.style.display = text.includes(term) ? '' : 'none';
-  });
-});
+// 🚀 儲存並下一筆
+async function saveSongAndNext() {
+  const form = document.getElementById('song-form');
+  if (!form.reportValidity()) return;
+
+  const saveNextBtn = document.getElementById('save-next-song-btn');
+  const originalHtml = saveNextBtn.innerHTML;
+  saveNextBtn.disabled = true;
+  saveNextBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...';
+
+  try {
+    const formData = new FormData(form);
+    await fetch(form.action, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (window.showToast) {
+      window.showToast('歌曲已儲存！已自動切換至下一首', 'success');
+    }
+
+    if (currentEditingSongBtn) {
+      const currentRow = currentEditingSongBtn.closest('tr');
+      if (currentRow) {
+        currentRow.classList.add('row-highlight');
+        setTimeout(() => currentRow.classList.remove('row-highlight'), 2500);
+
+        let nextRow = currentRow.nextElementSibling;
+        while (nextRow && nextRow.style.display === 'none') {
+          nextRow = nextRow.nextElementSibling;
+        }
+
+        if (nextRow) {
+          const nextBtn = nextRow.querySelector('.edit-row-btn');
+          if (nextBtn) {
+            openSongForm(nextBtn);
+            nextRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+        }
+      }
+    }
+
+    document.getElementById('form-drawer').classList.remove('open');
+    if (window.showToast) window.showToast('已完成最後一筆編輯！', 'info');
+  } catch(e) {
+    alert('儲存失敗: ' + e);
+  } finally {
+    saveNextBtn.disabled = false;
+    saveNextBtn.innerHTML = originalHtml;
+  }
+}
 
 window.toggleFilterNoArtists = (isChecked) => {
   const url = new URL(window.location.href);
