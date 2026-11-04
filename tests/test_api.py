@@ -44,5 +44,20 @@ def run_tests():
                 delete_vtuber(test_vt.id)
         except Exception as e:
             errors.append(f"VTuber Service 建立/刪除流程異常：{e}")
+
+        # 3. 測試歌手即時快速建立 API (Quick Create Artist)
+        try:
+            from app.services.artist_service import delete_artist
+            res = client.post("/api/v1/artists/quick_create", json={"name_main": "Test_Quick_Artist"})
+            if res.status_code != 200:
+                errors.append(f"POST /api/v1/artists/quick_create 響應異常: {res.status_code}")
+            else:
+                data = res.get_json()
+                if not data or not data.get("success") or not data.get("artist"):
+                    errors.append("POST /api/v1/artists/quick_create 返回數據格式不正確")
+                else:
+                    delete_artist(data["artist"]["id"])
+        except Exception as e:
+            errors.append(f"Quick Create Artist 流程異常: {e}")
             
     return errors

@@ -113,12 +113,20 @@
       </div>
 
       <div class="form-group">
-        <label>{{ _('Artist IDs (comma separated)') }}</label>
-        <select id="artist_ids" name="artist_ids[]" class="form-input" multiple placeholder="Search artists...">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label style="margin-bottom: 0;">{{ _('Artist IDs (comma separated)') }}</label>
+          <button type="button" class="btn btn-sm btn-outline" onclick="quickCreateArtistPrompt()" style="padding: 2px 8px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;" title="即時建立新歌手並自動加入選取">
+            <i class="fa-solid fa-plus"></i> 快速新增歌手
+          </button>
+        </div>
+        <select id="artist_ids" name="artist_ids[]" class="form-input" multiple placeholder="搜尋或直接輸入新歌手名稱...">
           {% for a in all_artists %}
           <option value="{{ a.id }}">{{ a.name_main }}</option>
           {% endfor %}
         </select>
+        <small class="text-muted" style="font-size: 0.8rem; display: block; margin-top: 4px;">
+          <i class="fa-solid fa-lightbulb"></i> 提示：若為新歌手，可直接在搜尋框輸入名稱並按 Enter，即可直接建立並選取！
+        </small>
       </div>
       
       <div class="flex gap-2 mt-4" style="flex-wrap: wrap;">
@@ -140,7 +148,38 @@ let currentEditingSongBtn = null;
 document.addEventListener('DOMContentLoaded', function() {
   artistSelect = new TomSelect("#artist_ids", {
     plugins: ['remove_button'],
-    create: false,
+    create: function(input, callback) {
+      const name = input.trim();
+      if (!name) return callback();
+      
+      fetch('/api/v1/artists/quick_create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name_main: name })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.artist) {
+          if (window.showToast) {
+            window.showToast(`已成功新增歌手「${data.artist.name_main}」並加入選取！`, 'success');
+          }
+          callback({ value: data.artist.id, text: data.artist.name_main });
+        } else {
+          alert('新增歌手失敗: ' + (data.error || '未知錯誤'));
+          callback();
+        }
+      })
+      .catch(err => {
+        alert('網路連線異常: ' + err);
+        callback();
+      });
+    },
+    createOnBlur: false,
+    render: {
+      option_create: function(data, escape) {
+        return '<div class="create" style="padding: 6px 12px; color: var(--primary); cursor: pointer;"><i class="fa-solid fa-plus-circle"></i> 新增歌手 <strong>"' + escape(data.input) + '"</strong>...</div>';
+      }
+    },
     maxItems: null,
     searchField: ['text'],
   });
@@ -247,5 +286,36 @@ window.toggleFilterNoArtists = (isChecked) => {
   }
   window.location.href = url.pathname + url.search;
 };
+
+function quickCreateArtistPrompt() {
+  const name = prompt('請輸入新歌手名稱：');
+  if (!name || !name.trim()) return;
+  
+  fetch('/api/v1/artists/quick_create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name_main: name.trim() })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success && data.artist) {
+      if (artistSelect) {
+        artistSelect.addOption({ value: data.artist.id, text: data.artist.name_main });
+        artistSelect.addItem(data.artist.id);
+      }
+      if (window.showToast) {
+        window.showToast(`已成功新增歌手「${data.artist.name_main}」並加入選取！`, 'success');
+      } else {
+        alert(`已成功新增歌手「${data.artist.name_main}」！`);
+      }
+    } else {
+      alert('新增歌手失敗: ' + (data.error || '未知錯誤'));
+    }
+  })
+  .catch(err => {
+    alert('網路連線異常: ' + err);
+  });
+}
+
 </script>
 {% endblock %}

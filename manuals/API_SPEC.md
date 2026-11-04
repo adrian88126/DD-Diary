@@ -28,7 +28,22 @@
 }
 ```
 
-### B. 修改歌手
+### B. 快速建立歌手 (Quick Create Artist)
+* **Method & URL**：`POST /api/v1/artists/quick_create`
+* **請求 Payload (JSON)**：`{ "name_main": "歌手名稱" }`
+* **說明**：支援歌曲管理抽屜或時間軸中無中斷就地新增歌手，不區分大小寫自動防重。
+* **回傳範例 (200 OK)**：
+```json
+{
+  "success": true,
+  "artist": {
+    "id": 15,
+    "name_main": "米津玄師"
+  }
+}
+```
+
+### C. 修改歌手
 * **Method & URL**：`PUT /api/v1/artists/<id>` 或 `POST /admin/artists/<id>/edit`
 
 ### C. 刪除歌手

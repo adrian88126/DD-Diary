@@ -399,7 +399,8 @@ def delete_record(id):
 @admin_bp.route('/activities')
 def list_activities():
     activities = activity_service.get_activities(skip=0, limit=1000)
-    return render_template('admin/activities.html', activities=activities)
+    vtubers = vtuber_service.get_vtubers(skip=0, limit=1000)
+    return render_template('admin/activities.html', activities=activities, all_vtubers=vtubers)
 
 @admin_bp.route('/activities/create', methods=['GET', 'POST'])
 def create_activity():
@@ -408,7 +409,9 @@ def create_activity():
         activity_service.create_activity(data)
         flash('Activity created successfully', 'success')
         return redirect_with_args('admin.list_activities')
-    return render_template('admin/activities_form.html')
+    activities = activity_service.get_activities(skip=0, limit=1000)
+    vtubers = vtuber_service.get_vtubers(skip=0, limit=1000)
+    return render_template('admin/activities.html', activities=activities, all_vtubers=vtubers)
 
 @admin_bp.route('/activities/<int:id>/edit', methods=['GET', 'POST'])
 def edit_activity(id):
@@ -418,7 +421,9 @@ def edit_activity(id):
         activity_service.update_activity(id, data)
         flash('Activity updated successfully', 'success')
         return redirect_with_args('admin.list_activities')
-    return render_template('admin/activities_form.html', activity=activity)
+    activities = activity_service.get_activities(skip=0, limit=1000)
+    vtubers = vtuber_service.get_vtubers(skip=0, limit=1000)
+    return render_template('admin/activities.html', activities=activities, all_vtubers=vtubers, item=activity)
 
 @admin_bp.route('/activities/<int:id>/delete', methods=['POST'])
 def delete_activity(id):

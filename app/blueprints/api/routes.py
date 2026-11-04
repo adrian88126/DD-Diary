@@ -86,6 +86,26 @@ def fetch_video_info():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
+@api_bp.route('/artists/quick_create', methods=['POST'])
+def quick_create_artist():
+    data = request.get_json() if request.is_json else request.form.to_dict()
+    name = data.get('name_main', '').strip() if data else ''
+    if not name:
+        return jsonify({'success': False, 'error': '歌手名稱不可為空'}), 400
+        
+    from app.services.artist_service import create_artist
+    try:
+        artist = create_artist({'name_main': name})
+        return jsonify({
+            'success': True,
+            'artist': {
+                'id': artist.id,
+                'name_main': artist.name_main
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @api_bp.route('/songs/quick_create', methods=['POST'])
 def quick_create_song():
     data = request.get_json() if request.is_json else request.form.to_dict()

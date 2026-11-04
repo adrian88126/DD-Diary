@@ -38,7 +38,7 @@
         <td class="search-text">
           <span class="badge badge-outline">{{ a.activity_type }}</span>
         </td>
-        <td class="search-text">{{ a.vtuber_id }}</td>
+        <td class="search-text">{{ a.vtuber.name_main if a.vtuber else '-' }}</td>
         <td>
           <div class="flex gap-2">
             {% set act_data = {
@@ -96,8 +96,13 @@
       
       <div class="form-row">
         <div class="form-group">
-          <label>{{ _('VTuber ID') }}</label>
-          <input type="number" id="vtuber_id" name="vtuber_id" class="form-input" value="{{ item.vtuber_id if item else '' }}">
+          <label>{{ _('VTuber') }}</label>
+          <select id="vtuber_id" name="vtuber_id" class="form-input">
+            <option value="">{{ _('None / General') }}</option>
+            {% for v in all_vtubers %}
+            <option value="{{ v.id }}" {% if item and item.vtuber_id == v.id %}selected{% endif %}>{{ v.name_main }}</option>
+            {% endfor %}
+          </select>
         </div>
         <div class="form-group">
           <label>{{ _('Link URL') }}</label>
