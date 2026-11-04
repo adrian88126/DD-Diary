@@ -6,14 +6,17 @@
 <div class="header-actions mb-4" style="display: flex; justify-content: space-between; align-items: flex-end;">
   <div>
     <h2 style="display: flex; align-items: center; gap: 10px;">
-      <a href="{{ url_for('admin.list_videos') }}" class="btn btn-sm" style="background: var(--card-bg); border-color: var(--card-border);">
+      <a href="{{ return_url or url_for('admin.list_singing_streams') }}" id="timeline-back-btn" class="btn btn-sm" style="background: var(--card-bg); border-color: var(--card-border);" title="返回歌回清單">
         <i class="fa-solid fa-arrow-left"></i>
       </a>
       {{ _('Smart Timeline Parser') }}
     </h2>
     <p class="text-muted mt-1">{{ _('Parsing timeline for:') }} <strong class="text-primary">{{ video.title }}</strong></p>
   </div>
-  <div>
+  <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+    <button type="button" class="btn btn-outline" id="btn-mark-not-singing" onclick="markAsNotSinging()" style="border-color: #f59e0b; color: #f59e0b;" title="這部不是歌回，將其移出歌回並改為一般直播">
+      <i class="fa-solid fa-ban"></i> 非歌回（轉為一般直播）
+    </button>
     <button class="btn btn-primary" id="btn-save-all" disabled>
       <i class="fa-solid fa-save"></i> {{ _('Save All to Database') }}
     </button>
@@ -128,6 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const parsedCount = document.getElementById('parsed-count');
   const emptyState = document.getElementById('empty-state');
   const btnSave = document.getElementById('btn-save-all');
+  const backBtn = document.getElementById('timeline-back-btn');
+  if (backBtn) {
+    const params = new URLSearchParams(window.location.search);
+    const returnUrl = params.get('return_url');
+    if (returnUrl) {
+      backBtn.href = returnUrl;
+    } else {
+      const cached = sessionStorage.getItem('admin_singing_streams_last_url');
+      if (cached && cached.includes('/admin/singing_streams')) {
+        backBtn.href = cached;
+      }
+    }
+  }
   
   let parsedItems = [];
 
@@ -349,6 +365,45 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPreview();
   };
   
+  window.markAsNotSinging = async function() {
+    if (!confirm('確定要將《{{ video.title }}》標記為非歌回並移出歌回列表（改為一般直播/雜談）嗎？\n完成後將自動返回原歌回列表。')) {
+      return;
+    }
+    const btn = document.getElementById('btn-mark-not-singing');
+    const oldHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 處理中...';
+
+    try {
+      const res = await fetch('/admin/videos/{{ video.video_id }}/change_type', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ video_type: 'stream_other' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('已成功將《{{ video.title }}》標記為一般直播並移出歌回！');
+        const params = new URLSearchParams(window.location.search);
+        let targetUrl = params.get('return_url') || '{{ return_url }}';
+        if (!targetUrl || targetUrl === '{{ url_for("admin.list_singing_streams") }}') {
+          const cached = sessionStorage.getItem('admin_singing_streams_last_url');
+          if (cached && cached.includes('/admin/singing_streams')) {
+            targetUrl = cached;
+          }
+        }
+        window.location.href = targetUrl || '{{ url_for("admin.list_singing_streams") }}';
+      } else {
+        alert('修改失敗: ' + (data.error || '未知錯誤'));
+        btn.disabled = false;
+        btn.innerHTML = oldHtml;
+      }
+    } catch (err) {
+      alert('發生網路異常: ' + err);
+      btn.disabled = false;
+      btn.innerHTML = oldHtml;
+    }
+  };
+
   btnSave.addEventListener('click', async () => {
     if (parsedItems.length === 0) return;
     
@@ -369,7 +424,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (data.success) {
         alert('{{ _("Successfully saved") }} ' + data.count + ' {{ _("records!") }}');
-        window.location.href = '{{ url_for("admin.list_singing_streams") }}' + window.location.search;
+        const params = new URLSearchParams(window.location.search);
+        let targetUrl = params.get('return_url') || '{{ return_url }}';
+        if (!targetUrl || targetUrl === '{{ url_for("admin.list_singing_streams") }}') {
+          const cached = sessionStorage.getItem('admin_singing_streams_last_url');
+          if (cached && cached.includes('/admin/singing_streams')) {
+            targetUrl = cached;
+          }
+        }
+        window.location.href = targetUrl || '{{ url_for("admin.list_singing_streams") }}';
       } else {
         alert('{{ _("Error:") }} ' + data.error);
         btnSave.disabled = false;

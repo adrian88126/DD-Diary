@@ -135,6 +135,8 @@
 * `POST /api/v1/diagnostics/merge-artists`：一鍵合併指定 ID 的重複歌手，並自動更新受影響歌曲的歌手外鍵。
 * `GET /admin/backup/export`：一鍵匯出下載當前完整 SQLite 資料庫檔案（`vtuber_songs_backup_<timestamp>.db`）。
 * `POST /admin/backup/import`：上傳還原 SQLite 資料庫檔案（multipart/form-data，欄位名 `backup_file`）。系統驗證 SQLite 檔頭後，自動建立安全快照備份並完成原子覆寫。
+* `POST /admin/videos/<id>/change_type`：就地變更影片類型（Payload: `{"video_type": "stream_other" | "short" | "cover_mv" | "original_mv" | "schedule"}`）。
+* `POST /admin/videos/bulk_change_type`：批次變更影片類型（Payload: `{"video_ids": [...], "video_type": "..."}`）。
 
 ---
 

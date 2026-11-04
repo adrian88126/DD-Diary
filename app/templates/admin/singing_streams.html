@@ -45,8 +45,11 @@
       <span>全選</span>
     </label>
     <span style="font-size: 0.85rem; color: var(--text-muted);">已選取 <strong id="selected-count" style="color: var(--primary);">0</strong> 部</span>
-    <button type="button" class="btn btn-sm btn-warning" id="bulk-short-btn" onclick="bulkConvertToShort()" disabled style="display: flex; align-items: center; gap: 5px;">
-      <i class="fa-solid fa-bolt"></i> 批次轉為 Short
+    <button type="button" class="btn btn-sm btn-secondary" id="bulk-other-btn" onclick="bulkChangeVideoType('stream_other', '一般直播/雜談')" disabled style="display: flex; align-items: center; gap: 5px;">
+      <i class="fa-solid fa-comments"></i> 批次轉為一般直播
+    </button>
+    <button type="button" class="btn btn-sm btn-warning" id="bulk-short-btn" onclick="bulkChangeVideoType('short', 'Short 短影音')" disabled style="display: flex; align-items: center; gap: 5px;">
+      <i class="fa-solid fa-mobile-screen"></i> 批次轉為 Short
     </button>
   </div>
 
@@ -90,15 +93,37 @@
         </td>
         <td>{{ v.published_at.strftime('%Y-%m-%d') if v.published_at else '-' }}</td>
         <td>
-          <div class="flex gap-2" style="justify-content: flex-end; flex-wrap: wrap;">
-            <!-- 一鍵轉為 Short 按鈕 -->
-            <button type="button" class="btn btn-sm btn-secondary btn-to-short" onclick="convertToShort('{{ v.video_id }}', this)" title="轉換為 Short 短影音">
-              <i class="fa-solid fa-mobile-screen"></i> 轉為 Short
-            </button>
-            <a href="{{ url_for('admin.video_timeline', id=v.video_id) }}" class="btn btn-sm btn-info" title="{{ _('Smart Timeline Parser') }}">
+          <div class="flex gap-2" style="justify-content: flex-end; flex-wrap: wrap; align-items: center;">
+            <!-- 變更分類按鈕組 (一鍵轉一般直播 + 下拉選單) -->
+            <div class="btn-group-type" style="display: inline-flex; border-radius: 6px; border: 1px solid var(--card-border); position: relative;">
+              <button type="button" class="btn btn-sm btn-secondary" style="border: none; border-radius: 6px 0 0 6px; display: inline-flex; align-items: center; gap: 4px;" onclick="changeVideoType('{{ v.video_id }}', 'stream_other', '一般直播/雜談', this)" title="一鍵移出歌回（轉為一般直播/純雜談）">
+                <i class="fa-solid fa-comments"></i> 轉一般直播
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary type-dropdown-toggle" style="border: none; border-left: 1px solid rgba(255,255,255,0.15); border-radius: 0 6px 6px 0; padding: 4px 8px;" onclick="toggleTypeMenu(this, event)" title="更多分類選項">
+                <i class="fa-solid fa-caret-down"></i>
+              </button>
+              <!-- 下拉浮動選單 -->
+              <div class="type-dropdown-menu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--card-bg, #1e293b); border: 1px solid var(--card-border, #334155); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 1000; min-width: 160px; padding: 4px 0;">
+                <a href="javascript:void(0)" class="type-menu-item" onclick="changeVideoType('{{ v.video_id }}', 'short', 'Short 短影音', this)">
+                  <i class="fa-solid fa-mobile-screen" style="width: 20px;"></i> 轉為 Short 短影音
+                </a>
+                <a href="javascript:void(0)" class="type-menu-item" onclick="changeVideoType('{{ v.video_id }}', 'cover_mv', '翻唱 MV', this)">
+                  <i class="fa-solid fa-music" style="width: 20px;"></i> 轉為 翻唱 MV
+                </a>
+                <a href="javascript:void(0)" class="type-menu-item" onclick="changeVideoType('{{ v.video_id }}', 'original_mv', '原創曲 MV', this)">
+                  <i class="fa-solid fa-compact-disc" style="width: 20px;"></i> 轉為 原創曲 MV
+                </a>
+                <a href="javascript:void(0)" class="type-menu-item" onclick="changeVideoType('{{ v.video_id }}', 'schedule', '行程週表', this)">
+                  <i class="fa-regular fa-calendar-days" style="width: 20px;"></i> 轉為 行程週表
+                </a>
+              </div>
+            </div>
+
+            <!-- 時間軸按鈕 -->
+            <a href="{{ url_for('admin.video_timeline', id=v.video_id, return_url=request.full_path) }}" class="btn btn-sm btn-info btn-timeline" title="{{ _('Smart Timeline Parser') }}">
               <i class="fa-solid fa-list-ol"></i> {{ _('Timeline') }}
             </a>
-            <a href="https://youtube.com/watch?v={{ v.video_id }}" target="_blank" class="btn btn-sm btn-outline"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://youtube.com/watch?v={{ v.video_id }}" target="_blank" class="btn btn-sm btn-outline" title="前往 YouTube"><i class="fa-brands fa-youtube"></i></a>
           </div>
         </td>
       </tr>
@@ -166,11 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sort) url.searchParams.set('sort', sort); else url.searchParams.delete('sort');
     window.history.replaceState({}, '', url.pathname + url.search);
     
-    // 4. 動態更新 Timeline 按鈕的 href 以帶上當前參數
-    tbody.querySelectorAll('a[title="Smart Timeline Parser"]').forEach(a => {
+    // 4. 動態更新 Timeline 按鈕的 href 以帶上當前完整返回路徑
+    const currentFullReturn = encodeURIComponent(window.location.pathname + window.location.search);
+    tbody.querySelectorAll('.btn-timeline').forEach(a => {
       const baseHref = a.getAttribute('href').split('?')[0];
-      a.setAttribute('href', baseHref + url.search);
+      a.setAttribute('href', `${baseHref}?return_url=${currentFullReturn}`);
     });
+    sessionStorage.setItem('admin_singing_streams_last_url', window.location.href);
 
     updateSelectedCount();
   }
@@ -199,13 +226,146 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateSelectedCount() {
   const checked = document.querySelectorAll('.row-cb:checked');
   const countSpan = document.getElementById('selected-count');
-  const bulkBtn = document.getElementById('bulk-short-btn');
+  const bulkShortBtn = document.getElementById('bulk-short-btn');
+  const bulkOtherBtn = document.getElementById('bulk-other-btn');
   if (countSpan) countSpan.textContent = checked.length;
-  if (bulkBtn) bulkBtn.disabled = checked.length === 0;
+  if (bulkShortBtn) bulkShortBtn.disabled = checked.length === 0;
+  if (bulkOtherBtn) bulkOtherBtn.disabled = checked.length === 0;
 }
 
-// 🚀 單筆一鍵轉為 Short
+// 展開 / 收合單筆分類下拉選單
+function toggleTypeMenu(btn, e) {
+  e.stopPropagation();
+  const menu = btn.parentElement.querySelector('.type-dropdown-menu');
+  const isOpen = menu.style.display === 'block';
+  // 關閉所有其他選單
+  document.querySelectorAll('.type-dropdown-menu').forEach(m => m.style.display = 'none');
+  menu.style.display = isOpen ? 'none' : 'block';
+}
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.type-dropdown-menu').forEach(m => m.style.display = 'none');
+});
+
+// 🚀 單筆一鍵變更分類 (轉為一般直播、Short、MV 或週表)
+async function changeVideoType(videoId, newType, typeLabel, btn) {
+  const row = document.getElementById(`row-${videoId}`);
+  const titleEl = row ? row.querySelector('.video-title') : null;
+  const title = titleEl ? titleEl.textContent.trim() : videoId;
+
+  if (!confirm(`確定要將《${title}》移出歌回列表，並改為「${typeLabel}」嗎？`)) {
+    return;
+  }
+
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 處理中...';
+
+  try {
+    const res = await fetch(`/admin/videos/${encodeURIComponent(videoId)}/change_type`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ video_type: newType })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      if (window.showToast) {
+        window.showToast(`已成功將《${title}》改為「${typeLabel}」！`, 'success');
+      } else {
+        alert(`已成功將《${title}》改為「${typeLabel}」！`);
+      }
+
+      // 平滑淡出並移除行
+      if (row) {
+        row.style.transition = 'all 0.3s ease';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(20px)';
+        setTimeout(() => {
+          row.remove();
+          updateSelectedCount();
+        }, 300);
+      }
+    } else {
+      alert('轉換失敗: ' + (data.error || '未知錯誤'));
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+  } catch (err) {
+    alert('發生網路異常: ' + err);
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+}
+
+// 🚀 批次變更分類 (批次轉一般直播 / 批次轉 Short)
+async function bulkChangeVideoType(newType, typeLabel) {
+  const checked = Array.from(document.querySelectorAll('.row-cb:checked'));
+  if (checked.length === 0) return alert('請先勾選要轉換的影片！');
+
+  const videoIds = checked.map(cb => cb.value);
+  if (!confirm(`確定要將選取的 ${videoIds.length} 部影片全部改為「${typeLabel}」並移出歌回嗎？`)) {
+    return;
+  }
+
+  const activeBtn = (newType === 'short') ? document.getElementById('bulk-short-btn') : document.getElementById('bulk-other-btn');
+  const originalHtml = activeBtn ? activeBtn.innerHTML : '';
+  if (activeBtn) {
+    activeBtn.disabled = true;
+    activeBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 批次處理中...';
+  }
+
+  try {
+    const res = await fetch('/admin/videos/bulk_change_type', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ video_ids: videoIds, video_type: newType })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      if (window.showToast) {
+        window.showToast(`已成功將 ${data.count} 部影片改為「${typeLabel}」！`, 'success');
+      } else {
+        alert(`已成功將 ${data.count} 部影片改為「${typeLabel}」！`);
+      }
+
+      // 平滑淡出並移除所有選取的行
+      videoIds.forEach(vid => {
+        const row = document.getElementById(`row-${vid}`);
+        if (row) {
+          row.style.transition = 'all 0.3s ease';
+          row.style.opacity = '0';
+          row.style.transform = 'translateX(20px)';
+          setTimeout(() => row.remove(), 300);
+        }
+      });
+
+      document.getElementById('select-all-cb').checked = false;
+      setTimeout(updateSelectedCount, 350);
+    } else {
+      alert('批次轉換失敗: ' + (data.error || '未知錯誤'));
+    }
+  } catch (err) {
+    alert('發生網路異常: ' + err);
+  } finally {
+    if (activeBtn) {
+      activeBtn.disabled = false;
+      activeBtn.innerHTML = originalHtml;
+    }
+  }
+}
+
+// 相容舊函式
 async function convertToShort(videoId, btn) {
+  return changeVideoType(videoId, 'short', 'Short 短影音', btn);
+}
+async function bulkConvertToShort() {
+  return bulkChangeVideoType('short', 'Short 短影音');
+}
+
+// 舊版函式開頭保留註解
+async function _legacy_unused(videoId, btn) {
   const row = document.getElementById(`row-${videoId}`);
   const titleEl = row ? row.querySelector('.video-title') : null;
   const title = titleEl ? titleEl.textContent.trim() : videoId;

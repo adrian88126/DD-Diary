@@ -224,6 +224,41 @@ def delete_video(id):
     flash('Video deleted successfully', 'success')
     return redirect_with_args('admin.list_videos')
 
+VALID_VIDEO_TYPES = {'stream_singing', 'stream_other', 'cover_mv', 'original_mv', 'short', 'schedule'}
+
+@admin_bp.route('/videos/<id>/change_type', methods=['POST'])
+def video_change_type(id):
+    data = request.get_json() or {}
+    new_type = data.get('video_type')
+    if not new_type or new_type not in VALID_VIDEO_TYPES:
+        return jsonify({"success": False, "error": f"Invalid video type: {new_type}"}), 400
+        
+    video = video_service.get_video(id)
+    if not video:
+        return jsonify({"success": False, "error": "Video not found"}), 404
+        
+    video_service.update_video(id, {"video_type": new_type})
+    return jsonify({"success": True, "video_id": id, "title": video.title, "video_type": new_type})
+
+@admin_bp.route('/videos/bulk_change_type', methods=['POST'])
+def bulk_change_type():
+    data = request.get_json() or {}
+    video_ids = data.get('video_ids', [])
+    new_type = data.get('video_type')
+    if not video_ids:
+        return jsonify({"success": False, "error": "No videos selected"}), 400
+    if not new_type or new_type not in VALID_VIDEO_TYPES:
+        return jsonify({"success": False, "error": f"Invalid video type: {new_type}"}), 400
+        
+    count = 0
+    for vid in video_ids:
+        v = video_service.get_video(vid)
+        if v:
+            video_service.update_video(vid, {"video_type": new_type})
+            count += 1
+            
+    return jsonify({"success": True, "count": count, "video_type": new_type})
+
 @admin_bp.route('/videos/<id>/convert_to_short', methods=['POST'])
 def video_convert_to_short(id):
     video = video_service.get_video(id)
@@ -292,7 +327,20 @@ def video_timeline(id):
         flash('Video not found', 'danger')
         return redirect_with_args('admin.list_videos')
     vtubers = vtuber_service.get_vtubers(skip=0, limit=1000)
-    return render_template('admin/timeline.html', video=video, all_singers=vtubers)
+    
+    return_url = request.args.get('return_url')
+    if not return_url and request.referrer and '/admin/' in request.referrer:
+        from urllib.parse import urlparse
+        p = urlparse(request.referrer)
+        return_url = p.path + ('?' + p.query if p.query else '')
+    if not return_url:
+        qs = request.query_string.decode('utf-8')
+        if qs and 'sort=' in qs:
+            return_url = f"{url_for('admin.list_singing_streams')}?{qs}"
+        else:
+            return_url = url_for('admin.list_singing_streams')
+
+    return render_template('admin/timeline.html', video=video, all_singers=vtubers, return_url=return_url)
 
 @admin_bp.route('/videos/<id>/timeline/save', methods=['POST'])
 def video_timeline_save(id):
