@@ -57,10 +57,19 @@ if %ERRORLEVEL% neq 0 (
 echo.
 echo [4/4] 正在推送至 GitHub 遠端儲存庫 (git push)...
 echo ------------------------------------------------------------
+set "RETRY_COUNT=0"
+:PUSH_RETRY
+set /a RETRY_COUNT+=1
 git push
 if %ERRORLEVEL% neq 0 (
+    if %RETRY_COUNT% lss 3 (
+        echo.
+        echo [!] 遭遇 GitHub 伺服器瞬斷 (第 %RETRY_COUNT%/3 次)，等待 5 秒後自動重試...
+        timeout /t 5 /nobreak >nul
+        goto PUSH_RETRY
+    )
     echo.
-    echo [!] 推送失敗！請檢查您的網路連線或 GitHub 存取權限。
+    echo [!] 推送失敗！若上方顯示 remote: Internal Server Error，代表 GitHub 官方伺服器目前異常中，請隔幾分鐘後再執行。
     echo.
     pause
     exit /b 1

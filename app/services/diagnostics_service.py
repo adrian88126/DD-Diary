@@ -130,13 +130,11 @@ def get_invalid_timestamp_records():
 # --- 4. 主播與影片資料完整性診斷 ---
 
 def get_incomplete_vtubers():
-    """缺少頻道 ID 或頭像的主播"""
+    """缺少頻道 ID 的主播 (頭像因版權考量為選填，不列入缺失)"""
     stmt = select(VTuber).where(
         or_(
             VTuber.youtube_channel_id == None,
-            VTuber.youtube_channel_id == '',
-            VTuber.avatar_url == None,
-            VTuber.avatar_url == ''
+            VTuber.youtube_channel_id == ''
         )
     ).order_by(VTuber.id.asc())
     return db.session.scalars(stmt).all()

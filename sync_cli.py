@@ -44,15 +44,23 @@ def should_exclude(vtuber: VTuber, exclude_ids: set, exclude_names: list) -> boo
                 
     return False
 
+# 預設排除已畢業主播 (不再有新影片更新)
+DEFAULT_EXCLUDED_VTUBERS = "星璃"
+
 def main():
     parser = argparse.ArgumentParser(description="Sync VTubers YouTube Channels from CLI.")
     parser.add_argument("--limit", type=str, default="ALL", help="Number of latest videos to fetch per VTuber. Default is ALL.")
-    parser.add_argument("--vtuber", type=int, help="Specific VTuber ID to sync. If not provided, syncs all VTubers.")
+    parser.add_argument("--vtuber", type=int, help="Specific VTuber ID to sync. If not provided, syncs all active VTubers.")
     parser.add_argument(
         "--exclude", "-x",
         type=str,
-        default="",
-        help="Exclude specific VTuber(s) by ID or name keyword (comma-separated, e.g. --exclude 7 or --exclude 星璃 or --exclude '7,星璃')."
+        default=DEFAULT_EXCLUDED_VTUBERS,
+        help="Exclude specific VTuber(s) by ID or name keyword (default: '星璃')."
+    )
+    parser.add_argument(
+        "--include-all",
+        action="store_true",
+        help="Include all VTubers without default exclusions."
     )
     
     args = parser.parse_args()
@@ -65,7 +73,13 @@ def main():
             print("Error: Limit must be 'ALL' or an integer.")
             sys.exit(1)
             
-    exclude_ids, exclude_names = parse_exclude_targets(args.exclude)
+    # 若未指定 --include-all 且未單獨指定 --vtuber，預設自動合併排除「星璃」
+    if args.include_all or args.vtuber:
+        raw_exclude = "" if args.include_all else (args.exclude if args.exclude != DEFAULT_EXCLUDED_VTUBERS else "")
+    else:
+        raw_exclude = f"{DEFAULT_EXCLUDED_VTUBERS},{args.exclude}" if args.exclude else DEFAULT_EXCLUDED_VTUBERS
+        
+    exclude_ids, exclude_names = parse_exclude_targets(raw_exclude)
             
     app = create_app()
     with app.app_context():

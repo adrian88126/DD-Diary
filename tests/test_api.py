@@ -14,12 +14,20 @@ def run_tests():
     print("🔍 [2/4] 開始後端 API、管理後台與全模組 CRUD 沙盒測試...")
     errors = []
 
+    import os
+    import shutil
+    db_path = os.path.abspath("vtuber_songs.db")
+    db_snapshot = db_path + ".test_bak"
+    if os.path.exists(db_path):
+        shutil.copy2(db_path, db_snapshot)
+
     app = create_app()
     app.config["TESTING"] = True
     app.config["LOGIN_DISABLED"] = True
     client = app.test_client()
 
-    with app.app_context():
+    try:
+      with app.app_context():
         # 1. 測試各個公開頁面、API 與管理後台頁面 (HTTP GET 必須為 200)
         endpoints = [
             "/",
@@ -222,5 +230,11 @@ def run_tests():
 
         db.session.remove()
         db.engine.dispose()
+    finally:
+        if os.path.exists(db_snapshot):
+            try:
+                shutil.move(db_snapshot, db_path)
+            except Exception:
+                pass
 
     return errors

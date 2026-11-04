@@ -310,6 +310,8 @@ def videos_sync_all():
     vtubers = vtuber_service.get_vtubers(skip=0, limit=1000)
     success_count = 0
     for v in vtubers:
+        if "星璃" in (v.name_main or "") or "星璃" in (v.name_zh or ""):
+            continue
         if v.youtube_channel_id:
             try:
                 youtube_service.sync_vtuber_youtube(v.id, limit=limit)

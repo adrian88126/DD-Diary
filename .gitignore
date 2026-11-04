@@ -17,3 +17,8 @@ scratch_*
 
 # Legacy Database
 vtsong.db
+
+# Environment & Database Backups
+.env
+backups/
+*.test_bak

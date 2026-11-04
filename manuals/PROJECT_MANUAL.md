@@ -104,7 +104,10 @@ VTSong_Database/
 * **手機版選單**：偵測並綁定 `.hamburger` 按鈕，點選時切換 `.nav-links` 的 `active` 狀態，控制抽屜開關。
 
 ### B. `app/static/js/share.js` (個人頁面核心行為)
-* **影音同步播放與智慧電台控制**：調用 YouTube IFrame API 播放器，監聽特定歌曲的時間戳記，提供點擊後即時跳轉到指定秒數的播放功能。
+* **影音同步播放、單曲直達分享與智慧電台控制**：
+  * 調用 YouTube IFrame API 播放器，監聽特定歌曲的時間戳記，提供點擊後即時跳轉到指定秒數的播放功能。
+  * **單曲直達分享連結 (`?play=影片ID&t=秒數`)**：播放器控制列提供「🔗 分享當前歌曲 (`shareCurrentSong`)」按鈕，一鍵複製帶有影片 ID 與秒數的專屬網址；任何人點開該網址即自動載入並跳轉播放該首歌曲片段。
+  * **歌單演唱次數統計、多維度排序與一鍵複製歌名**：歌單分頁 (`renderRepertoire`) 自動統計每首歌的累計演唱次數 (`🔥 X 次`) 與最近演唱日期，支援「最常演唱 / 最近演唱 / 歌名排序」切換，並提供「📋 複製歌名 (`copySongTitle`)」按鈕方便觀眾直接複製去直播間點歌。
 * **電台連續播放與隨機聽歌 (Radio Mode & Shuffle)**：
   * 支援背景連續自動播放模式（Autoplay Next），曲目結束自動平滑推進下一首歌。
   * 支援隨機聽歌（Shuffle Play），動態亂數選曲並記住已聽歷史防止重複。
@@ -145,9 +148,13 @@ VTSong_Database/
      * **資料庫備份與還原 (Database Backup & Restore)**：提供一鍵下載當前完整 SQLite 資料庫檔案 (`.db`)；支援一鍵上傳歷史備份檔還原，執行前系統會自動於 `backups/` 目錄建立安全快照，並自動重置連線確保資料完整。
 4. **YouTube 影片背景同步**：除了後台介面同步，亦可透過 CLI 腳本批次爬取：
    * 快速同步最新 5 部影片：`python sync_cli.py --limit 5`
-   * 排除特定主播（如已畢業的主播，支援名稱或 ID）：`python sync_cli.py --limit 5 --exclude 星璃` 或 `python sync_cli.py -x 7`
+   * 預設已自動排除畢業主播「星璃」（無需手動加參數）；若要額外排除其他主播：`python sync_cli.py --limit 5 --exclude 霓羊`（若需強制包含全體可加 `--include-all`）
    * 指定特定主播同步：`python sync_cli.py --vtuber <ID> --limit 10`
    * 完整同步所有主播全部影片：`python sync_cli.py`
 5. **終端機系統自檢與測試**：執行 `python run_tests.py --diagnose` 可在終端機直接印出全系統資料庫健康分析報告；執行 `python run_tests.py` 可跑完整自動化測試套件。
 6. **一鍵靜態打包**：資料庫有更新後，在本機終端機中執行 `python build_static.py`。生成出的雙語靜態網頁成品將會儲存於專案根目錄的 `docs/` 下，直接推送至 GitHub 即可利用 GitHub Pages 進行公開託管。
-7. **Windows 一鍵測試與發布腳本 (`test.bat` / `deploy.bat`)**：平時可雙擊 `test.bat` 執行全系統功能自檢；雙擊 `deploy.bat` 則會先自動執行全系統功能測試與雙語靜態打包（若測試未通過將自動攔截中止，防止錯誤版本上線），通過後自動提交 commit 與推送至 GitHub。
+7. **Windows 桌面雙擊工作流腳本 (`sync.bat` / `start.bat` / `test.bat` / `deploy.bat`)**：
+   * `sync.bat`：雙擊自動抓取各活躍主播最新 5 部 YouTube 影片（預設自動排除已畢業主播星璃）。
+   * `start.bat`：雙擊自動啟動本地 Flask 伺服器並開啟瀏覽器進入「歌回管理（最新排序）」頁面。
+   * `test.bat`：雙擊執行全系統 4 大模組自動化功能自檢。
+   * `deploy.bat`：雙擊先自動執行全系統功能測試與雙語靜態打包（未通過自動攔截），通過後提交 commit 並推送至 GitHub（內建 3 次自動重試機制）。

@@ -103,6 +103,9 @@
                         <button id="player-autoplay-btn" class="player-ctrl-btn toggle-ctrl active" onclick="toggleAutoplay()" title="連續播放 (Autoplay)">
                             <i class="fa-solid fa-repeat"></i>
                         </button>
+                        <button id="player-share-btn" class="player-ctrl-btn" onclick="shareCurrentSong()" title="複製當前歌曲直達播放連結">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -174,6 +177,14 @@
 
                     <!-- 分頁 2: 總歌單 -->
                     <div class="tab-pane" id="pane-requestable">
+                        <div class="video-filter-bar" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="btn btn-sm btn-outline active" onclick="sortRepertoire('count', this)"><i class="fa-solid fa-fire"></i> 最常演唱</button>
+                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('recent', this)"><i class="fa-solid fa-clock"></i> 最近演唱</button>
+                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('title', this)"><i class="fa-solid fa-arrow-down-a-z"></i> 歌名排序</button>
+                            </div>
+                            <span id="repertoire-total-badge" style="font-size: 13px; color: var(--text-muted);"></span>
+                        </div>
                         <div class="list-group" id="repertoire-list"></div>
                     </div>
 
@@ -1798,7 +1809,7 @@
         });
     </script>
     <script src="../../static/js/ui.js"></script>
-    <script src="../../static/js/share.js?v=9"></script>
+    <script src="../../static/js/share.js?v=10"></script>
 
     <!-- 🖼️ 高清圖片燈箱 Modal -->
     <div id="image-lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">

@@ -9,12 +9,14 @@ const records = window.recordsData || [];
 let currentTab = 'bio'; // 'bio' is default from HTML
 let searchQuery = '';
 let currentOtherVideoFilter = 'all';
+let currentRepertoireSort = 'count';
 
 function startShareApp() {
     initTabs();
     initSearch();
     if (typeof syncPlayerControlsUI === 'function') syncPlayerControlsUI();
     renderAll();
+    checkUrlAutoPlay();
 }
 
 if (document.readyState === 'loading') {
@@ -307,12 +309,34 @@ window.startRadioMode = () => {
 
 // YT API
 let ytPlayer = null;
+let pendingPlayRequest = null;
+
 window.onYouTubeIframeAPIReady = () => {
-    // Player will be created dynamically when a video is played
+    if (pendingPlayRequest) {
+        const req = pendingPlayRequest;
+        pendingPlayRequest = null;
+        window.playSong(req.videoId, req.timestamp, req.title, req.singer, req.fromRadio);
+    }
 };
 
-let currentPlaying = { videoId: '', timestamp: 0 };
+let currentPlaying = { videoId: '', timestamp: 0, title: '', singer: '' };
 window.playSong = (videoId, timestamp = 0, title = '', singer = '', fromRadio = false) => {
+    if (!videoId) return;
+    currentPlaying.videoId = videoId;
+    currentPlaying.timestamp = timestamp;
+    currentPlaying.title = title;
+    currentPlaying.singer = singer;
+
+    // Update player info bar immediately
+    const titleEl = document.getElementById('current-song-title');
+    const singerEl = document.getElementById('current-singer-name');
+    if (titleEl) titleEl.textContent = title || 'Unknown';
+    if (singerEl) singerEl.innerHTML = `<i class="fa-solid fa-user"></i> ${singer || 'Unknown'}`;
+
+    if (typeof YT === 'undefined' || !YT.Player) {
+        pendingPlayRequest = { videoId, timestamp, title, singer, fromRadio };
+        return;
+    }
     if (!fromRadio) {
         currentPlaylist = buildPlaylistForCurrentTab();
         const foundIdx = currentPlaylist.findIndex(p => p.videoId === videoId && Math.abs(p.timestamp - timestamp) < 2);
@@ -589,46 +613,173 @@ window.showCalendarVideos = (dateStr) => {
     modal.style.display = 'flex';
 };
 
+window.sortRepertoire = (sortMode, btn) => {
+    if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    currentRepertoireSort = sortMode;
+    renderRepertoire();
+};
+
+function copyTextWithFallback(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    }
+    return Promise.resolve(fallbackCopy(text));
+}
+
+function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+}
+
+window.copySongTitle = (event, title) => {
+    if (event) event.stopPropagation();
+    copyTextWithFallback(title).then(() => {
+        if (typeof showToast === 'function') {
+            showToast(`📋 已複製歌名：「${title}」！可直接貼至聊天室點歌`, 'success');
+        }
+    });
+};
+
+window.shareCurrentSong = () => {
+    if (!currentPlaying || !currentPlaying.videoId) {
+        if (typeof showToast === 'function') {
+            showToast('請先點選任一首歌曲開始播放，再複製分享連結！', 'warning');
+        }
+        return;
+    }
+    try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('play', currentPlaying.videoId);
+        url.searchParams.set('t', String(currentPlaying.timestamp || 0));
+        copyTextWithFallback(url.toString()).then(() => {
+            if (typeof showToast === 'function') {
+                showToast(`🔗 已複製「${currentPlaying.title || '當前歌曲'}」直達播放連結！`, 'success');
+            }
+        });
+    } catch (e) {
+        if (typeof showToast === 'function') {
+            showToast('複製連結失敗', 'error');
+        }
+    }
+};
+
+function checkUrlAutoPlay() {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const playVid = params.get('play') || params.get('v');
+        if (!playVid) return;
+        const playTs = parseInt(params.get('t') || '0', 10) || 0;
+
+        // Find matching record or video for title & artist display
+        let matchedRec = records.find(r => r.video_id === playVid && Math.abs((r.timestamp_seconds || 0) - playTs) <= 5);
+        if (!matchedRec) {
+            matchedRec = records.find(r => r.video_id === playVid);
+        }
+
+        let songTitle = '指定分享片段';
+        let singerName = vtuber.name_main || 'VTuber';
+
+        if (matchedRec && matchedRec.song) {
+            songTitle = matchedRec.song.title_main || songTitle;
+            if (matchedRec.song.artists && matchedRec.song.artists.length > 0) {
+                singerName = matchedRec.song.artists.map(a => a.name_main).join(', ');
+            }
+        } else {
+            const matchedVid = videos.find(v => v.video_id === playVid);
+            if (matchedVid) songTitle = matchedVid.title;
+        }
+
+        window.playSong(playVid, playTs, songTitle, singerName);
+    } catch (e) {
+        console.error('Failed to parse URL autoplay params', e);
+    }
+}
+
 function renderRepertoire() {
     const grid = document.getElementById('repertoire-list');
     if (!grid) return;
 
-    // Extract distinct songs
-    const uniqueSongs = new Map();
+    // Extract distinct songs along with singing count & latest sung record
+    const songStats = new Map();
     records.forEach(r => {
         if (!r.song) return;
-        if (!uniqueSongs.has(r.song.id)) {
-            uniqueSongs.set(r.song.id, r.song);
+        const sid = r.song.id;
+        const dateStr = (r.video && r.video.published_at) ? r.video.published_at.split('T')[0] : '';
+        if (!songStats.has(sid)) {
+            songStats.set(sid, {
+                song: r.song,
+                count: 1,
+                latestRecord: r,
+                latestDate: dateStr
+            });
+        } else {
+            const st = songStats.get(sid);
+            st.count += 1;
+            if (dateStr && (!st.latestDate || dateStr > st.latestDate)) {
+                st.latestDate = dateStr;
+                st.latestRecord = r;
+            }
         }
     });
 
-    let songs = Array.from(uniqueSongs.values());
+    let items = Array.from(songStats.values());
     if (searchQuery) {
-        songs = songs.filter(s => 
-            (s.title_main && s.title_main.toLowerCase().includes(searchQuery)) ||
-            (s.artists && s.artists.some(a => a.name_main.toLowerCase().includes(searchQuery)))
+        items = items.filter(it => 
+            (it.song.title_main && it.song.title_main.toLowerCase().includes(searchQuery)) ||
+            (it.song.artists && it.song.artists.some(a => a.name_main.toLowerCase().includes(searchQuery)))
         );
     }
 
-    grid.innerHTML = songs.map((song, idx) => {
+    if (currentRepertoireSort === 'count') {
+        items.sort((a, b) => (b.count - a.count) || (b.latestDate || '').localeCompare(a.latestDate || ''));
+    } else if (currentRepertoireSort === 'recent') {
+        items.sort((a, b) => (b.latestDate || '').localeCompare(a.latestDate || '') || (b.count - a.count));
+    } else if (currentRepertoireSort === 'title') {
+        items.sort((a, b) => (a.song.title_main || '').localeCompare(b.song.title_main || '', 'zh-Hant'));
+    }
+
+    const totalBadge = document.getElementById('repertoire-total-badge');
+    if (totalBadge) {
+        totalBadge.textContent = `共 ${items.length} 首歌曲`;
+    }
+
+    grid.innerHTML = items.map((it, idx) => {
+        const song = it.song;
         const artists = song.artists && song.artists.length > 0 
             ? song.artists.map(a => a.name_main).join(', ') 
             : _('Unknown');
-        const songRecord = records.find(r => r.song && r.song.id === song.id);
+        const songRecord = it.latestRecord;
         const videoId = songRecord && songRecord.video_id ? songRecord.video_id : '';
         const timestamp = songRecord ? songRecord.timestamp_seconds : 0;
+        const safeTitle = (song.title_main || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const safeArtists = artists.replace(/'/g, "\\'").replace(/"/g, '&quot;');
         
         return `
-            <div class="track-item" onclick="playSong('${videoId}', ${timestamp}, '${song.title_main.replace(/'/g, "\\'")}', '${artists.replace(/'/g, "\\'")}')">
+            <div class="track-item" onclick="playSong('${videoId}', ${timestamp}, '${safeTitle}', '${safeArtists}')">
                 <div class="track-index-wrapper">
                     <span class="track-index">${idx + 1}</span>
                     <span class="track-play-btn"><i class="fa-solid fa-play"></i></span>
                 </div>
                 <div class="track-info">
-                    <div style="font-size:15px; font-weight:500; color:var(--text-bright);">${song.title_main}</div>
-                    <div style="font-size:13px; color:var(--text-muted);">${artists}</div>
+                    <div style="font-size:15px; font-weight:500; color:var(--text-bright); display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <span>${song.title_main}</span>
+                        <span class="badge" style="background:rgba(139, 92, 246, 0.18); color:var(--vtuber-active-theme); font-size:11px; font-weight:600;" title="累計演唱次數 (最近演唱：${it.latestDate || '未知'})">🔥 ${it.count} 次</span>
+                    </div>
+                    <div style="font-size:13px; color:var(--text-muted);">${artists}${it.latestDate ? ` • 最近演唱：${it.latestDate}` : ''}</div>
                 </div>
-                <div style="text-align:right;">
+                <div style="text-align:right; display:flex; align-items:center; gap:8px;">
+                    <button type="button" class="btn-outline btn-sm" style="padding:4px 10px; font-size:12px; border-radius:14px; cursor:pointer; white-space:nowrap;" onclick="copySongTitle(event, '${safeTitle}')" title="複製歌名至剪貼簿 (方便去直播間點歌)">
+                        <i class="fa-regular fa-copy"></i> 複製歌名
+                    </button>
                     <span class="badge" style="background:rgba(255,255,255,0.1); font-size:11px;">${song.song_type || 'cover'}</span>
                 </div>
             </div>
