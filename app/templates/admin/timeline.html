@@ -162,18 +162,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const timeRegex = /(?:^|\s)((\d{1,2})[:：](\d{2})(?:[:：](\d{2}))?)(?=\s|$)/;
     
-    function applySplitRule(textStr, symbol, type) {
-      if (!symbol) return { text: textStr, extracted: '' };
+    function splitBySymbol(targetStr, symbol) {
+      if (!symbol || !targetStr) return { text: targetStr, extracted: '' };
       const escapedSym = symbol.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-      const regex = new RegExp(`\\s*${escapedSym}\\s+(.+)$`);
-      const match = textStr.match(regex);
+      const regex = new RegExp(`^(.*?)\\s*${escapedSym}\\s*(.+)$`);
+      const match = targetStr.match(regex);
       if (match) {
         return {
-          text: textStr.substring(0, match.index).trim(),
-          extracted: match[1].trim()
+          text: match[1].trim(),
+          extracted: match[2].trim()
         };
       }
-      return { text: textStr, extracted: '' };
+      return { text: targetStr, extracted: '' };
     }
     
     lines.forEach(line => {
@@ -197,24 +197,71 @@ document.addEventListener('DOMContentLoaded', () => {
         let songSinger = '';
         let songNote = '';
         
-        // 級聯切分 (連續套用兩個符號規則)
+        // 1. 套用符號 1 切分
         if (sym1) {
-          let split1 = applySplitRule(songTitle, sym1, type1);
-          songTitle = split1.text;
+          const split1 = splitBySymbol(songTitle, sym1);
           if (split1.extracted) {
+            songTitle = split1.text;
             if (type1 === 'singer') songSinger = split1.extracted;
             else if (type1 === 'note') songNote = split1.extracted;
           }
         }
         
+        // 2. 套用符號 2 切分 (全維度智慧檢查: 若符號 2 出現在歌手、備註或歌名中)
         if (sym2) {
-          let split2 = applySplitRule(songTitle, sym2, type2);
-          songTitle = split2.text;
-          if (split2.extracted) {
-            if (type2 === 'singer') songSinger = split2.extracted;
-            else if (type2 === 'note') songNote = split2.extracted;
+          if (songSinger && songSinger.includes(sym2)) {
+            const split2 = splitBySymbol(songSinger, sym2);
+            if (split2.extracted) {
+              songSinger = split2.text;
+              if (type2 === 'note') songNote = songNote ? `${songNote} ${split2.extracted}` : split2.extracted;
+              else if (type2 === 'singer') songSinger = split2.extracted;
+            }
+          } else if (songNote && songNote.includes(sym2)) {
+            const split2 = splitBySymbol(songNote, sym2);
+            if (split2.extracted) {
+              songNote = split2.text;
+              if (type2 === 'singer') songSinger = songSinger ? `${songSinger} ${split2.extracted}` : split2.extracted;
+            }
+          } else if (songTitle && songTitle.includes(sym2)) {
+            const parts = songTitle.split(sym2).map(p => p.trim()).filter(Boolean);
+            if (parts.length >= 3) {
+              songTitle = parts[0];
+              if (!songSinger) songSinger = parts[1];
+              if (!songNote) songNote = parts.slice(2).join(' - ');
+            } else {
+              const split2 = splitBySymbol(songTitle, sym2);
+              if (split2.extracted) {
+                songTitle = split2.text;
+                if (type2 === 'note') songNote = songNote ? `${songNote} ${split2.extracted}` : split2.extracted;
+                else if (type2 === 'singer') songSinger = songSinger ? `${songSinger} ${split2.extracted}` : split2.extracted;
+              }
+            }
           }
         }
+        
+        // 3. 智慧括號備註提取 (如 (降Key), （伴奏版）, [粵語], 【吉他彈唱】)
+        const bracketRegex = /[（\(\[【](.*?[^\)\]】])[）\)\]】]/;
+        if (songSinger) {
+          const bm = songSinger.match(bracketRegex);
+          if (bm) {
+            const extraNote = bm[1].trim();
+            songSinger = songSinger.replace(bracketRegex, '').trim();
+            songNote = songNote ? `${songNote} ${extraNote}` : extraNote;
+          }
+        }
+        if (songTitle) {
+          const bm = songTitle.match(bracketRegex);
+          if (bm) {
+            const extraNote = bm[1].trim();
+            songTitle = songTitle.replace(bracketRegex, '').trim();
+            songNote = songNote ? `${songNote} ${extraNote}` : extraNote;
+          }
+        }
+        
+        // 清理各欄位多餘頭尾符號
+        songTitle = songTitle.replace(/^[-/\\|、\s]+|[-/\\|、\s]+$/g, '').trim();
+        songSinger = songSinger.replace(/^[-/\\|、\s]+|[-/\\|、\s]+$/g, '').trim();
+        songNote = songNote.replace(/^[-/\\|、\s]+|[-/\\|、\s]+$/g, '').trim();
         
         if (songTitle && !isNaN(seconds)) {
           parsedItems.push({
@@ -227,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-    
     renderPreview();
   }
   
