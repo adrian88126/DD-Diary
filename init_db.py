@@ -1,26 +1,25 @@
 import sqlite3
 import os
 import sys
-from datetime import date
 
-# 強制輸出流為 UTF-8 以防 Windows 終端機 (CP950/Big5) 輸出日文字元時崩潰
+# 強制輸出流為 UTF-8 以防 Windows 終端機 (CP950/Big5) 輸出非 ASCII 字元時崩潰
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 DB_FILE = "vtuber_songs.db"
 
-def get_db_connection():
+def get_db_connection(db_file=DB_FILE):
     """建立資料庫連線並強制啟用外鍵約束"""
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(db_file)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
-def init_database():
+def init_database(db_file=DB_FILE):
     """初始化最新版資料表與索引 (不會刪除既有檔案)"""
-    print("正在檢查與初始化 SQLite 資料庫資料表...")
+    print(f"正在檢查與初始化 SQLite 資料庫資料表 ({db_file})...")
 
-    conn = get_db_connection()
+    conn = get_db_connection(db_file)
     cursor = conn.cursor()
 
     # 1. 建立 vtubers 表
@@ -71,11 +70,11 @@ def init_database():
     # 4. 建立 videos 表
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS videos (
-        video_id TEXT PRIMARY KEY,
-        title TEXT NOT NULL,
+        video_id VARCHAR NOT NULL PRIMARY KEY,
+        title VARCHAR NOT NULL,
         published_at DATE,
-        video_type TEXT CHECK(video_type IN ('stream_singing', 'stream_other', 'cover_mv', 'original_mv', 'other')),
-        thumbnail_url TEXT,
+        video_type VARCHAR NOT NULL,
+        thumbnail_url VARCHAR,
         vtuber_id INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (vtuber_id) REFERENCES vtubers(id) ON DELETE SET NULL
@@ -214,71 +213,119 @@ def init_database():
     conn.close()
     print("資料庫表與索引檢查及升級完成！")
 
-def seed_data():
-    """寫入增強型測試資料"""
-    print("\n正在寫入測試種子資料...")
-    conn = get_db_connection()
+def seed_data(db_file=DB_FILE, force=False):
+    """寫入現有資料庫精選真實種子資料 (含安全防呆)"""
+    print(f"\n正在準備寫入測試種子資料至 {db_file}...")
+    conn = get_db_connection(db_file)
     cursor = conn.cursor()
 
-    # 1. 寫入 VTubers 檔案 (包含新增「滔滔饕餮」以正確 Channel ID UC1yoRL7QUKx5HF3ZgGJ8tUA)
-    cursor.execute("""
-    INSERT INTO vtubers (id, name_main, name_ja, name_zh, name_romaji, description, youtube_channel_id)
-    VALUES 
-    (1, '滔滔饕餮', '滔滔饕餮', '滔滔饕餮', 'taotaotaotie', '個人勢 VTuber 滔滔饕餮。主要進行歌唱、雜談與遊戲直播。', 'UC1yoRL7QUKx5HF3ZgGJ8tUA'),
-    (2, '星街すいせい', '星街すいせい', '星街彗星', 'hoshimachi suisei', 'ホロライブ所屬的歌姬偶像。歌與俄羅斯方塊是她的代名詞。', 'UC5CwaMx1GE3haFdeuz0t1Mw'),
-    (3, 'さくらみこ', 'さくらみこ', '櫻巫女', 'sakura miko', 'ホロライブ所屬的櫻花巫女。雖然總是笨手笨腳，但非常拼命！', 'UC-hM6YJuNYVAmUWxeBid9tw')
-    """)
-    taotao_id = 1
-    suisei_id = 2
-    miko_id = 3
+    # 安全防呆：如果資料庫已有 VTuber 資料且未傳入 force，則不覆蓋或硬塞重疊 ID
+    cursor.execute("SELECT count(*) AS cnt FROM vtubers;")
+    existing_count = cursor.fetchone()["cnt"]
+    if existing_count > 0 and not force:
+        print(f"⚠️ 資料庫目前已有 {existing_count} 筆 VTuber 資料，為保護資料完整性已略過重複寫入。")
+        print("💡 如需全新初始化空白資料庫，請於獨立或空白 db 執行。")
+        conn.close()
+        return
 
-    # 2. 寫入 VTuber 社群連結
+    # 1. 寫入現有代表性 VTuber 資料 (滔滔饕餮、星璃、祿菈唄爾、霓羊)
+    vtubers_data = [
+        (1, '滔滔饕餮 TaotaoTaotie Ch.', '滔滔饕餮', '滔滔饕餮', 'taotaotaotie ch',
+         '༺  滔滔・饕餮 Taotao ༻\n哇哈，本王滔滔🥢💚\n本滔可是上古之獸饕餮，主要進行歌唱、雜談與遊戲直播。',
+         'UC1yoRL7QUKx5HF3ZgGJ8tUA', None, '#00E676', None,
+         '[{"platform":"YouTube","url":"https://www.youtube.com/@taotaotaotie"},{"platform":"Twitch","url":"https://www.twitch.tv/taotietaotao"},{"platform":"Twitter","url":"https://twitter.com/taotaotaotie"},{"platform":"link","url":"https://lit.link/zh-tw/taotaotaotie"}]',
+         'https://img.youtube.com/vi/y3Vyg3nOsFA/maxresdefault.jpg'),
+        (7, 'Seri ch.星璃', '星璃', '星璃', 'seri ch',
+         '大家好~我是Reverie的星璃せリ(𝓢𝓮𝓻𝓲)。來自於遙遠的霹靂星星，平常會開歌回、遊戲、雜談！',
+         'UCkiM6bCVlAGRkRm9R_CKbng', None, '#a78bfa', None, None,
+         'https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg'),
+        (8, '祿菈唄爾 LLB ch.', None, None, 'llb ch',
+         '𝄞 雙聲系唱詩班少年 ᛝ 個人勢 Vtuber ₊ ⛪︎\n主要進行音樂、遊戲、雜談與配音。',
+         'UCn1yfWxwtlWyXV4aqrkYGqw', None, '#9f77b2', None,
+         '[{"platform":"YouTube","url":"https://www.youtube.com/@lullabye_V"},{"platform":"Twitch","url":"https://www.twitch.tv/lullabye_v"},{"platform":"Twitter","url":"https://twitter.com/lullabye_v"},{"platform":"Instagram","url":"https://www.instagram.com/lullabye_v/"},{"platform":"link","url":"https://lit.link/zh-tw/lullabye_V"}]',
+         'https://img.youtube.com/vi/aod7bQXBoFk/maxresdefault.jpg'),
+        (32, 'Neon Ch. 霓羊', '', '霓羊', 'neon_ch',
+         '♡ 霓羊 𝑁𝐸𝑂𝑁 ⋆ ₊ ☽ ·˚𓍲 個人勢 𝑉𝑇𝑢𝑏𝑒𝑟 ✧ 來自異界裂縫的魔王大人 ✧',
+         'UC03HOcCi3AI5ZNV8TLjobTw', '', '#8a5adb', '', '', '')
+    ]
+    cursor.executemany("""
+    INSERT INTO vtubers (id, name_main, name_ja, name_zh, name_romaji, description, youtube_channel_id, avatar_url, theme_color, banner_url, social_links, schedule_image_url)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, vtubers_data)
+
+    # 2. 寫入 VTuber 社群連結 (vtuber_links)
     links_data = [
-        (suisei_id, 'X_Twitter', 'https://x.com/suisei_hosimati'),
-        (suisei_id, 'YouTube', 'https://www.youtube.com/@HoshimachiSuisei'),
-        (miko_id, 'X_Twitter', 'https://x.com/sakuramiko35'),
-        (miko_id, 'YouTube', 'https://www.youtube.com/@SakuraMiko'),
-        (taotao_id, 'YouTube', 'https://www.youtube.com/@taotaotaotie')
+        (1, 'YouTube', 'https://www.youtube.com/@taotaotaotie'),
+        (1, 'Twitch', 'https://www.twitch.tv/taotietaotao'),
+        (1, 'Twitter', 'https://twitter.com/taotaotaotie'),
+        (1, 'link', 'https://lit.link/zh-tw/taotaotaotie'),
+        (8, 'YouTube', 'https://www.youtube.com/@lullabye_V'),
+        (8, 'Twitch', 'https://www.twitch.tv/lullabye_v'),
+        (8, 'Twitter', 'https://twitter.com/lullabye_v'),
+        (8, 'Instagram', 'https://www.instagram.com/lullabye_v/'),
+        (8, 'link', 'https://lit.link/zh-tw/lullabye_V')
     ]
     cursor.executemany("""
     INSERT INTO vtuber_links (vtuber_id, platform, url)
     VALUES (?, ?, ?)
     """, links_data)
 
-    # 3. 寫入 活動與成就里程碑
+    # 3. 寫入活動與里程碑 (activities)
     activities_data = [
-        (suisei_id, 'YouTube 頻道訂閱數突破 100 萬！', '達成金色盾牌里程碑，感謝星詠者們的支持！', '2021-06-26', 'https://x.com/suisei_hosimati/status/1408712345678901248', 'milestone'),
-        (suisei_id, '首張個人專輯《Still Still Stellar》發售', '收錄包含 Stellar Stellar, GHOST 等多首名曲。', '2021-09-29', 'https://x.com/suisei_hosimati/status/1443123456789012345', 'announcement'),
-        (miko_id, 'YouTube 頻道訂閱數突破 100 萬！', '櫻巫女終於達成百萬訂閱，開心的唱歌回慶祝！', '2022-04-20', 'https://x.com/sakuramiko35/status/1516712345678901248', 'milestone'),
-        (suisei_id, '登上 YouTube 頻道 THE FIRST TAKE', '演唱《Stellar Stellar》，成為首位登上該頻道的虛擬偶像！', '2023-01-20', 'https://x.com/suisei_hosimati/status/1616401234567890123', 'milestone')
+        (1, '滔滔饕餮初配信!', None, '2026-01-11', None, 'milestone'),
+        (1, '收益化慶祝！ 也是首次台詞回！', None, '2026-02-06', 'https://x.com/taotaotaotie/status/2020036679214723416?s=20', 'x_post'),
+        (1, 'YT突破1.7萬訂閱', None, '2026-07-11', None, 'milestone'),
+        (7, '星璃 畢業', '星璃 正式畢業', '2026-09-30', None, 'milestone')
     ]
     cursor.executemany("""
     INSERT INTO activities (vtuber_id, title, description, event_date, link_url, activity_type)
     VALUES (?, ?, ?, ?, ?, ?)
     """, activities_data)
 
-    # 4. 寫入 Videos
+    # 4. 寫入代表性剪輯師 (clip_authors)
+    authors_data = [
+        (1, '夜之翼', 'UCKz-yZ6Ps6PYtmFiZ8mYHVg', 'https://www.youtube.com/channel/UCKz-yZ6Ps6PYtmFiZ8mYHVg'),
+        (2, '鎧鎧', 'UC5WDYPjtSapqzEkuJldA3hg', 'https://www.youtube.com/channel/UC5WDYPjtSapqzEkuJldA3hg')
+    ]
+    cursor.executemany("""
+    INSERT INTO clip_authors (id, name, youtube_channel_id, channel_url)
+    VALUES (?, ?, ?, ?)
+    """, authors_data)
+
+    # 5. 寫入真實 Videos
     videos_data = [
-        ("eA3tPksZ5G4", "【3D LIVE】STELLAR into the GALAXY【#星街すいせい1stソロライブ】", "2021-10-21", "stream_singing", None, suisei_id),
-        ("w8y01s9Jc9A", "【歌枠】お休み前的まったりアニソンボカロ歌枠にぇ！【さくらみこ】", "2023-05-15", "stream_singing", None, miko_id),
-        ("y_8dF01M0aY", "【Minecraft】エリート巫女のマイクラ生活にぇ！【さくらみこ】", "2023-05-16", "stream_other", None, miko_id),
-        ("9y6tH23jK21", "【MV】フォニイ / 星街すいせい(Cover)", "2021-12-05", "cover_mv", None, suisei_id),
-        ("dQw4w9WgXcQ", "星街すいせい - Stellar Stellar / THE FIRST TAKE", "2023-01-20", "original_mv", None, suisei_id)
+        ("WpnNLN4uHqg", "〚滔歌一曲〛煮酒烹茶，今夜與君話古風🥢💚｜滔滔饕餮Taotao", "2026-11-04", "stream_singing", "https://img.youtube.com/vi/WpnNLN4uHqg/mqdefault.jpg", 1),
+        ("J0KXZh09Zsw", "〚滔滔不絕〛什麼！你出軌？你做這些就是出軌了...｜滔滔饕餮Taotao🥢💚", "2026-11-04", "stream_other", "https://img.youtube.com/vi/J0KXZh09Zsw/mqdefault.jpg", 1),
+        ("y3Vyg3nOsFA", "〚周表快報〛這週...為什麼也有恐遊！但是有酷酷的麥塊企劃可以期待一下！挖礦挖起來！", "2028-01-01", "schedule", "https://img.youtube.com/vi/y3Vyg3nOsFA/mqdefault.jpg", 1),
+        ("ROiVjjQrd8g", "【午後練歌】有點小感冒但還是來聊聊天!! 山羌點數兌換開啟~【星璃Seri Vtuber】#歌雜", "2026-02-21", "stream_singing", "https://img.youtube.com/vi/ROiVjjQrd8g/mqdefault.jpg", 7),
+        ("eFT0Cfkpd_Q", "【畢業直播】地球人嗎?謝謝你們！【星璃Seri Vtuber】", "2026-09-30", "stream_other", "https://i2.ytimg.com/vi/eFT0Cfkpd_Q/hqdefault.jpg", 7),
+        ("7Ol8QgEfDEc", "【週表表週表Schedule】𝟎𝟖/𝟎𝟑-𝟎𝟖/𝟎𝟗 這週是要回霹靂星星ㄉ一週【星璃Seri Vtuber】", "2027-01-01", "schedule", "https://img.youtube.com/vi/7Ol8QgEfDEc/mqdefault.jpg", 7),
+        ("w7Yq0fFahGs", "【歌回】這個夏天的故事不會結束。 ₊⛪︎ 祿菈唄爾 LLB", "2026-08-11", "stream_singing", "https://img.youtube.com/vi/w7Yq0fFahGs/mqdefault.jpg", 8),
+        ("KyfpLlwZvbI", "【雜談】你說萬聖節過了？不管啦…！期間限定合作開跑啦！ ₊⛪︎ 祿菈唄爾 LLB", "2026-10-31", "stream_other", "https://img.youtube.com/vi/KyfpLlwZvbI/mqdefault.jpg", 8),
+        ("aod7bQXBoFk", "⋮ 🎼; 周表 ⤷ 7/20 - 7/26 .ᐟ w9", "2027-05-23", "schedule", "https://img.youtube.com/vi/aod7bQXBoFk/mqdefault.jpg", 8),
+        ("fDPD8V_AHUg", "Magical Lights / 《異環》娜娜莉EP ELLY.K Cover by 霓羊NEON", "2026-11-03", "stream_singing", "https://img.youtube.com/vi/fDPD8V_AHUg/mqdefault.jpg", 32),
+        ("PEUM4YSP-7o", "✮⋆˙ ꒰ 𝑵𝑬𝑶𝑵 霓羊二周年紀念 ꒱⁺˚⑅✩ 實況紀錄", "2026-08-20", "stream_other", "https://img.youtube.com/vi/PEUM4YSP-7o/mqdefault.jpg", 32),
+        ("k_RNaBQZFn4", "岩石裡的花 #cover #歌ってみた #好想見到霓 #vtuber #neon #霓羊 #翻唱", "2026-09-10", "short", "https://img.youtube.com/vi/k_RNaBQZFn4/mqdefault.jpg", 32)
     ]
     cursor.executemany("""
     INSERT INTO videos (video_id, title, published_at, video_type, thumbnail_url, vtuber_id)
     VALUES (?, ?, ?, ?, ?, ?)
     """, videos_data)
 
-    # 5. 寫入 Songs
+    # 6. 寫入代表性歌曲 (Songs)
     songs_data = [
-        ("Stellar Stellar", "Stellar Stellar", "Stellar Stellar", "stellar stellar", "original"),
-        ("GHOST", "GHOST", "GHOST", "ghost", "original"),
-        ("アイドル", "アイドル", "偶像", "idol", "cover"),
-        ("フォニイ", "フォニイ", "Phony", "phony", "cover"),
-        ("3:12", "3:12", "3:12", "san juuni", "original")
+        ("貪餮之王", "貪餮之王", "貪餮之王", "tan tie zhi wang", "original"),
+        ("琴師", "琴師", "琴師", "qin shi", "cover"),
+        ("石楠小札", "石楠小札", "石楠小札", "shi nan xiao zha", "cover"),
+        ("芊芊", "芊芊", "芊芊", "qian qian", "cover"),
+        ("故夢", "故夢", "故夢", "gu meng", "cover"),
+        ("免我蹉跎苦", "免我蹉跎苦", "免我蹉跎苦", "mian wo cuo tuo ku", "cover"),
+        ("再見的時候", "再見的時候", "再見的時候", "zai jian de shi hou", "cover"),
+        ("ディスコミュ星人", "ディスコミュ星人", "社交障礙星人", "disukomyu seijin", "cover"),
+        ("愛你", "愛你", "愛你", "ai ni", "cover"),
+        ("失落的記憶", "失落的記憶", "失落的記憶", "lost memory", "cover"),
+        ("與浪之間", "與浪之間", "與浪之間", "waves", "cover")
     ]
-    
     song_ids = {}
     for song in songs_data:
         cursor.execute("""
@@ -287,128 +334,184 @@ def seed_data():
         """, song)
         song_ids[song[0]] = cursor.lastrowid
 
-    # 6. 寫入 Artists
+    # 7. 寫入歌手 (Artists)
     artists_data = [
-        ("星街すいせい", "星街すいせい", "星街彗星", "hoshimachi suisei"),
-        ("さくらみこ", "さくらみこ", "櫻巫女", "sakura miko"),
-        ("YOASOBI", "YOASOBI", "YOASOBI", "yoasobi"),
-        ("ツミキ", "ツミキ", "Tsumiki", "tsumiki"),
-        ("TAKU INOUE", "TAKU INOUE", "井上拓", "taku inoue")
+        ("滔滔饕餮", "滔滔饕餮", "滔滔饕餮", "taotaotaotie"),
+        ("雙笙", "雙笙", "雙笙", "shuang sheng"),
+        ("蔡翊昇", "蔡翊昇", "蔡翊昇", "cai yi sheng"),
+        ("回音哥", "回音哥", "回音哥", "echo"),
+        ("黄龄", "黄龄", "黃齡", "huang ling"),
+        ("洪佩瑜", "洪佩瑜", "洪佩瑜", "hong pei yu"),
+        ("ナナヲアカリ", "ナナヲアカリ", "Nanawoakari", "nanawoakari"),
+        ("王心凌", "王心凌", "王心凌", "cyndi wang"),
+        ("Jin", "Jin", "Jin", "jin"),
+        ("Vast&Hazy", "Vast&Hazy", "Vast&Hazy", "vast and hazy")
     ]
-    cursor.executemany("""
-    INSERT INTO artists (name_main, name_ja, name_zh, name_romaji)
-    VALUES (?, ?, ?, ?)
-    """, artists_data)
-    
-    art_suisei = 1
-    art_miko = 2
-    art_yoasobi = 3
-    art_tsumiki = 4
-    art_taku = 5
+    artist_ids = {}
+    for art in artists_data:
+        cursor.execute("""
+        INSERT INTO artists (name_main, name_ja, name_zh, name_romaji)
+        VALUES (?, ?, ?, ?)
+        """, art)
+        artist_ids[art[0]] = cursor.lastrowid
 
-    # 7. 建立 Song-Artist 多對多
+    # 8. 建立 Song-Artist 多對多關聯 (song_artists)
     song_artists_data = [
-        (song_ids["Stellar Stellar"], art_suisei),
-        (song_ids["GHOST"], art_suisei),
-        (song_ids["アイドル"], art_yoasobi),
-        (song_ids["フォニイ"], art_tsumiki),
-        (song_ids["3:12"], art_taku),
-        (song_ids["3:12"], art_suisei)
+        (song_ids["貪餮之王"], artist_ids["滔滔饕餮"]),
+        (song_ids["琴師"], artist_ids["雙笙"]),
+        (song_ids["石楠小札"], artist_ids["蔡翊昇"]),
+        (song_ids["芊芊"], artist_ids["回音哥"]),
+        (song_ids["故夢"], artist_ids["雙笙"]),
+        (song_ids["免我蹉跎苦"], artist_ids["黄龄"]),
+        (song_ids["再見的時候"], artist_ids["洪佩瑜"]),
+        (song_ids["ディスコミュ星人"], artist_ids["ナナヲアカリ"]),
+        (song_ids["愛你"], artist_ids["王心凌"]),
+        (song_ids["失落的記憶"], artist_ids["Jin"]),
+        (song_ids["與浪之間"], artist_ids["Vast&Hazy"])
     ]
     cursor.executemany("""
     INSERT INTO song_artists (song_id, artist_id)
     VALUES (?, ?)
     """, song_artists_data)
 
-    # 8. 標記 VTuber 點歌歌單 (requestable)
-    signature_data = [
-        (suisei_id, song_ids["Stellar Stellar"], "requestable"),
-        (suisei_id, song_ids["GHOST"], "requestable"),
-        (suisei_id, song_ids["フォニイ"], "requestable"),
-        (suisei_id, song_ids["3:12"], "requestable"),
-        (miko_id, song_ids["アイドル"], "requestable"),
-        (miko_id, song_ids["フォニイ"], "requestable")
+    # 9. 標記 VTuber 點歌歌單 (vtuber_songs: requestable)
+    vtuber_songs_data = [
+        (1, song_ids["貪餮之王"], "requestable"),
+        (1, song_ids["琴師"], "requestable"),
+        (1, song_ids["石楠小札"], "requestable"),
+        (1, song_ids["芊芊"], "requestable"),
+        (1, song_ids["故夢"], "requestable"),
+        (7, song_ids["再見的時候"], "requestable"),
+        (7, song_ids["ディスコミュ星人"], "requestable"),
+        (7, song_ids["愛你"], "requestable"),
+        (8, song_ids["失落的記憶"], "requestable"),
+        (32, song_ids["與浪之間"], "requestable")
     ]
     cursor.executemany("""
     INSERT INTO vtuber_songs (vtuber_id, song_id, association_type)
     VALUES (?, ?, ?)
-    """, signature_data)
+    """, vtuber_songs_data)
 
-    # 9. 寫入 Singing Records
+    # 10. 寫入真實演唱紀錄 (singing_records)
     records_data = [
-        (1, song_ids["Stellar Stellar"], "eA3tPksZ5G4", 200, "1st Solo Live Version"),
-        (2, song_ids["GHOST"], "eA3tPksZ5G4", 1500, None),
-        (3, song_ids["アイドル"], "eA3tPksZ5G4", 2800, "Feat. Sakura Miko Collab Duet"),
-        (4, song_ids["アイドル"], "w8y01s9Jc9A", 1250, "Miko Solo Cover"),
-        (5, song_ids["フォニイ"], "9y6tH23jK21", 0, "Official MV Release"),
-        (6, song_ids["Stellar Stellar"], "dQw4w9WgXcQ", 0, "THE FIRST TAKE live recording")
+        (1, song_ids["琴師"], "WpnNLN4uHqg", 7752, None),
+        (2, song_ids["石楠小札"], "WpnNLN4uHqg", 6402, None),
+        (3, song_ids["貪餮之王"], "WpnNLN4uHqg", 1200, "原創曲現場版"),
+        (4, song_ids["再見的時候"], "ROiVjjQrd8g", 5812, None),
+        (5, song_ids["ディスコミュ星人"], "ROiVjjQrd8g", 5095, None),
+        (6, song_ids["愛你"], "ROiVjjQrd8g", 6460, None),
+        (7, song_ids["失落的記憶"], "w7Yq0fFahGs", 6787, None),
+        (8, song_ids["與浪之間"], "fDPD8V_AHUg", 350, None)
     ]
     cursor.executemany("""
     INSERT INTO singing_records (id, song_id, video_id, timestamp_seconds, note)
     VALUES (?, ?, ?, ?, ?)
     """, records_data)
 
-    # 10. 建立演唱紀錄與 VTuber 的多對多聯結
+    # 11. 建立演唱紀錄與 VTuber 多對多聯結 (record_vtubers)
     record_vtubers_data = [
-        (1, suisei_id),
-        (2, suisei_id),
-        (3, suisei_id),
-        (3, miko_id),
-        (4, miko_id),
-        (5, suisei_id),
-        (6, suisei_id)
+        (1, 1),
+        (2, 1),
+        (3, 1),
+        (4, 7),
+        (5, 7),
+        (6, 7),
+        (7, 8),
+        (8, 32)
     ]
     cursor.executemany("""
     INSERT INTO record_vtubers (record_id, vtuber_id)
     VALUES (?, ?)
     """, record_vtubers_data)
 
+    # 12. 寫入精選切片 (clips & clip_vtubers)
+    clips_data = [
+        (1, "gxoEyc4L5h8", "【滔滔饕餮｜歌回剪輯】芊芊", "歌唱", 1, song_ids["芊芊"]),
+        (2, "OUa_xiolJ_I", "【滔滔饕餮&舒穆祿梅緋｜歌回剪輯】故夢", "歌唱", 1, song_ids["故夢"]),
+        (3, "h1MxDz5fSxw", "【滔滔饕餮&舒穆祿梅緋｜歌回剪輯】免我蹉跎苦 ( 蓮藕臭豆腐 )", "歌唱", 1, song_ids["免我蹉跎苦"]),
+        (4, "s71N-57OJ8o", "【滔滔饕餮｜歌回剪輯】貪餮之王", "歌唱", 1, song_ids["貪餮之王"])
+    ]
+    cursor.executemany("""
+    INSERT INTO clips (id, video_id, title, tags, author_id, song_id)
+    VALUES (?, ?, ?, ?, ?, ?)
+    """, clips_data)
+
+    clip_vtubers_data = [
+        (1, 1),
+        (2, 1),
+        (3, 1),
+        (4, 1)
+    ]
+    cursor.executemany("""
+    INSERT INTO clip_vtubers (clip_id, vtuber_id)
+    VALUES (?, ?)
+    """, clip_vtubers_data)
+
     conn.commit()
     conn.close()
-    print("測試種子資料寫入成功！")
+    print("現有代表性種子資料寫入成功！")
 
-def verify_relations():
-    """執行 JOIN 查詢以驗證多對多關係與新功能"""
+def verify_relations(db_file=DB_FILE):
+    """執行 JOIN 查詢以驗證真實 VTuber 資料關聯"""
     print("\n" + "="*50)
-    print("開始執行最新版資料庫關聯性驗證...")
+    print(f"開始執行最新版資料庫關聯性驗證 ({db_file})...")
     print("="*50)
-    
-    conn = get_db_connection()
+
+    conn = get_db_connection(db_file)
     cursor = conn.cursor()
 
-    # 驗證 2：已廢棄常駐拿手歌單，跳過此驗證。
-
-    # 驗證 3：查詢「星街彗星」的點歌歌單 (requestable)
-    print("\n[驗證 3] 查詢 VTuber「星街彗星」的點歌歌單：")
+    # 驗證 1：查詢 VTuber「滔滔饕餮」的點歌歌單 (requestable)
+    print("\n[驗證 1] 查詢 VTuber「滔滔饕餮」的點歌歌單：")
     cursor.execute("""
-    SELECT v.name_main AS vtuber_name, s.title_main, s.song_type
+    SELECT v.name_main AS vtuber_name, s.title_main, s.song_type, a.name_main AS artist_name
     FROM vtubers v
     JOIN vtuber_songs vs ON v.id = vs.vtuber_id
     JOIN songs s ON vs.song_id = s.id
-    WHERE v.name_main = '星街すいせい' AND vs.association_type = 'requestable';
+    LEFT JOIN song_artists sa ON s.id = sa.song_id
+    LEFT JOIN artists a ON sa.artist_id = a.id
+    WHERE v.id = 1 AND vs.association_type = 'requestable';
     """)
     rows = cursor.fetchall()
     for row in rows:
-        print(f"  - VTuber: {row['vtuber_name']} | 點歌歌單: {row['title_main']} ({row['song_type']})")
+        print(f"  - VTuber: {row['vtuber_name']} | 點歌歌單: {row['title_main']} ({row['song_type']}) | 原唱: {row['artist_name']}")
 
-    # 驗證 4：驗證影片與發布主播的關聯
-    print("\n[驗證 4] 查詢星街すいせい頻道所屬的所有影片與直播紀錄：")
+    # 驗證 2：查詢「星璃」的活動大事紀與畢業紀錄
+    print("\n[驗證 2] 查詢 VTuber「星璃」的活動大事紀：")
     cursor.execute("""
-    SELECT v.name_main AS vtuber_name, vi.video_id, vi.title, vi.video_type
-    FROM videos vi
-    JOIN vtubers v ON vi.vtuber_id = v.id
-    WHERE v.name_main = '星街すいせい';
+    SELECT v.name_main, act.title, act.event_date, act.activity_type
+    FROM activities act
+    JOIN vtubers v ON act.vtuber_id = v.id
+    WHERE v.id = 7
+    ORDER BY act.event_date DESC;
     """)
     rows = cursor.fetchall()
     for row in rows:
-        print(f"  - 影片ID: {row['video_id']} | 類型: {row['video_type']} | 標題: {row['title']}")
+        print(f"  - 主播: {row['name_main']} | 事件: {row['title']} ({row['event_date']}, {row['activity_type']})")
 
-    # 驗證 5：驗證新成員「滔滔饕餮」寫入
-    print("\n[驗證 5] 查詢新成員「滔滔饕餮」的基本資料與頻道 ID：")
-    cursor.execute("SELECT name_main, youtube_channel_id, description FROM vtubers WHERE name_main='滔滔饕餮';")
-    row = cursor.fetchone()
-    if row:
-        print(f"  - 主播: {row['name_main']} | 頻道ID: {row['youtube_channel_id']} | 簡介: {row['description']}")
+    # 驗證 3：驗證全體主播及其影片數量
+    print("\n[驗證 3] 統計目前資料庫中各主播的影片登錄數量：")
+    cursor.execute("""
+    SELECT v.id, v.name_main, count(vi.video_id) AS video_count
+    FROM vtubers v
+    LEFT JOIN videos vi ON v.id = vi.vtuber_id
+    GROUP BY v.id, v.name_main
+    ORDER BY v.id;
+    """)
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f"  - ID: {row['id']} | 主播: {row['name_main']} | 影片數: {row['video_count']} 部")
+
+    # 驗證 4：驗證精選切片與剪輯師關聯
+    print("\n[驗證 4] 查詢精選切片與剪輯師、標記歌曲關聯：")
+    cursor.execute("""
+    SELECT c.title AS clip_title, ca.name AS author_name, s.title_main AS song_title
+    FROM clips c
+    LEFT JOIN clip_authors ca ON c.author_id = ca.id
+    LEFT JOIN songs s ON c.song_id = s.id;
+    """)
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f"  - 切片: {row['clip_title']} | 剪輯師: {row['author_name']} | 歌曲: {row['song_title']}")
 
     conn.close()
 
@@ -416,4 +519,4 @@ if __name__ == "__main__":
     init_database()
     seed_data()
     verify_relations()
-    print("\n增強版資料庫初始化與多功能驗證全部順利完成！")
+    print("\n現有代表性 VTuber 資料庫初始化與多功能驗證全部順利完成！")
