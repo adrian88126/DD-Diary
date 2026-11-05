@@ -43,8 +43,8 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Main Theme & Share Profile Styling -->
-    <link rel="stylesheet" href="../../static/css/base.css">
-    <link rel="stylesheet" href="../../static/css/share.css?v=7">
+    <link rel="stylesheet" href="../../static/css/base.css?v=13">
+    <link rel="stylesheet" href="../../static/css/share.css?v=13">
     
     <style>
         :root {
@@ -62,30 +62,34 @@
 
         <!-- Sidebar -->
         <aside class="app-sidebar" id="app-sidebar">
-            <div class="sidebar-header">
-                <a href="../../index.html" class="back-btn">
-                    <i class="fa-solid fa-arrow-left"></i> <span class="tab-text">返回大廳</span>
-                </a>
-                <div class="sidebar-vtuber-info">
+            <div class="sidebar-drawer">
+                <div class="sidebar-header">
+                    <a href="../../index.html" class="back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> <span class="tab-text">返回大廳</span>
+                    </a>
+                    <div class="sidebar-vtuber-info">
+                        
+                            <div class="sidebar-avatar-emblem" aria-hidden="true"></div>
+                        
+                        <div class="sidebar-name">Seri ch.星璃</div>
+                        <div class="sidebar-sub-name">星璃 | 星璃</div>
+                    </div>
+                </div>
+
+                <div class="tabs fade-in stagger-1 sidebar-nav">
+                    <div class="tab-item active" id="tab-link-bio" onclick="switchTab('bio')"><i class="fa-solid fa-user" style="width:20px;"></i> <span class="tab-text">總覽</span></div>
+                    <div class="tab-item" id="tab-link-requestable" onclick="switchTab('requestable')"><i class="fa-solid fa-list" style="width:20px;"></i> <span class="tab-text">歌單</span></div>
+                    <div class="tab-item" id="tab-link-singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone" style="width:20px;"></i> <span class="tab-text">歌回紀錄</span></div>
+                    <div class="tab-item" id="tab-link-live" onclick="switchTab('live')"><i class="fa-solid fa-video" style="width:20px;"></i> <span class="tab-text">其他影片</span></div>
+                    <div class="tab-item" id="tab-link-history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> <span class="tab-text">歌回時間軸</span></div>
+                    <div class="tab-item" id="tab-link-mv" onclick="switchTab('mv')"><i class="fa-solid fa-film" style="width:20px;"></i> <span class="tab-text">音樂影片</span></div>
                     
-                    <div class="sidebar-name">Seri ch.星璃</div>
-                    <div class="sidebar-sub-name">星璃 | 星璃</div>
                 </div>
             </div>
 
-            <div class="tabs fade-in stagger-1 sidebar-nav">
-                <div class="tab-item active" id="tab-link-bio" onclick="switchTab('bio')"><i class="fa-solid fa-user" style="width:20px;"></i> <span class="tab-text">總覽</span></div>
-                <div class="tab-item" id="tab-link-requestable" onclick="switchTab('requestable')"><i class="fa-solid fa-list" style="width:20px;"></i> <span class="tab-text">歌單</span></div>
-                <div class="tab-item" id="tab-link-singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone" style="width:20px;"></i> <span class="tab-text">歌回紀錄</span></div>
-                <div class="tab-item" id="tab-link-live" onclick="switchTab('live')"><i class="fa-solid fa-video" style="width:20px;"></i> <span class="tab-text">其他影片</span></div>
-                <div class="tab-item" id="tab-link-history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> <span class="tab-text">歌回時間軸</span></div>
-                <div class="tab-item" id="tab-link-mv" onclick="switchTab('mv')"><i class="fa-solid fa-film" style="width:20px;"></i> <span class="tab-text">音樂影片</span></div>
-                
-            </div>
-
-            <div class="player-card-wrapper sidebar-player">
-                <div class="player-card">
-                    <button id="floating-toggle-btn" class="floating-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="最小化 / 展開播放器">
+            <div class="player-card-wrapper sidebar-player" id="player-card-wrapper">
+                <div class="player-card" id="player-card">
+                    <button id="floating-toggle-btn" class="floating-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="最小化 / 展開影片畫面">
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <div class="iframe-wrapper">
@@ -97,9 +101,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="player-info-bar">
-                        <div class="player-song-title" id="current-song-title">尚未開始播放</div>
-                        <div class="player-singer-name" id="current-singer-name"><i class="fa-solid fa-user"></i> -</div>
+                    <div class="player-info-bar" onclick="onMobilePlayerBarClick(event)">
+                        <div class="player-info-text">
+                            <div class="player-song-title" id="current-song-title">尚未開始播放</div>
+                            <div class="player-singer-name" id="current-singer-name"><i class="fa-solid fa-user"></i> 點擊歌單或隨機電台開始聽歌</div>
+                        </div>
+                        <button type="button" class="mobile-video-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="展開 / 收合影片畫面">
+                            <i class="fa-solid fa-tv"></i> <span class="mobile-video-toggle-label">展開畫面</span>
+                        </button>
                     </div>
                     <div class="player-controls-bar">
                         <button id="player-prev-btn" class="player-ctrl-btn" onclick="playPrevSong()" title="上一首">
@@ -134,9 +143,26 @@
             <div class="hero-gradient"></div>
             
             <nav class="mobile-navbar">
-                <button class="hamburger-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
-                <div class="mobile-nav-title">Seri ch.星璃</div>
+                <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="開啟選單"><i class="fa-solid fa-bars"></i></button>
+                <div class="mobile-nav-brand">
+                    <span class="mobile-nav-emblem" aria-hidden="true"></span>
+                    <span class="mobile-nav-title">Seri ch.星璃</span>
+                </div>
+                <a href="../../index.html" class="mobile-home-btn" title="返回大廳">
+                    <i class="fa-solid fa-house"></i>
+                </a>
             </nav>
+
+            <!-- 手機版專屬：快速滑動分頁膠囊列 -->
+            <div class="mobile-tabs-bar" id="mobile-tabs-bar">
+                <button type="button" class="mobile-tab-pill active" data-tab="bio" onclick="switchTab('bio')"><i class="fa-solid fa-user"></i> 總覽</button>
+                <button type="button" class="mobile-tab-pill" data-tab="requestable" onclick="switchTab('requestable')"><i class="fa-solid fa-list"></i> 常駐歌單</button>
+                <button type="button" class="mobile-tab-pill" data-tab="singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone"></i> 歌回直播</button>
+                <button type="button" class="mobile-tab-pill" data-tab="history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> 歌唱紀錄</button>
+                <button type="button" class="mobile-tab-pill" data-tab="live" onclick="switchTab('live')"><i class="fa-solid fa-video"></i> 其他直播</button>
+                <button type="button" class="mobile-tab-pill" data-tab="mv" onclick="switchTab('mv')"><i class="fa-solid fa-film"></i> MV</button>
+                
+            </div>
 
             
 
@@ -213,9 +239,9 @@
                     <div class="tab-pane" id="pane-requestable">
                         <div class="video-filter-bar" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <button class="btn btn-sm btn-outline active" onclick="sortRepertoire('count', this)"><i class="fa-solid fa-fire"></i> 最常演唱</button>
-                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('recent', this)"><i class="fa-solid fa-clock"></i> 最近演唱</button>
-                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('title', this)"><i class="fa-solid fa-arrow-down-a-z"></i> 歌名排序</button>
+                                <button class="btn btn-sm btn-outline active" onclick="sortRepertoire('count', this)">最常演唱</button>
+                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('recent', this)">最近演唱</button>
+                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('title', this)">歌名排序</button>
                             </div>
                             <span id="repertoire-total-badge" style="font-size: 13px; color: var(--text-muted);"></span>
                         </div>
@@ -341,7 +367,7 @@
         });
     </script>
     <script src="../../static/js/ui.js"></script>
-    <script src="../../static/js/share.js?v=10"></script>
+    <script src="../../static/js/share.js?v=13"></script>
 
     <!-- 🖼️ 高清圖片燈箱 Modal -->
     <div id="image-lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">
