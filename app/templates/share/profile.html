@@ -27,8 +27,8 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Main Theme & Share Profile Styling -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=13">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/share.css') }}?v=13">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=14">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/share.css') }}?v=14">
     
     <style>
         :root {
@@ -56,8 +56,6 @@
                     <div class="sidebar-vtuber-info">
                         {% if vtuber.avatar_url %}
                             <img src="{{ vtuber.avatar_url }}" alt="{{ vtuber.name_main }}" class="profile-avatar sidebar-avatar">
-                        {% else %}
-                            <div class="sidebar-avatar-emblem" aria-hidden="true"></div>
                         {% endif %}
                         <div class="sidebar-name">{{ vtuber.name_main }}</div>
                         <div class="sidebar-sub-name">{{ vtuber.name_ja }} {% if vtuber.name_zh %}| {{ vtuber.name_zh }}{% endif %}</div>
@@ -135,7 +133,6 @@
             <nav class="mobile-navbar">
                 <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="開啟選單"><i class="fa-solid fa-bars"></i></button>
                 <div class="mobile-nav-brand">
-                    <span class="mobile-nav-emblem" aria-hidden="true"></span>
                     <span class="mobile-nav-title">{{ vtuber.name_main }}</span>
                 </div>
                 <a href="{{ url_for('main.lobby') }}" class="mobile-home-btn" title="返回大廳">
@@ -173,7 +170,7 @@
                             <i class="fa-solid fa-radio"></i> 隨機電台聽歌
                         </button>
                         <button id="export-excel-btn" onclick="exportToExcel()" class="btn-export">
-                            <i class="fa-solid fa-file-excel" style="color: #217346;"></i> 匯出 Excel
+                            <i class="fa-solid fa-file-csv"></i> 匯出 Excel
                         </button>
                     </div>
                 </div>
@@ -406,7 +403,7 @@
         });
     </script>
     <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/share.js') }}?v=13"></script>
+    <script src="{{ url_for('static', filename='js/share.js') }}?v=14"></script>
 
     <!-- 🖼️ 高清圖片燈箱 Modal -->
     <div id="image-lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">

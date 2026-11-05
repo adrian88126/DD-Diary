@@ -76,43 +76,33 @@
 .sidebar-vtuber-info {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-top: var(--spacing-sm);
+  align-items: flex-start;
+  text-align: left;
+  margin-top: 4px;
+  padding-left: 12px;
+  border-left: 3px solid var(--vtuber-active-theme, var(--primary));
 }
 
 .sidebar-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--vtuber-active-theme, var(--primary));
-  margin-bottom: var(--spacing-sm);
-}
-
-.sidebar-avatar-placeholder,
-.sidebar-avatar-emblem {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, var(--vtuber-active-theme, var(--primary)), rgba(15, 23, 42, 0.85));
-  border: 2.5px solid var(--vtuber-active-theme, var(--primary));
+  object-fit: cover;
+  border: 2px solid var(--vtuber-active-theme, var(--primary));
   margin-bottom: var(--spacing-sm);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
 }
 
 .sidebar-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin-bottom: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--text-bright, var(--text-color));
+  letter-spacing: -0.3px;
+  margin-bottom: 2px;
 }
 
 .sidebar-sub-name {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
@@ -297,26 +287,37 @@
   box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
 }
 
-/* Radio Mode Button */
+/* Radio Mode Button (Obsidian Glass) */
 .btn-radio-mode {
-  background: linear-gradient(135deg, var(--vtuber-active-theme, #8b5cf6), #4f46e5);
-  color: #fff;
-  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-bright, #fff);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 20px;
-  padding: 8px 16px;
+  padding: 9px 18px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-  transition: all 0.2s ease;
+  transition: all 0.22s ease;
+}
+
+.btn-radio-mode i {
+  color: var(--vtuber-active-theme, var(--primary));
+  transition: color 0.22s ease;
 }
 
 .btn-radio-mode:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.45);
-  filter: brightness(1.1);
+  transform: translateY(-1px);
+  background: var(--vtuber-active-theme, var(--primary));
+  border-color: transparent;
+  color: #09070f;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.btn-radio-mode:hover i {
+  color: #09070f;
 }
 
 /* Track item active/playing state */
@@ -410,26 +411,24 @@
 }
 
 /* ==========================================================================
-   🎵 Tracklist Styles (Spotify-like) & Leaderboard
+   🎵 Tracklist Styles (Apple Music Obsidian Glass) & Minimalist Leaderboard
    ========================================================================== */
 .track-item {
   display: flex;
   align-items: center;
-  padding: 10px 16px;
+  padding: 11px 16px;
   border-radius: 10px;
-  border: 1px solid transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   border-left: 3px solid transparent;
-  background-color: rgba(255, 255, 255, 0.02);
-  transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  background-color: transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
   gap: 8px;
 }
 .track-item:hover {
-  background-color: rgba(255, 255, 255, 0.075);
-  border-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.05);
   border-left-color: var(--vtuber-active-theme, var(--primary));
-  transform: translateX(2px);
 }
 .track-info {
   flex: 1;
@@ -443,6 +442,46 @@
   gap: 8px;
   text-align: right;
 }
+.track-count-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.track-copy-btn {
+  padding: 4px 11px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+.track-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--text-bright, #fff);
+}
+.track-type-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
 .track-index-wrapper {
   position: relative;
   width: 32px;
@@ -455,9 +494,10 @@
 }
 .track-index {
   color: var(--text-muted);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  opacity: 0.7;
 }
 .track-play-btn {
   position: absolute;
@@ -475,7 +515,7 @@
   opacity: 1;
 }
 
-/* TOP 5 Leaderboard Bars */
+/* Minimalist Monochrome TOP 5 Leaderboard */
 #top-songs-list,
 #top-artists-list {
   list-style: none;
@@ -483,22 +523,22 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .leaderboard-item {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-color);
-  overflow: hidden;
+  gap: 12px;
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 13.5px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  border-radius: 6px;
+}
+
+.leaderboard-item:last-child {
+  border-bottom: none;
 }
 
 .leaderboard-item.clickable {
@@ -506,79 +546,40 @@
 }
 
 .leaderboard-item.clickable:hover {
-  transform: translateX(3px);
-  border-color: var(--vtuber-active-theme, var(--primary));
-}
-
-.leaderboard-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: linear-gradient(90deg, var(--vtuber-active-theme, var(--primary)), transparent);
-  opacity: 0.14;
-  pointer-events: none;
-  z-index: 0;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .leaderboard-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   min-width: 0;
   flex: 1;
-  position: relative;
-  z-index: 1;
 }
 
-.rank-badge {
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11.5px;
-  font-weight: 800;
+.rank-num {
   font-family: 'Outfit', sans-serif;
-  flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.08);
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   color: var(--text-muted);
-}
-
-.rank-badge.rank-1 {
-  background: linear-gradient(135deg, #fbbf24, #d97706);
-  color: #09070f;
-  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.35);
-}
-
-.rank-badge.rank-2 {
-  background: linear-gradient(135deg, #e2e8f0, #94a3b8);
-  color: #09070f;
-}
-
-.rank-badge.rank-3 {
-  background: linear-gradient(135deg, #fdba74, #b45309);
-  color: #09070f;
+  opacity: 0.65;
+  width: 20px;
+  flex-shrink: 0;
 }
 
 .leaderboard-title {
   color: var(--text-bright, var(--text-color));
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .leaderboard-count {
-  position: relative;
-  z-index: 1;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--vtuber-active-theme, var(--primary));
-  background: rgba(255, 255, 255, 0.06);
-  padding: 2px 8px;
-  border-radius: 12px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
@@ -870,21 +871,24 @@
 }
 
 .btn-export {
-  padding: 10px 20px;
+  padding: 9px 18px;
+  font-size: 13.5px;
   border-radius: 20px;
-  border: 1px solid var(--border-color);
-  background-color: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.04);
   color: var(--text-color);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 
 .btn-export:hover {
-  background-color: var(--border-color);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-bright, #fff);
 }
 
 /* --- Tab Panes --- */
@@ -916,20 +920,33 @@
   box-shadow: var(--shadow-md);
 }
 
-/* --- Bio Profile Section --- */
-.bio-profile-section {
+/* --- Bio Profile Section & Cards (Obsidian Specular Glass) --- */
+.bio-profile-section,
+.stat-card,
+.schedule-section,
+.timeline-card,
+.calendar-container-card {
   background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bio-profile-section {
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
   text-align: center;
 }
 
 .bio-title {
-  font-size: 1.8rem;
-  margin-bottom: 8px;
-  color: var(--text-color);
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+  color: var(--text-bright, var(--text-color));
 }
 
 .social-links-container {
@@ -979,25 +996,26 @@
 }
 
 .stat-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
 }
 
 .stat-card h4 {
   margin-top: 0;
-  margin-bottom: 16px;
-  color: var(--text-color);
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+  color: var(--text-bright, var(--text-color));
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+.stat-card h4 i {
+  color: var(--vtuber-active-theme, var(--primary));
+  font-size: 0.9rem;
+}
+
 .schedule-section {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
@@ -1036,10 +1054,8 @@
   gap: var(--spacing-lg);
 }
 
-.timeline-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
+.timeline-card,
+.calendar-container-card {
   padding: var(--spacing-lg);
 }
 

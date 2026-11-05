@@ -53,8 +53,8 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Main Theme & Share Profile Styling -->
-    <link rel="stylesheet" href="../../../static/css/base.css?v=13">
-    <link rel="stylesheet" href="../../../static/css/share.css?v=13">
+    <link rel="stylesheet" href="../../../static/css/base.css?v=14">
+    <link rel="stylesheet" href="../../../static/css/share.css?v=14">
     
     <style>
         :root {
@@ -78,8 +78,6 @@
                         <i class="fa-solid fa-arrow-left"></i> <span class="tab-text">Back to Lobby</span>
                     </a>
                     <div class="sidebar-vtuber-info">
-                        
-                            <div class="sidebar-avatar-emblem" aria-hidden="true"></div>
                         
                         <div class="sidebar-name">祿菈唄爾 LLB ch.</div>
                         <div class="sidebar-sub-name">None </div>
@@ -155,7 +153,6 @@
             <nav class="mobile-navbar">
                 <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="開啟選單"><i class="fa-solid fa-bars"></i></button>
                 <div class="mobile-nav-brand">
-                    <span class="mobile-nav-emblem" aria-hidden="true"></span>
                     <span class="mobile-nav-title">祿菈唄爾 LLB ch.</span>
                 </div>
                 <a href="../../index.html" class="mobile-home-btn" title="返回大廳">
@@ -188,7 +185,7 @@
                             <i class="fa-solid fa-radio"></i> 隨機電台聽歌
                         </button>
                         <button id="export-excel-btn" onclick="exportToExcel()" class="btn-export">
-                            <i class="fa-solid fa-file-excel" style="color: #217346;"></i> 匯出 Excel
+                            <i class="fa-solid fa-file-csv"></i> 匯出 Excel
                         </button>
                     </div>
                 </div>
@@ -382,7 +379,7 @@
         });
     </script>
     <script src="../../../static/js/ui.js"></script>
-    <script src="../../../static/js/share.js?v=13"></script>
+    <script src="../../../static/js/share.js?v=14"></script>
 
     <!-- 🖼️ 高清圖片燈箱 Modal -->
     <div id="image-lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">

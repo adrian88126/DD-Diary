@@ -483,7 +483,7 @@ function renderCurrentTab() {
 }
 
 function renderBio() {
-    // 1. Top Songs (Leaderboard with Rank Badges & Progress Bar)
+    // 1. Top Songs (Minimalist Monochrome Leaderboard)
     const topSongsList = document.getElementById('top-songs-list');
     if (topSongsList) {
         const songCounts = {};
@@ -497,12 +497,10 @@ function renderBio() {
             }
         });
         const sortedSongs = Object.entries(songCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
-        const maxSongCount = sortedSongs.length > 0 ? sortedSongs[0][1] : 1;
         topSongsList.innerHTML = sortedSongs.map((s, idx) => {
             const title = s[0];
             const count = s[1];
-            const pct = Math.max(12, Math.round((count / maxSongCount) * 100));
-            const rankClass = idx < 3 ? `rank-${idx + 1}` : '';
+            const numStr = String(idx + 1).padStart(2, '0');
             const rec = songSampleRecord[title];
             const safeTitle = (title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const artists = (rec && rec.song && rec.song.artists && rec.song.artists.length > 0)
@@ -512,18 +510,17 @@ function renderBio() {
             const clickHandler = rec ? `onclick="playSong('${rec.video_id}', ${rec.timestamp_seconds || 0}, '${safeTitle}', '${safeArtists}')"` : '';
             return `
                 <li class="leaderboard-item ${rec ? 'clickable' : ''}" ${clickHandler} title="${rec ? '點擊直接播放此代表作' : ''}">
-                    <div class="leaderboard-bar" style="width:${pct}%;"></div>
                     <div class="leaderboard-left">
-                        <span class="rank-badge ${rankClass}">${idx + 1}</span>
+                        <span class="rank-num">${numStr}</span>
                         <span class="leaderboard-title">${title}</span>
                     </div>
-                    <span class="leaderboard-count"><i class="fa-solid fa-microphone-lines" style="font-size:10px; margin-right:3px;"></i>${count} ${_('times')}</span>
+                    <span class="leaderboard-count">${count} ${_('times')}</span>
                 </li>
             `;
         }).join('') || `<li style="color:var(--text-muted); font-size:12px;">${_('No data')}</li>`;
     }
 
-    // 1.5 Top Artists (Leaderboard with Rank Badges & Progress Bar)
+    // 1.5 Top Artists (Minimalist Monochrome Leaderboard)
     const topArtistsList = document.getElementById('top-artists-list');
     if (topArtistsList) {
         const artistCounts = {};
@@ -535,18 +532,15 @@ function renderBio() {
             });
         });
         const sortedArtists = Object.entries(artistCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
-        const maxArtistCount = sortedArtists.length > 0 ? sortedArtists[0][1] : 1;
         topArtistsList.innerHTML = sortedArtists.map((s, idx) => {
             const artistName = s[0];
             const count = s[1];
-            const pct = Math.max(12, Math.round((count / maxArtistCount) * 100));
-            const rankClass = idx < 3 ? `rank-${idx + 1}` : '';
+            const numStr = String(idx + 1).padStart(2, '0');
             const safeArtist = (artistName || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             return `
                 <li class="leaderboard-item clickable" onclick="filterByArtistFromBio('${safeArtist}')" title="點擊查看該原唱歌手的所有翻唱歌曲">
-                    <div class="leaderboard-bar" style="width:${pct}%;"></div>
                     <div class="leaderboard-left">
-                        <span class="rank-badge ${rankClass}">${idx + 1}</span>
+                        <span class="rank-num">${numStr}</span>
                         <span class="leaderboard-title">${artistName}</span>
                     </div>
                     <span class="leaderboard-count">${count} ${_('times')}</span>
@@ -843,17 +837,17 @@ function renderRepertoire() {
                     <span class="track-play-btn"><i class="fa-solid fa-play"></i></span>
                 </div>
                 <div class="track-info">
-                    <div style="font-size:15px; font-weight:500; color:var(--text-bright); display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <div style="font-size:15px; font-weight:600; color:var(--text-bright); display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                         <span>${song.title_main}</span>
-                        <span class="badge" style="background:rgba(139, 92, 246, 0.18); color:var(--vtuber-active-theme); font-size:11px; font-weight:600;" title="累計演唱次數 (最近演唱：${it.latestDate || '未知'})"><i class="fa-solid fa-microphone-lines" style="font-size:10px; margin-right:3px;"></i>${it.count} 次</span>
+                        <span class="track-count-badge" title="累計演唱次數 (最近演唱：${it.latestDate || '未知'})"><i class="fa-solid fa-microphone-lines" style="font-size:10px; margin-right:3px; opacity:0.8;"></i>${it.count} 次</span>
                     </div>
-                    <div style="font-size:13px; color:var(--text-muted);">${artists}${it.latestDate ? ` • 最近演唱：${it.latestDate}` : ''}</div>
+                    <div style="font-size:13px; color:var(--text-muted);">${artists}${it.latestDate ? ` · 最近演唱：${it.latestDate}` : ''}</div>
                 </div>
                 <div class="track-actions">
-                    <button type="button" class="btn-outline btn-sm" style="padding:4px 10px; font-size:12px; border-radius:14px; cursor:pointer; white-space:nowrap;" onclick="copySongTitle(event, '${safeTitle}')" title="複製歌名至剪貼簿 (方便去直播間點歌)">
+                    <button type="button" class="track-copy-btn" onclick="copySongTitle(event, '${safeTitle}')" title="複製歌名至剪貼簿 (方便去直播間點歌)">
                         <i class="fa-regular fa-copy"></i> 複製歌名
                     </button>
-                    <span class="badge" style="background:rgba(255,255,255,0.1); font-size:11px;">${song.song_type || 'cover'}</span>
+                    <span class="track-type-badge">${song.song_type || 'cover'}</span>
                 </div>
             </div>
         `;
