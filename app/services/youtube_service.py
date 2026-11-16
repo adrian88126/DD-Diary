@@ -327,7 +327,12 @@ def fetch_single_channel_info(url_or_id: str) -> Optional[dict]:
         pass
     return None
 
-def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: Optional[int] = None) -> list:
+def scrape_youtube_channel_videos(
+    channel_id: str,
+    tab: str = "streams",
+    limit: Optional[int] = None,
+    known_video_ids: Optional[set] = None
+) -> list:
     url = f"https://www.youtube.com/channel/{channel_id}/{tab}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -475,8 +480,15 @@ def scrape_youtube_channel_videos(channel_id: str, tab: str = "streams", limit: 
 
     parse_lockup_view_model(content_node)
     
+    def _should_stop_pagination() -> bool:
+        if not known_video_ids:
+            return False
+        known_hits = sum(1 for v in videos if v["video_id"] in known_video_ids)
+        threshold = min(3, len(known_video_ids))
+        return known_hits >= threshold
+
     page = 1
-    while continuation_token and api_key and (limit is None or len(videos) < limit):
+    while continuation_token and api_key and (limit is None or len(videos) < limit) and not _should_stop_pagination():
         time.sleep(0.3)
         browse_url = f"https://www.youtube.com/youtubei/v1/browse?key={api_key}"
         post_data = {
@@ -716,13 +728,19 @@ def scrape_youtube_playlist_videos(playlist_url_or_id: str, limit: Optional[int]
 def sync_vtuber_youtube(
     vtuber_id: int,
     limit: Optional[int] = None,
-    tab: str = "streams"
+    tab: str = "streams",
+    force_full: bool = False
 ):
     db_vtuber = get_vtuber(vtuber_id)
     if not db_vtuber:
         raise ValueError("VTuber not found")
     if not db_vtuber.youtube_channel_id:
         raise ValueError("此主播尚未設定 YouTube Channel ID，無法執行同步爬取！")
+
+    existing_vtuber_videos = db.session.scalars(
+        select(Video).where(Video.vtuber_id == vtuber_id)
+    ).all()
+    known_video_ids = None if force_full else {v.video_id for v in existing_vtuber_videos if v.video_id}
         
     rss_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={db_vtuber.youtube_channel_id}"
     
@@ -781,11 +799,11 @@ def sync_vtuber_youtube(
 
     scraped_videos = []
     if tab == "all":
-        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, "streams", limit))
-        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, "videos", limit))
-        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, "shorts", limit))
+        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, "streams", limit, known_video_ids=known_video_ids))
+        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, "videos", limit, known_video_ids=known_video_ids))
+        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, "shorts", limit, known_video_ids=known_video_ids))
     else:
-        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, tab, limit))
+        scraped_videos.extend(scrape_youtube_channel_videos(db_vtuber.youtube_channel_id, tab, limit, known_video_ids=known_video_ids))
         
     all_videos_map = {}
     
@@ -829,7 +847,12 @@ def sync_vtuber_youtube(
         pub_date = v_info["published_at"]
         is_approx = v_info.get("is_approximate", False)
 
-        if pub_date is None or is_approx:
+        db_video = db.session.scalars(select(Video).where(Video.video_id == vid)).first()
+
+        # 智慧省流：若資料庫已有該影片且已有確切發布日期，非強制全抓模式下直接沿用資料庫日期，不重複下載觀看頁 HTML
+        if db_video and db_video.published_at and not force_full:
+            pub_date = db_video.published_at
+        elif pub_date is None or is_approx:
             exact_date = fetch_exact_youtube_date_helper(vid)
             if exact_date:
                 pub_date = exact_date
@@ -849,12 +872,16 @@ def sync_vtuber_youtube(
             elif re.search(r'(^|[\s_#\(\[\{【（])shorts?([\s_#\)\]\}】）]|$)', lower_title):
                 is_short = True
 
-        db_video = db.session.scalars(select(Video).where(Video.video_id == vid)).first()
+        # 判斷是否為精華剪輯 / 切片 (Clips)
+        is_clip = any(k in lower_title for k in ["剪輯", "切片", "精華", "切り抜き"]) or bool(re.search(r'(^|[\s_#\(\[\{【（])clips?([\s_#\)\]\}】）]|$)', lower_title))
+
         if not db_video:
             if is_schedule:
                 v_type = "schedule"
             elif is_short:
                 v_type = "short"
+            elif is_clip:
+                v_type = "clip"
             elif any(k in lower_title for k in ["歌", "live", "mv", "cover", "original", "singing", "翻唱", "原創"]):
                 v_type = "stream_singing"
             else:
@@ -875,6 +902,8 @@ def sync_vtuber_youtube(
                 db_video.video_type = "schedule"
             elif is_short and db_video.video_type in ["stream_singing", "stream_other", "other"]:
                 db_video.video_type = "short"
+            elif is_clip and db_video.video_type in ["stream_singing", "stream_other", "other"] and len(db_video.singing_records) == 0:
+                db_video.video_type = "clip"
                 
             if db_video.vtuber_id is None:
                 db_video.vtuber_id = vtuber_id

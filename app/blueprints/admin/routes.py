@@ -224,7 +224,7 @@ def delete_video(id):
     flash('Video deleted successfully', 'success')
     return redirect_with_args('admin.list_videos')
 
-VALID_VIDEO_TYPES = {'stream_singing', 'stream_other', 'cover_mv', 'original_mv', 'short', 'schedule'}
+VALID_VIDEO_TYPES = {'stream_singing', 'stream_other', 'cover_mv', 'original_mv', 'short', 'schedule', 'clip'}
 
 @admin_bp.route('/videos/<id>/change_type', methods=['POST'])
 def video_change_type(id):

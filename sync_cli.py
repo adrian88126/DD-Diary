@@ -3,8 +3,9 @@ import sys
 from app import create_app
 from app.extensions import db
 from app.models.vtuber import VTuber
+from app.models.video import Video
 from app.services.youtube_service import sync_vtuber_youtube
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 def parse_exclude_targets(exclude_str: str):
     """
@@ -62,6 +63,11 @@ def main():
         action="store_true",
         help="Include all VTubers without default exclusions."
     )
+    parser.add_argument(
+        "--full",
+        action="store_true",
+        help="Force full scan of all historical videos and re-verify dates (disables smart incremental storage cache)."
+    )
     
     args = parser.parse_args()
     
@@ -105,20 +111,29 @@ def main():
             sys.exit(0)
             
         print(f"Starting sync for {len(active_vtubers)} VTuber(s)...")
+        sync_strategy = "FULL SCAN (--full)" if args.full else "SMART INCREMENTAL (Storage Cache Enabled)"
         if limit is None:
-            print("Mode: Syncing ALL videos (this may take a while).")
+            print(f"Mode: Syncing ALL videos | Strategy: {sync_strategy}")
         else:
-            print(f"Mode: Syncing up to {limit} latest videos.")
+            print(f"Mode: Syncing up to {limit} latest videos | Strategy: {sync_strategy}")
             
         for idx, vtuber in enumerate(active_vtubers, 1):
             if not vtuber.youtube_channel_id:
                 print(f"[{idx}/{len(active_vtubers)}] Skipping {vtuber.name_main} (No YouTube Channel ID)")
                 continue
                 
-            print(f"[{idx}/{len(active_vtubers)}] Syncing {vtuber.name_main} ({vtuber.youtube_channel_id})...")
+            before_count = db.session.scalar(
+                select(func.count()).select_from(Video).where(Video.vtuber_id == vtuber.id)
+            ) or 0
+            print(f"[{idx}/{len(active_vtubers)}] Syncing {vtuber.name_main} ({vtuber.youtube_channel_id}) [DB Stored: {before_count}]...")
             try:
-                results = sync_vtuber_youtube(vtuber.id, limit=limit)
-                print(f"    -> Successfully fetched/synced {len(results)} videos.")
+                results = sync_vtuber_youtube(vtuber.id, limit=limit, force_full=args.full)
+                after_count = db.session.scalar(
+                    select(func.count()).select_from(Video).where(Video.vtuber_id == vtuber.id)
+                ) or 0
+                new_added = max(0, after_count - before_count)
+                cached_reused = max(0, len(results) - new_added)
+                print(f"    -> Checked {len(results)} videos (New added: {new_added}, Cached skipped: {cached_reused}, Total in DB: {after_count}).")
             except Exception as e:
                 print(f"    -> Error syncing {vtuber.name_main}: {str(e)}")
                 

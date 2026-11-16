@@ -113,7 +113,7 @@ def build_language_site(app, vtubers, songs_count, records_count, videos_count, 
 
             all_clip_authors = [{"id": aid, "name": aname} for aid, aname in clip_authors_map.items()]
             
-            videos_data = [serialize_video(v) for v in vt_videos]
+            videos_data = [serialize_video(v) for v in vt_videos if v.video_type != 'clip']
             activities_data = [serialize_activity(a) for a in vt_activities]
             records_data = [serialize_record(r) for r in vt_records]
             

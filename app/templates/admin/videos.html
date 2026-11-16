@@ -32,6 +32,7 @@
         <option value="">{{ _('All Types') }}</option>
         <option value="stream_singing">{{ _('stream_singing') }}</option>
         <option value="cover_mv">{{ _('cover_mv') }}</option>
+        <option value="clip">{{ _('clip') }}</option>
         <option value="short">{{ _('short') }}</option>
         <option value="stream_other">{{ _('stream_other') }}</option>
         <option value="schedule">{{ _('schedule') }}</option>
@@ -63,6 +64,7 @@
     <option value="">-- {{ _('Set Type') }} --</option>
     <option value="stream_singing">{{ _('stream_singing') }}</option>
     <option value="cover_mv">{{ _('cover_mv') }}</option>
+    <option value="clip">{{ _('clip') }}</option>
     <option value="short">{{ _('short') }}</option>
     <option value="stream_other">{{ _('stream_other') }}</option>
   </select>
@@ -161,6 +163,7 @@
           <select id="video_type" name="video_type" class="form-input">
             <option value="stream_singing" {% if item and item.video_type == 'stream_singing' %}selected{% endif %}>{{ _('Stream - Singing') }}</option>
             <option value="stream_other" {% if item and item.video_type == 'stream_other' %}selected{% endif %}>{{ _('Stream - Other') }}</option>
+            <option value="clip" {% if item and item.video_type == 'clip' %}selected{% endif %}>{{ _('clip') }}</option>
             <option value="mv" {% if item and item.video_type == 'mv' %}selected{% endif %}>{{ _('MV') }}</option>
             <option value="short" {% if item and item.video_type == 'short' %}selected{% endif %}>{{ _('Shorts') }}</option>
             <option value="schedule" {% if item and item.video_type == 'schedule' %}selected{% endif %}>{{ _('Schedule') }}</option>

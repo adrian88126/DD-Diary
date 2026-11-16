@@ -48,6 +48,9 @@
     <button type="button" class="btn btn-sm btn-secondary" id="bulk-other-btn" onclick="bulkChangeVideoType('stream_other', '一般直播/雜談')" disabled style="display: flex; align-items: center; gap: 5px;">
       <i class="fa-solid fa-comments"></i> 批次轉為一般直播
     </button>
+    <button type="button" class="btn btn-sm btn-info" id="bulk-clip-btn" onclick="bulkChangeVideoType('clip', 'Clips 精華剪輯')" disabled style="display: flex; align-items: center; gap: 5px;">
+      <i class="fa-solid fa-scissors"></i> 批次轉為 Clips
+    </button>
     <button type="button" class="btn btn-sm btn-warning" id="bulk-short-btn" onclick="bulkChangeVideoType('short', 'Short 短影音')" disabled style="display: flex; align-items: center; gap: 5px;">
       <i class="fa-solid fa-mobile-screen"></i> 批次轉為 Short
     </button>
@@ -103,7 +106,10 @@
                 <i class="fa-solid fa-caret-down"></i>
               </button>
               <!-- 下拉浮動選單 -->
-              <div class="type-dropdown-menu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--card-bg, #1e293b); border: 1px solid var(--card-border, #334155); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 1000; min-width: 160px; padding: 4px 0;">
+              <div class="type-dropdown-menu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--card-bg, #1e293b); border: 1px solid var(--card-border, #334155); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 1000; min-width: 170px; padding: 4px 0;">
+                <a href="javascript:void(0)" class="type-menu-item" onclick="changeVideoType('{{ v.video_id }}', 'clip', 'Clips 精華剪輯', this)">
+                  <i class="fa-solid fa-scissors" style="width: 20px;"></i> 轉為 Clips 精華剪輯
+                </a>
                 <a href="javascript:void(0)" class="type-menu-item" onclick="changeVideoType('{{ v.video_id }}', 'short', 'Short 短影音', this)">
                   <i class="fa-solid fa-mobile-screen" style="width: 20px;"></i> 轉為 Short 短影音
                 </a>
@@ -228,9 +234,11 @@ function updateSelectedCount() {
   const countSpan = document.getElementById('selected-count');
   const bulkShortBtn = document.getElementById('bulk-short-btn');
   const bulkOtherBtn = document.getElementById('bulk-other-btn');
+  const bulkClipBtn = document.getElementById('bulk-clip-btn');
   if (countSpan) countSpan.textContent = checked.length;
   if (bulkShortBtn) bulkShortBtn.disabled = checked.length === 0;
   if (bulkOtherBtn) bulkOtherBtn.disabled = checked.length === 0;
+  if (bulkClipBtn) bulkClipBtn.disabled = checked.length === 0;
 }
 
 // 展開 / 收合單筆分類下拉選單
@@ -308,7 +316,9 @@ async function bulkChangeVideoType(newType, typeLabel) {
     return;
   }
 
-  const activeBtn = (newType === 'short') ? document.getElementById('bulk-short-btn') : document.getElementById('bulk-other-btn');
+  const activeBtn = (newType === 'short')
+    ? document.getElementById('bulk-short-btn')
+    : (newType === 'clip' ? document.getElementById('bulk-clip-btn') : document.getElementById('bulk-other-btn'));
   const originalHtml = activeBtn ? activeBtn.innerHTML : '';
   if (activeBtn) {
     activeBtn.disabled = true;

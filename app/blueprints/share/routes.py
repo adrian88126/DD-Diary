@@ -66,7 +66,7 @@ def profile(identifier):
 
     all_clip_authors = [{"id": aid, "name": aname} for aid, aname in clip_authors_map.items()]
     
-    videos_data = [{"video_id": v.video_id, "title": v.title, "published_at": v.published_at.isoformat() if v.published_at else None, "video_type": v.video_type, "thumbnail_url": v.thumbnail_url} for v in videos]
+    videos_data = [{"video_id": v.video_id, "title": v.title, "published_at": v.published_at.isoformat() if v.published_at else None, "video_type": v.video_type, "thumbnail_url": v.thumbnail_url} for v in videos if v.video_type != 'clip']
     activities_data = [{"id": a.id, "title": a.title, "event_date": a.event_date.isoformat() if a.event_date else None, "activity_type": a.activity_type, "link_url": a.link_url} for a in activities]
     records_data = []
     for r in records:
