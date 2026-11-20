@@ -1,3 +1,4 @@
+import re
 from sqlalchemy import select, func, and_, or_
 from app.extensions import db
 from app.models.song import Song
@@ -7,6 +8,20 @@ from app.models.vtuber import VTuber
 from app.models.video import Video
 from app.models.clip import Clip, ClipAuthor
 from app.models.association import song_artists, vtuber_songs, record_vtubers, clip_vtubers
+
+SHARED_WIKIDATA_EXCLUDE = {"Q909655"}  # 鏡音連／鏡音鈴共享同一個組合 QID，不可合併
+
+
+def _has_kana(s: str) -> bool:
+    return bool(re.search(r"[\u3040-\u30ff]", s or ""))
+
+
+def _has_cjk(s: str) -> bool:
+    return bool(re.search(r"[\u4e00-\u9fff]", s or ""))
+
+
+def _is_pure_ascii(s: str) -> bool:
+    return bool(s) and not _has_kana(s) and not _has_cjk(s) and bool(re.search(r"[A-Za-z]", s))
 
 # --- 1. 歌曲與歌手診斷 ---
 
@@ -72,6 +87,47 @@ def get_duplicate_artists():
         res[k].append({"id": a.id, "name": a.name_main, "songs_count": len(a.songs)})
     return res
 
+
+def get_wikidata_duplicate_artists():
+    """依相同 Wikidata QID 偵測跨語言或別名重複歌手（排除合理共享條目）"""
+    subq = (
+        select(Artist.wikidata_id)
+        .where(
+            and_(
+                Artist.wikidata_id.is_not(None),
+                func.trim(Artist.wikidata_id) != "",
+                Artist.wikidata_id.not_in(SHARED_WIKIDATA_EXCLUDE),
+            )
+        )
+        .group_by(Artist.wikidata_id)
+        .having(func.count(Artist.id) > 1)
+    )
+    dup_qids = db.session.scalars(subq).all()
+    if not dup_qids:
+        return {}
+
+    artists = db.session.scalars(
+        select(Artist)
+        .where(Artist.wikidata_id.in_(dup_qids))
+        .order_by(Artist.wikidata_id.asc(), Artist.id.asc())
+    ).all()
+
+    res = {}
+    for a in artists:
+        qid = (a.wikidata_id or "").strip()
+        if qid not in res:
+            res[qid] = []
+        res[qid].append({
+            "id": a.id,
+            "name": a.name_main,
+            "name_en": a.name_en or "",
+            "name_ja": a.name_ja or "",
+            "name_zh": a.name_zh or "",
+            "songs_count": len(a.songs),
+            "wikidata_id": qid,
+        })
+    return res
+
 # --- 2. 切片與剪輯師診斷 ---
 
 def get_untagged_clips():
@@ -123,8 +179,21 @@ def get_duplicate_records():
     return records
 
 def get_invalid_timestamp_records():
-    """時間戳記異常（秒數 <= 0）的演唱紀錄"""
-    stmt = select(SingingRecord).where(SingingRecord.timestamp_seconds <= 0).order_by(SingingRecord.id.desc())
+    """時間戳記異常（負數或歌回直播 0 秒）的演唱紀錄，排除 MV 與 Short 合法 0 秒開唱"""
+    stmt = (
+        select(SingingRecord)
+        .join(Video, SingingRecord.video_id == Video.video_id)
+        .where(
+            or_(
+                SingingRecord.timestamp_seconds < 0,
+                and_(
+                    SingingRecord.timestamp_seconds <= 0,
+                    Video.video_type == "stream_singing",
+                ),
+            )
+        )
+        .order_by(SingingRecord.id.desc())
+    )
     return db.session.scalars(stmt).all()
 
 # --- 4. 主播與影片資料完整性診斷 ---
@@ -150,6 +219,7 @@ def get_system_health_report():
     """取得全系統綜合健康檢測報告與分數 (100分制)"""
     dup_songs = get_duplicate_songs()
     dup_artists = get_duplicate_artists()
+    wikidata_dup_artists = get_wikidata_duplicate_artists()
     orphan_songs = get_orphan_songs()
     unknown_songs = get_unknown_songs()
     
@@ -165,7 +235,7 @@ def get_system_health_report():
     orphan_videos = get_orphan_videos()
     
     total_issues = (
-        len(dup_songs) + len(dup_artists) + len(orphan_songs) +
+        len(dup_songs) + len(dup_artists) + len(wikidata_dup_artists) + len(orphan_songs) +
         len(untagged_clips) + len(unassigned_clips) + len(unassoc_vt_clips) + len(empty_authors) +
         len(dup_records) + len(invalid_ts_records) +
         len(incomplete_vtubers) + len(orphan_videos)
@@ -175,6 +245,7 @@ def get_system_health_report():
     deductions = (
         len(dup_songs) * 5 +
         len(dup_artists) * 4 +
+        len(wikidata_dup_artists) * 4 +
         len(dup_records) * 5 +
         len(invalid_ts_records) * 3 +
         len(unassoc_vt_clips) * 2 +
@@ -189,6 +260,7 @@ def get_system_health_report():
         "songs": {
             "duplicate_songs": dup_songs,
             "duplicate_artists": dup_artists,
+            "wikidata_duplicate_artists": wikidata_dup_artists,
             "orphan_songs": orphan_songs,
             "unknown_songs": unknown_songs
         },
@@ -345,6 +417,82 @@ def auto_link_duplicate_artists():
             
     db.session.commit()
     return {"cleaned_count": cleaned_count}
+
+
+def auto_merge_wikidata_duplicate_artists():
+    """依相同 Wikidata QID 合併跨語言或別名重複歌手，保留多語言名稱並轉移歌曲關聯"""
+    dup_groups = get_wikidata_duplicate_artists()
+    cleaned_count = 0
+    merged_groups = []
+
+    for qid, items in dup_groups.items():
+        ids = [it["id"] for it in items]
+        artists = db.session.scalars(
+            select(Artist).where(Artist.id.in_(ids))
+        ).all()
+        if len(artists) <= 1:
+            continue
+
+        # 主保留筆優先順序：關聯歌曲數最多 -> 含漢字中文 -> ID 較小
+        artists.sort(
+            key=lambda a: (
+                -len(a.songs),
+                0 if (_has_cjk(a.name_main) and not _has_kana(a.name_main)) else 1,
+                a.id,
+            )
+        )
+        canonical = artists[0]
+        duplicates = artists[1:]
+
+        merged_names = []
+        for dup in duplicates:
+            merged_names.append(f"{dup.id}:{dup.name_main}")
+
+            # 互補多語言欄位（不覆蓋主筆既有值、不重複填入主名稱）
+            c_main_lower = (canonical.name_main or "").strip().lower()
+            d_main = (dup.name_main or "").strip()
+
+            if not (canonical.name_en or "").strip():
+                cand_en = (dup.name_en or "").strip() or (d_main if _is_pure_ascii(d_main) else "")
+                if cand_en and cand_en.lower() != c_main_lower:
+                    canonical.name_en = cand_en
+
+            if not (canonical.name_ja or "").strip():
+                cand_ja = (dup.name_ja or "").strip() or (d_main if _has_kana(d_main) else "")
+                if cand_ja and cand_ja.lower() != c_main_lower:
+                    canonical.name_ja = cand_ja
+
+            if not (canonical.name_zh or "").strip():
+                cand_zh = (dup.name_zh or "").strip() or (
+                    d_main if (_has_cjk(d_main) and not _has_kana(d_main)) else ""
+                )
+                if cand_zh and cand_zh.lower() != c_main_lower:
+                    canonical.name_zh = cand_zh
+
+            if not (canonical.name_romaji or "").strip() and (dup.name_romaji or "").strip():
+                canonical.name_romaji = dup.name_romaji.strip()
+
+            # 安全轉移 song_artists 關聯（透過 ORM 集合避免 UnitOfWork StaleDataError）
+            for song in list(dup.songs):
+                if song not in canonical.songs:
+                    canonical.songs.append(song)
+            dup.songs.clear()
+            db.session.flush()
+            db.session.delete(dup)
+            db.session.flush()
+            cleaned_count += 1
+
+        merged_groups.append({
+            "wikidata_id": qid,
+            "canonical": f"{canonical.id}:{canonical.name_main}",
+            "merged": merged_names,
+            "name_en": canonical.name_en or "",
+            "name_ja": canonical.name_ja or "",
+            "name_zh": canonical.name_zh or "",
+        })
+
+    db.session.commit()
+    return {"cleaned_count": cleaned_count, "merged_groups": merged_groups}
 
 def auto_fix_untagged_clips():
     """一鍵為無標籤切片掃描標題並自動補上 AI/關鍵字標籤"""

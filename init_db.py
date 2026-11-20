@@ -201,6 +201,8 @@ def init_database(db_file=DB_FILE):
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_artists_romaji ON artists(name_romaji);")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_songs_title_main ON songs(title_main);")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_artists_name_main ON artists(name_main);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_artists_name_en ON artists(name_en);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_artists_wikidata_id ON artists(wikidata_id);")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_activities_event_date ON activities(event_date);")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_videos_published_at ON videos(published_at);")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_records_song_id ON singing_records(song_id);")

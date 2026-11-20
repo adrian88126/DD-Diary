@@ -4,727 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="DDDiary - VTuber Song Management System">
-  <title>VTuber 歌唱播放大廳與週表集錦 - DDDiary</title>
+  
+  <title>DDDiary - VTuber Singing Database</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <link rel="stylesheet" href="../static/css/base.css">
   <script>
-    window.I18N = {};
+    window.I18N = {"Admin": "Admin", "All": "All", "All Clippers": "All Clippers", "All Tags": "All Tags", "All VTubers": "All VTubers", "Artist Songlist": "Artist Songlist", "Autoplay": "Autoplay", "Back to Lobby": "Back to Lobby", "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.": "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.", "Cancel": "Clear", "Click \u0027Play All\u0027 above or any VTuber cover below to start playing": "Click \u0027Play All\u0027 above or any VTuber cover below to start playing", "Click a track or Random Radio to listen": "Click a track or Random Radio to listen", "Clipper:": "Clipper:", "Collaboration": "Collaboration", "Cross-VTuber": "Cross-VTuber", "Enlarge": "Enlarge", "Enlarge Schedule": "Enlarge Schedule", "Enter Songlist": "Enter Songlist", "Expand Video": "Expand", "Export Excel": "Export CSV", "Featured Clips": "Featured Clips", "Home": "Home", "Linked Videos:": "Videos:", "Linked Wikidata:": "Linked Wikidata:", "Live Streams": "Live Streams", "Load more artists...": "Load more artists...", "Loading artist data...": "Loading artist data...", "Login": "Login", "Logout": "Logout", "MV": "MV", "Management and login features are only available in the local Flask environment.": "Management and login features are only available in the local Flask environment.", "Milestones \u0026 Timeline": "Milestones \u0026 Timeline", "Most Sung": "Most Sung", "Name Sort": "Name", "No bio description yet.": "No bio description yet.", "No data": "No data", "No related songs yet!": "No related songs yet!", "No schedule image set yet": "No schedule image set yet", "No track playing": "No track playing", "No videos here yet!": "No videos here yet!", "Not playing": "Not playing", "Open VTuber Page": "VTuber Page", "Open on YouTube": "Open on YouTube", "Original Artists:": "Original Artists:", "Original Link": "Source", "Other Streams": "Other Streams", "Overview": "Overview", "Play": "Play", "Play Count": "Play Count", "Profile": "Profile", "Random Radio": "Random Radio", "Recently Sung": "Recently Sung", "Recorded Songs:": "Songs:", "Schedule": "Schedule", "Search VTubers, JP/ZH names, or bio...": "Search VTubers, JP/ZH names, or bio...", "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...": "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...", "Search song title or artist...": "Search song title or artist...", "Select a song to play": "Select a song to play", "Select an artist on the left and click any track to play": "Select an artist on the left and click any track to play", "Shorts": "Shorts", "Showing:": "Showing:", "Shuffle": "Shuffle", "Singing History": "Singing History", "Singing Records:": "Records:", "Singing Streams": "Singing Streams", "Song Count": "Songs", "Song List": "Song List", "Sort by Title": "By Title", "Talk / Solo": "Talk / Solo", "Top Original Artists (TOP 5)": "Top Original Artists (TOP 5)", "Top Songs (TOP 5)": "Top Songs (TOP 5)", "Total VTubers": "Total", "Unknown": "Unknown", "VTuber Singing Database": "VTuber Singing Database", "View Schedule": "View Schedule", "View VTubers": "View VTubers", "Weekly Schedule": "Weekly Schedule", "Weekly Schedule Gallery": "Weekly Schedule Gallery", "With Wikidata QID Only": "Wikidata QID Only", "times": "times", "unit_artists": "", "unit_records": "", "unit_songs": "", "unit_videos": ""};
   </script>
   
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-
-<style>
-
-        :root {
-            --bg-color: #09070f;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-bright: #f8fafc;
-            --text-muted: #94a3b8;
-            --neon-purple: #a78bfa;
-            --neon-gold: #fbbf24;
-            --neon-green: #00e676;
-            --neon-blue: #3b82f6;
-        }
-
-        body {
-            background: var(--bg-color);
-            color: var(--text-muted);
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .lobby-wrapper {
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 32px 24px;
-            box-sizing: border-box;
-        }
-
-        /* 標頭 Hero 區 */
-        .lobby-hero {
-            text-align: center;
-            margin-bottom: 32px;
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(167, 139, 250, 0.1);
-            border: 1px solid rgba(167, 139, 250, 0.25);
-            color: var(--neon-purple);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 12.5px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--text-bright); transition: color 0.3s;
-            margin: 0 0 12px 0;
-            letter-spacing: -1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .subtitle {
-            font-size: 1.05rem;
-            color: var(--text-muted);
-            margin: 0 auto 24px auto;
-            max-width: 680px;
-            line-height: 1.6;
-        }
-
-        /* 全站數據快照欄 */
-        .global-stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-
-        .stat-pill {
-            background: var(--tab-bg);
-            transition: background-color 0.3s, border-color 0.25s, transform 0.25s;
-            border: 1px solid var(--card-border);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            color: var(--text-bright);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(8px);
-        }
-
-        .stat-pill-link {
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .stat-pill-link:hover {
-            border-color: var(--neon-purple);
-            background: rgba(167, 139, 250, 0.14);
-            transform: translateY(-2px);
-            color: var(--text-bright);
-        }
-
-        /* 搜尋與控制列 */
-        .lobby-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 32px;
-            background: var(--toolbar-bg);
-            border: 1px solid var(--card-border);
-            transition: background-color 0.3s, border-color 0.3s;
-            padding: 12px 20px;
-            border-radius: 20px;
-            backdrop-filter: blur(12px);
-            flex-wrap: wrap;
-        }
-
-        .search-input-wrapper {
-            position: relative;
-            flex: 1;
-            min-width: 260px;
-        }
-
-        .search-input-wrapper input {
-            width: 100%;
-            padding: 10px 36px 10px 40px;
-            font-size: 13.5px;
-            border-radius: 24px;
-            border: 1px solid var(--card-border);
-            background: var(--input-bg);
-            transition: background-color 0.3s;
-            color: var(--text-bright);
-            outline: none;
-            box-sizing: border-box;
-            transition: all 0.25s;
-        }
-
-        .search-input-wrapper input:focus {
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(167, 139, 250, 0.25);
-        }
-
-        .search-input-wrapper .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .clear-search-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            display: none;
-            padding: 4px;
-        }
-        .clear-search-btn:hover { color: var(--text-bright); transition: color 0.3s; }
-
-        .catalog-link-btn {
-            padding: 10px 20px;
-            font-size: 13px;
-            font-weight: 700;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: var(--card-hover-bg);
-            color: var(--text-bright);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.25s ease;
-            white-space: nowrap;
-        }
-
-        .catalog-link-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .view-toggle-btn {
-            padding: 10px 20px;
-            font-size: 13px;
-            font-weight: 700;
-            border-radius: 24px;
-            border: 1px solid rgba(167, 139, 250, 0.4);
-            background: rgba(167, 139, 250, 0.08);
-            color: var(--neon-purple);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.25s ease;
-            white-space: nowrap;
-            font-family: inherit;
-        }
-
-        .view-toggle-btn:hover {
-            background: var(--neon-purple);
-            color: #09070f;
-            box-shadow: 0 0 15px rgba(167, 139, 250, 0.4);
-            transform: translateY(-1px);
-        }
-
-        /* 雙欄格線系統 - 改為滿寬並由 JS 切換顯示 */
-        .lobby-split-layout {
-            display: block;
-            width: 100%;
-        }
-
-        /* 左側主播卡片網格 */
-        .vtuber-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 24px;
-        }
-
-        .lobby-split-layout.show-schedule .vtuber-grid {
-            display: none;
-        }
-
-        .vtuber-card {
-            --vt-color: var(--neon-purple);
-            background: rgba(18, 18, 26, 0.72);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 18px;
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding: 24px;
-            box-sizing: border-box;
-        }
-
-        .vtuber-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--vt-color), transparent);
-            opacity: 0.65;
-            transition: opacity 0.3s ease, height 0.3s ease;
-        }
-
-        .card-banner-overlay {
-            display: none;
-        }
-
-        .vtuber-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.14);
-            background: rgba(24, 24, 35, 0.85);
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.65);
-        }
-
-        .vtuber-card:hover::before {
-            opacity: 1;
-            height: 3px;
-        }
-
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .vtuber-card-header {
-            display: flex;
-            align-items: center;
-            padding-left: 12px;
-            border-left: 3px solid var(--vt-color);
-            margin-bottom: 14px;
-        }
-
-        .vtuber-title-group {
-            min-width: 0;
-            flex: 1;
-        }
-
-        .vtuber-name {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.32rem;
-            font-weight: 800;
-            color: var(--text-bright);
-            margin-bottom: 2px;
-            letter-spacing: -0.3px;
-            transition: color 0.25s ease;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .vtuber-card:hover .vtuber-name {
-            color: var(--vt-color);
-        }
-
-        .vtuber-subname {
-            font-size: 11.5px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .vtuber-desc {
-            font-size: 0.88rem;
-            color: #94a3b8;
-            line-height: 1.55;
-            margin: 0 0 20px 0;
-            flex-grow: 1;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: left;
-            width: 100%;
-            box-sizing: border-box;
-            background: none;
-            border: none;
-            padding: 0;
-            /* 漸變淡出，避免最後一行文字消失得太突兀 */
-            -webkit-mask-image: linear-gradient(to bottom, #fff 55%, transparent 100%);
-            mask-image: linear-gradient(to bottom, #fff 55%, transparent 100%);
-        }
-
-        .enter-btn {
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            padding: 10px 24px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            color: var(--text-bright);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            width: 100%;
-            justify-content: center;
-            box-sizing: border-box;
-            margin-top: auto;
-        }
-
-        .vtuber-card:hover .enter-btn {
-            background: var(--vt-color);
-            border-color: transparent;
-            color: #09070f;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-        }
-
-        /* 右側：全主播週表牆 (All-VTubers Schedule Gallery Sidebar) */
-        .schedule-sidebar {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
-            transition: background-color 0.3s, border-color 0.3s;
-            backdrop-filter: blur(16px);
-            display: none; /* 預設隱藏 */
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .lobby-split-layout.show-schedule .schedule-sidebar {
-            display: flex;
-        }
-
-        .sidebar-title-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding-bottom: 12px;
-        }
-
-        .sidebar-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--text-bright);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* 週表篩選膠囊按鈕 */
-        .schedule-filter-tabs {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .schedule-tab-btn {
-            padding: 4px 12px;
-            font-size: 11.5px;
-            font-weight: 700;
-            border-radius: 14px;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.03);
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .schedule-tab-btn.active, .schedule-tab-btn:hover {
-            background: var(--neon-purple);
-            color: #09070f;
-            border-color: var(--neon-purple);
-        }
-
-        .schedule-list-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 20px;
-        }
-
-        .schedule-item-card {
-            background: var(--schedule-card-bg);
-            transition: background-color 0.3s;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 14px;
-            padding: 14px;
-            transition: all 0.25s ease;
-        }
-
-        .schedule-item-card:hover {
-            border-color: rgba(167, 139, 250, 0.3);
-        }
-
-        .schedule-item-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .schedule-vtuber-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--text-bright);
-        }
-
-        .schedule-mini-avatar {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .schedule-img-wrapper {
-            position: relative;
-            width: 100%;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.08);
-            cursor: pointer;
-            background: #000;
-        }
-
-        .schedule-img-wrapper img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .schedule-img-wrapper:hover img {
-            transform: scale(1.03);
-        }
-
-        .schedule-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            gap: 8px;
-        }
-
-        .schedule-action-btn {
-            font-size: 11px;
-            padding: 5px 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.04);
-            color: var(--text-bright);
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s ease;
-        }
-
-        .schedule-action-btn:hover {
-            background: rgba(167, 139, 250, 0.2);
-            border-color: var(--neon-purple);
-        }
-
-        .no-schedule-box {
-            padding: 20px;
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            border: 1px dashed rgba(255,255,255,0.08);
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 24px;
-            font-size: 0.8rem;
-            color: #64748b;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-            background: rgba(7, 5, 13, 0.8);
-        }
-
-        .ai-badge {
-            color: var(--neon-gold);
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 6px;
-        }
-
-        /* 🖼️ 高清週表藝廊燈箱 (Gallery Lightbox) 帶切換按鈕 */
-        .lightbox-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--lightbox-bg);
-            transition: background-color 0.3s;
-            z-index: 20000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(16px);
-        }
-
-        .lightbox-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .lightbox-content {
-            position: relative;
-            max-width: 90vw;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .lightbox-img {
-            max-width: 90vw;
-            max-height: 75vh;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-            object-fit: contain;
-        }
-
-        .lightbox-close-btn {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            background: none;
-            border: none;
-            color: var(--text-bright); transition: color 0.3s;
-            font-size: 28px;
-            cursor: pointer;
-        }
-
-        .lightbox-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--neon-purple);
-            color: var(--text-bright); transition: color 0.3s;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-        }
-        .lightbox-nav-btn:hover {
-            background: var(--neon-purple);
-            color: #000;
-        }
-        .lightbox-prev-btn { left: -60px; }
-        .lightbox-next-btn { right: -60px; }
-
-        .lightbox-caption {
-            margin-top: 14px;
-            color: var(--text-bright);
-            font-size: 14px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        /* ===== RWD 手機版自適應 ===== */
-        @media (max-width: 992px) {
-            .lobby-split-layout {
-                grid-template-columns: 1fr;
-            }
-            .schedule-sidebar {
-                position: relative !important;
-                top: 0 !important;
-            }
-            .lightbox-nav-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 14px;
-            }
-            .lightbox-prev-btn { left: 10px; }
-            .lightbox-next-btn { right: 10px; }
-        }
-
-        @media (max-width: 576px) {
-            .lobby-wrapper {
-                padding: 16px 12px;
-            }
-            h1 {
-                font-size: 2.2rem !important;
-            }
-            .global-stats-bar {
-                gap: 8px;
-                margin-bottom: 16px;
-            }
-            .stat-pill {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            .lobby-toolbar {
-                padding: 10px 12px;
-                gap: 10px;
-                margin-bottom: 20px;
-            }
-            .search-input-wrapper {
-                min-width: 100%;
-            }
-            .view-toggle-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .vtuber-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .vtuber-card {
-                padding: 18px;
-            }
-        }
-    
-</style>
+<link rel="stylesheet" href="../static/css/lobby.css">
 
 </head>
 <body>
@@ -774,48 +69,48 @@
         <!-- 標頭 Hero 區 -->
         <header class="lobby-hero">
             <h1 style="font-size: 3.5rem; font-weight: 800; font-family: 'Outfit', sans-serif; background: linear-gradient(135deg, var(--primary, #8a5adb), var(--accent, #fbbf24)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 8px 0; letter-spacing: -2px; display: inline-block;">DDDiary</h1>
-            <p class="text-muted" style="font-size: 1.1rem; letter-spacing: 2px; margin: 0; font-weight: 500;">VTuber 歌唱資料庫</p>
+            <p class="text-muted" style="font-size: 1.1rem; letter-spacing: 2px; margin: 0; font-weight: 500;">VTuber Singing Database</p>
         </header>
+
         <!-- 全站數據快照欄 -->
         <div class="global-stats-bar">
             <div class="stat-pill">
                 <i class="fa-solid fa-microphone" style="color:var(--neon-purple);"></i>
-                <span>收錄歌曲：1167 首</span>
+                <span>Songs: 1167 </span>
             </div>
             <div class="stat-pill">
                 <i class="fa-solid fa-clock-rotate-left" style="color:var(--neon-gold);"></i>
-                <span>歌唱紀錄：1904 筆</span>
+                <span>Records: 1904 </span>
             </div>
             <div class="stat-pill">
                 <i class="fa-solid fa-video" style="color:var(--neon-green);"></i>
-                <span>關聯影片：745 部</span>
+                <span>Videos: 745 </span>
             </div>
-            <a href="./artists/index.html" class="stat-pill stat-pill-link" title="依原唱歌手瀏覽全站歌單與 Wikidata 資訊">
+            <a href="./artists/index.html" class="stat-pill stat-pill-link" title="Artist Songlist">
                 <i class="fa-solid fa-compact-disc" style="color:#38bdf8;"></i>
-                <span>原唱歌手：588 位</span>
+                <span>Original Artists: 571 </span>
                 <i class="fa-solid fa-arrow-right" style="font-size:11px; color:var(--neon-purple);"></i>
             </a>
         </div>
-    
 
         <!-- 搜尋工具列 -->
         <div class="lobby-toolbar">
             <div class="search-input-wrapper">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="lobby-search-input" placeholder="🔍 搜尋主播名稱、日文/中文名或簡介..." oninput="onLobbySearchInput()">
-                <button id="clear-lobby-search-btn" class="clear-search-btn" onclick="clearLobbySearch()" title="清空搜尋">
+                <input type="text" id="lobby-search-input" placeholder="Search VTubers, JP/ZH names, or bio..." oninput="onLobbySearchInput()">
+                <button id="clear-lobby-search-btn" class="clear-search-btn" onclick="clearLobbySearch()" title="Clear">
                     <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </div>
             <!-- 切換檢視按鈕 -->
-            <button id="view-toggle-btn" class="view-toggle-btn" onclick="toggleLobbyView()" title="切換顯示主播卡片或週表行程">
-                <i class="fa-regular fa-calendar-days"></i> <span>觀看週表行程</span>
+            <button id="view-toggle-btn" class="view-toggle-btn" onclick="toggleLobbyView()" title="View Schedule">
+                <i class="fa-regular fa-calendar-days"></i> <span>View Schedule</span>
             </button>
         </div>
 
-        <!-- 雙欄布局 (左: 主播卡片網格 / 右: 全主播週表牆) -->
+        <!-- 雙欄布局 (主播卡片網格 / 全主播週表牆) -->
         <main class="lobby-split-layout" id="lobby-layout">
-            <!-- 左側：主播卡片網格 -->
+            <!-- 主播卡片網格 -->
             <section class="vtuber-grid" id="vtuber-grid-container">
                 
                 <a href="./share/taotaotaotie_ch" 
@@ -874,7 +169,7 @@
 ↪︎ 合作洽詢、連動｜musicstreamvt@gmail.com
 </p>
                         <div class="enter-btn">
-                            <i class="fa-solid fa-headphones"></i> 進入專屬歌單 <i class="fa-solid fa-arrow-right"></i>
+                            <i class="fa-solid fa-headphones"></i> Enter Songlist <i class="fa-solid fa-arrow-right"></i>
                         </div>
                     </div>
                 </a>
@@ -913,7 +208,7 @@
 工作邀約聯絡信箱：waradondon2023@gmail.com
 </p>
                         <div class="enter-btn">
-                            <i class="fa-solid fa-headphones"></i> 進入專屬歌單 <i class="fa-solid fa-arrow-right"></i>
+                            <i class="fa-solid fa-headphones"></i> Enter Songlist <i class="fa-solid fa-arrow-right"></i>
                         </div>
                     </div>
                 </a>
@@ -960,7 +255,7 @@
 平常的直播在 YT、Twitch 雙開中，
 關注各路社群媒體這件事也要麻煩你囉！</p>
                         <div class="enter-btn">
-                            <i class="fa-solid fa-headphones"></i> 進入專屬歌單 <i class="fa-solid fa-arrow-right"></i>
+                            <i class="fa-solid fa-headphones"></i> Enter Songlist <i class="fa-solid fa-arrow-right"></i>
                         </div>
                     </div>
                 </a>
@@ -983,25 +278,25 @@
                         
                         <p class="vtuber-desc">♡ 霓羊 𝑁𝐸𝑂𝑁 ⋆ ₊ ☽ ·˚𓍲  個人勢 𝑉𝑇𝑢𝑏𝑒𝑟 ✧ 來自異界裂縫的魔王大人 ✧ </p>
                         <div class="enter-btn">
-                            <i class="fa-solid fa-headphones"></i> 進入專屬歌單 <i class="fa-solid fa-arrow-right"></i>
+                            <i class="fa-solid fa-headphones"></i> Enter Songlist <i class="fa-solid fa-arrow-right"></i>
                         </div>
                     </div>
                 </a>
                 
             </section>
 
-            <!-- 右側：全主播週表牆 (All-VTubers Schedule Gallery Sidebar) -->
+            <!-- 全主播週表牆 -->
             <aside class="schedule-sidebar" id="schedule-sidebar-container">
                 <div class="sidebar-title-bar">
                     <div class="sidebar-title">
-                        <i class="fa-regular fa-calendar-days" style="color:var(--neon-purple);"></i> 全主播本週行程週表
+                        <i class="fa-regular fa-calendar-days" style="color:var(--neon-purple);"></i> Weekly Schedule Gallery
                     </div>
-                    <span style="font-size:11px; color:var(--text-muted);">共 4 位</span>
+                    <span style="font-size:11px; color:var(--text-muted);">Total 4 </span>
                 </div>
 
                 <!-- 週表篩選按鈕列 -->
                 <div class="schedule-filter-tabs">
-                    <button class="schedule-tab-btn active" onclick="filterScheduleTab('all', this)">全部</button>
+                    <button class="schedule-tab-btn active" onclick="filterScheduleTab('all', this)">All</button>
                     
                     <button class="schedule-tab-btn" onclick="filterScheduleTab('1', this)">滔滔饕餮</button>
                     
@@ -1025,20 +320,20 @@
                                 <span>滔滔饕餮 TaotaoTaotie Ch.</span>
                             </div>
                             <a href="./share/taotaotaotie_ch" style="font-size:11px; color:var(--neon-purple); text-decoration:none;">
-                                專頁 <i class="fa-solid fa-angle-right"></i>
+                                Profile <i class="fa-solid fa-angle-right"></i>
                             </a>
                         </div>
 
                         
                         <div class="schedule-img-wrapper" onclick="openScheduleGalleryByVtuberId(1)">
-                            <img src="https://img.youtube.com/vi/y3Vyg3nOsFA/maxresdefault.jpg" alt="滔滔饕餮 TaotaoTaotie Ch. 本週週表" loading="lazy" decoding="async">
+                            <img src="https://img.youtube.com/vi/y3Vyg3nOsFA/maxresdefault.jpg" alt="滔滔饕餮 TaotaoTaotie Ch." loading="lazy" decoding="async">
                         </div>
                         <div class="schedule-actions">
                             <button class="schedule-action-btn" onclick="openScheduleGalleryByVtuberId(1)">
-                                <i class="fa-solid fa-magnifying-glass-plus" style="color:var(--neon-purple);"></i> 放大圖片
+                                <i class="fa-solid fa-magnifying-glass-plus" style="color:var(--neon-purple);"></i> Enlarge
                             </button>
-                            <a href="https://img.youtube.com/vi/y3Vyg3nOsFA/maxresdefault.jpg" target="_blank" class="schedule-action-btn" title="在新分頁開啟原始圖片連結">
-                                <i class="fa-solid fa-arrow-up-right-from-square" style="opacity:0.7;"></i> 原始連結
+                            <a href="https://img.youtube.com/vi/y3Vyg3nOsFA/maxresdefault.jpg" target="_blank" class="schedule-action-btn" title="Source">
+                                <i class="fa-solid fa-arrow-up-right-from-square" style="opacity:0.7;"></i> Source
                             </a>
                         </div>
                         
@@ -1053,20 +348,20 @@
                                 <span>Seri ch.星璃</span>
                             </div>
                             <a href="./share/seri_ch" style="font-size:11px; color:var(--neon-purple); text-decoration:none;">
-                                專頁 <i class="fa-solid fa-angle-right"></i>
+                                Profile <i class="fa-solid fa-angle-right"></i>
                             </a>
                         </div>
 
                         
                         <div class="schedule-img-wrapper" onclick="openScheduleGalleryByVtuberId(7)">
-                            <img src="https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg" alt="Seri ch.星璃 本週週表" loading="lazy" decoding="async">
+                            <img src="https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg" alt="Seri ch.星璃" loading="lazy" decoding="async">
                         </div>
                         <div class="schedule-actions">
                             <button class="schedule-action-btn" onclick="openScheduleGalleryByVtuberId(7)">
-                                <i class="fa-solid fa-magnifying-glass-plus" style="color:var(--neon-purple);"></i> 放大圖片
+                                <i class="fa-solid fa-magnifying-glass-plus" style="color:var(--neon-purple);"></i> Enlarge
                             </button>
-                            <a href="https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg" target="_blank" class="schedule-action-btn" title="在新分頁開啟原始圖片連結">
-                                <i class="fa-solid fa-arrow-up-right-from-square" style="opacity:0.7;"></i> 原始連結
+                            <a href="https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg" target="_blank" class="schedule-action-btn" title="Source">
+                                <i class="fa-solid fa-arrow-up-right-from-square" style="opacity:0.7;"></i> Source
                             </a>
                         </div>
                         
@@ -1081,20 +376,20 @@
                                 <span>祿菈唄爾 LLB ch.</span>
                             </div>
                             <a href="./share/llb_ch" style="font-size:11px; color:var(--neon-purple); text-decoration:none;">
-                                專頁 <i class="fa-solid fa-angle-right"></i>
+                                Profile <i class="fa-solid fa-angle-right"></i>
                             </a>
                         </div>
 
                         
                         <div class="schedule-img-wrapper" onclick="openScheduleGalleryByVtuberId(8)">
-                            <img src="https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg" alt="祿菈唄爾 LLB ch. 本週週表" loading="lazy" decoding="async">
+                            <img src="https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg" alt="祿菈唄爾 LLB ch." loading="lazy" decoding="async">
                         </div>
                         <div class="schedule-actions">
                             <button class="schedule-action-btn" onclick="openScheduleGalleryByVtuberId(8)">
-                                <i class="fa-solid fa-magnifying-glass-plus" style="color:var(--neon-purple);"></i> 放大圖片
+                                <i class="fa-solid fa-magnifying-glass-plus" style="color:var(--neon-purple);"></i> Enlarge
                             </button>
-                            <a href="https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg" target="_blank" class="schedule-action-btn" title="在新分頁開啟原始圖片連結">
-                                <i class="fa-solid fa-arrow-up-right-from-square" style="opacity:0.7;"></i> 原始連結
+                            <a href="https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg" target="_blank" class="schedule-action-btn" title="Source">
+                                <i class="fa-solid fa-arrow-up-right-from-square" style="opacity:0.7;"></i> Source
                             </a>
                         </div>
                         
@@ -1109,14 +404,14 @@
                                 <span>Neon Ch. 霓羊</span>
                             </div>
                             <a href="./share/neon_ch" style="font-size:11px; color:var(--neon-purple); text-decoration:none;">
-                                專頁 <i class="fa-solid fa-angle-right"></i>
+                                Profile <i class="fa-solid fa-angle-right"></i>
                             </a>
                         </div>
 
                         
                         <div class="no-schedule-box">
                             <i class="fa-solid fa-triangle-exclamation" style="color:var(--neon-gold); margin-bottom:4px; font-size:16px;"></i>
-                            <div>尚未設定週表圖片連結</div>
+                            <div>No schedule image set yet</div>
                         </div>
                         
                     </div>
@@ -1126,20 +421,22 @@
         </main>
     </div>
 
-    <!-- 🖼️ 全螢幕連貫切換週表藝廊 Modal (Gallery Lightbox) -->
+    <!-- 全螢幕連貫切換週表藝廊 Modal -->
     <div id="schedule-lightbox-modal" class="lightbox-overlay" onclick="closeScheduleLightbox()">
         <div class="lightbox-content" onclick="event.stopPropagation()">
             <button class="lightbox-close-btn" onclick="closeScheduleLightbox()">&times;</button>
             
-            <button class="lightbox-nav-btn lightbox-prev-btn" onclick="prevScheduleImage()" title="上一張週表 (←)">
+            <button class="lightbox-nav-btn lightbox-prev-btn" onclick="prevScheduleImage()" title="Previous (←)">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button class="lightbox-nav-btn lightbox-next-btn" onclick="nextScheduleImage()" title="下一張週表 (→)">
+            <button class="lightbox-nav-btn lightbox-next-btn" onclick="nextScheduleImage()" title="Next (→)">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
 
             <img id="schedule-lightbox-img" src="" alt="Enlarged Schedule" class="lightbox-img">
             <div class="lightbox-caption" id="schedule-lightbox-caption"></div>
+        </div>
+    </div>
 
 
   <div id="toast-container">
@@ -1151,155 +448,37 @@
   <script src="../static/js/ui.js"></script>
   
 <script>
-
-        // 收集所有有效週表資料
-        const scheduleGalleryItems = [
-            
-            
-            {
-                vtuberId: 1,
-                name: "滔滔饕餮 TaotaoTaotie Ch.",
-                url: "https://img.youtube.com/vi/y3Vyg3nOsFA/maxresdefault.jpg"
-            },
-            
-            
-            
-            {
-                vtuberId: 7,
-                name: "Seri ch.星璃",
-                url: "https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg"
-            },
-            
-            
-            
-            {
-                vtuberId: 8,
-                name: "祿菈唄爾 LLB ch.",
-                url: "https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg"
-            },
-            
-            
-            
-            
-        ];
-
-        let currentGalleryIndex = 0;
-
-        // 視圖切換功能 (交換顯示主播列表或週表行程)
-        function toggleLobbyView() {
-            const layout = document.getElementById('lobby-layout');
-            const btn = document.getElementById('view-toggle-btn');
-            if (!layout || !btn) return;
-            
-            const isScheduleMode = layout.classList.toggle('show-schedule');
-            if (isScheduleMode) {
-                btn.innerHTML = '<i class="fa-solid fa-users"></i> <span>觀看主播列表</span>';
-                btn.style.borderColor = 'rgba(52, 211, 153, 0.4)';
-                btn.style.background = 'rgba(52, 211, 153, 0.08)';
-                btn.style.color = 'var(--neon-green)';
-            } else {
-                btn.innerHTML = '<i class="fa-regular fa-calendar-days"></i> <span>觀看週表行程</span>';
-                btn.style.borderColor = 'rgba(167, 139, 250, 0.4)';
-                btn.style.background = 'rgba(167, 139, 250, 0.08)';
-                btn.style.color = 'var(--neon-purple)';
-            }
-        }
-
-        // 搜尋過濾功能
-        function onLobbySearchInput() {
-            const input = document.getElementById('lobby-search-input');
-            const clearBtn = document.getElementById('clear-lobby-search-btn');
-            const query = input ? input.value.toLowerCase().trim() : '';
-
-            if (clearBtn) {
-                clearBtn.style.display = query ? 'block' : 'none';
-            }
-
-            // 過濾左側主播卡片
-            document.querySelectorAll('#vtuber-grid-container .vtuber-card').forEach(card => {
-                const searchText = card.getAttribute('data-search-text') || '';
-                card.style.display = searchText.toLowerCase().includes(query) ? '' : 'none';
-            });
-
-            // 過濾右側週表
-            document.querySelectorAll('#schedule-list .schedule-item-card').forEach(card => {
-                const searchText = card.getAttribute('data-search-text') || '';
-                card.style.display = searchText.toLowerCase().includes(query) ? '' : 'none';
-            });
-        }
-
-        function clearLobbySearch() {
-            const input = document.getElementById('lobby-search-input');
-            if (input) {
-                input.value = '';
-                onLobbySearchInput();
-                input.focus();
-            }
-        }
-
-        // 週表膠囊切換
-        function filterScheduleTab(vtuberId, btnEl) {
-            document.querySelectorAll('.schedule-tab-btn').forEach(btn => btn.classList.remove('active'));
-            if (btnEl) btnEl.classList.add('active');
-
-            document.querySelectorAll('#schedule-list .schedule-item-card').forEach(card => {
-                if (vtuberId === 'all') {
-                    card.style.display = '';
-                } else {
-                    const cardVtId = card.getAttribute('data-vtuber-id');
-                    card.style.display = (cardVtId === String(vtuberId)) ? '' : 'none';
-                }
-            });
-        }
-
-        // 週表藝廊燈箱控制
-        function openScheduleGalleryByVtuberId(vtuberId) {
-            const index = scheduleGalleryItems.findIndex(item => item.vtuberId === vtuberId);
-            if (index !== -1) {
-                openScheduleGallery(index);
-            }
-        }
-
-        function openScheduleGallery(index) {
-            if (scheduleGalleryItems.length === 0) return;
-            currentGalleryIndex = (index + scheduleGalleryItems.length) % scheduleGalleryItems.length;
-            const item = scheduleGalleryItems[currentGalleryIndex];
-
-            const img = document.getElementById('schedule-lightbox-img');
-            const caption = document.getElementById('schedule-lightbox-caption');
-            const modal = document.getElementById('schedule-lightbox-modal');
-
-            if (img && caption && modal) {
-                img.src = item.url;
-                caption.innerHTML = `<span style="color:var(--neon-purple);">${item.name}</span> - 本週行程週表 (${currentGalleryIndex + 1} / ${scheduleGalleryItems.length})`;
-                modal.classList.add('active');
-            }
-        }
-
-        function closeScheduleLightbox() {
-            const modal = document.getElementById('schedule-lightbox-modal');
-            if (modal) modal.classList.remove('active');
-        }
-
-        function prevScheduleImage() {
-            openScheduleGallery(currentGalleryIndex - 1);
-        }
-
-        function nextScheduleImage() {
-            openScheduleGallery(currentGalleryIndex + 1);
-        }
-
-        // 鍵盤左右鍵控制燈箱
-        document.addEventListener('keydown', (e) => {
-            const modal = document.getElementById('schedule-lightbox-modal');
-            if (modal && modal.classList.contains('active')) {
-                if (e.key === 'ArrowLeft') prevScheduleImage();
-                if (e.key === 'ArrowRight') nextScheduleImage();
-                if (e.key === 'Escape') closeScheduleLightbox();
-            }
-        });
+window.scheduleGalleryItems = [
     
+    
+    {
+        vtuberId: 1,
+        name: "\u6ed4\u6ed4\u9955\u992e TaotaoTaotie Ch.",
+        url: "https://img.youtube.com/vi/y3Vyg3nOsFA/maxresdefault.jpg"
+    },
+    
+    
+    
+    {
+        vtuberId: 7,
+        name: "Seri ch.\u661f\u7483",
+        url: "https://img.youtube.com/vi/7Ol8QgEfDEc/maxresdefault.jpg"
+    },
+    
+    
+    
+    {
+        vtuberId: 8,
+        name: "\u797f\u83c8\u5504\u723e LLB ch.",
+        url: "https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg"
+    },
+    
+    
+    
+    
+];
 </script>
+<script src="../static/js/lobby.js"></script>
 
 </body>
 </html>

@@ -1,4 +1,5 @@
 from flask import request, jsonify
+from flask_login import login_required
 from app.blueprints.api import api_bp
 from app.services.vtuber_service import get_vtubers
 from app.services.song_service import get_songs
@@ -69,6 +70,7 @@ def list_activities():
     return jsonify([{'id': a.id, 'title': a.title, 'activity_type': a.activity_type} for a in activities])
 
 @api_bp.route('/vtubers/fetch_youtube_info', methods=['GET'])
+@login_required
 def fetch_youtube_info():
     channel_url = request.args.get('channel_url')
     if not channel_url:
@@ -80,6 +82,7 @@ def fetch_youtube_info():
         return jsonify({'error': str(e)}), 400
 
 @api_bp.route('/videos/fetch_youtube_info', methods=['GET'])
+@login_required
 def fetch_video_info():
     video_id = request.args.get('video_id')
     if not video_id:
@@ -95,6 +98,7 @@ def fetch_video_info():
         return jsonify({'error': str(e)}), 400
 
 @api_bp.route('/artists/quick_create', methods=['POST'])
+@login_required
 def quick_create_artist():
     data = request.get_json() if request.is_json else request.form.to_dict()
     name = data.get('name_main', '').strip() if data else ''
@@ -115,6 +119,7 @@ def quick_create_artist():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @api_bp.route('/songs/quick_create', methods=['POST'])
+@login_required
 def quick_create_song():
     data = request.get_json() if request.is_json else request.form.to_dict()
     title = data.get('title_main', '').strip() if data else ''
@@ -148,6 +153,7 @@ def quick_create_song():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @api_bp.route('/clip_authors/quick_create', methods=['POST'])
+@login_required
 def quick_create_clip_author():
     data = request.get_json() if request.is_json else request.form.to_dict()
     name = data.get('name', '').strip() if data else ''

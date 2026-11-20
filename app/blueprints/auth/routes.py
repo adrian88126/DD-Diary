@@ -1,7 +1,17 @@
+from urllib.parse import urlparse
 from flask import render_template, request, redirect, url_for, flash, current_app
 from flask_login import login_user, logout_user, login_required, UserMixin
 from app.blueprints.auth import auth_bp
 from app.extensions import login_manager
+
+
+def is_safe_redirect_url(target: str) -> bool:
+    """僅允許站內相對路徑重新導向，防止 Open Redirect。"""
+    if not target or not target.startswith('/') or target.startswith('//') or target.startswith('/\\'):
+        return False
+    parsed = urlparse(target)
+    return not parsed.scheme and not parsed.netloc
+
 
 class User(UserMixin):
     def __init__(self, id):
@@ -26,8 +36,9 @@ def login():
             user = User(username)
             login_user(user)
             flash('Logged in successfully.', 'success')
-            next_page = request.args.get('next')
-            return redirect(next_page or url_for('admin.dashboard'))
+            next_page = request.args.get('next', '')
+            target = next_page if is_safe_redirect_url(next_page) else url_for('admin.dashboard')
+            return redirect(target)
         else:
             flash('Invalid username or password', 'error')
             
@@ -38,4 +49,4 @@ def login():
 def logout():
     logout_user()
     flash('Logged out successfully.', 'success')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.lobby'))

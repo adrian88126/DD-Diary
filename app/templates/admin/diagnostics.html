@@ -193,6 +193,14 @@ async function runFullSystemTests() {
       </form>
       {% endif %}
 
+      {% if report.songs.wikidata_duplicate_artists %}
+      <form action="{{ url_for('admin.diagnostics_auto_merge_wikidata_artists') }}" method="POST" style="margin:0;" onsubmit="return confirm('確定要依 Wikidata QID 自動合併所有跨語言重複歌手嗎？系統會自動補全雙邊多語言欄位並轉移歌曲關聯。');">
+        <button type="submit" class="btn btn-sm btn-primary" style="background: #3b82f6; border-color: #3b82f6;">
+          <i class="fa-solid fa-language"></i> 一鍵合併跨語言重複歌手 ({{ report.songs.wikidata_duplicate_artists | length }})
+        </button>
+      </form>
+      {% endif %}
+
       {% if report.clips.untagged_clips %}
       <form action="{{ url_for('admin.diagnostics_auto_fix_untagged_clips') }}" method="POST" style="margin:0;">
         <button type="submit" class="btn btn-sm btn-secondary" style="border-color: #8b5cf6;">
@@ -209,7 +217,7 @@ async function runFullSystemTests() {
       </form>
       {% endif %}
 
-      {% if not report.songs.duplicate_songs and not report.songs.duplicate_artists and not report.clips.untagged_clips and not report.records.duplicate_records %}
+      {% if not report.songs.duplicate_songs and not report.songs.duplicate_artists and not report.songs.wikidata_duplicate_artists and not report.clips.untagged_clips and not report.records.duplicate_records %}
       <span style="color: #10b981; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
         <i class="fa-solid fa-circle-check"></i> 目前無可批次自動修復的重複項，資料庫狀態良好！
       </span>
@@ -227,7 +235,7 @@ async function runFullSystemTests() {
           <i class="fa-solid fa-music" style="color: #3b82f6;"></i>
           <span>歌曲與歌手診斷</span>
         </h3>
-        <span class="badge badge-primary">{{ report.songs.duplicate_songs|length + report.songs.duplicate_artists|length + report.songs.orphan_songs|length }} 項</span>
+        <span class="badge badge-primary">{{ report.songs.duplicate_songs|length + report.songs.duplicate_artists|length + report.songs.wikidata_duplicate_artists|length + report.songs.orphan_songs|length }} 項</span>
       </div>
 
       <!-- 重複歌曲 -->
@@ -282,6 +290,33 @@ async function runFullSystemTests() {
         </div>
         {% else %}
         <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 無重複歌手</div>
+        {% endif %}
+      </div>
+
+      <!-- 跨語言重複歌手 (Wikidata QID) -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
+          <span>跨語言重複歌手 (同 Wikidata QID)</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">{{ report.songs.wikidata_duplicate_artists|length }} 組</span>
+        </div>
+        {% if report.songs.wikidata_duplicate_artists %}
+        <div class="admin-table-container" style="max-height: 180px; overflow-y: auto; margin-bottom: 0;">
+          <table class="admin-data-table" style="font-size: 0.85rem;">
+            <thead>
+              <tr><th>Wikidata QID</th><th>重複歌手</th></tr>
+            </thead>
+            <tbody>
+              {% for qid, items in report.songs.wikidata_duplicate_artists.items() %}
+              <tr>
+                <td><span class="badge badge-outline">{{ qid }}</span></td>
+                <td>{% for it in items %}#{{ it.id }} {{ it.name }} ({{ it.songs_count }}首){% if not loop.last %} / {% endif %}{% endfor %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div style="font-size: 0.85rem; color: var(--text-muted); padding: 4px 0;"><i class="fa-solid fa-check" style="color: #10b981;"></i> 無跨語言重複歌手</div>
         {% endif %}
       </div>
 

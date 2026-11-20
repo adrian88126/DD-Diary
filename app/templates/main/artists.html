@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}原唱歌手歌單與 Wikidata 索引 - DDDiary{% endblock %}
+{% block title %}{{ _('Artist Songlist') }} - DDDiary{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -577,21 +577,21 @@
 <div class="artists-wrapper">
   <header class="artists-hero">
     <h1><i class="fa-solid fa-compact-disc"></i> {{ _('Artist Songlist') }}</h1>
-    <p class="artists-subtitle">依原唱歌手彙整全站 VTuber 翻唱曲目，支援多語言名稱、Wikidata QID 檢索與跨主播連播</p>
+    <p class="artists-subtitle">{{ _('Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.') }}</p>
   </header>
 
   <div class="artists-stats-bar">
     <div class="artist-stat-pill">
       <i class="fa-solid fa-users" style="color:var(--neon-purple);"></i>
-      <span>收錄原唱：<strong id="stat-total-artists">0</strong> 位</span>
+      <span>{{ _('Original Artists:') }} <strong id="stat-total-artists">0</strong> {{ _('unit_artists') }}</span>
     </div>
     <div class="artist-stat-pill">
       <i class="fa-solid fa-database" style="color:var(--neon-blue);"></i>
-      <span>已連結 Wikidata：<strong id="stat-wikidata-artists">0</strong> 位</span>
+      <span>{{ _('Linked Wikidata:') }} <strong id="stat-wikidata-artists">0</strong> {{ _('unit_artists') }}</span>
     </div>
     <div class="artist-stat-pill">
       <i class="fa-solid fa-filter" style="color:var(--neon-gold);"></i>
-      <span>目前顯示：<strong id="stat-filtered-artists">0</strong> 位</span>
+      <span>{{ _('Showing:') }} <strong id="stat-filtered-artists">0</strong> {{ _('unit_artists') }}</span>
     </div>
   </div>
 
@@ -599,27 +599,27 @@
     <div class="toolbar-top-row">
       <div class="artist-search-box">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="artist-search-input" placeholder="搜尋歌手主名稱、英文/日文/中文/羅馬拼音、Wikidata QID 或歌名..." oninput="onArtistSearchInput()">
-        <button id="clear-artist-search-btn" class="artist-clear-btn" onclick="clearArtistSearch()" title="清空搜尋">
+        <input type="text" id="artist-search-input" placeholder="{{ _('Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...') }}" oninput="onArtistSearchInput()">
+        <button id="clear-artist-search-btn" class="artist-clear-btn" onclick="clearArtistSearch()" title="{{ _('Cancel') }}">
           <i class="fa-solid fa-circle-xmark"></i>
         </button>
       </div>
 
       <div class="toolbar-btn-group" id="artist-sort-group">
-        <button type="button" class="filter-pill-btn active" data-sort="records" onclick="sortArtists('records')"><i class="fa-solid fa-fire"></i> 演唱次數</button>
-        <button type="button" class="filter-pill-btn" data-sort="songs" onclick="sortArtists('songs')"><i class="fa-solid fa-music"></i> 歌曲數</button>
-        <button type="button" class="filter-pill-btn" data-sort="vtubers" onclick="sortArtists('vtubers')"><i class="fa-solid fa-user-group"></i> 跨主播</button>
-        <button type="button" class="filter-pill-btn" data-sort="name" onclick="sortArtists('name')"><i class="fa-solid fa-arrow-down-a-z"></i> 名稱</button>
+        <button type="button" class="filter-pill-btn active" data-sort="records" onclick="sortArtists('records')"><i class="fa-solid fa-fire"></i> {{ _('Play Count') }}</button>
+        <button type="button" class="filter-pill-btn" data-sort="songs" onclick="sortArtists('songs')"><i class="fa-solid fa-music"></i> {{ _('Song Count') }}</button>
+        <button type="button" class="filter-pill-btn" data-sort="vtubers" onclick="sortArtists('vtubers')"><i class="fa-solid fa-user-group"></i> {{ _('Cross-VTuber') }}</button>
+        <button type="button" class="filter-pill-btn" data-sort="name" onclick="sortArtists('name')"><i class="fa-solid fa-arrow-down-a-z"></i> {{ _('Name Sort') }}</button>
       </div>
     </div>
 
     <div class="toolbar-bottom-row">
       <div class="toolbar-btn-group" id="vtuber-filter-tabs">
-        <button type="button" class="filter-pill-btn active" data-vtuber="all" onclick="filterArtistVtuber('all')">全部主播</button>
+        <button type="button" class="filter-pill-btn active" data-vtuber="all" onclick="filterArtistVtuber('all')">{{ _('All VTubers') }}</button>
       </div>
       <div class="toolbar-btn-group">
         <button type="button" id="wikidata-only-btn" class="filter-pill-btn" onclick="toggleWikidataOnly()">
-          <i class="fa-solid fa-globe"></i> 僅看有 Wikidata QID
+          <i class="fa-solid fa-globe"></i> {{ _('With Wikidata QID Only') }}
         </button>
       </div>
     </div>
@@ -630,14 +630,14 @@
     <aside class="artists-list-panel">
       <div class="artists-list-scroll" id="artist-catalog-list"></div>
       <button type="button" id="load-more-artists-btn" class="load-more-btn" style="display:none;" onclick="loadMoreArtists()">
-        載入更多歌手...
+        {{ _('Load more artists...') }}
       </button>
     </aside>
 
     <!-- Right Column: Selected Artist Detail + Player + Songlist -->
     <section class="artist-detail-panel" id="artist-detail-panel">
       <div class="detail-card" id="artist-detail-header">
-        <div style="text-align:center; padding:32px; color:var(--text-muted);">載入原唱歌手資料中...</div>
+        <div style="text-align:center; padding:32px; color:var(--text-muted);">{{ _('Loading artist data...') }}</div>
       </div>
 
       <div class="detail-card" id="artist-player-card">
@@ -645,25 +645,25 @@
           <div class="artist-player-frame" id="artist-yt-player">
             <div class="player-placeholder-box">
               <i class="fa-brands fa-youtube" style="font-size:28px; color:var(--neon-purple); margin-bottom:8px; display:block;"></i>
-              點選上方「播放此歌手全部」或下方任一主播演唱版本，即可於此處直接播放
+              {{ _("Click 'Play All' above or any VTuber cover below to start playing") }}
             </div>
           </div>
 
           <div class="player-controls-panel">
-            <div class="now-playing-title" id="artist-player-song-title">尚未播放歌曲</div>
-            <div class="now-playing-meta" id="artist-player-vtuber-info">請從左側選擇原唱歌手並點擊任一曲目</div>
+            <div class="now-playing-title" id="artist-player-song-title">{{ _('No track playing') }}</div>
+            <div class="now-playing-meta" id="artist-player-vtuber-info">{{ _('Select an artist on the left and click any track to play') }}</div>
 
             <div class="action-btn-row" style="margin-top:4px;">
-              <button type="button" class="artist-action-btn" onclick="artistPrevSong()" title="上一首"><i class="fa-solid fa-backward-step"></i></button>
-              <button type="button" class="artist-action-btn primary" id="artist-play-pause-btn" onclick="artistTogglePlay()" title="播放 / 暫停"><i class="fa-solid fa-play"></i> 播放</button>
-              <button type="button" class="artist-action-btn" onclick="artistNextSong()" title="下一首"><i class="fa-solid fa-forward-step"></i></button>
-              <button type="button" class="artist-action-btn active" id="artist-autoplay-btn" onclick="artistToggleAutoplay()"><i class="fa-solid fa-repeat"></i> 連播</button>
-              <button type="button" class="artist-action-btn" id="artist-shuffle-btn" onclick="artistToggleShuffle()"><i class="fa-solid fa-shuffle"></i> 隨機</button>
+              <button type="button" class="artist-action-btn" onclick="artistPrevSong()" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+              <button type="button" class="artist-action-btn primary" id="artist-play-pause-btn" onclick="artistTogglePlay()" title="{{ _('Play') }}"><i class="fa-solid fa-play"></i> {{ _('Play') }}</button>
+              <button type="button" class="artist-action-btn" onclick="artistNextSong()" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+              <button type="button" class="artist-action-btn active" id="artist-autoplay-btn" onclick="artistToggleAutoplay()"><i class="fa-solid fa-repeat"></i> {{ _('Autoplay') }}</button>
+              <button type="button" class="artist-action-btn" id="artist-shuffle-btn" onclick="artistToggleShuffle()"><i class="fa-solid fa-shuffle"></i> {{ _('Shuffle') }}</button>
             </div>
 
             <div class="action-btn-row" style="margin-top:2px;">
-              <a href="#" id="artist-player-share-link" class="artist-action-btn" style="display:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> 前往主播專頁</a>
-              <a href="#" id="artist-player-yt-link" target="_blank" rel="noopener noreferrer" class="artist-action-btn" style="display:none;"><i class="fa-brands fa-youtube"></i> 在 YouTube 開啟</a>
+              <a href="#" id="artist-player-share-link" class="artist-action-btn" style="display:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> {{ _('Open VTuber Page') }}</a>
+              <a href="#" id="artist-player-yt-link" target="_blank" rel="noopener noreferrer" class="artist-action-btn" style="display:none;"><i class="fa-brands fa-youtube"></i> {{ _('Open on YouTube') }}</a>
             </div>
           </div>
         </div>

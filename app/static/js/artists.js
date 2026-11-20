@@ -491,6 +491,24 @@
       ytLink.style.display = 'inline-flex';
     }
 
+    if ('mediaSession' in navigator && typeof MediaMetadata !== 'undefined') {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: item.title || 'Unknown Song',
+          artist: (artistLabel ? artistLabel + ' · ' : '') + vtName,
+          album: 'DDDiary VTuber Song Database',
+          artwork: [
+            { src: 'https://img.youtube.com/vi/' + item.videoId + '/mqdefault.jpg', sizes: '320x180', type: 'image/jpeg' },
+            { src: 'https://img.youtube.com/vi/' + item.videoId + '/hqdefault.jpg', sizes: '480x360', type: 'image/jpeg' }
+          ]
+        });
+        navigator.mediaSession.setActionHandler('play', function () { window.artistTogglePlay(); });
+        navigator.mediaSession.setActionHandler('pause', function () { window.artistTogglePlay(); });
+        navigator.mediaSession.setActionHandler('previoustrack', function () { window.artistPrevSong(); });
+        navigator.mediaSession.setActionHandler('nexttrack', function () { window.artistNextSong(); });
+      } catch (e) {}
+    }
+
     if (typeof YT === 'undefined' || !YT.Player) {
       pendingPlayItem = item;
       return;

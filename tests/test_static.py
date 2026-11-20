@@ -1,3 +1,4 @@
+import glob
 import os
 import sys
 import subprocess
@@ -58,5 +59,26 @@ def run_tests():
         full_path = os.path.join(docs_dir, rel_path)
         if not os.path.exists(full_path) or os.path.getsize(full_path) == 0:
             errors.append(f"靜態歌手歌單產物缺失或為空：docs/{rel_path.replace(os.sep, '/')}")
+
+    # 6. 驗證各主播獨立靜態資料檔存在且非空、排除舊版 portal.js、且英文大廳翻譯完整
+    vtuber_data_files = glob.glob(os.path.join(docs_dir, "static", "data", "vtuber_*.js"))
+    if not vtuber_data_files:
+        errors.append("docs/static/data/vtuber_*.js 主播資料檔未成功生成！")
+    else:
+        for vp in vtuber_data_files:
+            if os.path.getsize(vp) == 0:
+                errors.append(f"主播靜態資料檔為空：{vp}")
+
+    legacy_portal_js = os.path.join(docs_dir, "static", "js", "portal.js")
+    if os.path.exists(legacy_portal_js):
+        errors.append("docs/static/js/portal.js 應於靜態複製時被排除，卻仍存在於產物中！")
+
+    en_index_path = os.path.join(docs_dir, "en", "index.html")
+    if os.path.exists(en_index_path):
+        with open(en_index_path, "r", encoding="utf-8") as f:
+            en_html = f.read()
+        for expected_text in ["VTuber Singing Database", "Artist Songlist"]:
+            if expected_text not in en_html:
+                errors.append(f"docs/en/index.html 缺少英文語系字串：{expected_text}")
         
     return errors

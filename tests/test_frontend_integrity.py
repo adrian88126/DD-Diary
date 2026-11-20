@@ -36,6 +36,7 @@ def run_tests():
     # 2. 驗證前端核心 JS 檔案存在與未完成空殼 (Stub) 檢查
     js_files = [
         "app/static/js/ui.js",
+        "app/static/js/lobby.js",
         "app/static/js/share.js",
         "app/static/js/artists.js",
         "app/static/js/admin.js",

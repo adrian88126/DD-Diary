@@ -40,6 +40,7 @@ def run_diagnostics_cli():
     print(f"\n{BOLD}{BLUE}🎵 1. 歌曲與歌手 (Songs & Artists){RESET}")
     print(f"  • 重複歌曲：{len(songs_info['duplicate_songs'])} 組" + (f" {YELLOW}(可執行一鍵合併){RESET}" if songs_info['duplicate_songs'] else f" {GREEN}✓{RESET}"))
     print(f"  • 重複歌手：{len(songs_info['duplicate_artists'])} 組" + (f" {YELLOW}(可執行一鍵合併){RESET}" if songs_info['duplicate_artists'] else f" {GREEN}✓{RESET}"))
+    print(f"  • 跨語言重複歌手 (Wikidata QID)：{len(songs_info['wikidata_duplicate_artists'])} 組" + (f" {YELLOW}(可執行一鍵合併){RESET}" if songs_info['wikidata_duplicate_artists'] else f" {GREEN}✓{RESET}"))
     print(f"  • 孤立歌曲 (未被引用)：{len(songs_info['orphan_songs'])} 首" + (f" {YELLOW}(可清理){RESET}" if songs_info['orphan_songs'] else f" {GREEN}✓{RESET}"))
     print(f"  • 無歌手歌曲：{len(songs_info['unknown_songs'])} 首")
 

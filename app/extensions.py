@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
@@ -11,6 +12,9 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.login_message = '請先登入後台管理系統'
 login_manager.login_message_category = 'warning'
+
+# 全站 CSRF 防護
+csrf = CSRFProtect()
 
 
 # 強制 SQLite 啟用外鍵約束（全局監聽）

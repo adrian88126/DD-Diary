@@ -42,6 +42,8 @@ with app.test_request_context(environ_base={'HTTP_COOKIE': f'lang={lang}'}):
    * **中文版**：輸出大廳至 `docs/index.html`、原唱歌手歌單至 `docs/artists/index.html`，主播專頁輸出至 `docs/share/{id}/index.html`。
    * **英文版**：輸出大廳至 `docs/en/index.html`、原唱歌手歌單至 `docs/en/artists/index.html`，主播專頁輸出至 `docs/en/share/{id}/index.html`。
    * **共用歌手資料檔**：輸出至 `docs/static/data/artist_catalog.js`（掛載 `window.ARTIST_CATALOG_DATA` 供雙語 `/artists` 專頁在 `file:///` 離線模式下共用讀取，避免重複內嵌龐大 JSON）。
+   * **主播個人頁資料抽離檔**：透過共用的 `share_service.get_vtuber_profile_payload()` 序列化資料，輸出至 `docs/static/data/vtuber_{id}.js`（掛載 `window.VTUBER_PROFILE_DATA`），供中英文雙語 `share/{id}/index.html` 共用載入，大幅縮減單頁 HTML 體積並減少快取冗餘。
+   * **靜態資源精簡複製**：複製 `app/static/` 至 `docs/static/` 時透過 `shutil.ignore_patterns("*.bak", "portal.js")` 自動排除備份檔與已棄用的 `portal.js`。
 4. 網頁右上角的「語系切換」下拉選單，在靜態模式下（`is_static=True`）會直接指向這些靜態預渲染出的語系路徑，達到無後端雙語切換的效果。
 
 ---

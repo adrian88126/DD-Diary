@@ -1,7 +1,7 @@
 """VTSong Database — Flask Application Factory"""
 from flask import Flask
 from app.config import Config
-from app.extensions import db, login_manager
+from app.extensions import db, login_manager, csrf
 
 
 def create_app(config_class=Config):
@@ -11,6 +11,7 @@ def create_app(config_class=Config):
     # ── 初始化擴充套件 ──
     db.init_app(app)
     login_manager.init_app(app)
+    csrf.init_app(app)
 
     # ── 匯入 ORM Models（確保 SQLAlchemy 註冊） ──
     with app.app_context():

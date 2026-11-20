@@ -29,6 +29,9 @@
     <!-- Main Theme & Share Profile Styling -->
     <link rel="stylesheet" href="../../../static/css/base.css?v=14">
     <link rel="stylesheet" href="../../../static/css/share.css?v=14">
+    <script>
+        window.I18N = {"Admin": "Admin", "All": "All", "All Clippers": "All Clippers", "All Tags": "All Tags", "All VTubers": "All VTubers", "Artist Songlist": "Artist Songlist", "Autoplay": "Autoplay", "Back to Lobby": "Back to Lobby", "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.": "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.", "Cancel": "Clear", "Click \u0027Play All\u0027 above or any VTuber cover below to start playing": "Click \u0027Play All\u0027 above or any VTuber cover below to start playing", "Click a track or Random Radio to listen": "Click a track or Random Radio to listen", "Clipper:": "Clipper:", "Collaboration": "Collaboration", "Cross-VTuber": "Cross-VTuber", "Enlarge": "Enlarge", "Enlarge Schedule": "Enlarge Schedule", "Enter Songlist": "Enter Songlist", "Expand Video": "Expand", "Export Excel": "Export CSV", "Featured Clips": "Featured Clips", "Home": "Home", "Linked Videos:": "Videos:", "Linked Wikidata:": "Linked Wikidata:", "Live Streams": "Live Streams", "Load more artists...": "Load more artists...", "Loading artist data...": "Loading artist data...", "Login": "Login", "Logout": "Logout", "MV": "MV", "Management and login features are only available in the local Flask environment.": "Management and login features are only available in the local Flask environment.", "Milestones \u0026 Timeline": "Milestones \u0026 Timeline", "Most Sung": "Most Sung", "Name Sort": "Name", "No bio description yet.": "No bio description yet.", "No data": "No data", "No related songs yet!": "No related songs yet!", "No schedule image set yet": "No schedule image set yet", "No track playing": "No track playing", "No videos here yet!": "No videos here yet!", "Not playing": "Not playing", "Open VTuber Page": "VTuber Page", "Open on YouTube": "Open on YouTube", "Original Artists:": "Original Artists:", "Original Link": "Source", "Other Streams": "Other Streams", "Overview": "Overview", "Play": "Play", "Play Count": "Play Count", "Profile": "Profile", "Random Radio": "Random Radio", "Recently Sung": "Recently Sung", "Recorded Songs:": "Songs:", "Schedule": "Schedule", "Search VTubers, JP/ZH names, or bio...": "Search VTubers, JP/ZH names, or bio...", "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...": "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...", "Search song title or artist...": "Search song title or artist...", "Select a song to play": "Select a song to play", "Select an artist on the left and click any track to play": "Select an artist on the left and click any track to play", "Shorts": "Shorts", "Showing:": "Showing:", "Shuffle": "Shuffle", "Singing History": "Singing History", "Singing Records:": "Records:", "Singing Streams": "Singing Streams", "Song Count": "Songs", "Song List": "Song List", "Sort by Title": "By Title", "Talk / Solo": "Talk / Solo", "Top Original Artists (TOP 5)": "Top Original Artists (TOP 5)", "Top Songs (TOP 5)": "Top Songs (TOP 5)", "Total VTubers": "Total", "Unknown": "Unknown", "VTuber Singing Database": "VTuber Singing Database", "View Schedule": "View Schedule", "View VTubers": "View VTubers", "Weekly Schedule": "Weekly Schedule", "Weekly Schedule Gallery": "Weekly Schedule Gallery", "With Wikidata QID Only": "Wikidata QID Only", "times": "times", "unit_artists": "", "unit_records": "", "unit_songs": "", "unit_videos": ""};
+    </script>
     
     <style>
         :root {
@@ -51,6 +54,9 @@
                     <a href="../../index.html" class="back-btn">
                         <i class="fa-solid fa-arrow-left"></i> <span class="tab-text">Back to Lobby</span>
                     </a>
+                    <a href="../../artists/index.html" class="back-btn" style="margin-top:6px;">
+                        <i class="fa-solid fa-compact-disc"></i> <span class="tab-text">Artist Songlist</span>
+                    </a>
                     <div class="sidebar-vtuber-info">
                         
                         <div class="sidebar-name">Neon Ch. 霓羊</div>
@@ -71,7 +77,7 @@
 
             <div class="player-card-wrapper sidebar-player" id="player-card-wrapper">
                 <div class="player-card" id="player-card">
-                    <button id="floating-toggle-btn" class="floating-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="最小化 / 展開影片畫面">
+                    <button id="floating-toggle-btn" class="floating-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="Minimize / Expand">
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <div class="iframe-wrapper">
@@ -79,17 +85,17 @@
                         <div id="youtube-player" style="position: absolute; top:0; left:0; width:100%; height:100%;">
                             <div style="color: #64748b; display: flex; flex-direction: column; align-items: center; justify-content: center; height:100%; gap: 10px; font-size: 13px;">
                                 <i class="fa-solid fa-play" style="font-size: 24px; color: var(--vtuber-active-theme);"></i>
-                                <span>選擇歌單播放</span>
+                                <span>Select a song to play</span>
                             </div>
                         </div>
                     </div>
                     <div class="player-info-bar" onclick="onMobilePlayerBarClick(event)">
                         <div class="player-info-text">
-                            <div class="player-song-title" id="current-song-title">尚未開始播放</div>
-                            <div class="player-singer-name" id="current-singer-name"><i class="fa-solid fa-user"></i> 點擊歌單或隨機電台開始聽歌</div>
+                            <div class="player-song-title" id="current-song-title">Not playing</div>
+                            <div class="player-singer-name" id="current-singer-name"><i class="fa-solid fa-user"></i> Click a track or Random Radio to listen</div>
                         </div>
-                        <button type="button" class="mobile-video-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="展開 / 收合影片畫面">
-                            <i class="fa-solid fa-tv"></i> <span class="mobile-video-toggle-label">展開畫面</span>
+                        <button type="button" class="mobile-video-toggle-btn" onclick="toggleFloatingPlayerMinimize()" title="Expand / Collapse">
+                            <i class="fa-solid fa-tv"></i> <span class="mobile-video-toggle-label">Expand</span>
                         </button>
                     </div>
                     <div class="player-controls-bar">
@@ -136,11 +142,11 @@
 
             <!-- 手機版專屬：快速滑動分頁膠囊列 -->
             <div class="mobile-tabs-bar" id="mobile-tabs-bar">
-                <button type="button" class="mobile-tab-pill active" data-tab="bio" onclick="switchTab('bio')"><i class="fa-solid fa-user"></i> 總覽</button>
-                <button type="button" class="mobile-tab-pill" data-tab="requestable" onclick="switchTab('requestable')"><i class="fa-solid fa-list"></i> 常駐歌單</button>
-                <button type="button" class="mobile-tab-pill" data-tab="singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone"></i> 歌回直播</button>
-                <button type="button" class="mobile-tab-pill" data-tab="history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> 歌唱紀錄</button>
-                <button type="button" class="mobile-tab-pill" data-tab="live" onclick="switchTab('live')"><i class="fa-solid fa-video"></i> 其他直播</button>
+                <button type="button" class="mobile-tab-pill active" data-tab="bio" onclick="switchTab('bio')"><i class="fa-solid fa-user"></i> Overview</button>
+                <button type="button" class="mobile-tab-pill" data-tab="requestable" onclick="switchTab('requestable')"><i class="fa-solid fa-list"></i> Song List</button>
+                <button type="button" class="mobile-tab-pill" data-tab="singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone"></i> Singing Streams</button>
+                <button type="button" class="mobile-tab-pill" data-tab="history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> Singing History</button>
+                <button type="button" class="mobile-tab-pill" data-tab="live" onclick="switchTab('live')"><i class="fa-solid fa-video"></i> Other Streams</button>
                 <button type="button" class="mobile-tab-pill" data-tab="mv" onclick="switchTab('mv')"><i class="fa-solid fa-film"></i> MV</button>
                 
             </div>
@@ -151,15 +157,15 @@
                 <div class="toolbar">
                     <div class="search-input-wrapper">
                         <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; color: var(--text-muted);"></i>
-                        <input type="text" id="share-search-input" placeholder="搜尋歌名、歌手..." style="padding-left: 40px;">
-                        <button id="clear-search-btn" onclick="clearSearchInput()" title="清除搜尋"><i class="fa-solid fa-times"></i></button>
+                        <input type="text" id="share-search-input" placeholder="Search song title or artist..." style="padding-left: 40px;">
+                        <button id="clear-search-btn" onclick="clearSearchInput()" title="Clear"><i class="fa-solid fa-times"></i></button>
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button id="radio-mode-btn" onclick="startRadioMode()" class="btn-radio-mode" title="隨機連續播放所有歌單">
-                            <i class="fa-solid fa-radio"></i> 隨機電台聽歌
+                        <button id="radio-mode-btn" onclick="startRadioMode()" class="btn-radio-mode" title="Random Radio">
+                            <i class="fa-solid fa-radio"></i> Random Radio
                         </button>
                         <button id="export-excel-btn" onclick="exportToExcel()" class="btn-export">
-                            <i class="fa-solid fa-file-csv"></i> 匯出 Excel
+                            <i class="fa-solid fa-file-csv"></i> Export CSV
                         </button>
                     </div>
                 </div>
@@ -178,18 +184,18 @@
 
                         <div class="stats-grid">
                             <div class="stat-card">
-                                <h4><i class="fa-solid fa-trophy"></i> 最常唱歌曲排行 (TOP 5)</h4>
+                                <h4><i class="fa-solid fa-trophy"></i> Top Songs (TOP 5)</h4>
                                 <ul id="top-songs-list"></ul>
                             </div>
                             <div class="stat-card">
-                                <h4><i class="fa-solid fa-microphone"></i> 最常唱原唱歌手 (TOP 5)</h4>
+                                <h4><i class="fa-solid fa-microphone"></i> Top Original Artists (TOP 5)</h4>
                                 <ul id="top-artists-list"></ul>
                             </div>
                         </div>
 
                         <div class="bio-two-columns-grid">
                             <div class="timeline-card">
-                                <h3><i class="fa-solid fa-timeline"></i> 成就與大事記時間軸</h3>
+                                <h3><i class="fa-solid fa-timeline"></i> Milestones &amp; Timeline</h3>
                                 <div class="vertical-timeline" id="timeline-activities-container"></div>
                             </div>
                             <div class="calendar-container-card" id="singing-calendar-container"></div>
@@ -200,9 +206,9 @@
                     <div class="tab-pane" id="pane-requestable">
                         <div class="video-filter-bar" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <button class="btn btn-sm btn-outline active" onclick="sortRepertoire('count', this)">最常演唱</button>
-                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('recent', this)">最近演唱</button>
-                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('title', this)">歌名排序</button>
+                                <button class="btn btn-sm btn-outline active" onclick="sortRepertoire('count', this)">Most Sung</button>
+                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('recent', this)">Recently Sung</button>
+                                <button class="btn btn-sm btn-outline" onclick="sortRepertoire('title', this)">By Title</button>
                             </div>
                             <span id="repertoire-total-badge" style="font-size: 13px; color: var(--text-muted);"></span>
                         </div>
@@ -258,13 +264,22 @@
     <!-- YouTube IFrame Player API -->
     <script src="https://www.youtube.com/iframe_api"></script>
     
-    <!-- 注入傳送 JSON 數據並加載外部 ES 模組 -->
+    <!-- 注入傳送 JSON 數據（支援靜態共用檔與動態內嵌雙軌制） -->
+    
+    <script src="../../../static/data/vtuber_32.js"></script>
     <script>
-        window.vtuberData = {"avatar_url": "", "banner_url": "", "description": "\u2661 \u9713\u7f8a \ud835\udc41\ud835\udc38\ud835\udc42\ud835\udc41 \u22c6 \u208a \u263d \u00b7\u02da\ud80c\udf72  \u500b\u4eba\u52e2 \ud835\udc49\ud835\udc47\ud835\udc62\ud835\udc4f\ud835\udc52\ud835\udc5f \u2727 \u4f86\u81ea\u7570\u754c\u88c2\u7e2b\u7684\u9b54\u738b\u5927\u4eba \u2727 ", "id": 32, "name_ja": "", "name_main": "Neon Ch. \u9713\u7f8a", "name_romaji": "neon_ch", "name_zh": "\u9713\u7f8a", "social_links": "", "theme_color": "#8a5adb"};
-        window.videosData = [{"published_at": "2026-11-17", "thumbnail_url": "https://i2.ytimg.com/vi/mp22j08RnkU/hqdefault.jpg", "title": "\u98df\u866b\u690d\u7269 / \u7406\u82bd Cover by \u9713\u7f8aNEON #\u6b4c\u3063\u3066\u307f\u305f #vtuber #\u7ffb\u5531", "video_id": "mp22j08RnkU", "video_type": "short"}, {"published_at": "2026-11-17", "thumbnail_url": "https://i1.ytimg.com/vi/8V0yhSf28qc/hqdefault.jpg", "title": "\u98df\u866b\u690d\u7269 / \u7406\u82bd Cover by \u9713\u7f8aNEON\u3010\u6b4c\u3063\u3066\u307f\u305f\u3011", "video_id": "8V0yhSf28qc", "video_type": "cover_mv"}, {"published_at": "2026-11-10", "thumbnail_url": "https://i1.ytimg.com/vi/0f4aEeybHw0/hqdefault.jpg", "title": "\u5225\u8b93\u6211\u64d4\u5fc3 /\u300a\u539f\u795e\u300b\u6d3e\u8499\uff0d\u591a\u591apoi Cover by \u9713\u7f8aNEON", "video_id": "0f4aEeybHw0", "video_type": "cover_mv"}, {"published_at": "2026-09-10", "thumbnail_url": "https://i4.ytimg.com/vi/k_RNaBQZFn4/hqdefault.jpg", "title": "\u5ca9\u77f3\u88e1\u7684\u82b1 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "k_RNaBQZFn4", "video_type": "short"}, {"published_at": "2026-09-04", "thumbnail_url": "https://i2.ytimg.com/vi/u-sjapDZRvI/hqdefault.jpg", "title": "\u77ed\u9aee #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "u-sjapDZRvI", "video_type": "short"}, {"published_at": "2026-09-01", "thumbnail_url": "https://i2.ytimg.com/vi/EijpOaknHxM/hqdefault.jpg", "title": "\u7d66\u6211\u4e00\u500b\u7406\u7531\u5fd8\u8a18 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "EijpOaknHxM", "video_type": "short"}, {"published_at": "2026-08-25", "thumbnail_url": "https://i4.ytimg.com/vi/waHRc7auPpo/hqdefault.jpg", "title": "\u8ab0 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "waHRc7auPpo", "video_type": "short"}, {"published_at": "2026-08-21", "thumbnail_url": "https://i3.ytimg.com/vi/rVWUXmy094o/hqdefault.jpg", "title": "\u8a08\u7b97\u6d6a\u6f2b #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "rVWUXmy094o", "video_type": "short"}, {"published_at": "2026-08-14", "thumbnail_url": "https://i1.ytimg.com/vi/pjB5_sk9fSY/hqdefault.jpg", "title": "\u8207\u6d6a\u4e4b\u9593 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "pjB5_sk9fSY", "video_type": "short"}, {"published_at": "2026-08-13", "thumbnail_url": "https://i3.ytimg.com/vi/JD8gGnf4L3k/hqdefault.jpg", "title": "\u7532\u4e59\u4e19\u4e01 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "JD8gGnf4L3k", "video_type": "short"}, {"published_at": "2026-08-01", "thumbnail_url": "https://i3.ytimg.com/vi/R3ghDhW5qEE/hqdefault.jpg", "title": "\u7f8a\u306e\u65e5\u6587\u7248\u65b0\u5a5a\u4e09\u554f \ud83d\udc96  #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a", "video_id": "R3ghDhW5qEE", "video_type": "short"}, {"published_at": "2026-07-28", "thumbnail_url": "https://i4.ytimg.com/vi/sxzjbz_5oIg/hqdefault.jpg", "title": "\u4f4f\u5728\u5929\u72fc\u661f\u7684\u90a3\u500b\u4eba #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "sxzjbz_5oIg", "video_type": "short"}, {"published_at": "2026-07-13", "thumbnail_url": "https://i1.ytimg.com/vi/pa4alJKXC4s/hqdefault.jpg", "title": "\u5634\u5df4\u8ddf\u4e0d\u4e0a\u601d\u8003\u7684\u7f8a\u4e3b\u64ad \ud83e\udd13 #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a", "video_id": "pa4alJKXC4s", "video_type": "short"}, {"published_at": "2026-07-12", "thumbnail_url": "https://img.youtube.com/vi/jmJ4wT47CCg/mqdefault.jpg", "title": "\u771f\u7684\u50bb #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "jmJ4wT47CCg", "video_type": "short"}, {"published_at": "2026-06-28", "thumbnail_url": "https://img.youtube.com/vi/BgZ-1aPSR4M/mqdefault.jpg", "title": "\u5bf6\u8c9d #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "BgZ-1aPSR4M", "video_type": "short"}, {"published_at": "2026-06-25", "thumbnail_url": "https://img.youtube.com/vi/BTBPAWcU1I4/mqdefault.jpg", "title": "\u5b64\u55ae\u5317\u534a\u7403 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "BTBPAWcU1I4", "video_type": "short"}, {"published_at": "2026-06-20", "thumbnail_url": "https://img.youtube.com/vi/MihNXe_EmL4/mqdefault.jpg", "title": "\u5b64\u7368\u980c\u6b4c #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "MihNXe_EmL4", "video_type": "short"}, {"published_at": "2026-06-18", "thumbnail_url": "https://img.youtube.com/vi/7voLFo1LTHE/mqdefault.jpg", "title": "\u60c5\u6b4c \ud83d\udc95 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "7voLFo1LTHE", "video_type": "short"}, {"published_at": "2026-06-15", "thumbnail_url": "https://img.youtube.com/vi/RwP6m0o0Gnw/mqdefault.jpg", "title": "\u56b4\u53b2\u65a5\u8cac\ud83d\ude20\u4f60\u767c\u760b\u5566\uff01\u4e0d\u8981\u7b11\ud83d\udc49\u4e0d\u8981\u7b11\ud83d\udc46\u4e0d\u8981\u7b11\ud83d\udc48 #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a", "video_id": "RwP6m0o0Gnw", "video_type": "short"}, {"published_at": "2026-06-09", "thumbnail_url": "https://img.youtube.com/vi/Y_ot48OAjJY/mqdefault.jpg", "title": "\u611b\u5b58\u5728 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "Y_ot48OAjJY", "video_type": "short"}, {"published_at": "2026-06-07", "thumbnail_url": "https://img.youtube.com/vi/-nuDHAqZrWk/mqdefault.jpg", "title": "\u4f9d\u7136\u611b\u4f60 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "-nuDHAqZrWk", "video_type": "short"}, {"published_at": "2026-06-05", "thumbnail_url": "https://img.youtube.com/vi/IitP66Ahx_4/mqdefault.jpg", "title": "\u559c\u6b61\u4f60 #cover #\u6b4c\u3063\u3066\u307f\u305f #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u7ffb\u5531", "video_id": "IitP66Ahx_4", "video_type": "short"}, {"published_at": "2026-05-19", "thumbnail_url": "https://img.youtube.com/vi/vqRAbgiBAvI/mqdefault.jpg", "title": "\u7f8a\u4e3b\u64ad\u8eca\u901f\u53ef\u662f\u5f88\u5feb\u7684\u5594 \ud83d\ude97 #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a", "video_id": "vqRAbgiBAvI", "video_type": "short"}, {"published_at": "2025-11-19", "thumbnail_url": "https://img.youtube.com/vi/PEUM4YSP-7o/mqdefault.jpg", "title": "\u272e\u22c6\u02d9 \ua4b0 \ud835\udc75\ud835\udc6c\ud835\udc76\ud835\udc75 \u9713\u7f8a\u4e8c\u5468\u5e74\u7d00\u5ff5 \ua4b1\u207a\u02da\u2445\u2729 \u5be6\u6cc1\u7d00\u9304", "video_id": "PEUM4YSP-7o", "video_type": "stream_other"}, {"published_at": null, "thumbnail_url": "https://img.youtube.com/vi/hwrWF8BV69I/mqdefault.jpg", "title": "\u53ef\u898b\u7f8a\u4e3b\u64ad\u6c92\u6709\u592a\u591a\u6642\u9593 \ud83e\udee0 #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a", "video_id": "hwrWF8BV69I", "video_type": "stream_other"}, {"published_at": null, "thumbnail_url": "https://img.youtube.com/vi/aPllq9jiXJg/mqdefault.jpg", "title": "\u7f8a\u4e3b\u64ad\u7684\u55dc\u597d\u5f88\u7279\u5225 \ud83e\udd75 \u602a\u5496\u4e00\u500b  #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a", "video_id": "aPllq9jiXJg", "video_type": "stream_other"}, {"published_at": null, "thumbnail_url": "https://img.youtube.com/vi/NJMrIKfHxvg/mqdefault.jpg", "title": "\u7576\u7f8a\u4e3b\u64ad\u8b8a\u6210\u72d7 \ud83d\udc36 \u95dc\u9375\u76840\u79d2\u51fa\u624b #\u597d\u60f3\u898b\u5230\u9713 #vtuber #neon #\u9713\u7f8a #\u72d7\u53eb", "video_id": "NJMrIKfHxvg", "video_type": "stream_other"}];
-        window.activitiesData = [];
-        window.recordsData = [];
-        window.clipsData = [];
+        (function () {
+            var d = window.VTUBER_PROFILE_DATA || {};
+            window.vtuberData = d.vtuber || {};
+            window.videosData = d.videos || [];
+            window.activitiesData = d.activities || [];
+            window.recordsData = d.records || [];
+            window.clipsData = d.clips || [];
+            window.ARTISTS_PAGE_URL = "../../artists/index.html";
+        })();
+    </script>
+    
+    <script>
 
         // 切片過濾與 Modal 功能
         let currentClipTag = 'all';

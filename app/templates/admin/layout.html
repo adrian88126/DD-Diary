@@ -111,6 +111,57 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+(function() {
+  const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+  const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+  if (!csrfToken) return;
+
+  function ensureFormCsrf(form) {
+    if (!form || !form.tagName || form.tagName.toUpperCase() !== 'FORM') return;
+    const method = (form.getAttribute('method') || form.method || 'GET').toUpperCase();
+    if (method !== 'POST') return;
+    if (!form.querySelector('input[name="csrf_token"]')) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'csrf_token';
+      input.value = csrfToken;
+      form.appendChild(input);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('form').forEach(ensureFormCsrf);
+  });
+  document.addEventListener('submit', function(e) {
+    ensureFormCsrf(e.target);
+  }, true);
+
+  const origSubmit = HTMLFormElement.prototype.submit;
+  HTMLFormElement.prototype.submit = function() {
+    ensureFormCsrf(this);
+    return origSubmit.apply(this, arguments);
+  };
+
+  if (window.fetch) {
+    const origFetch = window.fetch;
+    window.fetch = function(input, init) {
+      const opts = init ? Object.assign({}, init) : {};
+      const method = (opts.method || (input && input.method) || 'GET').toUpperCase();
+      const urlStr = typeof input === 'string' ? input : (input && input.url) || '';
+      const isSameOrigin = !/^https?:\/\//i.test(urlStr) || urlStr.indexOf(window.location.origin) === 0;
+      if (isSameOrigin && !['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(method)) {
+        if (opts.headers instanceof Headers) {
+          if (!opts.headers.has('X-CSRFToken')) opts.headers.set('X-CSRFToken', csrfToken);
+        } else {
+          opts.headers = Object.assign({ 'X-CSRFToken': csrfToken }, opts.headers || {});
+        }
+      }
+      return origFetch.call(this, input, opts);
+    };
+  }
+})();
+</script>
 <script src="{{ url_for('static', filename='js/ui.js') }}?v=13"></script>
 <script src="{{ url_for('static', filename='js/admin.js') }}?v=14"></script>
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>

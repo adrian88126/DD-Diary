@@ -5,6 +5,31 @@ const videos = window.videosData || [];
 const activities = window.activitiesData || [];
 const records = window.recordsData || [];
 
+function escapeHtml(str) {
+    return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function escapeJsInAttr(str) {
+    return String(str == null ? '' : str)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/\r?\n/g, ' ')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function buildArtistsCatalogUrl(artistId) {
+    const base = window.ARTISTS_PAGE_URL || '/artists';
+    return artistId ? `${base}?artist=${encodeURIComponent(String(artistId))}` : base;
+}
+
 // Active states
 let currentTab = 'bio'; // 'bio' is default from HTML
 let searchQuery = '';
@@ -357,7 +382,25 @@ window.playSong = (videoId, timestamp = 0, title = '', singer = '', fromRadio = 
     const titleEl = document.getElementById('current-song-title');
     const singerEl = document.getElementById('current-singer-name');
     if (titleEl) titleEl.textContent = title || 'Unknown';
-    if (singerEl) singerEl.innerHTML = `<i class="fa-solid fa-user"></i> ${singer || 'Unknown'}`;
+    if (singerEl) singerEl.innerHTML = `<i class="fa-solid fa-user"></i> ${escapeHtml(singer || 'Unknown')}`;
+
+    if ('mediaSession' in navigator && typeof MediaMetadata !== 'undefined') {
+        try {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: title || 'Unknown Song',
+                artist: (singer ? singer + ' · ' : '') + (vtuber.name_main || ''),
+                album: vtuber.name_main || 'DDDiary',
+                artwork: [
+                    { src: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`, sizes: '320x180', type: 'image/jpeg' },
+                    { src: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`, sizes: '480x360', type: 'image/jpeg' }
+                ]
+            });
+            navigator.mediaSession.setActionHandler('play', () => window.togglePlayPause());
+            navigator.mediaSession.setActionHandler('pause', () => window.togglePlayPause());
+            navigator.mediaSession.setActionHandler('previoustrack', () => window.playPrevSong());
+            navigator.mediaSession.setActionHandler('nexttrack', () => window.playNextSong());
+        } catch (e) {}
+    }
 
     if (typeof YT === 'undefined' || !YT.Player) {
         pendingPlayRequest = { videoId, timestamp, title, singer, fromRadio };
@@ -377,7 +420,7 @@ window.playSong = (videoId, timestamp = 0, title = '', singer = '', fromRadio = 
     
     // Update player info bar
     document.getElementById('current-song-title').textContent = title || 'Unknown';
-    document.getElementById('current-singer-name').innerHTML = `<i class="fa-solid fa-user"></i> ${singer || 'Unknown'}`;
+    document.getElementById('current-singer-name').innerHTML = `<i class="fa-solid fa-user"></i> ${escapeHtml(singer || 'Unknown')}`;
 
     const onPlayerError = (event) => {
         const vid = currentPlaying.videoId;
@@ -514,17 +557,17 @@ function renderBio() {
             const count = s[1];
             const numStr = String(idx + 1).padStart(2, '0');
             const rec = songSampleRecord[title];
-            const safeTitle = (title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const safeTitleJs = escapeJsInAttr(title);
             const artists = (rec && rec.song && rec.song.artists && rec.song.artists.length > 0)
                 ? rec.song.artists.map(a => a.name_main).join(', ')
                 : (vtuber.name_main || '');
-            const safeArtists = artists.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-            const clickHandler = rec ? `onclick="playSong('${rec.video_id}', ${rec.timestamp_seconds || 0}, '${safeTitle}', '${safeArtists}')"` : '';
+            const safeArtistsJs = escapeJsInAttr(artists);
+            const clickHandler = rec ? `onclick="playSong('${escapeJsInAttr(rec.video_id)}', ${rec.timestamp_seconds || 0}, '${safeTitleJs}', '${safeArtistsJs}')"` : '';
             return `
                 <li class="leaderboard-item ${rec ? 'clickable' : ''}" ${clickHandler} title="${rec ? '點擊直接播放此代表作' : ''}">
                     <div class="leaderboard-left">
                         <span class="rank-num">${numStr}</span>
-                        <span class="leaderboard-title">${title}</span>
+                        <span class="leaderboard-title">${escapeHtml(title)}</span>
                     </div>
                     <span class="leaderboard-count">${count} ${_('times')}</span>
                 </li>
@@ -536,26 +579,32 @@ function renderBio() {
     const topArtistsList = document.getElementById('top-artists-list');
     if (topArtistsList) {
         const artistCounts = {};
+        const artistIds = {};
         records.forEach(r => {
             if (!r.song || !r.song.artists) return;
             r.song.artists.forEach(a => {
                 const key = a.name_main;
                 artistCounts[key] = (artistCounts[key] || 0) + 1;
+                if (a.id && !artistIds[key]) artistIds[key] = a.id;
             });
         });
         const sortedArtists = Object.entries(artistCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
         topArtistsList.innerHTML = sortedArtists.map((s, idx) => {
             const artistName = s[0];
             const count = s[1];
+            const aid = artistIds[artistName];
             const numStr = String(idx + 1).padStart(2, '0');
-            const safeArtist = (artistName || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const safeArtistJs = escapeJsInAttr(artistName);
+            const catalogLink = aid
+                ? `<a href="${escapeHtml(buildArtistsCatalogUrl(aid))}" onclick="event.stopPropagation();" title="在全站原唱歌手歌單查看其他主播翻唱" style="margin-left:6px; color:var(--text-muted); text-decoration:none; font-size:11px;"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>`
+                : '';
             return `
-                <li class="leaderboard-item clickable" onclick="filterByArtistFromBio('${safeArtist}')" title="點擊查看該原唱歌手的所有翻唱歌曲">
+                <li class="leaderboard-item clickable" onclick="filterByArtistFromBio('${safeArtistJs}')" title="點擊查看該原唱歌手的所有翻唱歌曲">
                     <div class="leaderboard-left">
                         <span class="rank-num">${numStr}</span>
-                        <span class="leaderboard-title">${artistName}</span>
+                        <span class="leaderboard-title">${escapeHtml(artistName)}</span>
                     </div>
-                    <span class="leaderboard-count">${count} ${_('times')}</span>
+                    <span class="leaderboard-count">${count} ${_('times')}${catalogLink}</span>
                 </li>
             `;
         }).join('') || `<li style="color:var(--text-muted); font-size:12px;">${_('No data')}</li>`;
@@ -568,10 +617,10 @@ function renderBio() {
         timelineContainer.innerHTML = acts.map(a => `
             <div style="margin-bottom:12px; border-left:2px solid var(--vtuber-active-theme); padding-left:12px; position:relative;">
                 <div style="position:absolute; left:-6px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--vtuber-active-theme);"></div>
-                <div style="font-size:11px; color:var(--text-muted);">${a.event_date ? a.event_date.split('T')[0] : ''}</div>
-                <div style="font-size:13px; font-weight:600;">${a.title}</div>
+                <div style="font-size:11px; color:var(--text-muted);">${escapeHtml(a.event_date ? a.event_date.split('T')[0] : '')}</div>
+                <div style="font-size:13px; font-weight:600;">${escapeHtml(a.title)}</div>
             </div>
-        `).join('') || '<div style="color:var(--text-muted); font-size:12px;">無資料</div>';
+        `).join('') || `<div style="color:var(--text-muted); font-size:12px;">${_('No data')}</div>`;
     }
     
     // 3. Social Links
@@ -836,30 +885,38 @@ function renderRepertoire() {
         const artists = song.artists && song.artists.length > 0 
             ? song.artists.map(a => a.name_main).join(', ') 
             : _('Unknown');
+        const artistsHtml = song.artists && song.artists.length > 0
+            ? song.artists.map(a => {
+                if (a.id) {
+                    return `<a href="${escapeHtml(buildArtistsCatalogUrl(a.id))}" onclick="event.stopPropagation();" style="color:inherit; text-decoration:underline dotted; text-underline-offset:2px;" title="查看 ${escapeHtml(a.name_main)} 的全站歌單">${escapeHtml(a.name_main)}</a>`;
+                }
+                return escapeHtml(a.name_main);
+            }).join(', ')
+            : escapeHtml(_('Unknown'));
         const songRecord = it.latestRecord;
         const videoId = songRecord && songRecord.video_id ? songRecord.video_id : '';
         const timestamp = songRecord ? songRecord.timestamp_seconds : 0;
-        const safeTitle = (song.title_main || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        const safeArtists = artists.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const safeTitleJs = escapeJsInAttr(song.title_main || '');
+        const safeArtistsJs = escapeJsInAttr(artists);
         
         return `
-            <div class="track-item" onclick="playSong('${videoId}', ${timestamp}, '${safeTitle}', '${safeArtists}')">
+            <div class="track-item" onclick="playSong('${escapeJsInAttr(videoId)}', ${timestamp}, '${safeTitleJs}', '${safeArtistsJs}')">
                 <div class="track-index-wrapper">
                     <span class="track-index">${idx + 1}</span>
                     <span class="track-play-btn"><i class="fa-solid fa-play"></i></span>
                 </div>
                 <div class="track-info">
                     <div style="font-size:15px; font-weight:600; color:var(--text-bright); display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                        <span>${song.title_main}</span>
-                        <span class="track-count-badge" title="累計演唱次數 (最近演唱：${it.latestDate || '未知'})"><i class="fa-solid fa-microphone-lines" style="font-size:10px; margin-right:3px; opacity:0.8;"></i>${it.count} 次</span>
+                        <span>${escapeHtml(song.title_main)}</span>
+                        <span class="track-count-badge" title="累計演唱次數 (最近演唱：${escapeHtml(it.latestDate || '未知')})"><i class="fa-solid fa-microphone-lines" style="font-size:10px; margin-right:3px; opacity:0.8;"></i>${it.count} 次</span>
                     </div>
-                    <div style="font-size:13px; color:var(--text-muted);">${artists}${it.latestDate ? ` · 最近演唱：${it.latestDate}` : ''}</div>
+                    <div style="font-size:13px; color:var(--text-muted);">${artistsHtml}${it.latestDate ? ` · 最近演唱：${escapeHtml(it.latestDate)}` : ''}</div>
                 </div>
                 <div class="track-actions">
-                    <button type="button" class="track-copy-btn" onclick="copySongTitle(event, '${safeTitle}')" title="複製歌名至剪貼簿 (方便去直播間點歌)">
+                    <button type="button" class="track-copy-btn" onclick="copySongTitle(event, '${safeTitleJs}')" title="複製歌名至剪貼簿 (方便去直播間點歌)">
                         <i class="fa-regular fa-copy"></i> 複製歌名
                     </button>
-                    <span class="track-type-badge">${song.song_type || 'cover'}</span>
+                    <span class="track-type-badge">${escapeHtml(song.song_type || 'cover')}</span>
                 </div>
             </div>
         `;
@@ -879,14 +936,14 @@ function renderVideos(gridId, types) {
         const dateStr = v.published_at ? v.published_at.split('T')[0] : '';
         const thumb = v.thumbnail_url || `https://img.youtube.com/vi/${v.video_id}/mqdefault.jpg`;
         return `
-            <div class="card album-card" style="cursor:pointer; overflow:hidden; border-radius:12px; padding: 12px;" onclick="playSong('${v.video_id}', 0, '${v.title.replace(/'/g, "\\'")}', '${(vtuber.name_main || '').replace(/'/g, "\\'")}')">
+            <div class="card album-card" style="cursor:pointer; overflow:hidden; border-radius:12px; padding: 12px;" onclick="playSong('${escapeJsInAttr(v.video_id)}', 0, '${escapeJsInAttr(v.title)}', '${escapeJsInAttr(vtuber.name_main || '')}')">
                 <div class="album-img-wrapper">
-                    <img src="${thumb}" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; border-radius: 8px;">
+                    <img src="${escapeHtml(thumb)}" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; border-radius: 8px;">
                     <div class="album-play-btn"><i class="fa-solid fa-play"></i></div>
                 </div>
                 <div>
-                    <h4 style="margin:0 0 4px; font-size:14px; font-weight:600; color:var(--text-bright); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${v.title}</h4>
-                    <div style="font-size: 12px; color: var(--text-muted);">${dateStr}</div>
+                    <h4 style="margin:0 0 4px; font-size:14px; font-weight:600; color:var(--text-bright); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(v.title)}</h4>
+                    <div style="font-size: 12px; color: var(--text-muted);">${escapeHtml(dateStr)}</div>
                 </div>
             </div>
         `;
@@ -913,19 +970,19 @@ function renderHistory() {
         const dateStr = r.video && r.video.published_at ? r.video.published_at.split('T')[0] : '';
         
         return `
-            <div class="track-item" onclick="playSong('${r.video_id}', ${r.timestamp_seconds}, '${songTitle.replace(/'/g, "\\'")}', '${artists.replace(/'/g, "\\'")}')">
+            <div class="track-item" onclick="playSong('${escapeJsInAttr(r.video_id)}', ${r.timestamp_seconds}, '${escapeJsInAttr(songTitle)}', '${escapeJsInAttr(artists)}')">
                 <div class="track-index-wrapper">
                     <span class="track-index">${idx + 1}</span>
                     <span class="track-play-btn"><i class="fa-solid fa-play"></i></span>
                 </div>
                 <div class="track-info">
-                    <div style="font-size:15px; font-weight:500; color:var(--text-bright); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${songTitle}</div>
+                    <div style="font-size:15px; font-weight:500; color:var(--text-bright); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(songTitle)}</div>
                     <div style="font-size:13px; color:var(--text-muted); display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                        <span>${artists}</span>
+                        <span>${escapeHtml(artists)}</span>
                         <span>•</span>
-                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">${videoTitle}</span>
+                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">${escapeHtml(videoTitle)}</span>
                         <span>•</span>
-                        <span>${dateStr}</span>
+                        <span>${escapeHtml(dateStr)}</span>
                     </div>
                 </div>
                 <div style="color: var(--text-muted); font-variant-numeric: tabular-nums;">

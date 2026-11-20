@@ -2,6 +2,8 @@
 
 本文件定義 **DDDiary** 系統所提供的後端 RESTful API 規格、URL 路由、請求方法（HTTP Methods）、Payload 參數格式以及回傳範例。
 
+> **認證與 CSRF 安全規範**：所有寫入型與外部代理端點（包括 `POST /api/v1/artists/quick_create`、`POST /api/v1/songs/quick_create`、`POST /api/v1/clip_authors/quick_create`、`GET/POST /api/v1/vtubers/fetch_youtube_info`、`GET/POST /api/v1/videos/fetch_youtube_info` 及全後台 `/admin/*` 路由）均受 `@login_required` 與 Flask-WTF `CSRFProtect` 保護；AJAX 寫入請求需於標頭夾帶 `X-CSRFToken`（後台介面由 `admin/layout.html` 全域自動注入）。
+
 ---
 
 ## 1. 歌手 (Artists) API
@@ -165,6 +167,7 @@
 * `GET /admin/diagnostics`：全方位系統健康評分儀表板，展示四大維度異常診斷報告。
 * `POST /admin/diagnostics/auto_link_duplicates`：一鍵合併所有同名重複歌曲，並自動轉移演唱紀錄與點歌關係。
 * `POST /admin/diagnostics/auto_link_duplicate_artists`：一鍵合併所有同名重複歌手，並自動更新歌曲外鍵。
+* `POST /admin/diagnostics/auto_merge_wikidata_artists`：一鍵合併共享相同 Wikidata QID 的跨語系同義歌手（如日/中/英譯名），並自動彙整多語名稱欄位與歌曲關聯（排除官方標記同一團員/雙人組 QID，如 `Q909655`）。
 * `POST /admin/diagnostics/auto_fix_untagged_clips`：一鍵為所有無標籤切片執行 AI 關鍵字智慧自動補標籤。
 * `POST /admin/diagnostics/auto_clean_duplicate_records`：一鍵清理同一秒數重複登錄的演唱紀錄。
 * `POST /admin/diagnostics/run_system_tests`：於獨立子行程執行全系統 4 大自動化測試套件 (`run_tests.py --json`)，回傳各模組通過狀態、耗時與錯誤明細 JSON。

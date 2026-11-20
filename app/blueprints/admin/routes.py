@@ -60,7 +60,7 @@ def create_vtuber():
         vtuber_service.create_vtuber(data)
         flash('VTuber created successfully', 'success')
         return redirect_with_args('admin.list_vtubers')
-    return render_template('admin/vtubers_form.html')
+    return redirect(url_for('admin.list_vtubers'))
 
 @admin_bp.route('/vtubers/<int:id>/edit', methods=['GET', 'POST'])
 def edit_vtuber(id):
@@ -70,7 +70,7 @@ def edit_vtuber(id):
         vtuber_service.update_vtuber(id, data)
         flash('VTuber updated successfully', 'success')
         return redirect_with_args('admin.list_vtubers')
-    return render_template('admin/vtubers_form.html', vtuber=vtuber)
+    return redirect(url_for('admin.list_vtubers'))
 
 @admin_bp.route('/vtubers/<int:id>/delete', methods=['POST'])
 def delete_vtuber(id):
@@ -106,7 +106,7 @@ def create_song():
         flash('Song created successfully', 'success')
         filter_param = request.args.get('filter')
         return redirect_with_args('admin.list_songs', filter=filter_param)
-    return render_template('admin/songs_form.html')
+    return redirect(url_for('admin.list_songs'))
 
 @admin_bp.route('/songs/<int:id>/edit', methods=['GET', 'POST'])
 def edit_song(id):
@@ -119,7 +119,7 @@ def edit_song(id):
         flash('Song updated successfully', 'success')
         filter_param = request.args.get('filter')
         return redirect_with_args('admin.list_songs', filter=filter_param)
-    return render_template('admin/songs_form.html', song=song)
+    return redirect(url_for('admin.list_songs'))
 
 @admin_bp.route('/songs/<int:id>/delete', methods=['POST'])
 def delete_song(id):
@@ -141,7 +141,8 @@ def create_artist():
         artist_service.create_artist(data)
         flash('Artist created successfully', 'success')
         return redirect_with_args('admin.list_artists')
-    return render_template('admin/artists_form.html')
+    artists = artist_service.get_artists(skip=0, limit=1000)
+    return render_template('admin/artists.html', artists=artists)
 
 @admin_bp.route('/artists/<int:id>/edit', methods=['GET', 'POST'])
 def edit_artist(id):
@@ -151,7 +152,8 @@ def edit_artist(id):
         artist_service.update_artist(id, data)
         flash('Artist updated successfully', 'success')
         return redirect_with_args('admin.list_artists')
-    return render_template('admin/artists_form.html', artist=artist)
+    artists = artist_service.get_artists(skip=0, limit=1000)
+    return render_template('admin/artists.html', artists=artists, item=artist)
 
 @admin_bp.route('/artists/<int:id>/delete', methods=['POST'])
 def delete_artist(id):
@@ -193,7 +195,7 @@ def create_video():
         video_service.create_video(data)
         flash('Video created successfully', 'success')
         return redirect_with_args('admin.list_videos')
-    return render_template('admin/videos_form.html')
+    return redirect(url_for('admin.list_videos'))
 
 @admin_bp.route('/videos/<id>/edit', methods=['GET', 'POST'])
 def edit_video(id):
@@ -216,7 +218,7 @@ def edit_video(id):
         video_service.update_video(id, data)
         flash('Video updated successfully', 'success')
         return redirect_with_args('admin.list_videos')
-    return render_template('admin/videos_form.html', video=video)
+    return redirect(url_for('admin.list_videos'))
 
 @admin_bp.route('/videos/<id>/delete', methods=['POST'])
 def delete_video(id):
@@ -377,7 +379,7 @@ def create_record():
         record_service.create_record(data)
         flash('Record created successfully', 'success')
         return redirect_with_args('admin.list_records')
-    return render_template('admin/records_form.html')
+    return redirect(url_for('admin.list_records'))
 
 @admin_bp.route('/records/<int:id>/edit', methods=['GET', 'POST'])
 def edit_record(id):
@@ -389,7 +391,7 @@ def edit_record(id):
         record_service.update_record(id, data)
         flash('Record updated successfully', 'success')
         return redirect_with_args('admin.list_records')
-    return render_template('admin/records_form.html', record=record)
+    return redirect(url_for('admin.list_records'))
 
 @admin_bp.route('/records/<int:id>/delete', methods=['POST'])
 def delete_record(id):
@@ -449,6 +451,12 @@ def diagnostics_auto_link_duplicates():
 def diagnostics_auto_link_duplicate_artists():
     res = diagnostics_service.auto_link_duplicate_artists()
     flash(f"已成功合併 {res['cleaned_count']} 位重複歌手！", 'success')
+    return redirect(url_for('admin.diagnostics'))
+
+@admin_bp.route('/diagnostics/auto_merge_wikidata_artists', methods=['POST'])
+def diagnostics_auto_merge_wikidata_artists():
+    res = diagnostics_service.auto_merge_wikidata_duplicate_artists()
+    flash(f"已依 Wikidata QID 成功合併 {res['cleaned_count']} 筆跨語言重複歌手！", 'success')
     return redirect(url_for('admin.diagnostics'))
 
 @admin_bp.route('/diagnostics/auto_fix_untagged_clips', methods=['POST'])

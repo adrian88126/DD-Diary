@@ -4,19 +4,23 @@ from flask import request
 
 LOCALES_DIR = os.path.join(os.path.dirname(__file__), 'locales')
 _translations = {}
+_mtimes = {}
 
 def load_translations():
-    global _translations
-    # Always reload for now so translations update immediately without server restart
-        
+    global _translations, _mtimes
+
     for lang in ['zh', 'en']:
         path = os.path.join(LOCALES_DIR, f'{lang}.json')
         if os.path.exists(path):
-            with open(path, 'r', encoding='utf-8') as f:
-                _translations[lang] = json.load(f)
+            mtime = os.path.getmtime(path)
+            if lang not in _translations or _mtimes.get(lang) != mtime:
+                with open(path, 'r', encoding='utf-8') as f:
+                    _translations[lang] = json.load(f)
+                _mtimes[lang] = mtime
         else:
             _translations[lang] = {}
-            
+            _mtimes.pop(lang, None)
+
     return _translations
 
 def get_locale():
