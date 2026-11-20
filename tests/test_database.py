@@ -64,6 +64,13 @@ def run_tests():
                 errors.append(f"VTuber (ID: {vt_id}) 缺少主姓名 name_main")
             if avatar and not avatar.startswith("http") and not avatar.startswith("/") and not avatar.startswith("data:"):
                 errors.append(f"VTuber《{name}》的頭像連結格式異常：{avatar}")
+
+        # 5. 檢查 artists 資料表包含多語言欄位 (含 name_en 與 wikidata_id)
+        cursor.execute("PRAGMA table_info(artists)")
+        artist_cols = {row[1] for row in cursor.fetchall()}
+        for required_col in ("name_main", "name_en", "name_ja", "name_zh", "name_romaji", "wikidata_id"):
+            if required_col not in artist_cols:
+                errors.append(f"artists 資料表缺少必要欄位：{required_col}")
                 
         conn.close()
     except Exception as e:

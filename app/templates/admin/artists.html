@@ -28,7 +28,7 @@
     </thead>
     <tbody>
       {% for a in artists %}
-      <tr class="search-item" data-id="{{ a.id }}">
+      <tr class="search-item" data-id="{{ a.id }}" data-search="{{ a.name_main }} {{ a.name_en or '' }} {{ a.name_ja or '' }} {{ a.name_zh or '' }} {{ a.name_romaji or '' }} {{ a.wikidata_id or '' }}">
         <td><input type="checkbox" class="admin-checkbox row-cb" value="{{ a.id }}"></td>
         <td class="editable-cell search-text" data-field="name_main" title="Double click to edit">{{ a.name_main }}</td>
         <td>
@@ -36,9 +36,11 @@
             {% set a_data = {
               'action': url_for('admin.edit_artist', id=a.id),
               'name_main': a.name_main,
+              'name_en': a.name_en,
               'name_romaji': a.name_romaji,
               'name_ja': a.name_ja,
-              'name_zh': a.name_zh
+              'name_zh': a.name_zh,
+              'wikidata_id': a.wikidata_id
             } %}
             <button class="btn btn-sm btn-outline" onclick="openArtistForm(this)" data-artist="{{ a_data | tojson | forceescape }}">
               <i class="fa-solid fa-pen"></i>
@@ -68,8 +70,8 @@
           <input type="text" id="name_main" name="name_main" class="form-input" value="{{ item.name_main if item else '' }}" required>
         </div>
         <div class="form-group">
-          <label>{{ _('Romaji Name') }}</label>
-          <input type="text" id="name_romaji" name="name_romaji" class="form-input" value="{{ item.name_romaji if item else '' }}">
+          <label>{{ _('English Name') }}</label>
+          <input type="text" id="name_en" name="name_en" class="form-input" value="{{ item.name_en if item else '' }}">
         </div>
       </div>
       
@@ -81,6 +83,17 @@
         <div class="form-group">
           <label>{{ _('Chinese Name') }}</label>
           <input type="text" id="name_zh" name="name_zh" class="form-input" value="{{ item.name_zh if item else '' }}">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ _('Romaji Name') }}</label>
+          <input type="text" id="name_romaji" name="name_romaji" class="form-input" value="{{ item.name_romaji if item else '' }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('Wikidata ID') }}</label>
+          <input type="text" id="wikidata_id" name="wikidata_id" class="form-input" placeholder="e.g. Q238819" value="{{ item.wikidata_id if item else '' }}">
         </div>
       </div>
       
@@ -104,9 +117,11 @@ function openArtistForm(btn) {
   document.getElementById('drawer-title').textContent = data.name_main ? '{{ _("Edit Artist") }}' : '{{ _("New Artist") }}';
   
   document.getElementById('name_main').value = data.name_main || '';
+  document.getElementById('name_en').value = data.name_en || '';
   document.getElementById('name_romaji').value = data.name_romaji || '';
   document.getElementById('name_ja').value = data.name_ja || '';
   document.getElementById('name_zh').value = data.name_zh || '';
+  document.getElementById('wikidata_id').value = data.wikidata_id || '';
   
   document.getElementById('form-drawer').classList.add('open');
 }
@@ -114,7 +129,7 @@ function openArtistForm(btn) {
 document.getElementById('table-search')?.addEventListener('input', (e) => {
   const term = e.target.value.toLowerCase();
   document.querySelectorAll('.search-item').forEach(el => {
-    const text = el.querySelector('.search-text').textContent.toLowerCase();
+    const text = (el.dataset.search || el.querySelector('.search-text').textContent).toLowerCase();
     el.style.display = text.includes(term) ? '' : 'none';
   });
 });

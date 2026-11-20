@@ -31,6 +31,7 @@ def run_tests():
         # 1. 測試各個公開頁面、API 與管理後台頁面 (HTTP GET 必須為 200)
         endpoints = [
             "/",
+            "/artists",
             "/share/1",
             "/api/v1/artists",
             "/api/v1/songs",
@@ -93,6 +94,18 @@ def run_tests():
                     errors.append("POST /api/v1/artists/quick_create 返回格式異常")
                 else:
                     temp_art_id = data["artist"]["id"]
+                    updated_art = artist_service.update_artist(
+                        temp_art_id, {"name_en": "__TEST_EN__", "wikidata_id": "Q99999999"}
+                    )
+                    if not updated_art or updated_art.name_en != "__TEST_EN__" or updated_art.wikidata_id != "Q99999999":
+                        errors.append("Artist name_en / wikidata_id 欄位更新失敗")
+                    art_list_res = client.get("/api/v1/artists?limit=5")
+                    art_list_json = art_list_res.get_json()
+                    if (
+                        not isinstance(art_list_json, list)
+                        or (art_list_json and ("name_en" not in art_list_json[0] or "wikidata_id" not in art_list_json[0]))
+                    ):
+                        errors.append("GET /api/v1/artists 回傳缺少 name_en 或 wikidata_id 欄位")
 
             # 測試歌曲建立與綁定剛建立的歌手
             test_song = song_service.create_song({

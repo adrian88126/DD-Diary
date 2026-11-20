@@ -14,6 +14,7 @@ from app.models.activity import Activity
 from app.models.song import Song
 from app.models.record import SingingRecord
 from app.models.clip import Clip, ClipAuthor
+from app.services.artist_service import get_artist_catalog_data
 
 from flask import render_template
 
@@ -38,7 +39,16 @@ def serialize_activity(a):
 def serialize_record(r):
     song_dict = None
     if r.song:
-        artists_data = [{"name_main": a.name_main} for a in r.song.artists] if r.song.artists else []
+        artists_data = [
+            {
+                "name_main": a.name_main,
+                "name_en": a.name_en,
+                "name_ja": a.name_ja,
+                "name_zh": a.name_zh,
+                "name_romaji": a.name_romaji,
+            }
+            for a in r.song.artists
+        ] if r.song.artists else []
         song_dict = {
             "id": r.song.id,
             "title_main": r.song.title_main,
@@ -63,7 +73,7 @@ def serialize_record(r):
         "video": video_dict
     }
 
-def build_language_site(app, vtubers, songs_count, records_count, videos_count, lang, base_dir, share_dir, is_sub_lang=False):
+def build_language_site(app, vtubers, songs_count, records_count, videos_count, total_artists, lang, base_dir, share_dir, is_sub_lang=False):
     # Setup request context and force cookie to the selected lang so Flask-Babel/i18n loads correct language
     with app.test_request_context(environ_base={'HTTP_COOKIE': f'lang={lang}'}):
         
@@ -209,10 +219,12 @@ def build_language_site(app, vtubers, songs_count, records_count, videos_count, 
             total_songs=songs_count,
             total_records=records_count,
             total_videos=videos_count,
+            total_artists=total_artists,
             is_static=True,
             static_link_zh=static_link_zh,
             static_link_en=static_link_en,
-            lobby_url="index.html"
+            lobby_url="index.html",
+            artists_url="./artists/index.html"
         )
         
         lobby_html = lobby_html.replace(static_replace_old, static_replace_new)
@@ -222,6 +234,37 @@ def build_language_site(app, vtubers, songs_count, records_count, videos_count, 
         with open(os.path.join(base_dir, "index.html"), "w", encoding="utf-8") as f:
             f.write(lobby_html)
         print(f"✅ [{lang}] 門戶大廳首頁渲染完成！")
+
+        print(f"🎵 正在預先渲染 [{lang}] 原唱歌手歌單專頁 (/artists)...")
+        artists_dir = os.path.join(base_dir, "artists")
+        os.makedirs(artists_dir, exist_ok=True)
+        if is_sub_lang:
+            art_static_zh = "../../artists/index.html"
+            art_static_en = "./index.html"
+            art_static_prefix = "../../static/"
+            art_data_url = "../../static/data/artist_catalog.js"
+        else:
+            art_static_zh = "./index.html"
+            art_static_en = "../en/artists/index.html"
+            art_static_prefix = "../static/"
+            art_data_url = "../static/data/artist_catalog.js"
+
+        artists_html = render_template(
+            "main/artists.html",
+            catalog_data={"vtubers": [], "artists": []},
+            is_static=True,
+            static_link_zh=art_static_zh,
+            static_link_en=art_static_en,
+            lobby_url="../index.html",
+            artists_url="./index.html",
+            static_data_url=art_data_url,
+            share_base_url="../share/",
+        )
+        artists_html = artists_html.replace('href="/static/', f'href="{art_static_prefix}')
+        artists_html = artists_html.replace('src="/static/', f'src="{art_static_prefix}')
+        with open(os.path.join(artists_dir, "index.html"), "w", encoding="utf-8") as f:
+            f.write(artists_html)
+        print(f"✅ [{lang}] 原唱歌手歌單專頁渲染完成！")
 
 
 def main():
@@ -276,12 +319,24 @@ def main():
         songs_count = db.session.query(Song).count()
         records_count = db.session.query(SingingRecord).count()
         videos_count = db.session.query(Video).count()
+        catalog_data = get_artist_catalog_data()
+        total_artists = len(catalog_data.get("artists", []))
+
+    # Write shared static artist catalog data file (non-module script for file:/// compatibility)
+    data_dir = os.path.join(docs_static, "data")
+    os.makedirs(data_dir, exist_ok=True)
+    catalog_js_path = os.path.join(data_dir, "artist_catalog.js")
+    with open(catalog_js_path, "w", encoding="utf-8") as f:
+        f.write("window.ARTIST_CATALOG_DATA = ")
+        json.dump(catalog_data, f, ensure_ascii=False, separators=(",", ":"))
+        f.write(";\n")
+    print(f"📦 已輸出共用歌手歌單資料檔：{catalog_js_path} ({total_artists} 位歌手)")
         
     # Build Default Chinese Site (Root)
-    build_language_site(app, vtubers, songs_count, records_count, videos_count, lang='zh', base_dir=docs_dir, share_dir=share_dir_zh, is_sub_lang=False)
+    build_language_site(app, vtubers, songs_count, records_count, videos_count, total_artists, lang='zh', base_dir=docs_dir, share_dir=share_dir_zh, is_sub_lang=False)
     
     # Build English Site (/en/)
-    build_language_site(app, vtubers, songs_count, records_count, videos_count, lang='en', base_dir=en_dir, share_dir=share_dir_en, is_sub_lang=True)
+    build_language_site(app, vtubers, songs_count, records_count, videos_count, total_artists, lang='en', base_dir=en_dir, share_dir=share_dir_en, is_sub_lang=True)
         
     print("\n🎉 靜態雙語打包流程全部成功結束！成品已輸出至 docs/ 目錄。")
     print("\n📌 推薦的 GitHub 推播步驟：")

@@ -105,7 +105,7 @@
 
         .stat-pill {
             background: var(--tab-bg);
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, border-color 0.25s, transform 0.25s;
             border: 1px solid var(--card-border);
             padding: 8px 18px;
             border-radius: 20px;
@@ -116,6 +116,18 @@
             align-items: center;
             gap: 8px;
             backdrop-filter: blur(8px);
+        }
+
+        .stat-pill-link {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .stat-pill-link:hover {
+            border-color: var(--neon-purple);
+            background: rgba(167, 139, 250, 0.14);
+            transform: translateY(-2px);
+            color: var(--text-bright);
         }
 
         /* 搜尋與控制列 */
@@ -730,6 +742,7 @@
       
       <div class="nav-links">
         <a href="index.html">Home</a>
+        <a href="./artists/index.html">Artist Songlist</a>
         
           
             <a href="javascript:showToast('Management and login features are only available in the local Flask environment.', 'warning')">Login</a>
@@ -767,7 +780,7 @@
         <div class="global-stats-bar">
             <div class="stat-pill">
                 <i class="fa-solid fa-microphone" style="color:var(--neon-purple);"></i>
-                <span>收錄歌曲：1168 首</span>
+                <span>收錄歌曲：1167 首</span>
             </div>
             <div class="stat-pill">
                 <i class="fa-solid fa-clock-rotate-left" style="color:var(--neon-gold);"></i>
@@ -777,6 +790,11 @@
                 <i class="fa-solid fa-video" style="color:var(--neon-green);"></i>
                 <span>關聯影片：745 部</span>
             </div>
+            <a href="./artists/index.html" class="stat-pill stat-pill-link" title="依原唱歌手瀏覽全站歌單與 Wikidata 資訊">
+                <i class="fa-solid fa-compact-disc" style="color:#38bdf8;"></i>
+                <span>原唱歌手：588 位</span>
+                <i class="fa-solid fa-arrow-right" style="font-size:11px; color:var(--neon-purple);"></i>
+            </a>
         </div>
     
 

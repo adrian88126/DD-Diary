@@ -1,0 +1,694 @@
+{% extends "base.html" %}
+
+{% block title %}原唱歌手歌單與 Wikidata 索引 - DDDiary{% endblock %}
+
+{% block extra_head %}
+<style>
+  :root {
+    --neon-purple: #a78bfa;
+    --neon-gold: #fbbf24;
+    --neon-green: #00e676;
+    --neon-blue: #38bdf8;
+  }
+
+  .artists-wrapper {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px 24px 48px;
+  }
+
+  .artists-hero {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .artists-hero h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .artists-subtitle {
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    margin: 0 auto 18px;
+    max-width: 720px;
+  }
+
+  .artists-stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+
+  .artist-stat-pill {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .artists-toolbar {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+  }
+
+  .toolbar-top-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .artist-search-box {
+    position: relative;
+    flex: 1;
+    min-width: 260px;
+  }
+
+  .artist-search-box .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .artist-search-box input {
+    width: 100%;
+    padding: 10px 38px 10px 40px;
+    border-radius: 24px;
+    border: 1px solid var(--card-border);
+    background: var(--bg-tertiary);
+    color: var(--text-bright);
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .artist-search-box input:focus {
+    border-color: var(--neon-purple);
+  }
+
+  .artist-clear-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: none;
+    font-size: 14px;
+  }
+
+  .toolbar-btn-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-pill-btn {
+    padding: 6px 13px;
+    border-radius: 18px;
+    border: 1px solid var(--card-border);
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .filter-pill-btn:hover {
+    border-color: var(--neon-purple);
+    color: var(--text-bright);
+  }
+
+  .filter-pill-btn.active {
+    background: rgba(167, 139, 250, 0.2);
+    border-color: var(--neon-purple);
+    color: var(--text-bright);
+  }
+
+  .toolbar-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    border-top: 1px solid var(--card-border);
+  }
+
+  /* Main Split Layout */
+  .artists-split-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .artists-list-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 14px;
+    max-height: calc(100vh - 120px);
+    position: sticky;
+    top: 76px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .artists-list-scroll {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 4px;
+  }
+
+  .artist-list-item {
+    padding: 11px 13px;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    background: var(--bg-tertiary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .artist-list-item:hover {
+    border-color: var(--neon-purple);
+    transform: translateX(2px);
+  }
+
+  .artist-list-item.active {
+    border-color: var(--neon-purple);
+    background: rgba(167, 139, 250, 0.16);
+    box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.35);
+  }
+
+  .artist-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .artist-item-name {
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--text-bright);
+    word-break: break-word;
+  }
+
+  .artist-item-aliases {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .artist-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+
+  .qid-mini-badge {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: var(--neon-blue);
+    white-space: nowrap;
+  }
+
+  .load-more-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 9px;
+    border-radius: 12px;
+    border: 1px dashed var(--card-border);
+    background: transparent;
+    color: var(--text-bright);
+    font-weight: 600;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .load-more-btn:hover {
+    border-color: var(--neon-purple);
+    background: rgba(167, 139, 250, 0.1);
+  }
+
+  /* Right Detail Panel */
+  .artist-detail-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  .detail-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 20px;
+  }
+
+  .artist-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .artist-detail-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--text-bright);
+    margin: 0 0 8px 0;
+  }
+
+  .artist-names-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .lang-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--card-border);
+    font-size: 12.5px;
+    color: var(--text-bright);
+  }
+
+  .lang-chip-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--neon-purple);
+    text-transform: uppercase;
+  }
+
+  .wikidata-chip-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .wikidata-link-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 14px;
+    background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: var(--neon-blue);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .wikidata-link-badge:hover {
+    background: rgba(56, 189, 248, 0.24);
+    color: var(--text-bright);
+  }
+
+  .action-btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .artist-action-btn {
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    background: var(--bg-tertiary);
+    color: var(--text-bright);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .artist-action-btn:hover {
+    border-color: var(--neon-purple);
+    background: rgba(167, 139, 250, 0.16);
+  }
+
+  .artist-action-btn.primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  .artist-action-btn.primary:hover {
+    background: var(--primary-hover);
+  }
+
+  .artist-action-btn.active {
+    background: rgba(167, 139, 250, 0.24);
+    border-color: var(--neon-purple);
+  }
+
+  /* Compact Embedded YouTube Player */
+  .artist-player-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .artist-player-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .player-placeholder-box {
+    padding: 16px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .player-controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .now-playing-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    word-break: break-word;
+  }
+
+  .now-playing-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Songlist Items */
+  .song-group-card {
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--card-border);
+    background: var(--bg-tertiary);
+    margin-bottom: 12px;
+  }
+
+  .song-group-card:last-child {
+    margin-bottom: 0;
+  }
+
+  .song-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .song-group-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--text-bright);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .song-records-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .record-pill-group {
+    display: inline-flex;
+    align-items: stretch;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--vt-color, var(--neon-purple));
+    background: var(--card-bg);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .record-pill-group.is-playing {
+    box-shadow: 0 0 0 2px var(--vt-color, var(--neon-purple));
+    background: rgba(167, 139, 250, 0.18);
+  }
+
+  .record-play-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-bright);
+    padding: 6px 10px;
+    font-size: 12.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .record-play-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .record-vt-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--vt-color, var(--neon-purple));
+    flex-shrink: 0;
+  }
+
+  .record-jump-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 9px;
+    border-left: 1px solid var(--card-border);
+    color: var(--text-muted);
+    font-size: 11.5px;
+    text-decoration: none;
+  }
+
+  .record-jump-link:hover {
+    background: rgba(167, 139, 250, 0.18);
+    color: var(--text-bright);
+  }
+
+  @media (max-width: 992px) {
+    .artists-split-layout {
+      grid-template-columns: 1fr;
+    }
+    .artists-list-panel {
+      position: relative;
+      top: 0;
+      max-height: 420px;
+    }
+    .artist-player-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .artists-wrapper {
+      padding: 16px 12px 36px;
+    }
+    .artists-hero h1 {
+      font-size: 1.75rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="artists-wrapper">
+  <header class="artists-hero">
+    <h1><i class="fa-solid fa-compact-disc"></i> {{ _('Artist Songlist') }}</h1>
+    <p class="artists-subtitle">依原唱歌手彙整全站 VTuber 翻唱曲目，支援多語言名稱、Wikidata QID 檢索與跨主播連播</p>
+  </header>
+
+  <div class="artists-stats-bar">
+    <div class="artist-stat-pill">
+      <i class="fa-solid fa-users" style="color:var(--neon-purple);"></i>
+      <span>收錄原唱：<strong id="stat-total-artists">0</strong> 位</span>
+    </div>
+    <div class="artist-stat-pill">
+      <i class="fa-solid fa-database" style="color:var(--neon-blue);"></i>
+      <span>已連結 Wikidata：<strong id="stat-wikidata-artists">0</strong> 位</span>
+    </div>
+    <div class="artist-stat-pill">
+      <i class="fa-solid fa-filter" style="color:var(--neon-gold);"></i>
+      <span>目前顯示：<strong id="stat-filtered-artists">0</strong> 位</span>
+    </div>
+  </div>
+
+  <div class="artists-toolbar">
+    <div class="toolbar-top-row">
+      <div class="artist-search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="artist-search-input" placeholder="搜尋歌手主名稱、英文/日文/中文/羅馬拼音、Wikidata QID 或歌名..." oninput="onArtistSearchInput()">
+        <button id="clear-artist-search-btn" class="artist-clear-btn" onclick="clearArtistSearch()" title="清空搜尋">
+          <i class="fa-solid fa-circle-xmark"></i>
+        </button>
+      </div>
+
+      <div class="toolbar-btn-group" id="artist-sort-group">
+        <button type="button" class="filter-pill-btn active" data-sort="records" onclick="sortArtists('records')"><i class="fa-solid fa-fire"></i> 演唱次數</button>
+        <button type="button" class="filter-pill-btn" data-sort="songs" onclick="sortArtists('songs')"><i class="fa-solid fa-music"></i> 歌曲數</button>
+        <button type="button" class="filter-pill-btn" data-sort="vtubers" onclick="sortArtists('vtubers')"><i class="fa-solid fa-user-group"></i> 跨主播</button>
+        <button type="button" class="filter-pill-btn" data-sort="name" onclick="sortArtists('name')"><i class="fa-solid fa-arrow-down-a-z"></i> 名稱</button>
+      </div>
+    </div>
+
+    <div class="toolbar-bottom-row">
+      <div class="toolbar-btn-group" id="vtuber-filter-tabs">
+        <button type="button" class="filter-pill-btn active" data-vtuber="all" onclick="filterArtistVtuber('all')">全部主播</button>
+      </div>
+      <div class="toolbar-btn-group">
+        <button type="button" id="wikidata-only-btn" class="filter-pill-btn" onclick="toggleWikidataOnly()">
+          <i class="fa-solid fa-globe"></i> 僅看有 Wikidata QID
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="artists-split-layout">
+    <!-- Left Column: Artist Directory -->
+    <aside class="artists-list-panel">
+      <div class="artists-list-scroll" id="artist-catalog-list"></div>
+      <button type="button" id="load-more-artists-btn" class="load-more-btn" style="display:none;" onclick="loadMoreArtists()">
+        載入更多歌手...
+      </button>
+    </aside>
+
+    <!-- Right Column: Selected Artist Detail + Player + Songlist -->
+    <section class="artist-detail-panel" id="artist-detail-panel">
+      <div class="detail-card" id="artist-detail-header">
+        <div style="text-align:center; padding:32px; color:var(--text-muted);">載入原唱歌手資料中...</div>
+      </div>
+
+      <div class="detail-card" id="artist-player-card">
+        <div class="artist-player-layout">
+          <div class="artist-player-frame" id="artist-yt-player">
+            <div class="player-placeholder-box">
+              <i class="fa-brands fa-youtube" style="font-size:28px; color:var(--neon-purple); margin-bottom:8px; display:block;"></i>
+              點選上方「播放此歌手全部」或下方任一主播演唱版本，即可於此處直接播放
+            </div>
+          </div>
+
+          <div class="player-controls-panel">
+            <div class="now-playing-title" id="artist-player-song-title">尚未播放歌曲</div>
+            <div class="now-playing-meta" id="artist-player-vtuber-info">請從左側選擇原唱歌手並點擊任一曲目</div>
+
+            <div class="action-btn-row" style="margin-top:4px;">
+              <button type="button" class="artist-action-btn" onclick="artistPrevSong()" title="上一首"><i class="fa-solid fa-backward-step"></i></button>
+              <button type="button" class="artist-action-btn primary" id="artist-play-pause-btn" onclick="artistTogglePlay()" title="播放 / 暫停"><i class="fa-solid fa-play"></i> 播放</button>
+              <button type="button" class="artist-action-btn" onclick="artistNextSong()" title="下一首"><i class="fa-solid fa-forward-step"></i></button>
+              <button type="button" class="artist-action-btn active" id="artist-autoplay-btn" onclick="artistToggleAutoplay()"><i class="fa-solid fa-repeat"></i> 連播</button>
+              <button type="button" class="artist-action-btn" id="artist-shuffle-btn" onclick="artistToggleShuffle()"><i class="fa-solid fa-shuffle"></i> 隨機</button>
+            </div>
+
+            <div class="action-btn-row" style="margin-top:2px;">
+              <a href="#" id="artist-player-share-link" class="artist-action-btn" style="display:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> 前往主播專頁</a>
+              <a href="#" id="artist-player-yt-link" target="_blank" rel="noopener noreferrer" class="artist-action-btn" style="display:none;"><i class="fa-brands fa-youtube"></i> 在 YouTube 開啟</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card" id="artist-songs-list"></div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if is_static %}
+<script src="{{ static_data_url }}"></script>
+<script>
+  window.SHARE_BASE_URL = "{{ share_base_url }}";
+  window.IS_STATIC_MODE = true;
+</script>
+{% else %}
+<script>
+  window.ARTIST_CATALOG_DATA = {{ catalog_data | tojson | safe }};
+  window.SHARE_BASE_URL = "/share/";
+  window.IS_STATIC_MODE = false;
+</script>
+{% endif %}
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="{{ url_for('static', filename='js/artists.js') }}"></script>
+{% endblock %}

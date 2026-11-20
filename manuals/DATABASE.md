@@ -52,8 +52,11 @@
 |--------|------|------|------|
 | `id` | INTEGER | 主鍵 (Primary Key)，自動遞增 | |
 | `name_main` | VARCHAR | 歌手主要名稱 | 不可為空 |
+| `name_en` | VARCHAR | 歌手英文名稱 | 可為空 |
 | `name_ja` | VARCHAR | 歌手日文名稱 | 可為空 |
 | `name_zh` | VARCHAR | 歌手中文名稱 | 可為空 |
+| `name_romaji` | VARCHAR | 歌手羅馬拼音名稱 | 可為空 |
+| `wikidata_id` | VARCHAR | Wikidata 實體編號（如 `Q238819`） | 可為空 |
 
 ---
 

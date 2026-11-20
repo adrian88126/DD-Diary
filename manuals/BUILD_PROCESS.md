@@ -39,8 +39,9 @@ with app.test_request_context(environ_base={'HTTP_COOKIE': f'lang={lang}'}):
 1. `build_static.py` 分別為 `lang='zh'`（中文）與 `lang='en'`（英文）建立了一個偽造的請求上下文。
 2. 上下文的 Cookie 寫入 `lang=zh` 或 `lang=en`，這會直接觸發專案內部的 `i18n.py` 語言檢測攔截器，強制 Flask 載入對應的語系翻譯字典（`zh.json` 或 `en.json`）。
 3. 隨後呼叫 `render_template` 進行預渲染：
-   * **中文版**：輸出大廳至 `docs/index.html`，主播專頁輸出至 `docs/share/{id}/index.html`。
-   * **英文版**：輸出大廳至 `docs/en/index.html`，主播專頁輸出至 `docs/en/share/{id}/index.html`。
+   * **中文版**：輸出大廳至 `docs/index.html`、原唱歌手歌單至 `docs/artists/index.html`，主播專頁輸出至 `docs/share/{id}/index.html`。
+   * **英文版**：輸出大廳至 `docs/en/index.html`、原唱歌手歌單至 `docs/en/artists/index.html`，主播專頁輸出至 `docs/en/share/{id}/index.html`。
+   * **共用歌手資料檔**：輸出至 `docs/static/data/artist_catalog.js`（掛載 `window.ARTIST_CATALOG_DATA` 供雙語 `/artists` 專頁在 `file:///` 離線模式下共用讀取，避免重複內嵌龐大 JSON）。
 4. 網頁右上角的「語系切換」下拉選單，在靜態模式下（`is_static=True`）會直接指向這些靜態預渲染出的語系路徑，達到無後端雙語切換的效果。
 
 ---
@@ -79,7 +80,8 @@ with app.test_request_context(environ_base={'HTTP_COOKIE': f'lang={lang}'}):
   <a href="{{ lobby_url or url_for('main.lobby') }}">首頁</a>
   ```
 * **打包時**：
-  * 大廳本身渲染時傳入 `lobby_url="index.html"`。
+  * 大廳本身渲染時傳入 `lobby_url="index.html"`、`artists_url="./artists/index.html"`。
+  * 原唱歌手歌單專頁（`docs/artists/index.html` 與 `docs/en/artists/index.html`）傳入 `lobby_url="../index.html"`、`artists_url="./index.html"`、`share_base_url="../share/"`，並依層級設定 `static_data_url`（中文版 `../static/data/artist_catalog.js`、英文版 `../../static/data/artist_catalog.js`）。
   * 主播個人專頁渲染時傳入 `lobby_url="../../index.html"`（用以倒回上層的大廳）。
-  * 本地運行時，不傳入此變數，自動 Fallback 到 Flask 路由 `url_for('main.lobby')` 指向 `/`。
+  * 本地運行時，不傳入此變數，自動 Fallback 到 Flask 路由 `url_for('main.lobby')` 與 `url_for('main.artists_catalog')`。
 * **結果**：完美實現了本地開發路由與靜態部署路由的無縫雙軌切換。

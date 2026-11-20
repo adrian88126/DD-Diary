@@ -816,6 +816,7 @@ export function renderCatalog() {
                 (s.title_romaji && s.title_romaji.toLowerCase().includes(searchVal));
             const matchesArtist = s.artists && s.artists.some(a => 
                 a.name_main.toLowerCase().includes(searchVal) ||
+                (a.name_en && a.name_en.toLowerCase().includes(searchVal)) ||
                 (a.name_ja && a.name_ja.toLowerCase().includes(searchVal)) ||
                 (a.name_zh && a.name_zh.toLowerCase().includes(searchVal)) ||
                 (a.name_romaji && a.name_romaji.toLowerCase().includes(searchVal))
@@ -852,6 +853,7 @@ export function renderCatalog() {
         artistBody.innerHTML = '';
         const filteredArtists = state.cacheArtists.filter(a => 
             a.name_main.toLowerCase().includes(searchVal) ||
+            (a.name_en && a.name_en.toLowerCase().includes(searchVal)) ||
             (a.name_ja && a.name_ja.toLowerCase().includes(searchVal)) ||
             (a.name_zh && a.name_zh.toLowerCase().includes(searchVal)) ||
             (a.name_romaji && a.name_romaji.toLowerCase().includes(searchVal))
@@ -859,7 +861,7 @@ export function renderCatalog() {
         
         const artistsToShow = filteredArtists.slice(0, 100);
         artistsToShow.forEach(art => {
-            const extra = [art.name_ja, art.name_zh, art.name_romaji].filter(x => x).join(' / ');
+            const extra = [art.name_en, art.name_ja, art.name_zh, art.name_romaji].filter(x => x).join(' / ');
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td style="font-weight:700; color:var(--text-bright);">${art.name_main}</td>

@@ -124,6 +124,17 @@ function syncPlayerControlsUI() {
 }
 window.syncPlayerControlsUI = syncPlayerControlsUI;
 
+function artistMatchesQuery(a, q) {
+    if (!a || !q) return false;
+    return (
+        (a.name_main && a.name_main.toLowerCase().includes(q)) ||
+        (a.name_en && a.name_en.toLowerCase().includes(q)) ||
+        (a.name_ja && a.name_ja.toLowerCase().includes(q)) ||
+        (a.name_zh && a.name_zh.toLowerCase().includes(q)) ||
+        (a.name_romaji && a.name_romaji.toLowerCase().includes(q))
+    );
+}
+
 function buildPlaylistForCurrentTab() {
     let list = [];
     if (currentTab === 'history') {
@@ -131,6 +142,7 @@ function buildPlaylistForCurrentTab() {
         if (searchQuery) {
             recs = recs.filter(r => 
                 (r.song && r.song.title_main.toLowerCase().includes(searchQuery)) ||
+                (r.song && r.song.artists && r.song.artists.some(a => artistMatchesQuery(a, searchQuery))) ||
                 (r.video && r.video.title.toLowerCase().includes(searchQuery))
             );
         }
@@ -151,7 +163,7 @@ function buildPlaylistForCurrentTab() {
         if (searchQuery) {
             songs = songs.filter(s => 
                 (s.title_main && s.title_main.toLowerCase().includes(searchQuery)) ||
-                (s.artists && s.artists.some(a => a.name_main.toLowerCase().includes(searchQuery)))
+                (s.artists && s.artists.some(a => artistMatchesQuery(a, searchQuery)))
             );
         }
         list = songs.map((s, i) => {
@@ -802,7 +814,7 @@ function renderRepertoire() {
     if (searchQuery) {
         items = items.filter(it => 
             (it.song.title_main && it.song.title_main.toLowerCase().includes(searchQuery)) ||
-            (it.song.artists && it.song.artists.some(a => a.name_main.toLowerCase().includes(searchQuery)))
+            (it.song.artists && it.song.artists.some(a => artistMatchesQuery(a, searchQuery)))
         );
     }
 
@@ -889,6 +901,7 @@ function renderHistory() {
     if (searchQuery) {
         recs = recs.filter(r => 
             (r.song && r.song.title_main.toLowerCase().includes(searchQuery)) ||
+            (r.song && r.song.artists && r.song.artists.some(a => artistMatchesQuery(a, searchQuery))) ||
             (r.video && r.video.title.toLowerCase().includes(searchQuery))
         );
     }
@@ -968,7 +981,7 @@ window.exportToExcel = () => {
     if (q) {
         exportList = recs.filter(r => {
             const titleMatch = r.song && r.song.title_main && r.song.title_main.toLowerCase().includes(q);
-            const artistMatch = r.song && r.song.artists && r.song.artists.some(a => a.name_main && a.name_main.toLowerCase().includes(q));
+            const artistMatch = r.song && r.song.artists && r.song.artists.some(a => artistMatchesQuery(a, q));
             const videoMatch = r.video && r.video.title && r.video.title.toLowerCase().includes(q);
             const noteMatch = r.note && r.note.toLowerCase().includes(q);
             return titleMatch || artistMatch || videoMatch || noteMatch;

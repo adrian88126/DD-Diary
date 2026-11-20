@@ -53,12 +53,13 @@ VTSong_Database/
 │   │   └── association.py     # 多對多關係表 (song_artists, record_vtubers, clip_vtubers)
 │   │
 │   ├── services/              # 主要業務邏輯
+│   │   ├── artist_service.py  # 原唱歌手 CRUD 與全站歌手歌單跨主播彙整
 │   │   ├── vtuber_service.py  # 主播資料增刪與社群連結轉檔同步
 │   │   ├── youtube_service.py # YouTube API 影片獲取與同步
 │   │   └── clip_service.py    # 剪輯師管理、頻道/播放清單影片爬取與智慧自動標籤分類
 │   │
 │   ├── blueprints/            # Flask 路由藍圖
-│   │   ├── main/routes.py     # 首頁大廳路由
+│   │   ├── main/routes.py     # 首頁大廳 (/) 與原唱歌手歌單 (/artists) 路由
 │   │   ├── share/routes.py    # 主播專頁路由
 │   │   ├── auth/routes.py     # 後台登入與登出
 │   │   ├── admin/routes.py    # 後台管理面板路由 (含 /admin/clip_authors 與 /admin/clips)
@@ -70,13 +71,15 @@ VTSong_Database/
 │   │   │   └── share.css      # 主播分享頁排版樣式 (修正時間軸靠右)
 │   │   └── js/
 │   │       ├── ui.js          # 共用 UI 函式（Toast、光暗切換、漢堡選單控制，全域掛載）
+│   │       ├── artists.js     # 全站原唱歌手歌單互動與跨主播內建播放器（全域掛載）
 │   │       ├── share.js       # 個人頁面互動（燈箱、日曆、快捷過濾、播放，全域掛載）
 │   │       └── admin.js       # 後台管理行為（表頭排序、行內編輯、批次操作）
 │   │
 │   └── templates/             # Jinja2 模板
 │       ├── base.html          # 通用導覽列、多國語系下拉式選單與 Toast 容器
 │       ├── main/
-│       │   └── lobby.html     # 大廳頁面 (繼承 base.html，帶有數據快照與週表牆)
+│       │   ├── lobby.html     # 大廳頁面 (繼承 base.html，帶有數據快照與週表牆)
+│       │   └── artists.html   # 全站原唱歌手歌單專頁 (多語言/QID 檢索與跨主播歌單)
 │       ├── share/
 │       │   └── profile.html   # 主播公開專頁 (多分頁切換、精選切片條件渲染、帶時間軸播放)
 │       ├── auth/
@@ -103,11 +106,16 @@ VTSong_Database/
 * **主題切換**：自動載入 `localStorage` 的 `theme` 設定。當 `#theme-toggle` 按鈕被點選時，在 `html` 上切換 `data-theme="light"` 屬性並寫入快取，觸發 smooth 過渡背景切換。
 * **手機版選單**：偵測並綁定 `.hamburger` 按鈕，點選時切換 `.nav-links` 的 `active` 狀態，控制抽屜開關。
 
-### B. `app/static/js/share.js` (個人頁面核心行為)
+### B. `app/static/js/artists.js` (原唱歌手歌單專頁行為)
+* **多語言與 Wikidata QID 檢索**：支援比對 `name_main` / `name_en` / `name_ja` / `name_zh` / `name_romaji` / `wikidata_id` 以及旗下歌名，並支援依演唱次數、歌曲數、跨主播數、名稱排序與主播篩選。
+* **歌手百科資訊與跨主播連播**：展示完整多語言別名與可外連之 `Wikidata QID` 徽章、分享特定歌手網址（`?artist=<id>`），並內建精簡 YouTube 播放器支援全歌單連播／隨機播放與一鍵跳轉至對應主播專頁時間軸。
+
+### C. `app/static/js/share.js` (個人頁面核心行為)
 * **影音同步播放、單曲直達分享與智慧電台控制**：
   * 調用 YouTube IFrame API 播放器，監聽特定歌曲的時間戳記，提供點擊後即時跳轉到指定秒數的播放功能。
   * **單曲直達分享連結 (`?play=影片ID&t=秒數`)**：播放器控制列提供「🔗 分享當前歌曲 (`shareCurrentSong`)」按鈕，一鍵複製帶有影片 ID 與秒數的專屬網址；任何人點開該網址即自動載入並跳轉播放該首歌曲片段。
   * **歌單演唱次數統計、多維度排序與一鍵複製歌名**：歌單分頁 (`renderRepertoire`) 自動統計每首歌的累計演唱次數 (`🔥 X 次`) 與最近演唱日期，支援「最常演唱 / 最近演唱 / 歌名排序」切換，並提供「📋 複製歌名 (`copySongTitle`)」按鈕方便觀眾直接複製去直播間點歌。
+  * **歌手多語言即時搜尋**：歌單、歷史時間軸、電台播放清單與匯出篩選皆支援比對歌手的 `name_main` / `name_en` / `name_ja` / `name_zh` / `name_romaji`。
 * **電台連續播放與隨機聽歌 (Radio Mode & Shuffle)**：
   * 支援背景連續自動播放模式（Autoplay Next），曲目結束自動平滑推進下一首歌。
   * 支援隨機聽歌（Shuffle Play），動態亂數選曲並記住已聽歷史防止重複。
@@ -120,7 +128,7 @@ VTSong_Database/
   * 「其他影片」Tab 支援「全部」、「雜談/單人」、「連動/合作」以及「短影音」分類過濾。
   * 「精選切片」Tab 支援「全部標籤」、「🎵 歌唱」、「🤝 連動」、「💬 雜談」、「🎮 遊戲」、「🎧 ASMR」、「🤪 迷因」與剪輯師多重過濾，並與頂端搜尋列的 `searchQuery`（標題、作者名稱、標籤）100% 即時聯動。
 
-### C. `app/static/js/admin.js` (後台管理核心行為)
+### D. `app/static/js/admin.js` (後台管理核心行為)
 * **多型態表頭排序 (Table Sorting)**：監聽所有 `th.sortable`，支援文字自然排序（中英日多語系）、純數字大小、日期（`YYYY-MM-DD`）以及時間戳記（`mm:ss` / `hh:mm:ss`）的即時升降序切換。
 * **單元格雙擊行內編輯 (Inline Editing)**：雙擊表格單元格可原地切換為輸入框並發送 AJAX 儲存更新。
 * **全域批次操作 (Bulk Actions)**：支援表格項目的多選勾選框、全選連動（僅勾選當前過濾可見項目），並調用批次刪除與批次修改 API。

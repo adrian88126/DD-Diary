@@ -31,7 +31,15 @@ def list_artists():
     skip = request.args.get('skip', 0, type=int)
     limit = request.args.get('limit', 100, type=int)
     artists = get_artists(skip=skip, limit=limit)
-    return jsonify([{'id': a.id, 'name_main': a.name_main} for a in artists])
+    return jsonify([{
+        'id': a.id,
+        'name_main': a.name_main,
+        'name_en': a.name_en,
+        'name_ja': a.name_ja,
+        'name_zh': a.name_zh,
+        'name_romaji': a.name_romaji,
+        'wikidata_id': a.wikidata_id,
+    } for a in artists])
 
 @api_bp.route('/videos', methods=['GET'])
 def list_videos():

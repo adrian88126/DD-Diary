@@ -100,9 +100,11 @@ def init_database(db_file=DB_FILE):
     CREATE TABLE IF NOT EXISTS artists (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_main TEXT NOT NULL,
+        name_en TEXT,
         name_ja TEXT,
         name_zh TEXT,
         name_romaji TEXT,
+        wikidata_id TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """)

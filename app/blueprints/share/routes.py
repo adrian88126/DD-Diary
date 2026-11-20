@@ -72,7 +72,16 @@ def profile(identifier):
     for r in records:
         song_dict = None
         if r.song:
-            artists_data = [{"name_main": a.name_main} for a in r.song.artists] if r.song.artists else []
+            artists_data = [
+                {
+                    "name_main": a.name_main,
+                    "name_en": a.name_en,
+                    "name_ja": a.name_ja,
+                    "name_zh": a.name_zh,
+                    "name_romaji": a.name_romaji,
+                }
+                for a in r.song.artists
+            ] if r.song.artists else []
             song_dict = {
                 "id": r.song.id,
                 "title_main": r.song.title_main,

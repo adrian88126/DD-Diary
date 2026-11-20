@@ -11,6 +11,7 @@ def run_tests():
     template_files = [
         "app/templates/base.html",
         "app/templates/main/lobby.html",
+        "app/templates/main/artists.html",
         "app/templates/share/profile.html",
         "app/templates/admin/layout.html",
         "app/templates/admin/dashboard.html",
@@ -36,6 +37,7 @@ def run_tests():
     js_files = [
         "app/static/js/ui.js",
         "app/static/js/share.js",
+        "app/static/js/artists.js",
         "app/static/js/admin.js",
     ]
 

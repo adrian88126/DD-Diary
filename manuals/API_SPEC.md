@@ -6,15 +6,34 @@
 
 ## 1. 歌手 (Artists) API
 
-### A. 新增歌手
+### A. 取得歌手列表
+* **Method & URL**：`GET /api/v1/artists?skip=0&limit=100`
+* **回傳範例 (200 OK)**：
+```json
+[
+  {
+    "id": 1,
+    "name_main": "周杰倫",
+    "name_en": "Jay Chou",
+    "name_ja": "ジェイ・チョウ",
+    "name_zh": "周杰倫",
+    "name_romaji": "Zhou Jielun",
+    "wikidata_id": "Q238819"
+  }
+]
+```
+
+### B. 新增歌手
 * **Method & URL**：`POST /api/v1/artists`
 * **請求 Payload (JSON)**：
 ```json
 {
   "name_main": "周杰倫",
+  "name_en": "Jay Chou",
   "name_ja": "ジェイ・チョウ",
   "name_zh": "周杰倫",
-  "name_romaji": "Jay Chou"
+  "name_romaji": "Zhou Jielun",
+  "wikidata_id": "Q238819"
 }
 ```
 * **回傳範例 (201 Created)**：
@@ -22,13 +41,15 @@
 {
   "id": 1,
   "name_main": "周杰倫",
+  "name_en": "Jay Chou",
   "name_ja": "ジェイ・チョウ",
   "name_zh": "周杰倫",
-  "name_romaji": "Jay Chou"
+  "name_romaji": "Zhou Jielun",
+  "wikidata_id": "Q238819"
 }
 ```
 
-### B. 快速建立歌手 (Quick Create Artist)
+### C. 快速建立歌手 (Quick Create Artist)
 * **Method & URL**：`POST /api/v1/artists/quick_create`
 * **請求 Payload (JSON)**：`{ "name_main": "歌手名稱" }`
 * **說明**：支援歌曲管理抽屜或時間軸中無中斷就地新增歌手，不區分大小寫自動防重。
@@ -43,10 +64,10 @@
 }
 ```
 
-### C. 修改歌手
+### D. 修改歌手
 * **Method & URL**：`PUT /api/v1/artists/<id>` 或 `POST /admin/artists/<id>/edit`
 
-### C. 刪除歌手
+### E. 刪除歌手
 * **Method & URL**：`DELETE /api/v1/artists/<id>` 或 `POST /admin/artists/<id>/delete`
 
 ---

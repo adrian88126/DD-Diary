@@ -48,5 +48,15 @@ def run_tests():
     share_dir = os.path.join(docs_dir, "share")
     if not os.path.exists(share_dir) or len(os.listdir(share_dir)) == 0:
         errors.append("docs/share/ 主播個人頁面未成功生成！")
+
+    # 5. 驗證雙語原唱歌手歌單專頁與共用資料檔存在且非空
+    for rel_path in [
+        os.path.join("artists", "index.html"),
+        os.path.join("en", "artists", "index.html"),
+        os.path.join("static", "data", "artist_catalog.js"),
+    ]:
+        full_path = os.path.join(docs_dir, rel_path)
+        if not os.path.exists(full_path) or os.path.getsize(full_path) == 0:
+            errors.append(f"靜態歌手歌單產物缺失或為空：docs/{rel_path.replace(os.sep, '/')}")
         
     return errors

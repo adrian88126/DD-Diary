@@ -1,5 +1,6 @@
 {
     "Home": "首頁",
+    "Artist Songlist": "原唱歌手歌單",
     "Schedule": "直播行事曆",
     "Admin": "管理後台",
     "Login": "登入",
@@ -20,9 +21,11 @@
     "Edit VTuber": "編輯 VTuber",
     "New VTuber": "新增 VTuber",
     "Main Name": "主名稱",
+    "English Name": "英文名稱",
     "Romaji Name": "羅馬拼音",
     "Japanese Name": "日文名稱",
     "Chinese Name": "中文名稱",
+    "Wikidata ID": "Wikidata QID",
     "Description": "簡介描述",
     "YouTube Channel ID": "YouTube 頻道 ID",
     "Theme Color": "主題顏色",

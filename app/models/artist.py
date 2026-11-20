@@ -11,9 +11,11 @@ class Artist(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name_main: Mapped[str] = mapped_column(String, nullable=False)
+    name_en: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     name_ja: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     name_zh: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     name_romaji: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    wikidata_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
     # 關聯關係：歌手與歌曲的多對多關係
