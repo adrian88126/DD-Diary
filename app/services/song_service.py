@@ -41,9 +41,20 @@ def get_songs(
             
     return db.session.scalars(stmt.offset(skip).limit(limit).order_by(Song.id.desc())).all()
 
+SONG_ALLOWED_FIELDS = {
+    "title_main",
+    "title_ja",
+    "title_zh",
+    "title_romaji",
+    "song_type",
+}
+
+
 def create_song(song_data: dict):
-    artist_ids = song_data.pop('artist_ids', [])
-    db_song = Song(**song_data)
+    payload = dict(song_data or {})
+    artist_ids = payload.pop('artist_ids', [])
+    filtered = {k: v for k, v in payload.items() if k in SONG_ALLOWED_FIELDS}
+    db_song = Song(**filtered)
     
     if artist_ids:
         # 綁定原唱歌手
@@ -60,9 +71,11 @@ def update_song(song_id: int, song_data: dict):
     if not db_song:
         return None
         
-    artist_ids = song_data.pop('artist_ids', None)
+    payload = dict(song_data or {})
+    artist_ids = payload.pop('artist_ids', None)
+    filtered = {k: v for k, v in payload.items() if k in SONG_ALLOWED_FIELDS}
     
-    for key, val in song_data.items():
+    for key, val in filtered.items():
         setattr(db_song, key, val)
     
     if artist_ids is not None:

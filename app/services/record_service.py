@@ -27,9 +27,14 @@ def get_records(
         
     return db.session.scalars(stmt.offset(skip).limit(limit).order_by(SingingRecord.id.desc())).all()
 
+RECORD_ALLOWED_FIELDS = {"song_id", "video_id", "timestamp_seconds", "note"}
+
+
 def create_record(record_data: dict):
-    singer_ids = record_data.pop('singer_ids', [])
-    db_record = SingingRecord(**record_data)
+    payload = dict(record_data or {})
+    singer_ids = payload.pop('singer_ids', [])
+    filtered = {k: v for k, v in payload.items() if k in RECORD_ALLOWED_FIELDS}
+    db_record = SingingRecord(**filtered)
     
     if singer_ids:
         # 綁定參與合唱的主播
@@ -44,9 +49,11 @@ def create_record(record_data: dict):
 def update_record(record_id: int, record_data: dict):
     db_record = get_record(record_id=record_id)
     if db_record:
-        singer_ids = record_data.pop('singer_ids', None)
+        payload = dict(record_data or {})
+        singer_ids = payload.pop('singer_ids', None)
+        filtered = {k: v for k, v in payload.items() if k in RECORD_ALLOWED_FIELDS}
         
-        for key, val in record_data.items():
+        for key, val in filtered.items():
             setattr(db_record, key, val)
         
         # 更新多對多歌手關聯

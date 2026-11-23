@@ -15,6 +15,18 @@ if exist ".venv\Scripts\python.exe" (
     echo [i] 使用系統環境 Python
 )
 
+if not exist "vtuber_songs.db" (
+    if exist "database_dump.sql" (
+        echo [*] 偵測到本機尚無 vtuber_songs.db，正在從 database_dump.sql 自動還原...
+        "%PY_BIN%" db_sync.py restore --if-missing
+        if %ERRORLEVEL% neq 0 (
+            echo [!] 資料庫自動還原失敗，請檢查 database_dump.sql！
+            pause
+            exit /b 1
+        )
+    )
+)
+
 echo [*] 將於 2 秒後自動開啟瀏覽器進入「歌回管理 (最新排序)」...
 echo [*] 伺服器運行期間請勿關閉此視窗 (按 Ctrl+C 可停止伺服器)。
 echo ------------------------------------------------------------

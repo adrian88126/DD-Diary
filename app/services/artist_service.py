@@ -13,15 +13,30 @@ def get_artist(artist_id: int):
 def get_artists(skip: int = 0, limit: int = 100):
     return db.session.scalars(select(Artist).offset(skip).limit(limit)).all()
 
+ARTIST_ALLOWED_FIELDS = {
+    "name_main",
+    "name_en",
+    "name_ja",
+    "name_zh",
+    "name_romaji",
+    "wikidata_id",
+}
+
+
+def _filter_artist_fields(artist_data: dict) -> dict:
+    return {k: v for k, v in (artist_data or {}).items() if k in ARTIST_ALLOWED_FIELDS}
+
+
 def create_artist(artist_data: dict):
+    filtered = _filter_artist_fields(artist_data)
     # 歌手重複檢查 (不分大小寫)
     existing = db.session.scalars(
-        select(Artist).where(func.lower(Artist.name_main) == func.lower(artist_data.get('name_main', '')))
+        select(Artist).where(func.lower(Artist.name_main) == func.lower(filtered.get('name_main', '')))
     ).first()
     if existing:
         return existing
         
-    db_artist = Artist(**artist_data)
+    db_artist = Artist(**filtered)
     db.session.add(db_artist)
     db.session.commit()
     db.session.refresh(db_artist)
@@ -32,7 +47,8 @@ def update_artist(artist_id: int, artist_data: dict):
     if not db_artist:
         return None
         
-    for key, val in artist_data.items():
+    filtered = _filter_artist_fields(artist_data)
+    for key, val in filtered.items():
         setattr(db_artist, key, val)
         
     db.session.commit()

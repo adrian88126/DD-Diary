@@ -22,3 +22,13 @@ vtsong.db
 .env
 backups/
 *.test_bak
+
+# SQLite Binary Databases (改由純文字 database_dump.sql 進行 Git 版控)
+vtuber_songs.db
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Local Audit / Export Reports
+reports/

@@ -96,9 +96,11 @@ python build_static.py
 
 ### 6. 一鍵打包並發布至 GitHub (Windows 雙擊腳本)
 若您在 Windows 上管理資料庫，直接在專案根目錄**雙擊執行 `deploy.bat`** 即可：
-* 自動偵測 `.venv` 虛擬環境並執行 `build_static.py` 打包最新雙語網頁。
+* 自動偵測 `.venv` 虛擬環境，先執行 `python db_sync.py dump` 將 `vtuber_songs.db` 匯出為可 diff 壓縮的純文字快照 **`database_dump.sql`**。
+* 執行 `run_tests.py` 完成全系統測試與雙語靜態網頁編譯（`build_static.py` 輸出至 `docs/`）。
 * 可輸入自訂更新說明（或直接按 Enter 使用預設 Commit 訊息）。
-* 自動執行 `git add .`、`git commit` 並直接 `git push` 上傳至 GitHub！
+* 依白名單 `git add` 加入程式碼、`docs/` 與 `database_dump.sql`（不追蹤二進位 `.db` 與本機 `reports/`），自動 `git commit` 並直接 `git push` 上傳至 GitHub！
+* 若於新電腦首次 Clone 專案、目錄尚無 `vtuber_songs.db`，雙擊 `start.bat` / `sync.bat`（或手動執行 `python db_sync.py restore --if-missing`）會自動從 `database_dump.sql` 還原完整資料庫。
 
 ---
 

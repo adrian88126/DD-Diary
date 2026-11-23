@@ -23,11 +23,13 @@ VTSong_Database/
 │
 ├── run.py                     # Flask 應用程式進入點 (監聽 5000 端口)
 ├── build_static.py            # 靜態網站中英雙語打包腳本
+├── db_sync.py                 # SQLite <-> database_dump.sql 純文字版控匯出/還原工具
 ├── init_db.py                 # 資料庫初始化與 Schema 建立腳本
 ├── sync_cli.py                # YouTube 影片同步 CLI 工具
 ├── run_tests.py               # 系統測試套件入口
 ├── requirements.txt           # Python 依賴套件
-├── vtuber_songs.db            # 主資料庫（SQLite）
+├── database_dump.sql          # 純文字 SQL 資料庫快照（隨 Git 版控同步）
+├── vtuber_songs.db            # 本機 SQLite 主資料庫（已列入 .gitignore，由 database_dump.sql 同步）
 │
 ├── manuals/                   # 專案架構與開發技術手冊
 │   ├── PROJECT_MANUAL.md      # 專案總體手冊

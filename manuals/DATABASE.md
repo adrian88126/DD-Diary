@@ -162,8 +162,13 @@
 
 ---
 
-## 5. 資料庫初始化與資料遷移
+## 5. 資料庫初始化、資料遷移與純文字 Git 版控
 * **初始化腳本**：[`../init_db.py`](../init_db.py)。
   * **功能**：檢測 `vtuber_songs.db` 是否存在，若不存在則依據 ORM 定義自動建立所有資料表、聯合主鍵、外鍵約束與索引。
   * **內建種子資料**：預置了範例主播的基礎資料與大事記，方便開發環境快速呈現。
-* **資料庫升級**：專案使用 **Flask-Migrate (Alembic)** 進行資料庫版本控制。在對 model 結構進行變更後，可使用常規的 Flask-Migrate 命令生成與應用遷移腳本。
+* **資料庫升級**：專案目前主要透過 SQLite 升級腳本與 [`../init_db.py`](../init_db.py) 同步演進 Schema（亦可搭配 Flask-Migrate 擴充）。
+* **純文字 Git 同步機制（`db_sync.py` ↔ `database_dump.sql`）**：
+  * 為避免二進位 `vtuber_songs.db` 造成 `.git` 歷史線性膨脹與無法 diff，`vtuber_songs.db`、`*.db` 與 `reports/` 已列入 `.gitignore`，改由 [`../db_sync.py`](../db_sync.py) 維護純文字 UTF-8 SQL 快照 [`../database_dump.sql`](../database_dump.sql)。
+  * `python db_sync.py dump`：以唯讀模式連線 `vtuber_songs.db` 驗證 `PRAGMA integrity_check`，並原子性寫出完整 Schema、索引與資料至 `database_dump.sql`（`deploy.bat` 每次發布自動執行）。
+  * `python db_sync.py restore --if-missing`：僅在本地尚無 `vtuber_songs.db` 時從 `database_dump.sql` 還原並驗證外鍵約束（`start.bat`、`sync.bat` 啟動時自動觸發）。
+  * `python db_sync.py restore --force`：強制由 `database_dump.sql` 重建覆寫本地 `vtuber_songs.db`（覆寫前會自動備份現有檔案至 `backups/pre_sql_restore_<timestamp>.db`）。

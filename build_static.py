@@ -218,9 +218,23 @@ def main():
         print("📁 建立 docs 資料夾...")
         os.makedirs(docs_dir, exist_ok=True)
 
-    print("📂 複製靜態檔案資源 (排除 *.bak 與舊版 portal.js)...")
+    print("📂 複製靜態檔案資源 (排除備份檔、舊版遺骸與後台專用資源)...")
     docs_static = os.path.join(docs_dir, "static")
-    shutil.copytree(static_dir, docs_static, dirs_exist_ok=True, ignore=shutil.ignore_patterns("*.bak", "portal.js"))
+    static_css_dir = os.path.join(static_dir, "css")
+    static_js_dir = os.path.join(static_dir, "js")
+
+    def _ignore_static(src, names):
+        ignored = {n for n in names if n.endswith(".bak")}
+        abs_src = os.path.abspath(src)
+        if abs_src == static_dir:
+            ignored |= {"share.css", "template.csv", "template.json"} & set(names)
+        elif abs_src == static_css_dir:
+            ignored |= {"admin.css"} & set(names)
+        elif abs_src == static_js_dir:
+            ignored |= {"admin.js", "portal.js", "config.js", "state.js"} & set(names)
+        return list(ignored)
+
+    shutil.copytree(static_dir, docs_static, dirs_exist_ok=True, ignore=_ignore_static)
 
     share_dir_zh = os.path.join(docs_dir, "share")
     en_dir = os.path.join(docs_dir, "en")

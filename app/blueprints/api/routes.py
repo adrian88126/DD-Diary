@@ -8,13 +8,25 @@ from app.services.video_service import get_videos
 from app.services.record_service import get_records
 from app.services.activity_service import get_activities
 from app.services.youtube_service import fetch_youtube_channel_info
-import urllib.request
 import json
+import re
+import urllib.request
+
+
+def _parse_pagination(default_limit: int = 100, max_limit: int = 500) -> tuple[int, int]:
+    skip = request.args.get('skip', 0, type=int)
+    limit = request.args.get('limit', default_limit, type=int)
+    if skip is None or skip < 0:
+        skip = 0
+    if limit is None:
+        limit = default_limit
+    limit = min(max(limit, 1), max_limit)
+    return skip, limit
+
 
 @api_bp.route('/vtubers', methods=['GET'])
 def list_vtubers():
-    skip = request.args.get('skip', 0, type=int)
-    limit = request.args.get('limit', 100, type=int)
+    skip, limit = _parse_pagination()
     vtubers = get_vtubers(skip=skip, limit=limit)
     return jsonify([{'id': v.id, 'name_main': v.name_main} for v in vtubers])
 
@@ -22,15 +34,13 @@ def list_vtubers():
 def list_songs():
     q = request.args.get('q')
     song_type = request.args.get('song_type')
-    skip = request.args.get('skip', 0, type=int)
-    limit = request.args.get('limit', 100, type=int)
+    skip, limit = _parse_pagination()
     songs = get_songs(q=q, song_type=song_type, skip=skip, limit=limit)
     return jsonify([{'id': s.id, 'title_main': s.title_main, 'song_type': s.song_type} for s in songs])
 
 @api_bp.route('/artists', methods=['GET'])
 def list_artists():
-    skip = request.args.get('skip', 0, type=int)
-    limit = request.args.get('limit', 100, type=int)
+    skip, limit = _parse_pagination()
     artists = get_artists(skip=skip, limit=limit)
     return jsonify([{
         'id': a.id,
@@ -46,8 +56,7 @@ def list_artists():
 def list_videos():
     video_type = request.args.get('video_type')
     vtuber_id = request.args.get('vtuber_id', type=int)
-    skip = request.args.get('skip', 0, type=int)
-    limit = request.args.get('limit', 100, type=int)
+    skip, limit = _parse_pagination()
     videos = get_videos(video_type=video_type, vtuber_id=vtuber_id, skip=skip, limit=limit)
     return jsonify([{'video_id': v.video_id, 'title': v.title, 'video_type': v.video_type} for v in videos])
 
@@ -56,16 +65,14 @@ def list_records():
     vtuber_id = request.args.get('vtuber_id', type=int)
     video_id = request.args.get('video_id')
     song_id = request.args.get('song_id', type=int)
-    skip = request.args.get('skip', 0, type=int)
-    limit = request.args.get('limit', 100, type=int)
+    skip, limit = _parse_pagination()
     records = get_records(vtuber_id=vtuber_id, video_id=video_id, song_id=song_id, skip=skip, limit=limit)
     return jsonify([{'id': r.id, 'song_id': r.song_id, 'video_id': r.video_id} for r in records])
 
 @api_bp.route('/activities', methods=['GET'])
 def list_activities():
     vtuber_id = request.args.get('vtuber_id', type=int)
-    skip = request.args.get('skip', 0, type=int)
-    limit = request.args.get('limit', 100, type=int)
+    skip, limit = _parse_pagination()
     activities = get_activities(vtuber_id=vtuber_id, skip=skip, limit=limit)
     return jsonify([{'id': a.id, 'title': a.title, 'activity_type': a.activity_type} for a in activities])
 
@@ -84,9 +91,11 @@ def fetch_youtube_info():
 @api_bp.route('/videos/fetch_youtube_info', methods=['GET'])
 @login_required
 def fetch_video_info():
-    video_id = request.args.get('video_id')
+    video_id = (request.args.get('video_id') or '').strip()
     if not video_id:
         return jsonify({'error': 'Missing video_id'}), 400
+    if not re.fullmatch(r'[A-Za-z0-9_-]{11}', video_id):
+        return jsonify({'error': 'Invalid video_id format'}), 400
         
     url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={video_id}&format=json"
     try:

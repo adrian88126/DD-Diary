@@ -1,3 +1,4 @@
+import hmac
 from urllib.parse import urlparse
 from flask import render_template, request, redirect, url_for, flash, current_app
 from flask_login import login_user, logout_user, login_required, UserMixin
@@ -29,10 +30,15 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         
-        admin_user = current_app.config.get('ADMIN_USERNAME')
-        admin_pass = current_app.config.get('ADMIN_PASSWORD')
+        admin_user = current_app.config.get('ADMIN_USERNAME') or ''
+        admin_pass = current_app.config.get('ADMIN_PASSWORD') or ''
         
-        if username == admin_user and password == admin_pass:
+        if (
+            admin_user
+            and admin_pass
+            and hmac.compare_digest(username or '', admin_user)
+            and hmac.compare_digest(password or '', admin_pass)
+        ):
             user = User(username)
             login_user(user)
             flash('Logged in successfully.', 'success')

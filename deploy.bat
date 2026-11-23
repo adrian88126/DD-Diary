@@ -17,7 +17,19 @@ if exist ".venv\Scripts\python.exe" (
 )
 
 echo.
-echo [1/4] 正在執行全系統功能自動化測試與雙語靜態網頁打包 (docs/)...
+echo [1/5] 正在將本機 SQLite 資料庫匯出為純文字版控快照 (database_dump.sql)...
+echo ------------------------------------------------------------
+"%PY_BIN%" db_sync.py dump
+if %ERRORLEVEL% neq 0 (
+    echo.
+    echo [!] 警告：匯出 database_dump.sql 失敗！已中止後續發布流程。
+    echo.
+    pause
+    exit /b 1
+)
+
+echo.
+echo [2/5] 正在執行全系統功能自動化測試與雙語靜態網頁打包 (docs/)...
 echo ------------------------------------------------------------
 "%PY_BIN%" run_tests.py
 if %ERRORLEVEL% neq 0 (
@@ -30,7 +42,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo.
-echo [2/4] 準備 Git 提交訊息...
+echo [3/5] 準備 Git 提交訊息...
 echo ------------------------------------------------------------
 set "DEFAULT_MSG=update: refresh data and rebuild static pages"
 set "USER_MSG="
@@ -46,16 +58,23 @@ echo.
 echo 使用的 Commit 訊息: "%COMMIT_MSG%"
 echo.
 
-echo [3/4] 正在將變更加入 Git 暫存區並提交...
+echo [4/5] 正在依白名單加入程式碼、靜態網頁與純文字 SQL 快照並提交...
 echo ------------------------------------------------------------
-git add .
+git add -A -- app/ docs/ manuals/ tests/ database_dump.sql build_static.py db_sync.py init_db.py run.py run_tests.py sync_cli.py requirements.txt .gitignore .env.example README.md deploy.bat start.bat sync.bat test.bat
+if %ERRORLEVEL% neq 0 (
+    echo.
+    echo [!] 警告：Git 暫存檔案失敗！已中止提交。
+    echo.
+    pause
+    exit /b 1
+)
 git commit -m "%COMMIT_MSG%"
 if %ERRORLEVEL% neq 0 (
     echo [i] 沒有偵測到新的變更需要提交，準備檢查是否有未推送的 Commit...
 )
 
 echo.
-echo [4/4] 正在推送至 GitHub 遠端儲存庫 (git push)...
+echo [5/5] 正在推送至 GitHub 遠端儲存庫 (git push)...
 echo ------------------------------------------------------------
 set "RETRY_COUNT=0"
 :PUSH_RETRY
@@ -77,7 +96,7 @@ if %ERRORLEVEL% neq 0 (
 
 echo.
 echo ============================================================
-echo   全部完成！全系統測試通過，最新靜態頁面已成功發布至 GitHub！
+echo   全部完成！全系統測試通過，純文字快照與靜態頁面已發布至 GitHub！
 echo   GitHub Pages 預計於 1 至 2 分鐘內完成線上更新。
 echo ============================================================
 echo.

@@ -366,9 +366,12 @@
         
         const originalValue = this.innerText.trim();
         this.classList.add('editing');
-        this.innerHTML = `<input type="text" class="inline-edit-input" value="${originalValue.replace(/"/g, '&quot;')}">`;
-        
-        const input = this.querySelector('input');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'inline-edit-input';
+        input.value = originalValue;
+        this.textContent = '';
+        this.appendChild(input);
         input.focus();
         
         const saveEdit = async () => {

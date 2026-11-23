@@ -51,9 +51,14 @@ def get_videos(video_type: str = None, vtuber_id: int = None, skip: int = 0, lim
     return db.session.scalars(stmt.offset(skip).limit(limit).order_by(Video.published_at.desc())).all()
 
 
+VIDEO_UPDATABLE_FIELDS = {"title", "published_at", "video_type", "thumbnail_url", "vtuber_id"}
+VIDEO_CREATABLE_FIELDS = VIDEO_UPDATABLE_FIELDS | {"video_id"}
+
+
 def create_video(video_data: dict):
     cleaned = _clean_video_data(video_data)
-    db_video = Video(**cleaned)
+    filtered = {k: v for k, v in cleaned.items() if k in VIDEO_CREATABLE_FIELDS}
+    db_video = Video(**filtered)
     db.session.add(db_video)
     db.session.commit()
     db.session.refresh(db_video)
@@ -73,7 +78,8 @@ def update_video(video_id: str, video_data: dict):
     db_video = get_video(video_id)
     if db_video:
         cleaned = _clean_video_data(video_data)
-        for key, val in cleaned.items():
+        filtered = {k: v for k, v in cleaned.items() if k in VIDEO_UPDATABLE_FIELDS}
+        for key, val in filtered.items():
             setattr(db_video, key, val)
         db.session.commit()
         db.session.refresh(db_video)

@@ -87,3 +87,12 @@ with app.test_request_context(environ_base={'HTTP_COOKIE': f'lang={lang}'}):
   * 主播個人專頁渲染時傳入 `lobby_url="../../index.html"`（用以倒回上層的大廳）。
   * 本地運行時，不傳入此變數，自動 Fallback 到 Flask 路由 `url_for('main.lobby')` 與 `url_for('main.artists_catalog')`。
 * **結果**：完美實現了本地開發路由與靜態部署路由的無縫雙軌切換。
+
+---
+
+## 5. 雙擊發布流水線 (`deploy.bat`)
+
+1. **`python db_sync.py dump`**：將本機 `vtuber_songs.db` 匯出為純文字 UTF-8 快照 `database_dump.sql`（取代直接提交二進位 `.db`）。
+2. **`python run_tests.py`**：依序執行資料庫與 `db_sync` 還原驗證、API/CRUD 沙盒、前端 DOM/批次檔格式檢查，以及 `build_static.py` 靜態雙語打包（`docs/`）；任一環節失敗即中止發布。
+3. **白名單 `git add` & `git commit`**：明確只將 `app/`、`docs/`、`manuals/`、`tests/`、`database_dump.sql` 與核心根目錄腳本加入暫存區，避免誤將二進位資料庫或本機 `reports/` 推上 GitHub。
+4. **`git push`（含 3 次瞬斷重試）**：完成推送，更新 GitHub Pages 線上網站。

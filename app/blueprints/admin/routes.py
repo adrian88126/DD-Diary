@@ -538,42 +538,85 @@ def backup_export():
 def backup_import():
     import os
     import shutil
+    import sqlite3
     from datetime import datetime
+    from pathlib import Path
+
     file = request.files.get('backup_file')
     if not file or not file.filename:
         flash('請選擇要還原的 .db 備份檔案！', 'warning')
         return redirect(url_for('admin.diagnostics'))
-    
-    # Validate SQLite header (First 16 bytes: b"SQLite format 3\x00")
-    header = file.read(16)
-    if not header.startswith(b'SQLite format 3\x00'):
-        flash('匯入失敗：上傳的檔案非有效的 SQLite 格式資料庫！', 'danger')
-        return redirect(url_for('admin.diagnostics'))
-    
-    file.seek(0)
+
     db_path = _get_active_db_path()
     if not db_path:
         flash('無法識別系統資料庫路徑！', 'danger')
         return redirect(url_for('admin.diagnostics'))
-    
+
+    abs_db_path = os.path.abspath(db_path)
+    tmp_path = abs_db_path + '.upload.tmp'
+    if os.path.exists(tmp_path):
+        os.remove(tmp_path)
+
     try:
-        # 自動建立目前資料庫的安全快照備份
-        if os.path.exists(db_path):
-            backup_dir = os.path.join(os.path.dirname(db_path), 'backups')
+        # 先寫入暫存檔再完成所有格式與結構驗證，確保原資料庫不會受損
+        file.save(tmp_path)
+
+        with open(tmp_path, 'rb') as f:
+            header = f.read(16)
+        if not header.startswith(b'SQLite format 3\x00'):
+            flash('匯入失敗：上傳的檔案非有效的 SQLite 格式資料庫！', 'danger')
+            return redirect(url_for('admin.diagnostics'))
+
+        ro_uri = Path(tmp_path).as_uri() + '?mode=ro'
+        vconn = sqlite3.connect(ro_uri, uri=True, timeout=5.0)
+        try:
+            integrity = vconn.execute('PRAGMA integrity_check;').fetchall()
+            if integrity != [('ok',)]:
+                flash('匯入失敗：SQLite 檔案完整性檢查未通過！', 'danger')
+                return redirect(url_for('admin.diagnostics'))
+
+            existing_tables = {
+                row[0]
+                for row in vconn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            }
+            required_tables = {'vtubers', 'songs', 'artists', 'videos', 'singing_records'}
+            missing_tables = sorted(required_tables - existing_tables)
+            if missing_tables:
+                flash(
+                    f"匯入失敗：備份檔缺少必要資料表 ({', '.join(missing_tables)})！",
+                    'danger',
+                )
+                return redirect(url_for('admin.diagnostics'))
+        finally:
+            vconn.close()
+
+        # 驗證完全通過後，先建立現有資料庫安全快照備份再原子替換
+        if os.path.exists(abs_db_path):
+            backup_dir = os.path.join(os.path.dirname(abs_db_path), 'backups')
             os.makedirs(backup_dir, exist_ok=True)
-            auto_bak = os.path.join(backup_dir, f"pre_restore_{datetime.now().strftime('%Y%m%d_%H%M%S')}.db")
-            shutil.copy2(db_path, auto_bak)
-        
-        # 暫時釋放 SQLAlchemy 連線
+            auto_bak = os.path.join(
+                backup_dir, f"pre_restore_{datetime.now().strftime('%Y%m%d_%H%M%S')}.db"
+            )
+            shutil.copy2(abs_db_path, auto_bak)
+
         db.session.remove()
         db.engine.dispose()
-        
-        # 寫入還原檔案
-        file.save(db_path)
+
+        os.replace(tmp_path, abs_db_path)
         flash('資料庫已成功還原！系統已為您自動備份前一份資料庫至 backups/ 資料夾。', 'success')
+    except sqlite3.DatabaseError:
+        flash('匯入失敗：上傳的檔案無法作為有效 SQLite 資料庫讀取！', 'danger')
     except Exception as e:
         flash(f'還原過程發生錯誤: {str(e)}', 'danger')
-        
+    finally:
+        if os.path.exists(tmp_path):
+            try:
+                os.remove(tmp_path)
+            except OSError:
+                pass
+
     return redirect(url_for('admin.diagnostics'))
 
 import json

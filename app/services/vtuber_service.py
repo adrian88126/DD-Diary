@@ -15,6 +15,25 @@ def get_vtuber_by_name(name: str):
 def get_vtubers(skip: int = 0, limit: int = 100):
     return db.session.scalars(select(VTuber).offset(skip).limit(limit)).all()
 
+
+VTUBER_ALLOWED_FIELDS = {
+    "name_main",
+    "name_ja",
+    "name_zh",
+    "name_romaji",
+    "description",
+    "youtube_channel_id",
+    "avatar_url",
+    "theme_color",
+    "banner_url",
+    "social_links",
+    "schedule_image_url",
+}
+
+
+def _filter_vtuber_fields(data: dict) -> dict:
+    return {k: v for k, v in (data or {}).items() if k in VTUBER_ALLOWED_FIELDS}
+
 def sync_vtuber_links_from_social_links(db_vtuber: VTuber):
     # 先清除該主播現有的所有 VTuberLink
     db.session.query(VTuberLink).filter(VTuberLink.vtuber_id == db_vtuber.id).delete()
@@ -77,7 +96,8 @@ def sync_vtuber_links_from_social_links(db_vtuber: VTuber):
     db.session.commit()
 
 def create_vtuber(vtuber_data: dict):
-    db_vtuber = VTuber(**vtuber_data)
+    filtered = _filter_vtuber_fields(vtuber_data)
+    db_vtuber = VTuber(**filtered)
     db.session.add(db_vtuber)
     db.session.commit()
     db.session.refresh(db_vtuber)
@@ -126,8 +146,9 @@ def add_signature_song(vtuber_id: int, song_id: int):
 def update_vtuber(vtuber_id: int, vtuber_data: dict):
     db_vtuber = get_vtuber(vtuber_id)
     if db_vtuber:
-        has_social_links = "social_links" in vtuber_data
-        for key, val in vtuber_data.items():
+        filtered = _filter_vtuber_fields(vtuber_data)
+        has_social_links = "social_links" in filtered
+        for key, val in filtered.items():
             setattr(db_vtuber, key, val)
         db.session.commit()
         

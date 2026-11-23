@@ -13,6 +13,9 @@ class Config:
         'sqlite:///' + os.path.join(basedir, 'vtuber_songs.db').replace('\\', '/')
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB upload cap
 
     # Admin credentials (stored in .env, never hardcoded)
     ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')

@@ -59,9 +59,20 @@ def _clean_activity_data(data: dict) -> dict:
 
     return cleaned
 
+ACTIVITY_ALLOWED_FIELDS = {
+    "vtuber_id",
+    "title",
+    "description",
+    "event_date",
+    "link_url",
+    "activity_type",
+}
+
+
 def create_activity(activity_data: dict):
     cleaned = _clean_activity_data(activity_data)
-    db_activity = Activity(**cleaned)
+    filtered = {k: v for k, v in cleaned.items() if k in ACTIVITY_ALLOWED_FIELDS}
+    db_activity = Activity(**filtered)
     db.session.add(db_activity)
     db.session.commit()
     db.session.refresh(db_activity)
@@ -74,7 +85,8 @@ def update_activity(activity_id: int, activity_data: dict):
     db_activity = get_activity(activity_id)
     if db_activity:
         cleaned = _clean_activity_data(activity_data)
-        for key, val in cleaned.items():
+        filtered = {k: v for k, v in cleaned.items() if k in ACTIVITY_ALLOWED_FIELDS}
+        for key, val in filtered.items():
             setattr(db_activity, key, val)
         db.session.commit()
         db.session.refresh(db_activity)
