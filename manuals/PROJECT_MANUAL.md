@@ -39,10 +39,10 @@ VTSong_Database/
 │
 ├── app/
 │   ├── __init__.py            # Flask 應用工廠與 extensions 初始化
-│   ├── config.py              # 設定管理 (環境變數、資料庫連結)
-│   ├── extensions.py          # SQLAlchemy、LoginManager、Babel 實體定義
-│   ├── i18n.py                # Babel 多國語系語系選擇邏輯
-│   ├── locales/               # 語系翻譯對照字典 JSON (zh.json, en.json)
+│   ├── config.py              # 設定管理 (環境變數、Session Cookie 安全設定、50MB 上傳限制與資料庫連結)
+│   ├── extensions.py          # SQLAlchemy、LoginManager、Flask-WTF CSRFProtect 實體定義
+│   ├── i18n.py                # 輕量 JSON 多國語系語系選擇與 mtime 快取邏輯
+│   ├── locales/               # 語系翻譯對照字典 JSON (zh.json, en.json，100% 鍵值對齊)
 │   │
 │   ├── models/                # SQLAlchemy 資料表模型
 │   │   ├── vtuber.py          # VTuber 主播
@@ -72,6 +72,7 @@ VTSong_Database/
 │   │   ├── css/
 │   │   │   ├── base.css       # 全站基礎樣式與光暗主題色
 │   │   │   ├── lobby.css      # 大廳首頁專屬樣式與 RWD 版面
+│   │   │   ├── artists.css    # 原唱歌手歌單專頁專屬樣式與 RWD 版面
 │   │   │   └── share.css      # 主播分享頁排版樣式 (修正時間軸靠右)
 │   │   └── js/
 │   │       ├── ui.js          # 共用 UI 函式（Toast、光暗切換、漢堡選單控制，全域掛載）
@@ -145,7 +146,7 @@ VTSong_Database/
 
 1. **資料庫初始化**：首次執行前，請先執行 `python init_db.py` 建立 SQLite 資料庫。
 2. **啟動 Flask 服務**：執行 `python run.py`。
-3. **進入後台管理**：在瀏覽器中開啟 `http://127.0.0.1:5000/`，點選右上角 **Login** 登入（預設帳號密碼為 `admin` / `admin123`；全後台與寫入 API 皆已啟用 Flask-WTF `CSRFProtect` 防護，並透過 `admin/layout.html` 自動於表單與 `fetch` 請求注入 CSRF Token），即可進入後台管理面版：
+3. **進入後台管理**：在瀏覽器中開啟 `http://127.0.0.1:5000/`，點選右上角 **Login** 登入（帳號／密碼讀取自 `.env` 之 `ADMIN_USERNAME` / `ADMIN_PASSWORD`，未設定時預設為 `admin` / `admin`；登入採用 `hmac.compare_digest` 比對，且全後台與寫入 API 皆已啟用 Flask-WTF `CSRFProtect` 防護，並透過 `admin/layout.html` 自動於表單與 `fetch` 請求注入 CSRF Token），即可進入後台管理面版：
    * 點選 **VTubers** 可新增主播資料（支援直接貼上 YouTube 頻道網址或 @Handle 自動抓取名稱、簡介、Channel ID、頭像與封面），並可一鍵點選「同步影片」爬取 YouTube 最新存檔。
    * 點選 **演唱紀錄** 可使用「智慧時間軸分割工具」貼上留言區文字（如 `03:40 歌曲名稱`），一鍵解析並寫入資料庫：
      * 內建 YouTube 影音即時試聽播放器，點擊各列試聽按鈕 `▶` 即可精確跳轉至該秒數試聽校驗。
@@ -170,4 +171,4 @@ VTSong_Database/
    * `sync.bat`：雙擊自動抓取各活躍主播最新 5 部 YouTube 影片（預設自動排除已畢業主播星璃）。
    * `start.bat`：雙擊自動啟動本地 Flask 伺服器並開啟瀏覽器進入「歌回管理（最新排序）」頁面。
    * `test.bat`：雙擊執行全系統 4 大模組自動化功能自檢。
-   * `deploy.bat`：雙擊先自動執行全系統功能測試與雙語靜態打包（未通過自動攔截），通過後提交 commit 並推送至 GitHub（內建 3 次自動重試機制）。
+   * `deploy.bat`：雙擊依序匯出純文字 `database_dump.sql` 快照、執行全系統測試與雙語靜態打包（未通過自動攔截），通過後以白名單 `git add` 提交並推送至 GitHub（內建 3 次自動重試機制）。

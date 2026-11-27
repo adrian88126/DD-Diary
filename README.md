@@ -39,7 +39,7 @@
 
 ## 🛠️ 技術棧
 
-* **後端**：Python 3.10+ / Flask 3.x / SQLAlchemy 2.x / Flask-Babel (多國語系) / SQLite
+* **後端**：Python 3.10+ / Flask 3.x / SQLAlchemy 2.x / 自研 JSON 多國語系 (`app/i18n.py`) / Flask-WTF CSRF / SQLite
 * **前端**：Vanilla HTML5 / Vanilla CSS (Theme Variables) / Vanilla JavaScript (傳統腳本加載，100% 避免 `type="module"` 的本地 CORS 封鎖)
 * **打包**：Jinja2 Static Generator
 
@@ -57,7 +57,7 @@ pip install -r requirements.txt
 python run.py
 ```
 訪問 **`http://127.0.0.1:5000/`**。
-* 點擊右上角「登入」（預設密碼為 `admin123`），進入後台進行主播管理、歌曲資料登錄、YouTube 影片同步與時間軸解析。
+* 點擊右上角「登入」（帳號／密碼讀取自 `.env` 中的 `ADMIN_USERNAME` / `ADMIN_PASSWORD`，未設定時預設為 `admin` / `admin`），進入後台進行主播管理、歌曲資料登錄、YouTube 影片同步與時間軸解析。
 
 ### 3. YouTube 影片與直播存檔同步 (CLI 指令)
 除了在後台介面點擊「同步影片」之外，您也可以透過終端機腳本進行背景批次同步：

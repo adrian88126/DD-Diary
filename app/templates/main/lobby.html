@@ -120,7 +120,7 @@
                         </div>
 
                         {% if vt.schedule_image_url and vt.schedule_image_url.strip() %}
-                        <div class="schedule-img-wrapper" onclick="openScheduleGalleryByVtuberId({{ vt.id }})">
+                        <div class="schedule-img-wrapper" role="button" tabindex="0" onclick="openScheduleGalleryByVtuberId({{ vt.id }})">
                             <img src="{{ vt.schedule_image_url }}" alt="{{ vt.name_main }}" loading="lazy" decoding="async">
                         </div>
                         <div class="schedule-actions">

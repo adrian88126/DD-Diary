@@ -626,6 +626,7 @@ INSERT INTO "artists" VALUES(647,'ano','あの',NULL,NULL,'2026-11-20 08:32:53',
 INSERT INTO "artists" VALUES(648,'Doja Cat',NULL,'蜜桃貓朵佳',NULL,'2026-11-20 08:32:53',NULL,'Q51120673');
 INSERT INTO "artists" VALUES(649,'Junky',NULL,NULL,NULL,'2026-11-20 08:32:53',NULL,'Q28685469');
 INSERT INTO "artists" VALUES(650,'チョーキューメイ',NULL,NULL,NULL,'2026-11-20 08:32:53',NULL,'Q124102066');
+INSERT INTO "artists" VALUES(651,'伊格賽聽,葉裡',NULL,NULL,NULL,'2026-11-26 09:39:26',NULL,NULL);
 CREATE TABLE clip_authors (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL UNIQUE,
@@ -2563,6 +2564,20 @@ INSERT INTO "record_vtubers" VALUES(1915,8);
 INSERT INTO "record_vtubers" VALUES(1916,8);
 INSERT INTO "record_vtubers" VALUES(1917,8);
 INSERT INTO "record_vtubers" VALUES(1918,8);
+INSERT INTO "record_vtubers" VALUES(1919,1);
+INSERT INTO "record_vtubers" VALUES(1920,1);
+INSERT INTO "record_vtubers" VALUES(1921,1);
+INSERT INTO "record_vtubers" VALUES(1922,1);
+INSERT INTO "record_vtubers" VALUES(1923,1);
+INSERT INTO "record_vtubers" VALUES(1924,1);
+INSERT INTO "record_vtubers" VALUES(1925,1);
+INSERT INTO "record_vtubers" VALUES(1926,1);
+INSERT INTO "record_vtubers" VALUES(1927,1);
+INSERT INTO "record_vtubers" VALUES(1928,1);
+INSERT INTO "record_vtubers" VALUES(1929,1);
+INSERT INTO "record_vtubers" VALUES(1930,1);
+INSERT INTO "record_vtubers" VALUES(1931,1);
+INSERT INTO "record_vtubers" VALUES(1932,1);
 CREATE TABLE singing_records (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         song_id INTEGER NOT NULL,
@@ -4477,6 +4492,20 @@ INSERT INTO "singing_records" VALUES(1915,1231,'2ItUGudo25A',9406,NULL,'2026-11-
 INSERT INTO "singing_records" VALUES(1916,1215,'2ItUGudo25A',9712,NULL,'2026-11-20 07:13:34');
 INSERT INTO "singing_records" VALUES(1917,1232,'2ItUGudo25A',10355,NULL,'2026-11-20 07:13:34');
 INSERT INTO "singing_records" VALUES(1918,1233,'2ItUGudo25A',10906,NULL,'2026-11-20 07:13:34');
+INSERT INTO "singing_records" VALUES(1919,326,'pxdWoEX7RmE',1286,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1920,906,'pxdWoEX7RmE',2380,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1921,251,'pxdWoEX7RmE',3441,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1922,311,'pxdWoEX7RmE',3775,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1923,158,'pxdWoEX7RmE',4313,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1924,113,'pxdWoEX7RmE',4794,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1925,1234,'pxdWoEX7RmE',5124,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1926,383,'pxdWoEX7RmE',5362,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1927,324,'pxdWoEX7RmE',5612,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1928,978,'pxdWoEX7RmE',6236,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1929,977,'pxdWoEX7RmE',6588,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1930,314,'pxdWoEX7RmE',7008,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1931,325,'pxdWoEX7RmE',7316,NULL,'2026-11-26 09:39:26');
+INSERT INTO "singing_records" VALUES(1932,356,'pxdWoEX7RmE',7765,NULL,'2026-11-26 09:39:26');
 CREATE TABLE song_artists (
         song_id INTEGER NOT NULL,
         artist_id INTEGER NOT NULL,
@@ -5724,6 +5753,7 @@ INSERT INTO "song_artists" VALUES(1013,177);
 INSERT INTO "song_artists" VALUES(599,61);
 INSERT INTO "song_artists" VALUES(238,473);
 INSERT INTO "song_artists" VALUES(291,185);
+INSERT INTO "song_artists" VALUES(1234,651);
 CREATE TABLE songs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title_main TEXT NOT NULL,
@@ -6901,6 +6931,7 @@ INSERT INTO "songs" VALUES(1230,'World is mine ワールドイズマイン',NULL
 INSERT INTO "songs" VALUES(1231,'可愛くなりたい',NULL,NULL,NULL,'cover','2026-11-20 07:13:34','2026-11-20 07:13:34');
 INSERT INTO "songs" VALUES(1232,'START:DASH!!',NULL,NULL,NULL,'cover','2026-11-20 07:13:34','2026-11-20 07:13:34');
 INSERT INTO "songs" VALUES(1233,'SUNNY DAY SONG',NULL,NULL,NULL,'cover','2026-11-20 07:13:34','2026-11-20 07:13:34');
+INSERT INTO "songs" VALUES(1234,'謫仙',NULL,NULL,NULL,'cover','2026-11-26 09:39:26','2026-11-26 09:39:26');
 CREATE TABLE videos (
 	video_id VARCHAR NOT NULL, 
 	title VARCHAR NOT NULL, 
@@ -7610,14 +7641,14 @@ INSERT INTO "videos" VALUES('f-zVSGTULb8','【祝眠夜讀】挑戰日文閱讀�
 INSERT INTO "videos" VALUES('Mn55Y5BMWWQ','【雜談】又在畫粉絲形象貼圖！又！ ₊⛪︎ 祿菈唄爾 LLB','2026-09-26','stream_other','https://img.youtube.com/vi/Mn55Y5BMWWQ/mqdefault.jpg','2026-10-13 07:58:58',8);
 INSERT INTO "videos" VALUES('apVDTsjJnKc','小精靈中之人危機','2026-09-16','stream_other','https://i2.ytimg.com/vi/apVDTsjJnKc/hqdefault.jpg','2026-10-13 07:59:48',8);
 INSERT INTO "videos" VALUES('Lu5_G73c2pM','〚滔然入夢(會限)〛姐姐滔晚安時間🧳旅行小故事分享🥢💚｜滔滔饕餮Taotao','2026-10-15','stream_other','https://img.youtube.com/vi/Lu5_G73c2pM/mqdefault.jpg','2026-10-21 03:23:30',1);
-INSERT INTO "videos" VALUES('GOrs-jpRgx0','〚旅行特企〛嗚呼——要出發啦✈️日本行前小企劃 有機會製作Vlog嗎!?｜滔滔饕餮Taotao🥢💚','2026-10-15','stream_other','https://i4.ytimg.com/vi/GOrs-jpRgx0/hqdefault.jpg','2026-10-21 03:23:31',1);
+INSERT INTO "videos" VALUES('GOrs-jpRgx0','〚旅行特企〛嗚呼——要出發啦✈️日本行前小企劃 有機會製作Vlog嗎!?｜滔滔饕餮Taotao🥢💚','2026-10-15','stream_other','https://img.youtube.com/vi/GOrs-jpRgx0/mqdefault.jpg','2026-10-21 03:23:31',1);
 INSERT INTO "videos" VALUES('9u-NvWbhbEY','〚滔歌一曲〛一起出去玩🍪快快樂樂的歌回哇（二周目 一周目被種花了）🥢💚｜滔滔饕餮Taotao','2026-10-13','stream_singing','https://img.youtube.com/vi/9u-NvWbhbEY/mqdefault.jpg','2026-10-21 03:23:32',1);
-INSERT INTO "videos" VALUES('GH9-9wMTSKU','【祝眠夜讀】宅邸有人鼠人...文字解謎遊戲《Type Help》！ ₊⛪︎ 祿菈唄爾 LLB','2026-10-19','stream_other','https://i4.ytimg.com/vi/GH9-9wMTSKU/hqdefault.jpg','2026-10-21 03:30:07',8);
-INSERT INTO "videos" VALUES('q8_ZetAOXTM','【雜談】啊哇哇，啊哇哇哇...（聊！） ₊⛪︎ 祿菈唄爾 LLB','2026-10-17','stream_other','https://i2.ytimg.com/vi/q8_ZetAOXTM/hqdefault.jpg','2026-10-21 03:30:08',8);
+INSERT INTO "videos" VALUES('GH9-9wMTSKU','【祝眠夜讀】宅邸有人鼠人...文字解謎遊戲《Type Help》！ ₊⛪︎ 祿菈唄爾 LLB','2026-10-19','stream_other','https://img.youtube.com/vi/GH9-9wMTSKU/mqdefault.jpg','2026-10-21 03:30:07',8);
+INSERT INTO "videos" VALUES('q8_ZetAOXTM','【雜談】啊哇哇，啊哇哇哇...（聊！） ₊⛪︎ 祿菈唄爾 LLB','2026-10-17','stream_other','https://img.youtube.com/vi/q8_ZetAOXTM/mqdefault.jpg','2026-10-21 03:30:08',8);
 INSERT INTO "videos" VALUES('MNC0pKWFdD8','【遊戲實況】Invokyr：魔骰＝鬼屋大富翁？！ ft. 哀別·骼雷夫/夏伊拉/斯洛姆·利希恩斯/杯玥/荔荔娜 ₊⛪︎  祿菈唄爾 LLB','2026-10-16','stream_other','https://img.youtube.com/vi/MNC0pKWFdD8/mqdefault.jpg','2026-10-21 03:30:09',8);
 INSERT INTO "videos" VALUES('Hw-C2_HnTTk','【遊戲實況】Saviour & Religion：台灣獨立開發‧微恐解謎RPG！ ₊⛪︎ 祿菈唄爾 LLB','2026-10-14','stream_other','https://img.youtube.com/vi/Hw-C2_HnTTk/mqdefault.jpg','2026-10-21 03:30:09',8);
 INSERT INTO "videos" VALUES('2auGrLgTQm4','〚官方精華〛我不吃烤的青椒🫑(但是軟軟爛爛的青椒炒肉我可以!)🥢💚｜滔滔饕餮 #小剪滔 #最餓滔天 #vtuber','2026-10-15','clip','https://i3.ytimg.com/vi/2auGrLgTQm4/hqdefault.jpg','2026-10-22 08:35:14',1);
-INSERT INTO "videos" VALUES('aHhsUakIv5U','【歌回】　　　：如果在無聲透明的世界相見的話。 ₊⛪︎ 祿菈唄爾 LLB','2026-10-21','stream_singing','https://i2.ytimg.com/vi/aHhsUakIv5U/hqdefault.jpg','2026-10-22 08:39:18',8);
+INSERT INTO "videos" VALUES('aHhsUakIv5U','【歌回】　　　：如果在無聲透明的世界相見的話。 ₊⛪︎ 祿菈唄爾 LLB','2026-10-21','stream_singing','https://img.youtube.com/vi/aHhsUakIv5U/mqdefault.jpg','2026-10-22 08:39:18',8);
 INSERT INTO "videos" VALUES('WpnNLN4uHqg','〚滔歌一曲〛煮酒烹茶，今夜與君話古風🥢💚｜滔滔饕餮Taotao','2026-11-04','stream_singing','https://i4.ytimg.com/vi/WpnNLN4uHqg/hqdefault.jpg','2026-10-28 09:11:07',1);
 INSERT INTO "videos" VALUES('J0KXZh09Zsw','〚滔滔不絕〛什麼！你出軌？你做這些就是出軌了...｜滔滔饕餮Taotao🥢💚','2026-11-04','stream_other','https://i3.ytimg.com/vi/J0KXZh09Zsw/hqdefault.jpg','2026-10-28 09:11:07',1);
 INSERT INTO "videos" VALUES('FZWLkE9oUj4','〚滔筆畫畫〛10月的手搓貢丸日🎨｜滔滔饕餮Taotao🥢💚','2026-10-28','stream_other','https://i3.ytimg.com/vi/FZWLkE9oUj4/hqdefault.jpg','2026-10-28 09:11:07',1);
@@ -7632,7 +7663,7 @@ INSERT INTO "videos" VALUES('uljxcS_8B5k','ないものねだり/星璃Seri【Co
 INSERT INTO "videos" VALUES('KyfpLlwZvbI','【雜談】你說萬聖節過了？不管啦…！期間限定合作開跑啦！ ₊⛪︎ 祿菈唄爾 LLB','2026-10-31','stream_other','https://i4.ytimg.com/vi/KyfpLlwZvbI/hqdefault.jpg','2026-11-04 03:27:56',8);
 INSERT INTO "videos" VALUES('FiLAzzve30g','我玩健身環？真的假的？','2026-10-28','stream_other','https://img.youtube.com/vi/FiLAzzve30g/mqdefault.jpg','2026-11-04 03:27:56',8);
 INSERT INTO "videos" VALUES('mK8INcqdGpg','【祝眠夜遊】在這裡離奇死亡就被遺忘？文字解謎遊戲《Type Help》（下半）！ ₊⛪︎ 祿菈唄爾 LLB','2026-10-26','stream_other','https://i2.ytimg.com/vi/mK8INcqdGpg/hqdefault.jpg','2026-11-04 03:27:57',8);
-INSERT INTO "videos" VALUES('d4fq90LEh3U','【雜談】₍ᐢ. .ᐢ₎＜人，對生活要有期待！這周有規劃變動，和聯名活動搶先知～ ₊⛪︎ 祿菈唄爾 LLB','2026-10-24','stream_other','https://i1.ytimg.com/vi/d4fq90LEh3U/hqdefault.jpg','2026-11-04 03:27:58',8);
+INSERT INTO "videos" VALUES('d4fq90LEh3U','【雜談】₍ᐢ. .ᐢ₎＜人，對生活要有期待！這周有規劃變動，和聯名活動搶先知～ ₊⛪︎ 祿菈唄爾 LLB','2026-10-24','stream_other','https://img.youtube.com/vi/d4fq90LEh3U/mqdefault.jpg','2026-11-04 03:27:58',8);
 INSERT INTO "videos" VALUES('fDPD8V_AHUg','Magical Lights / 《異環》娜娜莉EP ELLY.K Cover by 霓羊NEON','2026-11-03','clip','https://i3.ytimg.com/vi/fDPD8V_AHUg/hqdefault.jpg','2026-11-04 03:29:18',32);
 INSERT INTO "videos" VALUES('j8WRkAJg7tE','希望有羽毛和翅膀 / 知更鳥Chevy Cover by 霓羊NEON','2026-10-28','clip','https://i3.ytimg.com/vi/j8WRkAJg7tE/hqdefault.jpg','2026-11-04 03:29:19',32);
 INSERT INTO "videos" VALUES('e3y6lg4oAtY','【-`🥯´-】香香唄狗各種各種！粉絲形象 LINE 貼圖販售中','2027-11-04','schedule','https://i2.ytimg.com/vi/e3y6lg4oAtY/hqdefault.jpg','2026-11-06 05:43:14',8);
@@ -7657,6 +7688,13 @@ INSERT INTO "videos" VALUES('8V0yhSf28qc','食虫植物 / 理芽 Cover by 霓羊
 INSERT INTO "videos" VALUES('mp22j08RnkU','食虫植物 / 理芽 Cover by 霓羊NEON #歌ってみた #vtuber #翻唱','2026-11-17','short','https://i2.ytimg.com/vi/mp22j08RnkU/hqdefault.jpg','2026-11-19 09:07:11',32);
 INSERT INTO "videos" VALUES('czgpQWuDKpY','〚🎮遊戲時間〛我有個妹妹，讓我來教她如何高速開車！！！｜滔滔饕餮Taotao🥢💚','2026-11-19','stream_other','https://i4.ytimg.com/vi/czgpQWuDKpY/hqdefault.jpg','2026-11-20 02:33:53',1);
 INSERT INTO "videos" VALUES('2ItUGudo25A','【歌雜】我是睡過頭遲到公主（昨天是公主日） ₊⛪︎ 祿菈唄爾 LLB','2026-11-20','stream_singing','https://i3.ytimg.com/vi/2ItUGudo25A/hqdefault.jpg','2026-11-20 02:33:55',8);
+INSERT INTO "videos" VALUES('pxdWoEX7RmE','〚滔歌一曲〛客官留步，可願聽本大王唱一曲？🥢💚｜滔滔饕餮Taotao','2026-11-25','stream_singing','https://i1.ytimg.com/vi/pxdWoEX7RmE/hqdefault.jpg','2026-11-26 08:23:39',1);
+INSERT INTO "videos" VALUES('bqIt4KlWPmg','▸爛奇跡🤡｜這也是上帝的奇跡啊  #台灣vtuber #爛奇跡 #滔歌一曲','2026-11-24','cover_mv','https://i3.ytimg.com/vi/bqIt4KlWPmg/hqdefault.jpg','2026-11-26 08:23:39',1);
+INSERT INTO "videos" VALUES('blJQK4fDvYE','【健身環大冒險 # 5】運動一個身體健康，真的假的！','2026-11-26','stream_other','https://img.youtube.com/vi/blJQK4fDvYE/mqdefault.jpg','2026-11-26 08:23:42',8);
+INSERT INTO "videos" VALUES('3QVMptXkNLU','【半週年回顧】一路走來非常感謝！繪圖雜談 ₊⛪︎ 祿菈唄爾 LLB','2026-11-24','stream_other','https://i4.ytimg.com/vi/3QVMptXkNLU/hqdefault.jpg','2026-11-26 08:23:42',8);
+INSERT INTO "videos" VALUES('CB4gwQAaATY','【雜談】來測心理測驗吧！知道答案就算心連心⸜(｡˃ ᵕ ˂ )⸝♡₊⛪︎ 祿菈唄爾 LLB','2026-11-22','stream_other','https://i4.ytimg.com/vi/CB4gwQAaATY/hqdefault.jpg','2026-11-26 08:23:42',8);
+INSERT INTO "videos" VALUES('pvXA6sg8zYY','你看過這麼美的隨身彩窗嗎！','2026-11-25','stream_other','https://i1.ytimg.com/vi/pvXA6sg8zYY/hqdefault.jpg','2026-11-26 08:23:42',8);
+INSERT INTO "videos" VALUES('6q2pIih8SUE','破次元壁且愛玩玩具 feat. 祈音','2026-11-23','stream_other','https://i3.ytimg.com/vi/6q2pIih8SUE/hqdefault.jpg','2026-11-26 08:23:42',8);
 CREATE TABLE vtuber_links (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         vtuber_id INTEGER NOT NULL,
@@ -8917,9 +8955,9 @@ DELETE FROM "sqlite_sequence";
 INSERT INTO "sqlite_sequence" VALUES('vtubers',57);
 INSERT INTO "sqlite_sequence" VALUES('vtuber_links',23);
 INSERT INTO "sqlite_sequence" VALUES('activities',12);
-INSERT INTO "sqlite_sequence" VALUES('songs',1233);
-INSERT INTO "sqlite_sequence" VALUES('artists',650);
-INSERT INTO "sqlite_sequence" VALUES('singing_records',1918);
+INSERT INTO "sqlite_sequence" VALUES('songs',1234);
+INSERT INTO "sqlite_sequence" VALUES('artists',651);
+INSERT INTO "sqlite_sequence" VALUES('singing_records',1932);
 INSERT INTO "sqlite_sequence" VALUES('clip_authors',6);
 INSERT INTO "sqlite_sequence" VALUES('clips',95);
 COMMIT;

@@ -107,6 +107,7 @@ function initTabs() {
 function initSearch() {
     const searchInput = document.getElementById('share-search-input');
     const clearBtn = document.getElementById('clear-search-btn');
+    let shareSearchTimer = null;
 
     window.getSearchQuery = () => searchQuery;
 
@@ -114,11 +115,15 @@ function initSearch() {
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.trim().toLowerCase();
             if (clearBtn) clearBtn.style.display = searchQuery ? 'block' : 'none';
-            renderCurrentTab();
+            clearTimeout(shareSearchTimer);
+            shareSearchTimer = setTimeout(() => {
+                renderCurrentTab();
+            }, 150);
         });
     }
 
     window.clearSearchInput = () => {
+        clearTimeout(shareSearchTimer);
         if (searchInput) {
             searchInput.value = '';
             searchQuery = '';
@@ -1171,3 +1176,14 @@ function isCollabTitle(title) {
     const t = title.toLowerCase();
     return t.includes('連動') || t.includes('合作') || t.includes('collab') || t.includes('連同') || t.includes('w/') || t.includes('feat') || t.includes('ft.');
 }
+
+// Keyboard accessibility for role="button" and role="tab" elements (standalone profile page)
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const target = e.target;
+    if (!target || typeof target.matches !== 'function') return;
+    if (target.matches('[role="button"][tabindex="0"], [role="tab"][tabindex="0"]')) {
+        if (e.key === ' ') e.preventDefault();
+        target.click();
+    }
+});

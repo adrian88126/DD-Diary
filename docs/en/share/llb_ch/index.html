@@ -1,13 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>祿菈唄爾 LLB ch. - 粉絲製作非官方個人歌唱存檔展示庫</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a1625'/%3E%3Cpath d='M26 44a6 6 0 1 1-4-5.66V20l22-5v21a6 6 0 1 1-4-5.66V21.5l-14 3.2V44z' fill='%23a78bfa'/%3E%3C/svg%3E">
+    <title>祿菈唄爾 LLB ch. - Unofficial Fan-Made VTuber Singing Archive</title>
+    <meta name="description" content="𝄞 雙聲系唱詩班少年 ᛝ 個人勢 Vtuber ₊ ⛪︎
+
+歡迎來到我的電子教堂！
+祿菈唄爾做為一位好唱詩班成員，
+想用聲音傳遞能量，同時盡情玩樂中～
+
+主要的 音樂 ᛝ 遊戲 ᛝ 雜談 ᛝ 配音以外，
+繪畫 ᛝ 看書 ᛝ 學習新技能 的內容也會出現喔！
+
+朝著全職獨立創作者前進的這條路，
+能有你陪我揮灑靈魂嗎？🥺
+
+平常的直播在 YT、Twitch 雙開中，
+關注各路社群媒體這件事也要麻煩你囉！">
     
     <!-- Open Graph / 社群預覽卡片 (Line, Discord, Facebook, X) -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="🎵 祿菈唄爾 LLB ch. 歌唱存檔與直播時間軸專頁">
+    <meta property="og:title" content="🎵 祿菈唄爾 LLB ch. Singing Archive &amp; Stream Timelines">
     <meta property="og:description" content="𝄞 雙聲系唱詩班少年 ᛝ 個人勢 Vtuber ₊ ⛪︎
 
 歡迎來到我的電子教堂！
@@ -22,9 +37,11 @@
 
 平常的直播在 YT、Twitch 雙開中，
 關注各路社群媒體這件事也要麻煩你囉！">
+    
     <meta property="og:image" content="https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg">
+    
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="🎵 祿菈唄爾 LLB ch. 歌單庫與直播時間表">
+    <meta name="twitter:title" content="🎵 祿菈唄爾 LLB ch. Singing Archive &amp; Stream Timelines">
     <meta name="twitter:description" content="𝄞 雙聲系唱詩班少年 ᛝ 個人勢 Vtuber ₊ ⛪︎
 
 歡迎來到我的電子教堂！
@@ -39,7 +56,9 @@
 
 平常的直播在 YT、Twitch 雙開中，
 關注各路社群媒體這件事也要麻煩你囉！">
+    
     <meta name="twitter:image" content="https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg">
+    
 
     <!-- 🚀 高速 CDN 預先連線 (DNS Prefetch & Preconnect) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,7 +75,7 @@
     <link rel="stylesheet" href="../../../static/css/base.css?v=14">
     <link rel="stylesheet" href="../../../static/css/share.css?v=14">
     <script>
-        window.I18N = {"Admin": "Admin", "All": "All", "All Clippers": "All Clippers", "All Tags": "All Tags", "All VTubers": "All VTubers", "Artist Songlist": "Artist Songlist", "Autoplay": "Autoplay", "Back to Lobby": "Back to Lobby", "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.": "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.", "Cancel": "Clear", "Click \u0027Play All\u0027 above or any VTuber cover below to start playing": "Click \u0027Play All\u0027 above or any VTuber cover below to start playing", "Click a track or Random Radio to listen": "Click a track or Random Radio to listen", "Clipper:": "Clipper:", "Collaboration": "Collaboration", "Cross-VTuber": "Cross-VTuber", "Enlarge": "Enlarge", "Enlarge Schedule": "Enlarge Schedule", "Enter Songlist": "Enter Songlist", "Expand Video": "Expand", "Export Excel": "Export CSV", "Featured Clips": "Featured Clips", "Home": "Home", "Linked Videos:": "Videos:", "Linked Wikidata:": "Linked Wikidata:", "Live Streams": "Live Streams", "Load more artists...": "Load more artists...", "Loading artist data...": "Loading artist data...", "Login": "Login", "Logout": "Logout", "MV": "MV", "Management and login features are only available in the local Flask environment.": "Management and login features are only available in the local Flask environment.", "Milestones \u0026 Timeline": "Milestones \u0026 Timeline", "Most Sung": "Most Sung", "Name Sort": "Name", "No bio description yet.": "No bio description yet.", "No data": "No data", "No related songs yet!": "No related songs yet!", "No schedule image set yet": "No schedule image set yet", "No track playing": "No track playing", "No videos here yet!": "No videos here yet!", "Not playing": "Not playing", "Open VTuber Page": "VTuber Page", "Open on YouTube": "Open on YouTube", "Original Artists:": "Original Artists:", "Original Link": "Source", "Other Streams": "Other Streams", "Overview": "Overview", "Play": "Play", "Play Count": "Play Count", "Profile": "Profile", "Random Radio": "Random Radio", "Recently Sung": "Recently Sung", "Recorded Songs:": "Songs:", "Schedule": "Schedule", "Search VTubers, JP/ZH names, or bio...": "Search VTubers, JP/ZH names, or bio...", "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...": "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...", "Search song title or artist...": "Search song title or artist...", "Select a song to play": "Select a song to play", "Select an artist on the left and click any track to play": "Select an artist on the left and click any track to play", "Shorts": "Shorts", "Showing:": "Showing:", "Shuffle": "Shuffle", "Singing History": "Singing History", "Singing Records:": "Records:", "Singing Streams": "Singing Streams", "Song Count": "Songs", "Song List": "Song List", "Sort by Title": "By Title", "Talk / Solo": "Talk / Solo", "Top Original Artists (TOP 5)": "Top Original Artists (TOP 5)", "Top Songs (TOP 5)": "Top Songs (TOP 5)", "Total VTubers": "Total", "Unknown": "Unknown", "VTuber Singing Database": "VTuber Singing Database", "View Schedule": "View Schedule", "View VTubers": "View VTubers", "Weekly Schedule": "Weekly Schedule", "Weekly Schedule Gallery": "Weekly Schedule Gallery", "With Wikidata QID Only": "Wikidata QID Only", "times": "times", "unit_artists": "", "unit_records": "", "unit_songs": "", "unit_videos": ""};
+        window.I18N = {"1. Paste Raw Text": "1. Paste Raw Text", "2. Preview Results": "2. Preview Results", "Actions": "Actions", "Activities": "Activities", "Activity Type": "Activity Type", "Admin": "Admin", "All": "All", "All Clippers": "All Clippers", "All Tags": "All Tags", "All VTubers": "All VTubers", "Are you sure you want to delete this item?": "Are you sure you want to delete this item?", "Artist IDs (comma separated)": "Artist IDs (comma separated)", "Artist Songlist": "Artist Songlist", "Artists": "Artists", "Autoplay": "Autoplay", "Avatar URL": "Avatar URL", "Back to Lobby": "Back to Lobby", "Banner URL": "Banner URL", "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.": "Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.", "Cancel": "Clear", "Chinese Name": "Chinese Name", "Chinese Title": "Chinese Title", "Click \u0027Play All\u0027 above or any VTuber cover below to start playing": "Click \u0027Play All\u0027 above or any VTuber cover below to start playing", "Click a track or Random Radio to listen": "Click a track or Random Radio to listen", "Clip Authors": "Clip Authors", "Clipper:": "Clipper:", "Clips": "Clips", "Collaboration": "Collaboration", "Confirm Delete": "Confirm Delete", "Create New": "Create New", "Cross-VTuber": "Cross-VTuber", "Dashboard": "Dashboard", "Debut": "Debut", "Delete": "Delete", "Delete Selected": "Delete Selected", "Description": "Description", "Diagnostics": "Diagnostics", "Duplicate Artists": "Duplicate Artists", "Duplicate Songs": "Duplicate Songs", "Edit": "Edit", "Edit Activity": "Edit Activity", "Edit Artist": "Edit Artist", "Edit Record": "Edit Record", "Edit Song": "Edit Song", "Edit VTuber": "Edit VTuber", "Edit Video": "Edit Video", "English Name": "English Name", "Enlarge": "Enlarge", "Enlarge Schedule": "Enlarge Schedule", "Enter Songlist": "Enter Songlist", "Error": "Error", "Error:": "Error:", "Event": "Event", "Event Date": "Event Date", "Expand Video": "Expand", "Export Excel": "Export CSV", "Featured Clips": "Featured Clips", "Home": "Home", "IDs": "IDs", "Japanese Name": "Japanese Name", "Japanese Title": "Japanese Title", "Link URL": "Link URL", "Linked Videos:": "Videos:", "Linked Wikidata:": "Linked Wikidata:", "Live Streams": "Live Streams", "Load more artists...": "Load more artists...", "Loading artist data...": "Loading artist data...", "Login": "Login", "Logout": "Logout", "MV": "MV", "Main Name": "Main Name", "Main Title": "Main Title", "Management and login features are only available in the local Flask environment.": "Management and login features are only available in the local Flask environment.", "Milestone": "Milestone", "Milestones \u0026 Timeline": "Milestones \u0026 Timeline", "Most Sung": "Most Sung", "Name": "Name", "Name Sort": "Name", "Network error occurred": "Network error occurred", "New Activity": "New Activity", "New Artist": "New Artist", "New Record": "New Record", "New Song": "New Song", "New VTuber": "New VTuber", "New Video": "New Video", "No bio description yet.": "No bio description yet.", "No data": "No data", "No related songs yet!": "No related songs yet!", "No schedule image set yet": "No schedule image set yet", "No track playing": "No track playing", "No videos here yet!": "No videos here yet!", "Not playing": "Not playing", "Note": "Note", "Open VTuber Page": "VTuber Page", "Open on YouTube": "Open on YouTube", "Original Artists:": "Original Artists:", "Original Link": "Source", "Other": "Other", "Other Streams": "Other Streams", "Overview": "Overview", "Parsing timeline for:": "Parsing timeline for:", "Paste YouTube comments here. Format: \"1. Song Name 13:34\" or \"1:03:50 Song Name\".": "Paste YouTube comments here. Format: \"1. Song Name 13:34\" or \"1:03:50 Song Name\".", "Paste text on the left to see preview.": "Paste text on the left to see preview.", "Play": "Play", "Play Count": "Play Count", "Profile": "Profile", "Published At": "Published At", "Random Radio": "Random Radio", "Recently Sung": "Recently Sung", "Recorded Songs:": "Songs:", "Records": "Records", "Review parsed results. Unrecognized lines will be ignored. New songs will be automatically created.": "Review parsed results. Unrecognized lines will be ignored. New songs will be automatically created.", "Romaji Name": "Romaji Name", "Romaji Title": "Romaji Title", "Save": "Save", "Save Activity": "Save Activity", "Save All to Database": "Save All to Database", "Save Artist": "Save Artist", "Save Record": "Save Record", "Save Song": "Save Song", "Save Video": "Save Video", "Saving...": "Saving...", "Schedule": "Schedule", "Schedule Image URL": "Schedule Image URL", "Search VTubers, JP/ZH names, or bio...": "Search VTubers, JP/ZH names, or bio...", "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...": "Search artist names, EN/JA/ZH/Romaji, Wikidata QID, or song title...", "Search song title or artist...": "Search song title or artist...", "Search...": "Search...", "Seconds": "Seconds", "Select All": "Select All", "Select a song to play": "Select a song to play", "Select an artist on the left and click any track to play": "Select an artist on the left and click any track to play", "Shorts": "Shorts", "Showing:": "Showing:", "Shuffle": "Shuffle", "Singer": "Original Artist", "Singer IDs (comma separated, optionally for collabs)": "Singer IDs (comma separated, optionally for collabs)", "Singing History": "Singing History", "Singing Records:": "Records:", "Singing Streams": "Singing Streams", "Smart Timeline Parser": "Smart Timeline Parser", "Social Links (JSON)": "Social Links (JSON)", "Song Count": "Songs", "Song List": "Song List", "Song Type": "Song Type", "Songs": "Songs", "Sort by Title": "By Title", "Stream - Other": "Stream - Other", "Stream - Singing": "Stream - Singing", "Success": "Success", "Successfully saved": "Successfully saved", "Talk / Solo": "Talk / Solo", "Theme Color": "Theme Color", "Thumbnail URL": "Thumbnail URL", "Time": "Time", "Timeline": "Timeline", "Title": "Title", "Top Original Artists (TOP 5)": "Top Original Artists (TOP 5)", "Top Songs (TOP 5)": "Top Songs (TOP 5)", "Total VTubers": "Total", "Unknown": "Unknown", "Update": "Update", "VTuber ID": "VTuber ID", "VTuber Singing Database": "VTuber Singing Database", "VTubers": "VTubers", "Video ID": "Video ID", "Video Type": "Video Type", "Videos": "Videos", "View Schedule": "View Schedule", "View VTubers": "View VTubers", "Weekly Schedule": "Weekly Schedule", "Weekly Schedule Gallery": "Weekly Schedule Gallery", "Wikidata ID": "Wikidata QID", "With Wikidata QID Only": "Wikidata QID Only", "YouTube Channel ID": "YouTube Channel ID", "anime": "Anime", "clip": "Clips", "cover": "Cover", "game": "Game", "meta_lobby_desc": "DDDiary - VTuber Singing Database, Singing Stream Timelines, and Original Artist Songlists", "mv": "MV", "original": "Original", "profile_og_desc_suffix": "personal singing archive, repertoire, and singing stream timelines.", "profile_og_title_suffix": "Singing Archive \u0026 Stream Timelines", "profile_page_subtitle": "Unofficial Fan-Made VTuber Singing Archive", "records!": "records!", "schedule": "Schedule", "short": "Shorts", "stream_other": "Stream - Other", "stream_singing": "Stream - Singing", "times": "times", "unit_artists": "", "unit_records": "", "unit_songs": "", "unit_videos": ""};
     </script>
     
     <style>
@@ -90,13 +109,13 @@
                     </div>
                 </div>
 
-                <div class="tabs fade-in stagger-1 sidebar-nav">
-                    <div class="tab-item active" id="tab-link-bio" onclick="switchTab('bio')"><i class="fa-solid fa-user" style="width:20px;"></i> <span class="tab-text">Overview</span></div>
-                    <div class="tab-item" id="tab-link-requestable" onclick="switchTab('requestable')"><i class="fa-solid fa-list" style="width:20px;"></i> <span class="tab-text">Song List</span></div>
-                    <div class="tab-item" id="tab-link-singing" onclick="switchTab('singing')"><i class="fa-solid fa-microphone" style="width:20px;"></i> <span class="tab-text">Singing Streams</span></div>
-                    <div class="tab-item" id="tab-link-live" onclick="switchTab('live')"><i class="fa-solid fa-video" style="width:20px;"></i> <span class="tab-text">Other Streams</span></div>
-                    <div class="tab-item" id="tab-link-history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> <span class="tab-text">Singing History</span></div>
-                    <div class="tab-item" id="tab-link-mv" onclick="switchTab('mv')"><i class="fa-solid fa-film" style="width:20px;"></i> <span class="tab-text">MV</span></div>
+                <div class="tabs fade-in stagger-1 sidebar-nav" role="tablist">
+                    <div class="tab-item active" id="tab-link-bio" role="tab" tabindex="0" onclick="switchTab('bio')"><i class="fa-solid fa-user" style="width:20px;"></i> <span class="tab-text">Overview</span></div>
+                    <div class="tab-item" id="tab-link-requestable" role="tab" tabindex="0" onclick="switchTab('requestable')"><i class="fa-solid fa-list" style="width:20px;"></i> <span class="tab-text">Song List</span></div>
+                    <div class="tab-item" id="tab-link-singing" role="tab" tabindex="0" onclick="switchTab('singing')"><i class="fa-solid fa-microphone" style="width:20px;"></i> <span class="tab-text">Singing Streams</span></div>
+                    <div class="tab-item" id="tab-link-live" role="tab" tabindex="0" onclick="switchTab('live')"><i class="fa-solid fa-video" style="width:20px;"></i> <span class="tab-text">Other Streams</span></div>
+                    <div class="tab-item" id="tab-link-history" role="tab" tabindex="0" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> <span class="tab-text">Singing History</span></div>
+                    <div class="tab-item" id="tab-link-mv" role="tab" tabindex="0" onclick="switchTab('mv')"><i class="fa-solid fa-film" style="width:20px;"></i> <span class="tab-text">MV</span></div>
                     
                 </div>
             </div>
@@ -227,7 +246,7 @@
                                     <i class="fa-solid fa-magnifying-glass-plus"></i> Enlarge Schedule
                                 </button>
                             </div>
-                            <div class="schedule-img-wrapper" onclick="openLightbox('https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg', '祿菈唄爾 LLB ch. - Weekly Schedule')">
+                            <div class="schedule-img-wrapper" role="button" tabindex="0" onclick="openLightbox('https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg', '祿菈唄爾 LLB ch. - Weekly Schedule')">
                                 <img src="https://i2.ytimg.com/vi/e3y6lg4oAtY/maxresdefault.jpg" alt="Weekly Schedule">
                             </div>
                         </div>

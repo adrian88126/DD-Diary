@@ -2,6 +2,13 @@
 
 {% block title %}{{ _('Artist Songlist') }} - DDDiary{% endblock %}
 
+{% block meta_tags %}
+<meta name="description" content="{{ _('Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.') }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ _('Artist Songlist') }} - DDDiary">
+<meta property="og:description" content="{{ _('Browse VTuber covers by original artist, multilingual names, and Wikidata QID with cross-VTuber playback.') }}">
+{% endblock %}
+
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/artists.css') }}">
 {% endblock %}

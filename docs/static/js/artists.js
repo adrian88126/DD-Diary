@@ -27,6 +27,7 @@
   var filteredArtists = [];
   var visibleLimit = PAGE_SIZE;
   var searchQuery = '';
+  var artistSearchTimer = null;
   var currentSort = 'records';
   var currentVtuberFilter = 'all';
   var wikidataOnly = false;
@@ -579,13 +580,17 @@
     var clearBtn = document.getElementById('clear-artist-search-btn');
     searchQuery = input ? input.value : '';
     if (clearBtn) clearBtn.style.display = searchQuery ? 'block' : 'none';
-    visibleLimit = PAGE_SIZE;
-    applyFiltersAndSort();
+    clearTimeout(artistSearchTimer);
+    artistSearchTimer = setTimeout(function () {
+      visibleLimit = PAGE_SIZE;
+      applyFiltersAndSort();
+    }, 150);
   }
 
   function clearArtistSearch() {
     var input = document.getElementById('artist-search-input');
     var clearBtn = document.getElementById('clear-artist-search-btn');
+    clearTimeout(artistSearchTimer);
     if (input) input.value = '';
     searchQuery = '';
     if (clearBtn) clearBtn.style.display = 'none';

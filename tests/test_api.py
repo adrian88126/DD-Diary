@@ -263,19 +263,160 @@ def run_tests():
             db.session.remove()
             db.engine.dispose()
 
-        # 7. 驗證啟用 CSRF 時登入表單含 csrf_token
+        # 7. 驗證啟用 CSRF 與權限驗證後的正/負向安全性測試
+        import io
+        import re
+        import sqlite3
+        from app.models.artist import Artist
+        from app.models.vtuber import VTuber
+
         class CsrfTestConfig(Config):
             TESTING = True
+            LOGIN_DISABLED = False
             WTF_CSRF_ENABLED = True
             SQLALCHEMY_DATABASE_URI = "sqlite:///" + test_db_path.replace("\\", "/")
 
         csrf_app = create_app(CsrfTestConfig)
         with csrf_app.app_context():
             csrf_client = csrf_app.test_client()
+
+            # 7a. 未登入存取後台與受保護 API 應被攔截
+            res_unauth_dash = csrf_client.get("/admin/dashboard")
+            if res_unauth_dash.status_code != 302 or "/auth/login" not in res_unauth_dash.headers.get("Location", ""):
+                errors.append(f"未登入存取 /admin/dashboard 未導向登入頁：{res_unauth_dash.status_code}")
+
+            res_unauth_fetch = csrf_client.get("/api/v1/videos/fetch_youtube_info?video_id=dQw4w9WgXcQ")
+            if res_unauth_fetch.status_code not in (302, 401):
+                errors.append(f"未登入呼叫 fetch_youtube_info 未被攔截：{res_unauth_fetch.status_code}")
+
+            # 取得登入頁 CSRF Token
             login_res = csrf_client.get("/auth/login")
             login_html = login_res.get_data(as_text=True)
-            if login_res.status_code != 200 or 'name="csrf_token"' not in login_html:
+            token_match = re.search(r'name="csrf_token"[^>]*value="([^"]+)"', login_html)
+            if login_res.status_code != 200 or not token_match:
                 errors.append("啟用 CSRF 時 GET /auth/login 缺少 csrf_token 表單欄位")
+                token_val = ""
+            else:
+                token_val = token_match.group(1)
+
+            if token_val:
+                res_unauth_quick = csrf_client.post(
+                    "/api/v1/artists/quick_create",
+                    json={"name_main": "__UNAUTH_ARTIST__"},
+                    headers={"X-CSRFToken": token_val},
+                )
+                if res_unauth_quick.status_code not in (302, 401):
+                    errors.append(f"未登入呼叫 /api/v1/artists/quick_create 未被攔截：{res_unauth_quick.status_code}")
+
+            # 7b. 公開 API 分頁上限防呆 (limit <= 500)
+            res_cap = csrf_client.get("/api/v1/artists?limit=999999&skip=-5")
+            if res_cap.status_code != 200 or len(res_cap.get_json() or []) > 500:
+                errors.append(f"GET /api/v1/artists 分頁上限防護失效：status={res_cap.status_code}")
+
+            # 7c. 模擬真實管理員登入後的 CSRF、輸入驗證、Mass Assignment 與還原防呆
+            if token_val:
+                res_login = csrf_client.post(
+                    "/auth/login",
+                    data={
+                        "username": Config.ADMIN_USERNAME,
+                        "password": Config.ADMIN_PASSWORD,
+                        "csrf_token": token_val,
+                    },
+                )
+                if res_login.status_code != 302 or "/admin/dashboard" not in res_login.headers.get("Location", ""):
+                    errors.append(f"正確帳密與 CSRF Token 登入失敗：{res_login.status_code}")
+                else:
+                    dash_html = csrf_client.get("/admin/artists").get_data(as_text=True)
+                    meta_m = re.search(r'<meta\s+name="csrf-token"\s+content="([^"]+)"', dash_html)
+                    session_csrf = meta_m.group(1) if meta_m else token_val
+
+                    # 缺 CSRF Token 寫入必須回 400
+                    res_no_csrf = csrf_client.post(
+                        "/admin/artists/create",
+                        data={"name_main": "__NO_CSRF_ARTIST__"},
+                    )
+                    if res_no_csrf.status_code != 400:
+                        errors.append(f"已登入但未附帶 CSRF Token 應回 400，實得：{res_no_csrf.status_code}")
+
+                    # 無效 YouTube video_id 格式必須回 400
+                    res_bad_vid = csrf_client.get("/api/v1/videos/fetch_youtube_info?video_id=../../bad")
+                    if res_bad_vid.status_code != 400:
+                        errors.append(f"無效 video_id 應回 400，實得：{res_bad_vid.status_code}")
+
+                    # 建立暫存歌手並驗證 Mass Assignment (id=999999) 被過濾
+                    created_id = None
+                    try:
+                        res_create = csrf_client.post(
+                            "/admin/artists/create",
+                            data={"name_main": "__TEST_SEC_ARTIST__", "csrf_token": session_csrf},
+                        )
+                        if res_create.status_code != 302:
+                            errors.append(f"附帶 CSRF 建立歌手失敗：{res_create.status_code}")
+                        sec_artist = db.session.scalars(
+                            db.select(Artist).where(Artist.name_main == "__TEST_SEC_ARTIST__")
+                        ).first()
+                        if not sec_artist:
+                            errors.append("CSRF 建立歌手後於資料庫查無該筆資料")
+                        else:
+                            created_id = sec_artist.id
+                            res_inline = csrf_client.post(
+                                f"/admin/artists/{created_id}/inline_edit",
+                                data={"id": "999999", "name_en": "SecTest", "csrf_token": session_csrf},
+                            )
+                            inline_json = res_inline.get_json() or {}
+                            db.session.expire_all()
+                            reloaded = db.session.get(Artist, created_id)
+                            if (
+                                res_inline.status_code != 200
+                                or not inline_json.get("success")
+                                or reloaded is None
+                                or reloaded.id != created_id
+                                or reloaded.name_en != "SecTest"
+                                or db.session.get(Artist, 999999) is not None
+                            ):
+                                errors.append("inline_edit Mass Assignment 白名單過濾驗證失敗")
+                    finally:
+                        if created_id is not None:
+                            csrf_client.post(
+                                f"/admin/artists/{created_id}/delete",
+                                data={"csrf_token": session_csrf},
+                            )
+
+                    # backup_import 非 SQLite 與缺資料表 SQLite 皆不可破壞現有資料庫
+                    res_bad_file = csrf_client.post(
+                        "/admin/backup/import",
+                        data={
+                            "csrf_token": session_csrf,
+                            "backup_file": (io.BytesIO(b"not a sqlite file"), "bad.db"),
+                        },
+                        content_type="multipart/form-data",
+                        follow_redirects=True,
+                    )
+                    if "非有效的 SQLite" not in res_bad_file.get_data(as_text=True):
+                        errors.append("backup_import 未攔截非 SQLite 檔案")
+
+                    empty_sqlite_path = os.path.join(tmpdir, "incomplete.db")
+                    econn = sqlite3.connect(empty_sqlite_path)
+                    econn.execute("CREATE TABLE dummy (x INTEGER)")
+                    econn.commit()
+                    econn.close()
+                    with open(empty_sqlite_path, "rb") as ef:
+                        empty_bytes = ef.read()
+                    res_missing_tbl = csrf_client.post(
+                        "/admin/backup/import",
+                        data={
+                            "csrf_token": session_csrf,
+                            "backup_file": (io.BytesIO(empty_bytes), "incomplete.db"),
+                        },
+                        content_type="multipart/form-data",
+                        follow_redirects=True,
+                    )
+                    if "缺少必要資料表" not in res_missing_tbl.get_data(as_text=True):
+                        errors.append("backup_import 未攔截缺少必要資料表的 SQLite 檔案")
+
+                    if db.session.scalar(db.select(db.func.count()).select_from(VTuber)) == 0:
+                        errors.append("backup_import 拒收無效備份後卻誤傷原資料庫")
+
             db.session.remove()
             db.engine.dispose()
 

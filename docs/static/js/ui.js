@@ -6,7 +6,7 @@ function showToast(message, type = 'success') {
 
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerHTML = message;
+  toast.textContent = message;
 
   container.appendChild(toast);
 
@@ -123,6 +123,17 @@ function _(key) {
     }
     return key;
 }
+
+// Keyboard activation for accessible role="button" and role="tab" elements
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const target = e.target;
+  if (!target || typeof target.matches !== 'function') return;
+  if (target.matches('[role="button"][tabindex="0"], [role="tab"][tabindex="0"]')) {
+    if (e.key === ' ') e.preventDefault();
+    target.click();
+  }
+});
 
 // Make it global for easy access in other scripts or inline handlers if needed
 window._ = _;

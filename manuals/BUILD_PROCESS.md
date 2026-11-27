@@ -13,7 +13,7 @@
     │
     ├── 1. 清空 Docs 目錄 ─────→ 刪除 docs/ 下的所有舊網頁
     │
-    ├── 2. 複製靜態檔案 ─────→ 將 app/static/ 複製至 docs/static/ (排除 *.bak 檔案)
+    ├── 2. 複製靜態檔案 ─────→ 將 app/static/ 複製至 docs/static/ (排除遺骸檔與後台專用 admin.*)
     │
     ├── 3. 資料庫統計快照 ───→ 從 SQLite 取得全站的 歌曲數/歷史紀錄數/影片數
     │
@@ -26,10 +26,10 @@
 
 ---
 
-## 2. 多國語系預渲染原理 (Multi-language SSR)
+## 2. 多國語系與 SEO 預渲染原理 (Multi-language SSR)
 
-Flask 應用在運行時，是利用 `Flask-Babel` 來實現多國語系的。
-為了在**沒有後端服務**的靜態網頁（GitHub Pages）上也能提供「中文/英文切換」功能，`build_static.py` 在預渲染時使用了一個巧妙的 Request Context 模擬技術：
+Flask 應用在運行時，是透過專案自建的 `app/i18n.py`（讀取 `app/locales/{zh,en}.json` 並依檔案 `mtime` 快取）來實現輕量化中英雙語切換，無需沉重編譯步。
+為了在**沒有後端服務**的靜態網頁（GitHub Pages）上也能提供「中文/英文切換」與正確的社群預覽卡片，`build_static.py` 在預渲染時模擬對應語系的 Cookie 上下文：
 
 ```python
 with app.test_request_context(environ_base={'HTTP_COOKIE': f'lang={lang}'}):
@@ -37,13 +37,13 @@ with app.test_request_context(environ_base={'HTTP_COOKIE': f'lang={lang}'}):
 
 ### 運作原理：
 1. `build_static.py` 分別為 `lang='zh'`（中文）與 `lang='en'`（英文）建立了一個偽造的請求上下文。
-2. 上下文的 Cookie 寫入 `lang=zh` 或 `lang=en`，這會直接觸發專案內部的 `i18n.py` 語言檢測攔截器，強制 Flask 載入對應的語系翻譯字典（`zh.json` 或 `en.json`）。
+2. 上下文的 Cookie 寫入 `lang=zh` 或 `lang=en`，觸發 `i18n.py` 載入對應字典（`zh.json` 與 `en.json` 保持 100% 鍵值對齊）；模板同步動態切換 `<html lang="zh-Hant">` / `<html lang="en">`、SVG inline favicon 與雙語 Open Graph / Twitter 預覽標記，並於根目錄產生 `docs/robots.txt`。
 3. 隨後呼叫 `render_template` 進行預渲染：
    * **中文版**：輸出大廳至 `docs/index.html`、原唱歌手歌單至 `docs/artists/index.html`，主播專頁輸出至 `docs/share/{id}/index.html`。
    * **英文版**：輸出大廳至 `docs/en/index.html`、原唱歌手歌單至 `docs/en/artists/index.html`，主播專頁輸出至 `docs/en/share/{id}/index.html`。
    * **共用歌手資料檔**：輸出至 `docs/static/data/artist_catalog.js`（掛載 `window.ARTIST_CATALOG_DATA` 供雙語 `/artists` 專頁在 `file:///` 離線模式下共用讀取，避免重複內嵌龐大 JSON）。
    * **主播個人頁資料抽離檔**：透過共用的 `share_service.get_vtuber_profile_payload()` 序列化資料，輸出至 `docs/static/data/vtuber_{id}.js`（掛載 `window.VTUBER_PROFILE_DATA`），供中英文雙語 `share/{id}/index.html` 共用載入，大幅縮減單頁 HTML 體積並減少快取冗餘。
-   * **靜態資源精簡複製**：複製 `app/static/` 至 `docs/static/` 時透過 `shutil.ignore_patterns("*.bak", "portal.js")` 自動排除備份檔與已棄用的 `portal.js`。
+   * **靜態資源精簡複製**：複製 `app/static/` 至 `docs/static/` 時透過 `_ignore_static` 自動排除 `*.bak`、根目錄舊檔（`share.css`、`template.csv`、`template.json`）、純後台資源（`css/admin.css`、`js/admin.js`）與舊版腳本（`js/portal.js`、`js/config.js`、`js/state.js`）。
 4. 網頁右上角的「語系切換」下拉選單，在靜態模式下（`is_static=True`）會直接指向這些靜態預渲染出的語系路徑，達到無後端雙語切換的效果。
 
 ---

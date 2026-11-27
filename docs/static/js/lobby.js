@@ -2,6 +2,7 @@
 
 (function () {
   var currentGalleryIndex = 0;
+  var lobbySearchTimer = null;
 
   function t(key) {
     return typeof window._ === 'function' ? window._(key) : key;
@@ -35,33 +36,47 @@
     }
   }
 
-  function onLobbySearchInput() {
-    var input = document.getElementById('lobby-search-input');
-    var clearBtn = document.getElementById('clear-lobby-search-btn');
-    var query = input ? input.value.toLowerCase().trim() : '';
-
-    if (clearBtn) {
-      clearBtn.style.display = query ? 'block' : 'none';
-    }
-
+  function applyLobbySearchFilter(query) {
+    var normalized = (query || '').toLowerCase().trim();
     document.querySelectorAll('#vtuber-grid-container .vtuber-card').forEach(function (card) {
       var searchText = card.getAttribute('data-search-text') || '';
-      card.style.display = searchText.toLowerCase().includes(query) ? '' : 'none';
+      card.style.display = searchText.toLowerCase().includes(normalized) ? '' : 'none';
     });
 
     document.querySelectorAll('#schedule-list .schedule-item-card').forEach(function (card) {
       var searchText = card.getAttribute('data-search-text') || '';
-      card.style.display = searchText.toLowerCase().includes(query) ? '' : 'none';
+      card.style.display = searchText.toLowerCase().includes(normalized) ? '' : 'none';
     });
+  }
+
+  function onLobbySearchInput() {
+    var input = document.getElementById('lobby-search-input');
+    var clearBtn = document.getElementById('clear-lobby-search-btn');
+    var rawQuery = input ? input.value : '';
+    var hasQuery = rawQuery.trim().length > 0;
+
+    if (clearBtn) {
+      clearBtn.style.display = hasQuery ? 'block' : 'none';
+    }
+
+    clearTimeout(lobbySearchTimer);
+    lobbySearchTimer = setTimeout(function () {
+      applyLobbySearchFilter(rawQuery);
+    }, 150);
   }
 
   function clearLobbySearch() {
     var input = document.getElementById('lobby-search-input');
+    var clearBtn = document.getElementById('clear-lobby-search-btn');
+    clearTimeout(lobbySearchTimer);
     if (input) {
       input.value = '';
-      onLobbySearchInput();
       input.focus();
     }
+    if (clearBtn) {
+      clearBtn.style.display = 'none';
+    }
+    applyLobbySearchFilter('');
   }
 
   function filterScheduleTab(vtuberId, btnEl) {

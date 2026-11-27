@@ -1,6 +1,7 @@
+import glob
+import json
 import os
 import re
-import glob
 
 
 def run_tests():
@@ -115,5 +116,32 @@ def run_tests():
                 errors.append(f"批次檔 {bat_file} 含有 4-byte Emoji 字元，可能導致 Windows CMD 解析崩潰！")
         except Exception as e:
             errors.append(f"檢測批次檔 {bat_file} 失敗：{e}")
+
+    # 6. 多語系字典檔 (zh.json / en.json) 重複鍵值與 100% 鍵值對齊檢查
+    def _load_locale_no_dupes(locale_path):
+        def _reject_dupes(pairs):
+            obj = {}
+            for k, v in pairs:
+                if k in obj:
+                    raise ValueError(f"重複語系鍵值 '{k}'")
+                obj[k] = v
+            return obj
+
+        with open(locale_path, "r", encoding="utf-8") as f:
+            return json.load(f, object_pairs_hook=_reject_dupes)
+
+    zh_path = os.path.join("app", "locales", "zh.json")
+    en_path = os.path.join("app", "locales", "en.json")
+    try:
+        zh_dict = _load_locale_no_dupes(zh_path)
+        en_dict = _load_locale_no_dupes(en_path)
+        only_zh = sorted(set(zh_dict) - set(en_dict))
+        only_en = sorted(set(en_dict) - set(zh_dict))
+        if only_zh:
+            errors.append(f"en.json 缺少與 zh.json 對齊的語系鍵值：{only_zh[:10]}")
+        if only_en:
+            errors.append(f"zh.json 缺少與 en.json 對齊的語系鍵值：{only_en[:10]}")
+    except Exception as e:
+        errors.append(f"語系字典檔檢查失敗：{e}")
 
     return errors

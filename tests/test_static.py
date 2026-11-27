@@ -91,5 +91,47 @@ def run_tests():
         for expected_text in ["VTuber Singing Database", "Artist Songlist"]:
             if expected_text not in en_html:
                 errors.append(f"docs/en/index.html 缺少英文語系字串：{expected_text}")
+
+    # 7. 驗證 robots.txt、英文語系 <html lang="en">、OG 社群卡片與非重導個人頁中英隔離
+    robots_path = os.path.join(docs_dir, "robots.txt")
+    if not os.path.exists(robots_path):
+        errors.append("docs/robots.txt 未成功生成！")
+    else:
+        with open(robots_path, "r", encoding="utf-8") as f:
+            if "User-agent: *" not in f.read():
+                errors.append("docs/robots.txt 缺少 User-agent: * 宣告！")
+
+    for en_page_rel in [
+        os.path.join("en", "index.html"),
+        os.path.join("en", "artists", "index.html"),
+    ]:
+        en_page_path = os.path.join(docs_dir, en_page_rel)
+        if os.path.exists(en_page_path):
+            with open(en_page_path, "r", encoding="utf-8") as f:
+                en_page_html = f.read()
+            if '<html lang="en"' not in en_page_html:
+                errors.append(f"docs/{en_page_rel.replace(os.sep, '/')} 缺少 <html lang=\"en\" 標記！")
+            if 'property="og:title"' not in en_page_html:
+                errors.append(f"docs/{en_page_rel.replace(os.sep, '/')} 缺少 Open Graph og:title 標記！")
+
+    en_share_pages = glob.glob(os.path.join(docs_dir, "en", "share", "*", "index.html"))
+    checked_primary_profiles = 0
+    for sp in en_share_pages:
+        with open(sp, "r", encoding="utf-8") as f:
+            sp_html = f.read()
+        if '<meta http-equiv="refresh"' in sp_html:
+            continue
+        checked_primary_profiles += 1
+        rel_sp = os.path.relpath(sp, docs_dir).replace(os.sep, "/")
+        if '<html lang="en"' not in sp_html:
+            errors.append(f"docs/{rel_sp} 缺少 <html lang=\"en\" 標記！")
+        if '<meta name="description"' not in sp_html:
+            errors.append(f"docs/{rel_sp} 缺少 <meta name=\"description\" 標記！")
+        if "Unofficial Fan-Made VTuber Singing Archive" not in sp_html:
+            errors.append(f"docs/{rel_sp} 缺少英文版頁面副標題！")
+        if "favicon.ico" in sp_html:
+            errors.append(f"docs/{rel_sp} 仍殘留無效 favicon.ico 參照！")
+    if checked_primary_profiles == 0:
+        errors.append("docs/en/share/*/index.html 未找到任何非重導主播個人主頁！")
         
     return errors

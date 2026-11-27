@@ -98,11 +98,12 @@ def build_language_site(
             with open(os.path.join(primary_dir, "index.html"), "w", encoding="utf-8") as f:
                 f.write(html_content)
 
+            redirect_html_lang = 'en' if lang == 'en' else 'zh-Hant'
             for alias_path in unique_paths[1:]:
                 alias_dir = os.path.join(share_dir, alias_path)
                 os.makedirs(alias_dir, exist_ok=True)
                 redirect_html = (
-                    f'<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8">'
+                    f'<!DOCTYPE html><html lang="{redirect_html_lang}"><head><meta charset="UTF-8">'
                     f'<meta http-equiv="refresh" content="0;url=../{primary_path}/">'
                     f'<script>window.location.href="../{primary_path}/";</script>'
                     f'<title>Redirecting...</title></head><body><p>Redirecting...</p></body></html>'
@@ -287,6 +288,11 @@ def main():
         app, vtubers, vtuber_payloads, songs_count, records_count, videos_count, total_artists,
         lang='en', base_dir=en_dir, share_dir=share_dir_en, is_sub_lang=True,
     )
+
+    robots_path = os.path.join(docs_dir, "robots.txt")
+    with open(robots_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("User-agent: *\nAllow: /\n")
+    print("🤖 已生成 docs/robots.txt")
 
     print("\n🎉 靜態雙語打包流程全部成功結束！成品已輸出至 docs/ 目錄。")
 
